@@ -80,6 +80,42 @@
       });
     }
 
+    async function loadUnlocks() {
+      const s = getSession();
+      const box = document.getElementById("unlocks");
+    
+      if (!s) {
+        box.classList.add("muted");
+        box.textContent = "Connect Patreon to see your unlocks.";
+        return;
+      }
+    
+      const r = await fetch(API + "/entitlements?session=" + encodeURIComponent(s));
+      const data = await r.json();
+    
+      if (!r.ok) {
+        box.classList.add("muted");
+        box.textContent = data.error || "Could not load unlocks.";
+        return;
+      }
+    
+      if (!data.items || data.items.length === 0) {
+        box.classList.add("muted");
+        box.textContent = "Redeem something to see it here.";
+        return;
+      }
+    
+      box.classList.remove("muted");
+      box.innerHTML = "";
+    
+      data.items.forEach(ent => {
+        const title = ent.payload?.title || ent.item_id;
+        const keyUrl = ent.payload?.itch_key_url || ent.payload?.url || "";
+    
+        addUnlock(title, keyUrl);
+      });
+    }
+
     function addUnlock(title, keyUrl) {
       const box = document.getElementById("unlocks");
       if (box.classList.contains("muted")) box.classList.remove("muted");
@@ -108,24 +144,35 @@
       box.prepend(wrap);
     }
 
-    async function redeem(itemId) {
-      const s = getSession();
-      if (!s) {
-        alert("Connect Patreon first.");
-        return;
-      }
+async function redeem(itemId) {
+  const s = getSession();
+  if (!s) {
+    alert("Connect Patreon first.");
+    return;
+  }
 
-      const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ itemId })
-      });
-      const out = await r.json();
+  const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ itemId })
+  });
 
-      if (!r.ok) {
-        alert(out.error || "Redeem failed");
-        return;
-      }
+  const out = await r.json();
+
+  if (!r.ok) {
+    alert(out.error || "Redeem failed");
+    return;
+  }
+
+  // Instant display (optional)
+  const keyUrl = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url;
+  if (keyUrl) addUnlock(out.item?.name || itemId, keyUrl);
+
+  // Then refresh from server (authoritative)
+  await loadMe();
+  await loadStore();
+  await loadUnlocks();
+}
 
       // Expect your worker to return payload.itch_key_url (or similar)
       const keyUrl = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url;
@@ -135,10 +182,13 @@
       await loadStore();
     }
 
-    (async () => {
-      await loadMe();
-      await loadStore();
-    })();
+  (async () => {
+    await loadMe();
+    await loadStore();
+    await loadUnlocks();
+  })();
+
   </script>
 </body>
 </html>
+
