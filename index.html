@@ -256,6 +256,13 @@
   position: relative;
 }
 
+/* If embedWrap is inside a card with padding:0, remove double border */
+.card > .embedWrap{
+  border: 0;
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+
 /* subtle fade edges */
 .embedWrap::after{
   content:"";
@@ -373,7 +380,7 @@
       <nav aria-label="Primary">
         <a class="navlink" href="./">Home</a>
         <a class="navlink" href="./redeem.html">Patreon Rewards</a>
-        <a class="navlink" href="#about">About</a>
+        <a class="navlink" href="https://anya-and-lolo.itch.io/">Smart Systems</a>
       </nav>
     </div>
   </header>
@@ -420,15 +427,18 @@
     </div>
   </div>
 
-  <!-- RIGHT: ItchBlog embed card -->
-  <div class="card">
-    <div class="row" style="margin-bottom: 10px;">
-      <div>
-        <strong style="font-size:18px;">Latest Updates</strong><br>
-        <span class="muted">Swipe/scroll inside for the ItchBlog feed ✨</span>
-      </div>
-      <a class="navlink" href="https://Anya-and-Lolo.github.io/ItchBlog/" target="_blank" rel="noopener">Open →</a>
+  <!-- RIGHT: ItchBlog embed -->
+  <div class="card" style="padding: 0;">
+    <div class="embedWrap" aria-label="ItchBlog embed">
+      <iframe
+        class="embed"
+        src="https://Anya-and-Lolo.github.io/ItchBlog/"
+        title="Anya & Lolo ItchBlog"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+      ></iframe>
     </div>
+  </div>
 
     <div class="embedWrap" aria-label="ItchBlog embed">
       <iframe
@@ -493,6 +503,7 @@
   </script>
 </body>
 </html>
+
 
 
 
