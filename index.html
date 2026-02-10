@@ -34,7 +34,7 @@
       color: var(--text);
       background: var(--bg);
       overflow-x: hidden;
-      font-size: 17px; /* bigger overall */
+      font-size: 17px;
       line-height: 1.6;
     }
 
@@ -103,11 +103,11 @@
       font-weight: 900;
       letter-spacing: 0.2px;
       white-space: nowrap;
-      font-size: 20px; /* bigger */
+      font-size: 20px;
     }
 
     .badge{
-      font-size: 14px; /* bigger */
+      font-size: 14px;
       padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid var(--border);
@@ -126,7 +126,7 @@
 
     .navlink{
       font-weight: 900;
-      font-size: 15px; /* bigger */
+      font-size: 15px;
       color: rgba(27,27,27,0.85);
       padding: 9px 12px;
       border-radius: 999px;
@@ -168,11 +168,11 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px; /* a bit bigger */
+      padding: 18px;
       box-shadow: 0 10px 28px rgba(0,0,0,.08);
     }
 
-    /* KEEP this headline size (as requested) */
+    /* KEEP this headline size */
     h1{
       margin: 0 0 8px 0;
       font-size: 34px;
@@ -183,7 +183,7 @@
     .subtitle{
       margin: 0 0 14px 0;
       color: var(--muted);
-      font-size: 18px; /* bigger */
+      font-size: 18px;
       line-height: 1.65;
     }
 
@@ -191,14 +191,15 @@
       display:flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 12px;
+      margin: 18px 0; /* space above + below buttons */
+      padding: 6px 0;  /* extra breathing room */
     }
 
     .btn{
       display:inline-flex;
       align-items:center;
       gap: 8px;
-      padding: 12px 16px; /* bigger */
+      padding: 12px 16px;
       border-radius: 14px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.95);
@@ -206,7 +207,7 @@
       cursor: pointer;
       box-shadow: 0 10px 22px rgba(0,0,0,.08);
       text-decoration:none;
-      font-size: 16px; /* bigger */
+      font-size: 16px;
     }
     .btn:hover{
       text-decoration:none;
@@ -232,7 +233,7 @@
     }
 
     .mini{
-      font-size: 15px; /* bigger */
+      font-size: 15px;
       color: var(--muted);
       margin-top: 12px;
       line-height: 1.7;
@@ -242,7 +243,7 @@
     .aboutRow{
       display:flex;
       gap: 12px;
-      align-items:flex-start;
+      align-items:flex-start; /* important */
     }
     .avatar{
       width: 78px;
@@ -253,6 +254,7 @@
       object-fit: cover;
       background:#fff;
       flex: 0 0 auto;
+      margin-top: 2px; /* tiny nudge so top aligns with heading */
     }
 
     /* Footer */
@@ -284,9 +286,10 @@
       .socialText{ justify-content: center !important; }
     }
 
+    /* Social list with cute dot bullets + | separators */
     .socialText{
       display:flex;
-      gap: 10px;
+      gap: 6px;
       flex-wrap: wrap;
       justify-content: center;
       align-items:center;
@@ -296,14 +299,31 @@
       text-decoration: none;
       border-radius: 10px;
       padding: 2px 6px;
+      position: relative;
     }
     .socialText a:hover{
       text-decoration: none;
       background: rgba(0,0,0,0.06);
     }
+
+    .dot{
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      display:inline-block;
+      vertical-align: middle;
+      opacity: 0.9;
+      margin: 0 2px;
+    }
+    .d1{ background: var(--dot1); }
+    .d2{ background: var(--dot2); }
+    .d3{ background: var(--dot3); }
+    .d4{ background: var(--dot4); }
+
     .sep{
-      color: rgba(20,20,20,0.35); /* same vibe as hr */
+      color: rgba(20,20,20,0.35);
       font-weight: 800;
+      margin: 0 2px;
     }
 
     .footerRight{
@@ -326,7 +346,7 @@
 
       <nav aria-label="Primary">
         <a class="navlink" href="/">Home</a>
-        <a class="navlink" href="/rewards.html">Patreon Rewards</a>
+        <a class="navlink" href="/redeem.html">Patreon Rewards</a>
         <a class="navlink" href="#about">About</a>
       </nav>
     </div>
@@ -340,13 +360,15 @@
       <div class="heroGrid">
         <div class="card">
           <h1>Welcome to 💃 Anya &amp; Lolo 🦜</h1>
+
           <p class="subtitle">
-            Please follow us for updates, dev diaries, and new releases! Want updates in your inbox?
-            Check the <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">Substack</a>.
+            New here? Start with
+            <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
+            to connect your Patreon, see your credits, and redeem your itch keys.
           </p>
 
           <div class="ctaRow">
-            <a class="btn btnPrimary" href="/rewards.html" title="Open Patreon Rewards">
+            <a class="btn btnPrimary" href="https://anya-and-lolo.github.io/redeem.html" title="Open Patreon Rewards">
               <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
                 <path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z"/>
               </svg>
@@ -358,8 +380,10 @@
             </a>
           </div>
 
-          <p class="mini">
-            New here? Start with <strong>Patreon Rewards</strong> to connect your Patreon, see your credits, and redeem your itch keys.
+          <p class="subtitle" style="margin-bottom:0;">
+            Please follow us for updates, dev diaries, and new releases! Want updates in your inbox?
+            Check the
+            <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">Substack</a>.
           </p>
         </div>
 
@@ -375,56 +399,53 @@
               </p>
             </div>
           </div>
-
-          <p class="mini" style="margin-top:12px;">
-            Want to hang out? Join the
-            <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
-            or follow us on your favourite platform below 💛
-          </p>
         </div>
       </div>
+
+      <footer>
+        <div class="hangout">
+          Want to hang out? Join the
+          <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
+          or follow us on your favourite platform below 💛
+        </div>
+
+        <div class="footerInner">
+          <div>© <span id="year"></span> Anya &amp; Lolo</div>
+
+          <div class="socialText" aria-label="Social links">
+            <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+            <span class="dot d1"></span>
+            <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+            <span class="dot d2"></span>
+            <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+            <span class="sep">|</span>
+
+            <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+            <span class="dot d3"></span>
+            <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+            <span class="dot d4"></span>
+            <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+            <span class="dot d1"></span>
+            <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+            <span class="dot d2"></span>
+            <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+            <span class="sep">|</span>
+
+            <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+            <span class="dot d3"></span>
+            <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+          </div>
+
+          <div class="footerRight">
+            <a href="/terms.html">Terms</a>
+            <span class="sep">|</span>
+            <a href="/privacy.html">Privacy</a>
+          </div>
+        </div>
+      </footer>
     </section>
-
-    <footer>
-      <!-- moved line above the hr -->
-      <div class="hangout">
-        Want to hang out? Join the
-        <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
-        or follow us on your favourite platform below 💛
-      </div>
-
-      <div class="footerInner">
-        <!-- Left -->
-        <div>© <span id="year"></span> Anya &amp; Lolo</div>
-
-        <!-- Middle: pretty social list -->
-        <div class="socialText" aria-label="Social links">
-          <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
-          <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
-          <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
-
-          <span class="sep">|</span>
-
-          <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
-          <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
-          <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
-          <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
-          <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
-
-          <span class="sep">|</span>
-
-          <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
-          <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
-        </div>
-
-        <!-- Right -->
-        <div class="footerRight">
-          <a href="/terms.html">Terms</a>
-          <span class="sep">|</span>
-          <a href="/privacy.html">Privacy</a>
-        </div>
-      </div>
-    </footer>
   </main>
 
   <script>
