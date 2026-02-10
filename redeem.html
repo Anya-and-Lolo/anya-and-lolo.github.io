@@ -4,7 +4,15 @@
   <meta charset="utf-8" />
   <title>Patreon Rewards</title>
   <style>
-    body { font-family: system-ui, Arial; max-width: 980px; margin: 30px auto; padding: 0 16px; }
+  body{
+    font-family: system-ui, Arial;
+    max-width: 980px;
+    margin: 30px auto;
+    padding: 0 16px;
+    position: relative;
+    overflow-x: hidden;
+    background: #fff;
+  }
     .card { border: 1px solid #ddd; border-radius: 12px; padding: 14px; margin: 12px 0; }
     .row { display:flex; gap: 12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
     button { padding: 10px 12px; border-radius: 10px; border: 1px solid #ccc; cursor:pointer; background:#fff; }
@@ -13,7 +21,7 @@
     .muted { color:#666; font-size: 13px; }
     .keybox { background:#fafafa; padding:10px; border-radius:10px; border:1px dashed #ccc; }
     .storeGrid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-    .storeImg { width: 100%; height: 245px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid #eee; }
+    .storeImg { width: 100%; height: 230px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid #eee; }
     .toast {
       display:none;
       position: fixed;
@@ -33,35 +41,32 @@
   --dot3: rgba(221, 160, 221, 0.38); /* purple */
   --dot4: rgba(255, 250, 205, 0.45); /* lemon */
 }
-
-body{
-  position: relative;
-  overflow-x: hidden;
-}
-
 /* animated pastel dot pattern */
 body::before{
   content:"";
   position: fixed;
   inset: 0;
   z-index: -2;
+
   background:
-    radial-gradient(circle, var(--dot1) 2px, transparent 3px) 0 0/38px 38px,
-    radial-gradient(circle, var(--dot2) 2px, transparent 3px) 12px 10px/44px 44px,
-    radial-gradient(circle, var(--dot3) 2px, transparent 3px) 22px 26px/52px 52px,
-    radial-gradient(circle, var(--dot4) 2px, transparent 3px) 6px 30px/58px 58px;
+    radial-gradient(circle, var(--dot1) 3px, transparent 4px) 0 0/42px 42px,
+    radial-gradient(circle, var(--dot2) 3px, transparent 4px) 14px 12px/48px 48px,
+    radial-gradient(circle, var(--dot3) 3px, transparent 4px) 26px 28px/56px 56px,
+    radial-gradient(circle, var(--dot4) 3px, transparent 4px) 8px 34px/62px 62px;
+
   animation: dotsFloat 18s linear infinite;
-  filter: blur(0.2px);
-  opacity: 0.9;
+  opacity: 1;
 }
 
-/* soft “paper” overlay so dots don’t compete with text */
+/* softer overlay so dots still show */
 body::after{
   content:"";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.92));
+
+  /* less opaque than before so dots show */
+  background: rgba(255,255,255,0.70);
 }
 
 @keyframes dotsFloat{
@@ -122,14 +127,22 @@ body::after{
 
     async function loadMe() {
       const s = getSession();
+      const statusEl = document.getElementById("status");
+    
       if (!s) {
-        document.getElementById("status").textContent = "Not connected";
+        statusEl.textContent = "Available Credits: not connected";
         return null;
       }
+    
       const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
       const me = await r.json();
-      document.getElementById("status").textContent =
-        me.loggedIn ? `Credits: ${me.credits}` : "Not connected";
+    
+      if (!me.loggedIn) {
+        statusEl.textContent = "Available Credits: not connected";
+        return null;
+      }
+    
+      statusEl.textContent = `Available Credits: ${me.credits}`;
       return me;
     }
 
@@ -306,5 +319,6 @@ body::after{
   </script>
 </body>
 </html>
+
 
 
