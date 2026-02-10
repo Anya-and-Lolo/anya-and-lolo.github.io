@@ -5,7 +5,7 @@
   <title>Redeem</title>
 </head>
 <body>
-  <h1>Redeem</h1>
+  <h1>Patreon Rewards</h1>
 
   <button id="connect">Connect Patreon</button>
   <p id="status">Loading…</p>
@@ -14,14 +14,25 @@
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
 
     document.getElementById("connect").onclick = () => {
-      window.location.href = API + "/auth/patreon/start";
+      location.href = API + "/auth/patreon/start";
     };
 
+    const params = new URLSearchParams(location.search);
+    const session = params.get("session");
+    if (session) localStorage.setItem("session", session);
+
     async function loadMe() {
-      const r = await fetch(API + "/me", { credentials: "include" });
+      const s = localStorage.getItem("session");
+      if (!s) {
+        document.getElementById("status").textContent = "Not connected";
+        return;
+      }
+
+      const r = await fetch(API + "/me?session=" + s);
       const me = await r.json();
+
       document.getElementById("status").textContent =
-        me.loggedIn ? `Logged in! Credits: ${me.credits}` : "Not connected yet.";
+        me.loggedIn ? `Credits: ${me.credits}` : "Not connected";
     }
 
     loadMe();
