@@ -1,28 +1,205 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Patreon Rewards</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Patreon Rewards • Anya & Lolo</title>
+  <meta name="description" content="Connect Patreon, view credits, and redeem itch.io keys for Anya & Lolo rewards." />
+
   <style>
-  body{
-    font-family: system-ui, Arial;
-    max-width: 980px;
-    margin: 30px auto;
-    padding: 0 16px;
-    position: relative;
-    overflow-x: hidden;
-    background: #fff;
-  }
-    .card { border: 1px solid #ddd; border-radius: 12px; padding: 14px; margin: 12px 0; }
-    .row { display:flex; gap: 12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    button { padding: 10px 12px; border-radius: 10px; border: 1px solid #ccc; cursor:pointer; background:#fff; }
-    button:disabled { opacity: .6; cursor: not-allowed; }
-    code { font-size: 14px; }
-    .muted { color:#666; font-size: 13px; }
-    .keybox { background:#fafafa; padding:10px; border-radius:10px; border:1px dashed #ccc; }
-    .storeGrid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-    .storeImg { width: 100%; height: 229px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid #eee; }
-    .toast {
+    :root{
+      --brand: #f4184c;
+      --brand2: rgba(244, 24, 76, 0.12);
+
+      --bg: #ffffff;
+      --card: rgba(255,255,255,0.88);
+      --border: rgba(20,20,20,0.10);
+      --text: #1b1b1b;
+      --muted: rgba(27,27,27,0.70);
+
+      --radius: 16px;
+      --shadow: 0 10px 28px rgba(0,0,0,.10);
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow-x: hidden;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* tidy 2D dot pattern */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      opacity: 0.95;
+      background:
+        radial-gradient(circle, rgba(244,24,76,0.16) 2px, transparent 2.5px) 0 0/36px 36px,
+        radial-gradient(circle, rgba(86,167,254,0.14) 2px, transparent 2.5px) 18px 18px/36px 36px;
+      animation: dotsFloat 22s linear infinite;
+    }
+    body::after{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: rgba(255,255,255,0.70);
+    }
+    @keyframes dotsFloat{
+      from { transform: translate3d(0,0,0); }
+      to   { transform: translate3d(-120px, -90px, 0); }
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Top bar (same vibe as homepage) */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.65);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbarInner{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      font-size: 20px;
+    }
+
+    .badge{
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.8);
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .navlink{
+      font-weight: 900;
+      font-size: 15px;
+      color: rgba(27,27,27,0.85);
+      padding: 9px 12px;
+      border-radius: 999px;
+    }
+    .navlink:hover{
+      text-decoration: none;
+      background: rgba(0,0,0,0.06);
+    }
+
+    /* Page header */
+    h1{
+      margin: 14px 0 6px;
+      font-size: 34px;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+    .sub{
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* Buttons */
+    button{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      cursor:pointer;
+      background:#fff;
+      font-weight: 900;
+    }
+    button:disabled{ opacity: .6; cursor: not-allowed; }
+
+    .btnPrimary{
+      background: var(--brand);
+      color: #fff;
+      border-color: rgba(244,24,76,0.35);
+    }
+
+    /* Cards – white like homepage */
+    .card{
+      background: rgba(255,255,255,0.95);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin: 12px 0;
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    }
+
+    .row{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    code{ font-size: 14px; }
+    .muted{ color: rgba(27,27,27,0.70); font-size: 13px; }
+
+    .keybox{
+      background:#fff;
+      padding:10px;
+      border-radius:12px;
+      border:1px dashed rgba(20,20,20,0.18);
+    }
+
+    .storeGrid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .storeImg{
+      width: 100%;
+      height: 240px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid rgba(20,20,20,0.08);
+    }
+
+    .toast{
       display:none;
       position: fixed;
       left: 50%;
@@ -34,66 +211,167 @@
       border-radius: 999px;
       font-size: 14px;
       box-shadow: 0 10px 24px rgba(0,0,0,.18);
+      z-index: 20;
     }
-:root{
-  --dot1: rgba(255, 182, 193, 0.45); /* pink */
-  --dot2: rgba(173, 216, 230, 0.45); /* blue */
-  --dot3: rgba(221, 160, 221, 0.38); /* purple */
-  --dot4: rgba(255, 250, 205, 0.45); /* lemon */
-}
-/* animated pastel dot pattern */
-body::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
 
-  background:
-    radial-gradient(circle, var(--dot1) 3px, transparent 4px) 0 0/42px 42px,
-    radial-gradient(circle, var(--dot2) 3px, transparent 4px) 14px 12px/48px 48px,
-    radial-gradient(circle, var(--dot3) 3px, transparent 4px) 26px 28px/56px 56px,
-    radial-gradient(circle, var(--dot4) 3px, transparent 4px) 8px 34px/62px 62px;
+    /* Footer (same structure as homepage) */
+    footer{
+      margin-top: 26px;
+      padding: 18px 0 34px;
+      color: rgba(27,27,27,0.72);
+      font-size: 14px;
+    }
 
-  animation: dotsFloat 18s linear infinite;
-  opacity: 1;
-}
+    .hangout{
+      text-align: center;
+      margin: 18px 0 14px;
+      font-size: 15px;
+      color: rgba(27,27,27,0.78);
+    }
 
-/* softer overlay so dots still show */
-body::after{
-  content:"";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+    .footerInner{
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items:center;
+    }
 
-  /* less opaque than before so dots show */
-  background: rgba(255,255,255,0.70);
-}
+    .socialText{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      justify-content:center;
+      align-items:center;
+      font-weight: 900;
+    }
 
-@keyframes dotsFloat{
-  from { transform: translate3d(0,0,0); }
-  to   { transform: translate3d(-120px, -90px, 0); }
-}
+    .socialText a{
+      padding: 2px 6px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    .socialText a:hover{
+      background: rgba(0,0,0,0.06);
+      text-decoration: none;
+    }
 
+    .sepDot{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+      font-size: 28px;     /* change size here */
+      line-height: 1;
+      margin: 0 10px;
+      transform: translateY(1px);
+      opacity: 0.85;
+    }
+
+    .footerRight{
+      display:flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .sep{
+      color: rgba(20,20,20,0.35);
+      font-weight: 800;
+      margin: 0 2px;
+    }
+
+    @media (max-width: 900px){
+      .topbarInner{ align-items: flex-start; flex-direction: column; }
+      nav{ justify-content: flex-start; }
+      .footerInner{ grid-template-columns: 1fr; text-align:center; }
+      .footerRight{ justify-content: center !important; }
+      .socialText{ justify-content: center !important; }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Patreon Rewards</h1>
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbarInner">
+      <div class="brand">
+        <a href="./">Anya &amp; Lolo</a>
+        <span class="badge">Patreon Rewards</span>
+      </div>
 
-  <button id="connect">Connect Patreon</button>
-  <p id="status">Loading…</p>
+      <nav aria-label="Primary">
+        <a class="navlink" href="./">Home</a>
+        <a class="navlink" href="./redeem.html">Patreon Rewards</a>
+        <a class="navlink" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+      </nav>
+    </div>
+  </header>
 
-  <h2>Rewards Store</h2>
-  <div id="store" class="storeGrid"></div>
+  <main class="wrap">
+    <h1>Patreon Rewards</h1>
+    <p class="sub">Connect Patreon, view your credits, and redeem your itch.io keys.</p>
 
-  <h2>Your Unlocks</h2>
-  <div id="unlocks" class="muted">Redeem something to see it here.</div>
+    <div class="row" style="margin: 10px 0 14px;">
+      <button id="connect" class="btnPrimary">Connect Patreon</button>
+      <div id="status" class="muted">Loading…</div>
+    </div>
 
-  <div id="toast" class="toast"></div>
+    <h2 style="margin: 18px 0 10px;">Rewards Store</h2>
+    <div id="store" class="storeGrid"></div>
+
+    <h2 style="margin: 22px 0 10px;">Your Unlocks</h2>
+    <div id="unlocks" class="muted">Redeem something to see it here.</div>
+
+    <div id="toast" class="toast"></div>
+
+    <footer>
+      <div class="hangout">
+        Want to hang out? Join the
+        <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">Discord</a>
+        or follow us on your favourite platform below 💛
+      </div>
+
+      <div class="footerInner">
+        <div>© <span id="year"></span> Anya &amp; Lolo</div>
+
+        <div class="socialText" aria-label="Social links">
+          <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+          <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+          <span class="sepDot">•</span>
+
+          <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+          <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+
+          <span class="sepDot">•</span>
+
+          <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+          <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+          <span class="sepDot">•</span>
+
+          <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+          <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+        </div>
+
+        <div class="footerRight">
+          <a href="./terms.html">Terms</a>
+          <span class="sep">|</span>
+          <a href="./privacy.html">Privacy</a>
+        </div>
+      </div>
+    </footer>
+  </main>
 
   <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
 
-    // Images for store items (by item id)
     const ITEM_IMAGES = {
       fishing_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/fishing_system_image.jpg",
       visual_novel_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/VN_system_image.jpg",
@@ -104,7 +382,6 @@ body::after{
       location.href = API + "/auth/patreon/start";
     };
 
-    // (Your flow stores session from querystring)
     const params = new URLSearchParams(location.search);
     const session = params.get("session");
     if (session) localStorage.setItem("session", session);
@@ -128,25 +405,24 @@ body::after{
     async function loadMe() {
       const s = getSession();
       const statusEl = document.getElementById("status");
-    
+
       if (!s) {
         statusEl.textContent = "Available Credits: not connected";
         return null;
       }
-    
+
       const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
       const me = await r.json();
-    
+
       if (!me.loggedIn) {
         statusEl.textContent = "Available Credits: not connected";
         return null;
       }
-    
+
       statusEl.textContent = `Available Credits: ${me.credits}`;
       return me;
     }
 
-    // Prevent double-click redeems: track active redeems by item id
     const redeeming = new Set();
 
     async function loadStore() {
@@ -162,7 +438,6 @@ body::after{
 
         const div = document.createElement("div");
         div.className = "card";
-
         div.innerHTML = `
           ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
           <div class="row" style="margin-top:10px">
@@ -213,11 +488,6 @@ body::after{
 
       data.items.forEach(ent => {
         const title = ent.payload?.title || ent.item_id;
-
-        // Your worker may return:
-        // - payload.itch_key_url (a full URL)
-        // - payload.itch_key (a code OR a URL, depending how you stored it)
-        // - payload.url (legacy)
         const raw = ent.payload?.itch_key_url || ent.payload?.itch_key || ent.payload?.url || "";
         addUnlock(title, raw);
       });
@@ -264,7 +534,6 @@ body::after{
         return;
       }
 
-      // Double-click protection
       if (redeeming.has(itemId)) return;
       redeeming.add(itemId);
 
@@ -288,7 +557,6 @@ body::after{
           return;
         }
 
-        // ✅ Instant display
         const raw = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url || "";
         if (raw) {
           addUnlock(out.item?.name || itemId, raw);
@@ -297,11 +565,9 @@ body::after{
           showToast("✅ Redeemed! (No key returned)");
         }
 
-        // ✅ Authoritative refresh (server truth)
         await loadMe();
         await loadStore();
         await loadUnlocks();
-
       } finally {
         redeeming.delete(itemId);
         if (buttonEl) {
@@ -319,9 +585,3 @@ body::after{
   </script>
 </body>
 </html>
-
-
-
-
-
-
