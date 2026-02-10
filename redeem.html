@@ -4,13 +4,29 @@
   <meta charset="utf-8" />
   <title>Patreon Rewards</title>
   <style>
-    body { font-family: system-ui, Arial; max-width: 900px; margin: 30px auto; padding: 0 16px; }
-    .card { border: 1px solid #ddd; border-radius: 10px; padding: 14px; margin: 10px 0; }
+    body { font-family: system-ui, Arial; max-width: 980px; margin: 30px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 14px; margin: 12px 0; }
     .row { display:flex; gap: 12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    button { padding: 10px 12px; border-radius: 8px; border: 1px solid #ccc; cursor:pointer; }
+    button { padding: 10px 12px; border-radius: 10px; border: 1px solid #ccc; cursor:pointer; background:#fff; }
+    button:disabled { opacity: .6; cursor: not-allowed; }
     code { font-size: 14px; }
     .muted { color:#666; font-size: 13px; }
-    .keybox { background:#fafafa; padding:10px; border-radius:8px; border:1px dashed #ccc; }
+    .keybox { background:#fafafa; padding:10px; border-radius:10px; border:1px dashed #ccc; }
+    .storeGrid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .storeImg { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; border: 1px solid #eee; }
+    .toast {
+      display:none;
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: #111;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    }
   </style>
 </head>
 <body>
@@ -20,24 +36,46 @@
   <p id="status">Loading…</p>
 
   <h2>Rewards Store</h2>
-  <div id="store"></div>
+  <div id="store" class="storeGrid"></div>
 
   <h2>Your Unlocks</h2>
   <div id="unlocks" class="muted">Redeem something to see it here.</div>
 
+  <div id="toast" class="toast"></div>
+
   <script>
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
+
+    // Images for store items (by item id)
+    const ITEM_IMAGES = {
+      fishing_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/fishing_system_image.jpg",
+      visual_novel_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/VN_system_image.jpg",
+      shooting_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/shooting_system_image.jpg",
+    };
 
     document.getElementById("connect").onclick = () => {
       location.href = API + "/auth/patreon/start";
     };
 
+    // (Your flow stores session from querystring)
     const params = new URLSearchParams(location.search);
     const session = params.get("session");
     if (session) localStorage.setItem("session", session);
 
     function getSession() {
       return localStorage.getItem("session");
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => (t.style.display = "none"), 2200);
+    }
+
+    function isProbablyUrl(s) {
+      return typeof s === "string" && /^https?:\/\//i.test(s.trim());
     }
 
     async function loadMe() {
@@ -53,29 +91,39 @@
       return me;
     }
 
+    // Prevent double-click redeems: track active redeems by item id
+    const redeeming = new Set();
+
     async function loadStore() {
       const r = await fetch(API + "/store");
       const data = await r.json();
       const el = document.getElementById("store");
       el.innerHTML = "";
 
-      data.items.forEach(item => {
+      (data.items || []).forEach(item => {
         const dollars = (item.cost_cents / 100).toFixed(2);
         const remaining = item.remaining ?? 0;
+        const img = ITEM_IMAGES[item.id] || "";
 
         const div = document.createElement("div");
         div.className = "card";
+
         div.innerHTML = `
-          <div class="row">
+          ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
+          <div class="row" style="margin-top:10px">
             <div>
               <strong>${item.name}</strong><br>
               <span class="muted">$${dollars} credits • Remaining keys: ${remaining}</span>
             </div>
-            <button ${remaining <= 0 ? "disabled" : ""} data-id="${item.id}">Redeem</button>
+            <button ${remaining <= 0 ? "disabled" : ""} data-id="${item.id}">
+              Redeem
+            </button>
           </div>
           <div class="muted" style="margin-top:8px">${item.payload?.instructions || ""}</div>
         `;
-        div.querySelector("button").onclick = () => redeem(item.id);
+
+        const btn = div.querySelector("button");
+        btn.onclick = () => redeem(item.id, btn);
         el.appendChild(div);
       });
     }
@@ -83,112 +131,136 @@
     async function loadUnlocks() {
       const s = getSession();
       const box = document.getElementById("unlocks");
-    
+
       if (!s) {
         box.classList.add("muted");
         box.textContent = "Connect Patreon to see your unlocks.";
         return;
       }
-    
+
       const r = await fetch(API + "/entitlements?session=" + encodeURIComponent(s));
       const data = await r.json();
-    
+
       if (!r.ok) {
         box.classList.add("muted");
         box.textContent = data.error || "Could not load unlocks.";
         return;
       }
-    
+
       if (!data.items || data.items.length === 0) {
         box.classList.add("muted");
         box.textContent = "Redeem something to see it here.";
         return;
       }
-    
+
       box.classList.remove("muted");
       box.innerHTML = "";
-    
+
       data.items.forEach(ent => {
         const title = ent.payload?.title || ent.item_id;
-        const keyUrl = ent.payload?.itch_key_url || ent.payload?.url || "";
-    
-        addUnlock(title, keyUrl);
+
+        // Your worker may return:
+        // - payload.itch_key_url (a full URL)
+        // - payload.itch_key (a code OR a URL, depending how you stored it)
+        // - payload.url (legacy)
+        const raw = ent.payload?.itch_key_url || ent.payload?.itch_key || ent.payload?.url || "";
+        addUnlock(title, raw);
       });
     }
 
-    function addUnlock(title, keyUrl) {
+    function addUnlock(title, rawKeyOrUrl) {
       const box = document.getElementById("unlocks");
       if (box.classList.contains("muted")) box.classList.remove("muted");
+
+      const isUrl = isProbablyUrl(rawKeyOrUrl);
+      const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
+      const openHref = isUrl ? rawKeyOrUrl : "https://itch.io/claim";
+      const openText = isUrl ? "Open key →" : "Open itch.io claim →";
 
       const wrap = document.createElement("div");
       wrap.className = "card";
       wrap.innerHTML = `
         <strong>${title}</strong>
         <div class="keybox" style="margin-top:8px">
-          <div>Your itch.io key link:</div>
-          <div><code id="k">${keyUrl}</code></div>
+          <div>${keyLabel}</div>
+          <div><code class="key">${rawKeyOrUrl || "(missing key)"}</code></div>
           <div style="margin-top:8px" class="row">
-            <button id="copy">Copy link</button>
-            <a href="${keyUrl}" target="_blank" rel="noopener">Open key →</a>
+            <button class="copy">Copy</button>
+            <a class="open" href="${openHref}" target="_blank" rel="noopener">${openText}</a>
           </div>
           <div class="muted" style="margin-top:8px">
-            Don’t share this link. If you enabled “Require key to be claimed”, log into itch.io to attach it to your account.
+            💛 Thank you for supporting Anya & Lolo! Please don’t share your key.
           </div>
         </div>
       `;
-      wrap.querySelector("#copy").onclick = async () => {
-        await navigator.clipboard.writeText(keyUrl);
-        alert("Copied!");
+
+      wrap.querySelector(".copy").onclick = async () => {
+        await navigator.clipboard.writeText(rawKeyOrUrl || "");
+        showToast("Copied! 💛");
       };
 
       box.prepend(wrap);
     }
 
-async function redeem(itemId) {
-  const s = getSession();
-  if (!s) {
-    alert("Connect Patreon first.");
-    return;
-  }
+    async function redeem(itemId, buttonEl) {
+      const s = getSession();
+      if (!s) {
+        alert("Connect Patreon first.");
+        return;
+      }
 
-  const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ itemId })
-  });
+      // Double-click protection
+      if (redeeming.has(itemId)) return;
+      redeeming.add(itemId);
 
-  const out = await r.json();
+      const originalText = buttonEl ? buttonEl.textContent : "";
+      if (buttonEl) {
+        buttonEl.disabled = true;
+        buttonEl.textContent = "Redeeming…";
+      }
 
-  if (!r.ok) {
-    alert(out.error || "Redeem failed");
-    return;
-  }
+      try {
+        const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ itemId })
+        });
 
-  // Instant display (optional)
-  const keyUrl = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url;
-  if (keyUrl) addUnlock(out.item?.name || itemId, keyUrl);
+        const out = await r.json();
 
-  // Then refresh from server (authoritative)
-  await loadMe();
-  await loadStore();
-  await loadUnlocks();
-}
+        if (!r.ok) {
+          alert(out.error || "Redeem failed");
+          return;
+        }
 
-      // Expect your worker to return payload.itch_key_url (or similar)
-      const keyUrl = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url;
-      addUnlock(out.item?.name || itemId, keyUrl || "(no key returned)");
+        // ✅ Instant display
+        const raw = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url || "";
+        if (raw) {
+          addUnlock(out.item?.name || itemId, raw);
+          showToast("🎉 Reward unlocked! Thank you for supporting 💛");
+        } else {
+          showToast("✅ Redeemed! (No key returned)");
+        }
 
-      await loadMe();
-      await loadStore();
+        // ✅ Authoritative refresh (server truth)
+        await loadMe();
+        await loadStore();
+        await loadUnlocks();
+
+      } finally {
+        redeeming.delete(itemId);
+        if (buttonEl) {
+          buttonEl.disabled = false;
+          buttonEl.textContent = originalText || "Redeem";
+        }
+      }
     }
 
-  (async () => {
-    await loadMe();
-    await loadStore();
-    await loadUnlocks();
-  })();
-
+    (async () => {
+      await loadMe();
+      await loadStore();
+      await loadUnlocks();
+    })();
   </script>
 </body>
 </html>
-
