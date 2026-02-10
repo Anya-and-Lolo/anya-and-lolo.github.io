@@ -2,13 +2,28 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Redeem</title>
+  <title>Patreon Rewards</title>
+  <style>
+    body { font-family: system-ui, Arial; max-width: 900px; margin: 30px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 14px; margin: 10px 0; }
+    .row { display:flex; gap: 12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    button { padding: 10px 12px; border-radius: 8px; border: 1px solid #ccc; cursor:pointer; }
+    code { font-size: 14px; }
+    .muted { color:#666; font-size: 13px; }
+    .keybox { background:#fafafa; padding:10px; border-radius:8px; border:1px dashed #ccc; }
+  </style>
 </head>
 <body>
   <h1>Patreon Rewards</h1>
 
   <button id="connect">Connect Patreon</button>
   <p id="status">Loading…</p>
+
+  <h2>Rewards Store</h2>
+  <div id="store"></div>
+
+  <h2>Your Unlocks</h2>
+  <div id="unlocks" class="muted">Redeem something to see it here.</div>
 
   <script>
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
@@ -21,21 +36,109 @@
     const session = params.get("session");
     if (session) localStorage.setItem("session", session);
 
+    function getSession() {
+      return localStorage.getItem("session");
+    }
+
     async function loadMe() {
-      const s = localStorage.getItem("session");
+      const s = getSession();
       if (!s) {
         document.getElementById("status").textContent = "Not connected";
+        return null;
+      }
+      const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
+      const me = await r.json();
+      document.getElementById("status").textContent =
+        me.loggedIn ? `Credits: ${me.credits}` : "Not connected";
+      return me;
+    }
+
+    async function loadStore() {
+      const r = await fetch(API + "/store");
+      const data = await r.json();
+      const el = document.getElementById("store");
+      el.innerHTML = "";
+
+      data.items.forEach(item => {
+        const dollars = (item.cost_cents / 100).toFixed(2);
+        const remaining = item.remaining ?? 0;
+
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <div class="row">
+            <div>
+              <strong>${item.name}</strong><br>
+              <span class="muted">$${dollars} credits • Remaining keys: ${remaining}</span>
+            </div>
+            <button ${remaining <= 0 ? "disabled" : ""} data-id="${item.id}">Redeem</button>
+          </div>
+          <div class="muted" style="margin-top:8px">${item.payload?.instructions || ""}</div>
+        `;
+        div.querySelector("button").onclick = () => redeem(item.id);
+        el.appendChild(div);
+      });
+    }
+
+    function addUnlock(title, keyUrl) {
+      const box = document.getElementById("unlocks");
+      if (box.classList.contains("muted")) box.classList.remove("muted");
+
+      const wrap = document.createElement("div");
+      wrap.className = "card";
+      wrap.innerHTML = `
+        <strong>${title}</strong>
+        <div class="keybox" style="margin-top:8px">
+          <div>Your itch.io key link:</div>
+          <div><code id="k">${keyUrl}</code></div>
+          <div style="margin-top:8px" class="row">
+            <button id="copy">Copy link</button>
+            <a href="${keyUrl}" target="_blank" rel="noopener">Open key →</a>
+          </div>
+          <div class="muted" style="margin-top:8px">
+            Don’t share this link. If you enabled “Require key to be claimed”, log into itch.io to attach it to your account.
+          </div>
+        </div>
+      `;
+      wrap.querySelector("#copy").onclick = async () => {
+        await navigator.clipboard.writeText(keyUrl);
+        alert("Copied!");
+      };
+
+      box.prepend(wrap);
+    }
+
+    async function redeem(itemId) {
+      const s = getSession();
+      if (!s) {
+        alert("Connect Patreon first.");
         return;
       }
 
-      const r = await fetch(API + "/me?session=" + s);
-      const me = await r.json();
+      const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ itemId })
+      });
+      const out = await r.json();
 
-      document.getElementById("status").textContent =
-        me.loggedIn ? `Credits: ${me.credits}` : "Not connected";
+      if (!r.ok) {
+        alert(out.error || "Redeem failed");
+        return;
+      }
+
+      // Expect your worker to return payload.itch_key_url (or similar)
+      const keyUrl = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url;
+      addUnlock(out.item?.name || itemId, keyUrl || "(no key returned)");
+
+      await loadMe();
+      await loadStore();
     }
 
-    loadMe();
+    (async () => {
+      await loadMe();
+      await loadStore();
+    })();
   </script>
 </body>
 </html>
