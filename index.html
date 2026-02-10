@@ -156,6 +156,7 @@
       grid-template-columns: 1.2fr 0.8fr;
       gap: 14px;
       margin-top: 14px;
+      align-items: start;
     }
 
     @media (max-width: 900px){
@@ -186,12 +187,19 @@
       line-height: 1.65;
     }
 
+    .heroText{
+      margin: 28px 0 34px;
+      font-size: 18px;
+      line-height: 1.75;
+      color: rgba(27,27,27,0.85);
+    }
+
     .ctaRow{
       display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 18px 0; 
-      padding: 6px 0; 
+      gap: 12px;
+      flex-wrap:wrap;
+      margin: 34px 0 46px;
+      padding: 8px 0;
     }
 
     .btn{
@@ -231,19 +239,10 @@
       margin: -2px -6px;
     }
 
-    .mini{
-      font-size: 15px;
-      color: var(--muted);
-      margin-top: 12px;
-      line-height: 1.7;
-    }
-    
-
-    
     .aboutRow{
       display:flex;
       gap: 12px;
-      align-items:flex-start; /* important */
+      align-items:flex-start;
     }
     .avatar{
       width: 78px;
@@ -254,7 +253,7 @@
       object-fit: cover;
       background:#fff;
       flex: 0 0 auto;
-      margin-top: 5px; /* tiny nudge so top aligns with heading */
+      margin-top: 28px; /* pushes avatar lower so it lines up with About content */
     }
 
     /* Footer */
@@ -286,43 +285,31 @@
       .socialText{ justify-content: center !important; }
     }
 
-    /* Social list with separators */
     .socialText{
       display:flex;
       flex-wrap:wrap;
-      gap: 8px;              
+      gap: 8px;
       justify-content:center;
       align-items:center;
       font-weight: 900;
     }
-    
+
     .socialText a{
       padding: 2px 6px;
       border-radius: 10px;
       text-decoration: none;
     }
-    
+
     .socialText a:hover{
       background: rgba(0,0,0,0.06);
       text-decoration: none;
     }
-    
+
     .sepDot{
-      color: #f4184c;        
+      color: var(--brand);
       font-weight: 900;
       margin: 0 6px;
-      opacity: 0.9;
-    }
-
-    .d1{ background: var(--dot1); }
-    .d2{ background: var(--dot2); }
-    .d3{ background: var(--dot3); }
-    .d4{ background: var(--dot4); }
-
-    .sep{
-      color: rgba(20,20,20,0.35);
-      font-weight: 800;
-      margin: 0 2px;
+      opacity: 0.95;
     }
 
     .footerRight{
@@ -331,11 +318,16 @@
       justify-content: flex-end;
       flex-wrap: wrap;
     }
+
+    .sep{
+      color: rgba(20,20,20,0.35);
+      font-weight: 800;
+      margin: 0 2px;
+    }
   </style>
 </head>
 
 <body>
-  <!-- Top bar -->
   <header class="topbar">
     <div class="topbarInner">
       <div class="brand">
@@ -344,52 +336,47 @@
       </div>
 
       <nav aria-label="Primary">
-        <a class="navlink" href="/">Home</a>
-        <a class="navlink" href="/redeem.html">Patreon Rewards</a>
+        <a class="navlink" href="./">Home</a>
+        <a class="navlink" href="./redeem.html">Patreon Rewards</a>
         <a class="navlink" href="#about">About</a>
       </nav>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- Hero -->
     <section class="hero">
       <img class="banner" src="https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/banner.jpg" alt="Anya & Lolo banner">
 
       <div class="heroGrid">
+        <!-- Left column -->
         <div class="card">
-        <h1>Welcome to 💃 Anya & Lolo 🦜</h1>
-        
-        <div class="heroText">
-          <p>
-            New here? Start with
-            <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">
-              Patreon Rewards
+          <h1>Welcome to 💃 Anya &amp; Lolo 🦜</h1>
+
+          <div class="heroText">
+            <p>
+              New here? Start with
+              <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
+              to connect your Patreon, see your credits, and redeem your itch keys.
+              Please follow us for updates, dev diaries, and new releases!
+              Want updates in your inbox? Check the
+              <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">Substack</a>.
+            </p>
+          </div>
+
+          <div class="ctaRow">
+            <a class="btn btnPrimary" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
+            <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+              <span class="linkBrand">Browse on itch.io →</span>
             </a>
-            to connect your Patreon, see your credits, and redeem your itch keys.
-            Please follow us for updates, dev diaries, and new releases!
-            Want updates in your inbox? Check the
-            <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank">
-              Substack
-            </a>.
-          </p>
-        </div>
-        
-        <div class="ctaRow">
-          <a class="btn btnPrimary" href="https://anya-and-lolo.github.io/redeem.html">
-            Patreon Rewards
-          </a>
-        
-          <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank">
-            <span class="linkBrand">Browse on itch.io →</span>
-          </a>
+          </div>
         </div>
 
+        <!-- Right column -->
         <div class="card" id="about">
           <div class="aboutRow">
             <img class="avatar" src="https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/icon.jpg" alt="Anya & Lolo avatar">
             <div>
-              <h2 style="margin:0 0 8px 0; font-size:20px;">About</h2>
+              <h2 style="margin:0 0 8px 0; font-size:22px;">About</h2>
               <p class="subtitle" style="margin:0;">
                 Hi, I'm Anya, a gamer and artist living in sunny Sydney, and this is my feathered bestie Lolo.
                 We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that
@@ -410,32 +397,32 @@
         <div class="footerInner">
           <div>© <span id="year"></span> Anya &amp; Lolo</div>
 
-        <div class="socialText" aria-label="Social links">
-          <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank">YouTube</a>
-          <a href="https://anya-and-lolo.itch.io/" target="_blank">Itch</a>
-          <a href="https://www.patreon.com/anya_and_lolo" target="_blank">Patreon</a>
-        
-          <span class="sepDot">•</span>
-        
-          <a href="https://www.instagram.com/anya_and_lolo" target="_blank">Insta</a>
-          <a href="https://tiktok.com/@anya_and_lolo" target="_blank">TikTok</a>
-          <a href="https://www.facebook.com/316257814895497" target="_blank">Facebook</a>
-        
-          <span class="sepDot">•</span>
-        
-          <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank">Bluesky</a>
-          <a href="https://x.com/Anya_and_Lolo" target="_blank">X</a>
-        
-          <span class="sepDot">•</span>
-        
-          <a href="https://www.pixiv.net/en/users/105118068" target="_blank">Pixiv</a>
-          <a href="https://anya-and-lolo.booth.pm/" target="_blank">Booth</a>
-        </div>
+          <div class="socialText" aria-label="Social links">
+            <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+            <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+            <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+            <span class="sepDot">•</span>
+
+            <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+            <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+            <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+
+            <span class="sepDot">•</span>
+
+            <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+            <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+            <span class="sepDot">•</span>
+
+            <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+            <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+          </div>
 
           <div class="footerRight">
-            <a href="/terms.html">Terms</a>
+            <a href="./terms.html">Terms</a>
             <span class="sep">|</span>
-            <a href="/privacy.html">Privacy</a>
+            <a href="./privacy.html">Privacy</a>
           </div>
         </div>
       </footer>
@@ -447,5 +434,3 @@
   </script>
 </body>
 </html>
-
-
