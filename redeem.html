@@ -5,34 +5,41 @@
   <title>Redeem</title>
 </head>
 <body>
-  <h1>Patreon Rewards</h1>
+  <h1>Redeem</h1>
 
   <button id="connect">Connect Patreon</button>
   <p id="status">Loading…</p>
 
+  <h2>Store</h2>
+  <button onclick="redeem('item_1')">Redeem Item 1</button>
+
   <script>
-    const API = "https://patreon-redeem-api.lady-anya.workers.dev";
+    const API = "https://YOUR_WORKER_DOMAIN";
 
     document.getElementById("connect").onclick = () => {
       location.href = API + "/auth/patreon/start";
     };
 
-    const params = new URLSearchParams(location.search);
-    const session = params.get("session");
-    if (session) localStorage.setItem("session", session);
-
     async function loadMe() {
-      const s = localStorage.getItem("session");
-      if (!s) {
-        document.getElementById("status").textContent = "Not connected";
+      const r = await fetch(API + "/me", { credentials: "include" });
+      const me = await r.json();
+      if (!me.loggedIn) {
+        document.getElementById("status").textContent = "Not connected yet.";
         return;
       }
+      document.getElementById("status").textContent = `Credits: ${me.credits} (Patreon status: ${me.patreon_status})`;
+    }
 
-      const r = await fetch(API + "/me?session=" + s);
-      const me = await r.json();
-
-      document.getElementById("status").textContent =
-        me.loggedIn ? `Credits: ${me.credits}` : "Not connected";
+    async function redeem(itemId) {
+      const r = await fetch(API + "/redeem", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ itemId })
+      });
+      const out = await r.json();
+      alert(JSON.stringify(out, null, 2));
+      await loadMe();
     }
 
     loadMe();
