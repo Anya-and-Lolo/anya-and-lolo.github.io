@@ -405,21 +405,28 @@
     async function loadMe() {
       const s = getSession();
       const statusEl = document.getElementById("status");
-
+      const btn = document.getElementById("connect");
+    
       if (!s) {
         statusEl.textContent = "Available Credits: not connected";
+        btn.textContent = "Connect Patreon";
+        btn.disabled = false;
         return null;
       }
-
+    
       const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
       const me = await r.json();
-
+    
       if (!me.loggedIn) {
         statusEl.textContent = "Available Credits: not connected";
+        btn.textContent = "Connect Patreon";
+        btn.disabled = false;
         return null;
       }
-
+    
       statusEl.textContent = `Available Credits: ${me.credits}`;
+      btn.textContent = "Connected to Patreon ✅";
+      btn.disabled = true; // optional (prevents re-connecting)
       return me;
     }
 
@@ -585,3 +592,4 @@
   </script>
 </body>
 </html>
+
