@@ -347,45 +347,70 @@
     <section class="hero">
       <img class="banner" src="https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/banner.jpg" alt="Anya & Lolo banner">
 
-      <div class="heroGrid">
-        <!-- Left column -->
-        <div class="card">
-          <h1>Welcome to 💃 Anya &amp; Lolo 🦜</h1>
+<div class="heroGrid">
+  <!-- LEFT: Welcome + About together -->
+  <div class="card">
+    <h1>Welcome to 💃 Anya &amp; Lolo 🦜</h1>
 
-          <div class="heroText">
-            <p>
-              New here? Start with
-              <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
-              to connect your Patreon, see your credits, and redeem your itch keys.
-              Please follow us for updates, dev diaries, and new releases!
-              Want updates in your inbox? Check the
-              <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">Substack</a>.
-            </p>
-          </div>
+    <div class="heroText">
+      <p>
+        New here? Start with
+        <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
+        to connect your Patreon, see your credits, and redeem your itch keys.
+        Please follow us for updates, dev diaries, and new releases!
+        Want updates in your inbox? Check the
+        <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">Substack</a>.
+      </p>
+    </div>
 
-          <div class="ctaRow">
-            <a class="btn btnPrimary" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
-            <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-              <span class="linkBrand">Browse on itch.io →</span>
-            </a>
-          </div>
-        </div>
+    <div class="ctaRow">
+      <a class="btn btnPrimary" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
+      <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+        <span class="linkBrand">Browse on itch.io →</span>
+      </a>
+    </div>
 
-        <!-- Right column -->
-        <div class="card" id="about">
-          <div class="aboutRow">
-            <img class="avatar" src="https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/icon.jpg" alt="Anya & Lolo avatar">
-            <div>
-              <h2 style="margin:0 0 8px 0; font-size:22px;">About</h2>
-              <p class="subtitle" style="margin:0;">
-                Hi, I'm Anya, a gamer and artist living in sunny Sydney, and this is my feathered bestie Lolo.
-                We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that
-                make game dev feel warm, simple, and genuinely fun.
-              </p>
-            </div>
-          </div>
+    <!-- About nested inside left card (as you like) -->
+    <div style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 14px;">
+      <div class="aboutRow">
+        <img class="avatar" src="https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/icon.jpg" alt="Anya & Lolo avatar">
+        <div>
+          <h2 style="margin:0 0 8px 0; font-size:22px;">About</h2>
+          <p class="subtitle" style="margin:0;">
+            Hi, I'm Anya, a gamer and artist living in sunny Sydney, and this is my feathered bestie Lolo.
+            We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that
+            make game dev feel warm, simple, and genuinely fun.
+          </p>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: ItchBlog embed card -->
+  <div class="card">
+    <div class="row" style="margin-bottom: 10px;">
+      <div>
+        <strong style="font-size:18px;">Latest Updates</strong><br>
+        <span class="muted">Swipe/scroll inside for the ItchBlog feed ✨</span>
+      </div>
+      <a class="navlink" href="https://Anya-and-Lolo.github.io/ItchBlog/" target="_blank" rel="noopener">Open →</a>
+    </div>
+
+    <div class="embedWrap" aria-label="ItchBlog embed">
+      <iframe
+        class="embed"
+        src="https://Anya-and-Lolo.github.io/ItchBlog/"
+        title="Anya & Lolo ItchBlog"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+      ></iframe>
+    </div>
+
+    <div class="muted" style="margin-top:10px;">
+      Tip: if the embed ever looks cramped on mobile, tap “Open →” to view full-screen.
+    </div>
+  </div>
+</div>
 
       <footer>
         <div class="hangout">
@@ -434,3 +459,4 @@
   </script>
 </body>
 </html>
+
