@@ -74,13 +74,14 @@
       position: fixed;
       inset: 0;
       z-index: -2;
-      background:
-        radial-gradient(circle, var(--dot1) 3px, transparent 4px) 0 0/42px 42px,
-        radial-gradient(circle, var(--dot2) 3px, transparent 4px) 14px 12px/48px 48px,
-        radial-gradient(circle, var(--dot3) 3px, transparent 4px) 26px 28px/56px 56px,
-        radial-gradient(circle, var(--dot4) 3px, transparent 4px) 8px 34px/62px 62px;
-      animation: dotsFloat 18s linear infinite;
-      opacity: 1;
+      opacity: 0.95;
+    
+      /* neat grid of dots */
+      background-image: radial-gradient(circle, rgba(244,24,76,0.18) 2px, transparent 2.5px);
+      background-size: 34px 34px;     /* spacing between dots */
+      background-position: 0 0;
+    
+      animation: dotsFloat 22s linear infinite;
     }
 
     /* soft overlay so pattern is gentle */
@@ -390,11 +391,15 @@
     }
 
     .sepDot{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: var(--brand);
-      font-size: 2.6em;
-      line-height: 0;
-      margin: 0 12px;
-      opacity: 0.8;
+      font-size: 24px;        /* adjust size */
+      line-height: 1;         /* important */
+      margin: 0 10px;         /* side spacing */
+      transform: translateY(1px); /* tiny nudge (optional) */
+      opacity: 0.9;
     }
 
     .footerRight{
@@ -568,6 +573,7 @@
   </script>
 </body>
 </html>
+
 
 
 
