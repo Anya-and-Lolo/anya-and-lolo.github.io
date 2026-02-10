@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Redeem</title>
+</head>
+<body>
+  <h1>Redeem</h1>
+
+  <button id="connect">Connect Patreon</button>
+  <p id="status">Loading…</p>
+
+  <script>
+    const API = "https://patreon-redeem-api.lady-anya.workers.dev";
+
+    document.getElementById("connect").onclick = () => {
+      window.location.href = API + "/auth/patreon/start";
+    };
+
+    async function loadMe() {
+      const r = await fetch(API + "/me", { credentials: "include" });
+      const me = await r.json();
+      document.getElementById("status").textContent =
+        me.loggedIn ? `Logged in! Credits: ${me.credits}` : "Not connected yet.";
+    }
+
+    loadMe();
+  </script>
+</body>
+</html>
