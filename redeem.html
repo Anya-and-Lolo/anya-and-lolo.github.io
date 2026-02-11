@@ -22,7 +22,12 @@
     }
 
     *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
+    html, body{
+      height: auto;              /* override the 100% height if needed */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     body{
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -422,7 +427,7 @@
       margin: 0 2px;
     }
 
-    @media (max-width: 600px){
+    @media (max-width: 900px){
       .topbarInner{
         align-items: center;
       }
@@ -444,6 +449,7 @@
     }
     
     @media (max-width: 900px){
+      html, body{ height: auto; }
       .topbarInner{ align-items: flex-start; flex-direction: column; }
       nav{ justify-content: flex-start; }
       .footerInner{ grid-template-columns: 1fr; text-align:center; }
@@ -991,6 +997,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
