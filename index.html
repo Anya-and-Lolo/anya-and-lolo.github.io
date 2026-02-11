@@ -624,6 +624,16 @@
     ::-webkit-scrollbar-corner{
       background: var(--scrollTrack);
     }
+
+/* Allow page scroll even if a sparkle/canvas overlay exists */
+canvas, 
+#sparkles, 
+.sparkles, 
+.sparkle-canvas,
+[class*="sparkle"]{
+  pointer-events: none !important;
+  touch-action: none !important;
+}    
   </style>
 </head>
 
@@ -931,6 +941,7 @@
   
 </body>
 </html>
+
 
 
 
