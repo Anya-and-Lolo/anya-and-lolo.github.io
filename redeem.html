@@ -792,7 +792,7 @@ async function loadStore() {
 async function redeem(itemId, buttonEl) {
   const s = getSession();
   if (!s) {
-    showStoreMessage(buttonEl, "Connect Patreon first.", "error");
+    showStoreMessage(buttonEl, "Please connect Patreon first.", "error");
     return;
   }
 
@@ -898,6 +898,7 @@ async function redeem(itemId, buttonEl) {
   </script>
 </body>
 </html>
+
 
 
 
