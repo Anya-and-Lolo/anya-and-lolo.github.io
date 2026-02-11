@@ -360,6 +360,7 @@
   width: 100%;
   height: 100%;
   border: 0;
+  transition: opacity .4s ease;
 }
 
 /* Mobile: slightly taller */
@@ -380,6 +381,7 @@
   padding:28px 18px;
   background: rgba(255,255,255,0.82);
   border-radius: inherit;
+  transition: opacity .4s ease;
 }
 
 .newsAvatar{
@@ -675,6 +677,7 @@
       </footer>
     </section>
   </main>
+  
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -682,22 +685,44 @@
   const placeholder = document.getElementById("newsPlaceholder");
   const hint = placeholder.querySelector(".newsHint");
 
+  const MIN_VISIBLE_TIME = 2000; // 2 seconds
+  const startTime = Date.now();
+  let frameLoaded = false;
+
+  function revealFrame() {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, MIN_VISIBLE_TIME - elapsed);
+
+    setTimeout(() => {
+      placeholder.style.opacity = "0";
+      frame.style.opacity = "1";
+      frame.style.pointerEvents = "auto";
+
+      // remove placeholder after fade
+      setTimeout(() => {
+        placeholder.style.display = "none";
+      }, 400);
+
+    }, remaining);
+  }
+
   frame.addEventListener("load", () => {
-    placeholder.style.display = "none";
-    frame.style.opacity = "1";
-    frame.style.pointerEvents = "auto";
+    frameLoaded = true;
+    revealFrame();
   });
 
   frame.src = "https://anya-and-lolo.github.io/ItchBlog/";
 
+  // fallback hint after 8s
   setTimeout(() => {
-    if (placeholder.style.display !== "none") {
+    if (!frameLoaded) {
       hint.innerHTML =
         `Still loading… <a href="${frame.src}" target="_blank" rel="noopener" style="color:#f4184c;font-weight:900;">Open news in a new tab →</a><br>` +
         `If you’re on iPhone, content blockers/private mode can block embeds.`;
     }
   }, 8000);
 </script>
+
 
 <script>
   document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
@@ -740,6 +765,7 @@
   </script>
 </body>
 </html>
+
 
 
 
