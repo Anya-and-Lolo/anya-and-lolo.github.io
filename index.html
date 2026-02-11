@@ -324,14 +324,6 @@
       align-items:flex-start;
     }
 
-/* Respect motion settings */
-@media (prefers-reduced-motion: reduce){
-  .confettiBtn::before,
-  .floatHint{
-    animation: none !important;
-  }
-}
-
 /* Make sure button can host a background effect */
 .confettiBtn{
   position: relative;
@@ -339,31 +331,38 @@
   isolation: isolate; /* keeps layers tidy */
 }
 
-/* Soft confetti sprinkles behind the button text */
+/* Confetti layer ABOVE button background, BELOW text */
 .confettiBtn::before{
   content:"";
   position:absolute;
   inset:-40%;
-  z-index:0;
+  z-index: 1;              /* <-- key change */
   pointer-events:none;
-  opacity: .55;
+  opacity: .45;            /* a bit stronger */
 
-  /* lots of tiny pastel dots (very light) */
   background:
-    radial-gradient(circle, rgba(244,24,76,0.22) 2px, transparent 3px) 12px 18px/42px 42px,
-    radial-gradient(circle, rgba(86,167,254,0.20) 2px, transparent 3px) 30px 6px/46px 46px,
-    radial-gradient(circle, rgba(255,180,120,0.16) 2px, transparent 3px) 8px 32px/52px 52px,
-    radial-gradient(circle, rgba(170,240,190,0.16) 2px, transparent 3px) 26px 28px/56px 56px;
+    radial-gradient(circle, rgba(255,255,255,0.35) 2px, transparent 3px) 12px 18px/42px 42px,
+    radial-gradient(circle, rgba(255,255,255,0.22) 2px, transparent 3px) 30px 6px/46px 46px,
+    radial-gradient(circle, rgba(255,255,255,0.28) 2px, transparent 3px) 8px 32px/52px 52px,
+    radial-gradient(circle, rgba(255,255,255,0.18) 2px, transparent 3px) 26px 28px/56px 56px;
 
-  filter: blur(0.2px);
+  mix-blend-mode: soft-light; /* <-- key change */
   transform: translate3d(0,0,0);
   animation: confettiDrift 6.5s ease-in-out infinite;
 }
 
-/* keep button label above effect */
+/* Keep button label above the confetti */
+.confettiBtn{
+  z-index: 0;
+}
 .confettiBtn > *{
   position: relative;
-  z-index: 1;
+  z-index: 2; /* text */
+}
+
+/* If you DON'T have a span inside, still protect text */
+.confettiBtn{
+  color: #fff;
 }
 
 @keyframes confettiDrift{
@@ -372,9 +371,8 @@
   100% { transform: translate3d(0,0,0) rotate(0deg); }
 }
 
-/* Optional: slightly stronger confetti when hovering */
 .confettiBtn:hover::before{
-  opacity: .75;
+  opacity: .65;
 }
 
     
@@ -831,6 +829,7 @@
 
 </body>
 </html>
+
 
 
 
