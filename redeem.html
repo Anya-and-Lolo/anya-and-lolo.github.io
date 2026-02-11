@@ -214,6 +214,11 @@
       z-index: 20;
     }
 
+    .storeButton{
+      margin-top: 10px;
+      width: 100%;
+    }
+    
     /* Footer (same structure as homepage) */
     footer{
       margin-top: 26px;
@@ -319,6 +324,32 @@
       color: rgba(27,27,27,0.78);
     }
 
+    /* Inline store messages (replaces toast) */
+    .storeMsg{
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(20,20,20,0.12);
+      background: rgba(255,255,255,0.9);
+      font-size: 13px;
+      color: rgba(27,27,27,0.86);
+      display: none;
+    }
+    .storeMsg.show{ display: block; }
+    
+    .storeMsg--success{
+      border-color: rgba(34,197,94,0.30);
+      background: rgba(34,197,94,0.10);
+    }
+    .storeMsg--error{
+      border-color: rgba(239,68,68,0.30);
+      background: rgba(239,68,68,0.10);
+    }
+    .storeMsg--info{
+      border-color: rgba(86,167,254,0.30);
+      background: rgba(86,167,254,0.10);
+    }
+    
     .footerInner{
       border-top: 1px solid var(--border);
       padding-top: 14px;
@@ -440,8 +471,6 @@
     <h2 style="margin: 22px 0 10px;">Your Unlocks</h2>
     <div id="unlocks" class="muted">Redeem something to see it here.</div>
 
-    <div id="toast" class="toast"></div>
-
     <footer>
       <div class="hangout">
         Want to hang out? Join the
@@ -507,13 +536,23 @@
       return localStorage.getItem("session");
     }
 
-    function showToast(msg, type = "success") {
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.style.display = "block";
-      t.style.background = (type === "error") ? "#b91c1c" : "#111";
-      clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => (t.style.display = "none"), 2600);
+    function showStoreMessage(buttonEl, msg, type = "info") {
+      if (!buttonEl) return;
+    
+      const card = buttonEl.closest(".card");
+      if (!card) return;
+    
+      const box = card.querySelector(".storeMsg");
+      if (!box) return;
+    
+      box.classList.remove("storeMsg--success","storeMsg--error","storeMsg--info","show");
+      box.classList.add("show");
+    
+      if (type === "success") box.classList.add("storeMsg--success");
+      else if (type === "error") box.classList.add("storeMsg--error");
+      else box.classList.add("storeMsg--info");
+    
+      box.textContent = msg;
     }
 
     function isProbablyUrl(s) {
@@ -614,42 +653,49 @@
 
     const redeeming = new Set();
 
-    async function loadStore() {
-      const r = await fetch(API + "/store");
-      const data = await r.json();
-      const el = document.getElementById("store");
-      el.innerHTML = "";
+async function loadStore() {
+  const r = await fetch(API + "/store");
+  const data = await r.json();
+  const el = document.getElementById("store");
+  el.innerHTML = "";
 
-      (data.items || []).forEach(item => {
-        const dollars = (item.cost_cents / 100).toFixed(2);
-        const remaining = item.remaining ?? 0;
-        const img = ITEM_IMAGES[item.id] || "";
+  (data.items || []).forEach(item => {
+    const dollars = (item.cost_cents / 100).toFixed(2);
+    const remaining = item.remaining ?? 0;
+    const img = ITEM_IMAGES[item.id] || "";
 
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
-          <div class="row" style="margin-top:10px">
-            <div>
-              <strong>${item.name}</strong><br>
-              <span class="muted">$${dollars} credits • Remaining keys: ${remaining}</span>
-            </div>
-            <button
-              ${remaining <= 0 ? "disabled" : ""}
-              data-id="${item.id}"
-              data-name="${item.name}"
-              data-cost-cents="${item.cost_cents}">
-              Redeem
-            </button>
-          </div>
-          <div class="muted" style="margin-top:8px">${item.payload?.instructions || ""}</div>
-        `;
+    const div = document.createElement("div");
+    div.className = "card";
 
-        const btn = div.querySelector("button");
-        btn.onclick = () => redeem(item.id, btn);
-        el.appendChild(div);
-      });
-    }
+    div.innerHTML = `
+      ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
+
+      <div style="margin-top:10px;">
+        <strong>${item.name}</strong><br>
+        <span class="muted">$${dollars} credits • Remaining keys: ${remaining}</span>
+      </div>
+
+      <button
+        class="storeButton"
+        ${remaining <= 0 ? "disabled" : ""}
+        data-id="${item.id}"
+        data-name="${item.name}"
+        data-cost-cents="${item.cost_cents}">
+        Redeem
+      </button>
+
+      <!-- Inline message area (replaces toast) -->
+      <div class="storeMsg storeMsg--info show">
+        ${item.payload?.instructions || "Redeem to receive a unique itch.io key. Open the link below to claim it on itch.io and permanently add it to your library."}
+      </div>
+    `;
+
+    const btn = div.querySelector("button");
+    btn.onclick = () => redeem(item.id, btn);
+
+    el.appendChild(div);
+  });
+}
 
     async function loadUnlocks() {
       const s = getSession();
@@ -721,68 +767,73 @@
     }
 
     // ✅ Redeem with client-side credits check + nice toasts
-    async function redeem(itemId, buttonEl) {
-      const s = getSession();
-      if (!s) {
-        showToast("Connect Patreon first.", "error");
-        return;
-      }
+async function redeem(itemId, buttonEl) {
+  const s = getSession();
+  if (!s) {
+    showStoreMessage(buttonEl, "Connect Patreon first.", "error");
+    return;
+  }
 
-      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
-      const costCredits = Number((costCents / 100).toFixed(2));
-      const itemName = buttonEl?.dataset?.name || itemId;
+  const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+  const costCredits = Number((costCents / 100).toFixed(2));
+  const itemName = buttonEl?.dataset?.name || itemId;
 
-      // Friendly client-side check
-      if (CURRENT_CREDITS < costCredits) {
-        showToast(
-          `Sorry — you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} credits for ${itemName}.`,
-          "error"
-        );
-        return;
-      }
+  // Friendly client-side check
+  if (CURRENT_CREDITS < costCredits) {
+    showStoreMessage(
+      buttonEl,
+      `Sorry — you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} credits for ${itemName}.`,
+      "error"
+    );
+    return;
+  }
 
-      if (redeeming.has(itemId)) return;
-      redeeming.add(itemId);
+  if (redeeming.has(itemId)) return;
+  redeeming.add(itemId);
 
-      const originalText = buttonEl ? buttonEl.textContent : "";
-      if (buttonEl) {
-        buttonEl.disabled = true;
-        buttonEl.textContent = "Redeeming…";
-      }
+  const originalText = buttonEl ? buttonEl.textContent : "";
+  if (buttonEl) {
+    buttonEl.disabled = true;
+    buttonEl.textContent = "Redeeming…";
+  }
 
-      try {
-        const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ itemId })
-        });
+  // show progress inline
+  showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "info");
 
-        const out = await r.json();
+  try {
+    const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ itemId })
+    });
 
-        if (!r.ok) {
-          showToast(out.error || "Redeem failed. Please try again.", "error");
-          return;
-        }
+    const out = await r.json();
 
-        const raw = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url || "";
-        if (raw) {
-          addUnlock(out.item?.name || itemId, raw);
-          showToast(`🎉 Success! ${itemName} unlocked. Your key is now in “Your Unlocks”. 💛`, "success");
-        } else {
-          showToast("✅ Redeemed! (No key returned)", "success");
-        }
-
-        await loadMe();
-        await loadStore();
-        await loadUnlocks();
-      } finally {
-        redeeming.delete(itemId);
-        if (buttonEl) {
-          buttonEl.disabled = false;
-          buttonEl.textContent = originalText || "Redeem";
-        }
-      }
+    if (!r.ok) {
+      showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
+      return;
     }
+
+    const raw = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url || "";
+    if (raw) {
+      addUnlock(out.item?.name || itemId, raw);
+      showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Your key is now in “Your Unlocks”.`, "success");
+    } else {
+      showStoreMessage(buttonEl, "✅ Redeemed! (No key returned)", "success");
+    }
+
+    await loadMe();
+    await loadStore();
+    await loadUnlocks();
+
+  } finally {
+    redeeming.delete(itemId);
+    if (buttonEl) {
+      buttonEl.disabled = false;
+      buttonEl.textContent = originalText || "Redeem";
+    }
+  }
+}
 
     // Info popup wiring
     const infoBtn = document.getElementById("infoBtn");
@@ -825,3 +876,4 @@
   </script>
 </body>
 </html>
+
