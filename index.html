@@ -74,27 +74,22 @@
       position: fixed;
       inset: 0;
       z-index: -2;
-      opacity: 0.95;
-    
+      opacity: 1;
       background:
-        radial-gradient(circle, rgba(244,24,76,0.22) 2px, transparent 2.5px) 0 0/36px 36px,
-        radial-gradient(circle, rgba(86,167,254,0.20) 2px, transparent 2.5px) 18px 18px/36px 36px;
-    
+        radial-gradient(circle, rgba(244,24,76,0.22) 2px, transparent 3.5px) 0 0/42px 42px,
+        radial-gradient(circle, rgba(86,167,254,0.20) 2px, transparent 3.5px) 21px 21px/42px 42px;
       animation: dotsFloat 22s linear infinite;
     }
-
-    /* soft overlay so pattern is gentle */
     body::after{
       content:"";
       position: fixed;
       inset: 0;
       z-index: -1;
-      background: rgba(255,255,252,0.45);
+      background: rgba(255, 250, 252, 0.45);
     }
-
     @keyframes dotsFloat{
       from { transform: translate3d(0,0,0); }
-      to   { transform: translate3d(-140px, -110px, 0); }
+      to   { transform: translate3d(-120px, -90px, 0); }
     }
 
     a{ color: inherit; text-decoration: none; }
@@ -590,6 +585,7 @@
   </script>
 </body>
 </html>
+
 
 
 
