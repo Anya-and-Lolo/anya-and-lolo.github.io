@@ -450,6 +450,17 @@
       .footerRight{ justify-content: center !important; }
       .socialText{ justify-content: center !important; }
     }
+
+/* Allow page scroll even if a sparkle/canvas overlay exists */
+canvas, 
+#sparkles, 
+.sparkles, 
+.sparkle-canvas,
+[class*="sparkle"]{
+  pointer-events: none !important;
+  touch-action: none !important;
+}
+
   </style>
 </head>
 
@@ -980,6 +991,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
