@@ -760,7 +760,15 @@ async function loadStore() {
 
       wrap.querySelector(".copy").onclick = async () => {
         await navigator.clipboard.writeText(rawKeyOrUrl || "");
-        showToast("Copied! 💛");
+        const msg = wrap.querySelector(".copiedMsg") || (() => {
+          const m = document.createElement("div");
+          m.className = "muted copiedMsg";
+          m.style.marginTop = "8px";
+          m.textContent = "Copied! 💛";
+          wrap.querySelector(".keybox")?.appendChild(m);
+          return m;
+        })();
+        msg.textContent = "Copied! 💛";
       };
 
       box.prepend(wrap);
@@ -876,4 +884,5 @@ async function redeem(itemId, buttonEl) {
   </script>
 </body>
 </html>
+
 
