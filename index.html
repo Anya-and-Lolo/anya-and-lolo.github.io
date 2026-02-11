@@ -626,7 +626,7 @@
       title="Anya & Lolo ItchBlog"
       loading="lazy"
       referrerpolicy="no-referrer"
-      style="display:none;"
+      style="opacity:0; pointer-events:none;"
     ></iframe>
 
   </div>
@@ -682,17 +682,16 @@
   const placeholder = document.getElementById("newsPlaceholder");
   const hint = placeholder.querySelector(".newsHint");
 
-  function showFrame() {
+  frame.addEventListener("load", () => {
     placeholder.style.display = "none";
-    frame.style.display = "block";
-  }
+    frame.style.opacity = "1";
+    frame.style.pointerEvents = "auto";
+  });
 
-  frame.addEventListener("load", showFrame);
   frame.src = "https://anya-and-lolo.github.io/ItchBlog/";
 
-  // Fallback after 8s: show a direct link
   setTimeout(() => {
-    if (frame.style.display === "none") {
+    if (placeholder.style.display !== "none") {
       hint.innerHTML =
         `Still loading… <a href="${frame.src}" target="_blank" rel="noopener" style="color:#f4184c;font-weight:900;">Open news in a new tab →</a><br>` +
         `If you’re on iPhone, content blockers/private mode can block embeds.`;
@@ -741,6 +740,7 @@
   </script>
 </body>
 </html>
+
 
 
 
