@@ -305,7 +305,7 @@
       color: #fff;
       border-color: rgba(244,24,76,0.35);
     }
-
+    
     .linkBrand{
       color: var(--brand);
       font-weight: 900;
@@ -324,6 +324,60 @@
       align-items:flex-start;
     }
 
+/* Respect motion settings */
+@media (prefers-reduced-motion: reduce){
+  .confettiBtn::before,
+  .floatHint{
+    animation: none !important;
+  }
+}
+
+/* Make sure button can host a background effect */
+.confettiBtn{
+  position: relative;
+  overflow: hidden;
+  isolation: isolate; /* keeps layers tidy */
+}
+
+/* Soft confetti sprinkles behind the button text */
+.confettiBtn::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  z-index:0;
+  pointer-events:none;
+  opacity: .55;
+
+  /* lots of tiny pastel dots (very light) */
+  background:
+    radial-gradient(circle, rgba(244,24,76,0.22) 2px, transparent 3px) 12px 18px/42px 42px,
+    radial-gradient(circle, rgba(86,167,254,0.20) 2px, transparent 3px) 30px 6px/46px 46px,
+    radial-gradient(circle, rgba(255,180,120,0.16) 2px, transparent 3px) 8px 32px/52px 52px,
+    radial-gradient(circle, rgba(170,240,190,0.16) 2px, transparent 3px) 26px 28px/56px 56px;
+
+  filter: blur(0.2px);
+  transform: translate3d(0,0,0);
+  animation: confettiDrift 6.5s ease-in-out infinite;
+}
+
+/* keep button label above effect */
+.confettiBtn > *{
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes confettiDrift{
+  0%   { transform: translate3d(0,0,0) rotate(0deg); }
+  50%  { transform: translate3d(-10px,-6px,0) rotate(2deg); }
+  100% { transform: translate3d(0,0,0) rotate(0deg); }
+}
+
+/* Optional: slightly stronger confetti when hovering */
+.confettiBtn:hover::before{
+  opacity: .75;
+}
+
+    
 /* Embed styling */
 .embedWrap{
   border: 1px solid var(--border);
@@ -428,7 +482,22 @@
   100%{ content:""; }
 }
 
-    
+/* Subtle float to hint it's clickable */
+.floatHint{
+  animation: floatHint 2.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes floatHint{
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* On hover, keep your existing hover lift but a bit nicer */
+.floatHint:hover{
+  transform: translateY(-4px);
+}
+  
     .avatar{
       width: 78px;
       height: 78px;
@@ -576,7 +645,7 @@
         Tutorials for RPG Maker MZ, MV, XP, VX Ace, 2k, and 2k3, including day/night cycle, fishing mini-game, ARPG shooting and more.
         <br><br>
         New here? Start with
-        <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
+        <a class="linkBrand" class="btn btnPrimary confettiBtn" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
         to connect your Patreon, see your credits, and redeem your itch keys.
         Please follow us for updates, dev diaries, and new releases!
         Want updates in your inbox? Check the
@@ -587,7 +656,7 @@
     <div class="ctaRow">
       <a class="btn btnPrimary" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
       <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-        <span class="linkBrand">Browse on itch.io →</span>
+        <span class="linkBrand" class="btn floatHint">Browse on itch.io →</span>
       </a>
     </div>
 
@@ -765,6 +834,7 @@
   </script>
 </body>
 </html>
+
 
 
 
