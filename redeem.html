@@ -569,7 +569,7 @@
           box.classList.remove("storeMsg--success","storeMsg--error");
           box.classList.add("storeMsg--info");
           box.textContent = box.dataset.defaultMsg || defaultMsg;
-        }, 5000);
+        }, 3000);
       }
     }
 
@@ -808,7 +808,7 @@ async function redeem(itemId, buttonEl) {
   if (CURRENT_CREDITS < costCredits) {
     showStoreMessage(
       buttonEl,
-      `Sorry — you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} credits for ${itemName}.`,
+      `Sorry, you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} credits for ${itemName}.`,
       "error"
     );
     return;
@@ -902,6 +902,7 @@ async function redeem(itemId, buttonEl) {
   </script>
 </body>
 </html>
+
 
 
 
