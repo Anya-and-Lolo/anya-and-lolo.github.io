@@ -862,13 +862,12 @@
     </svg>
   `;
 
-  // cute palette (matches your pastel vibe)
   const COLORS = [
     "rgba(255,255,255,0.95)",
-    "rgba(255,182,193,0.95)",  // pink
-    "rgba(173,216,230,0.95)",  // blue
-    "rgba(221,160,221,0.95)",  // purple
-    "rgba(255,225,150,0.95)"   // warm gold
+    "rgba(255,182,193,0.95)",
+    "rgba(173,216,230,0.95)",
+    "rgba(221,160,221,0.95)",
+    "rgba(255,225,150,0.95)"
   ];
 
   function rand(min, max){ return Math.random() * (max - min) + min; }
@@ -879,7 +878,7 @@
     btn.classList.add("is-exploding");
     layer.innerHTML = "";
 
-    const count = 18;
+    const count = 14; // slightly softer for auto mode
 
     for (let i = 0; i < count; i++){
       const piece = document.createElement("span");
@@ -887,11 +886,11 @@
       piece.innerHTML = HEART_SVG;
 
       const angle = rand(-Math.PI, Math.PI);
-      const dist  = rand(55, 110);
+      const dist  = rand(45, 95);
       const dx = Math.cos(angle) * dist;
       const dy = Math.sin(angle) * dist;
 
-      const size = rand(10, 18);
+      const size = rand(10, 16);
       const rot  = rand(0, 180);
 
       piece.style.setProperty("--dx", dx.toFixed(1) + "px");
@@ -900,33 +899,39 @@
       piece.style.setProperty("--r",  rot.toFixed(1) + "deg");
       piece.style.setProperty("--c",  COLORS[(Math.random() * COLORS.length) | 0]);
 
-      // stagger for nicer burst feel
-      piece.style.animationDelay = (i * 10) + "ms";
-
+      piece.style.animationDelay = (i * 12) + "ms";
       layer.appendChild(piece);
     }
 
     setTimeout(() => {
       btn.classList.remove("is-exploding");
       layer.innerHTML = "";
-    }, 950);
+    }, 900);
   }
 
-  // Click to burst
-  btn.addEventListener("click", explode);
+  // --- Auto loop with random timing ---
+  let timeout;
 
-  // Optional: burst on keyboard (accessibility)
-  btn.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") explode();
-  });
+  function scheduleNext(){
+    const delay = rand(2000, 3000); // 2–3 seconds
+    timeout = setTimeout(() => {
+      if (!document.hidden) explode();
+      scheduleNext();
+    }, delay);
+  }
+
+  scheduleNext();
+
 })();
 </script>
+
 
 
 <script src="https://app.embed.im/sparkles.js" defer></script>
   
 </body>
 </html>
+
 
 
 
