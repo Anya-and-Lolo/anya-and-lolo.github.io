@@ -324,55 +324,65 @@
       align-items:flex-start;
     }
 
-/* Make sure button can host a background effect */
+/* Confetti on Patreon button (guaranteed visible) */
 .confettiBtn{
   position: relative;
   overflow: hidden;
-  isolation: isolate; /* keeps layers tidy */
+  isolation: isolate;
 }
 
-/* Confetti layer ABOVE button background, BELOW text */
+/* Confetti layer */
 .confettiBtn::before{
   content:"";
   position:absolute;
-  inset:-40%;
-  z-index: 1;              /* <-- key change */
+  inset:-60%;
   pointer-events:none;
-  opacity: .45;            /* a bit stronger */
+  z-index: 1;
+  opacity: .85;
 
+  /* pastel confetti dots */
   background:
-    radial-gradient(circle, rgba(255,255,255,0.35) 2px, transparent 3px) 12px 18px/42px 42px,
-    radial-gradient(circle, rgba(255,255,255,0.22) 2px, transparent 3px) 30px 6px/46px 46px,
-    radial-gradient(circle, rgba(255,255,255,0.28) 2px, transparent 3px) 8px 32px/52px 52px,
-    radial-gradient(circle, rgba(255,255,255,0.18) 2px, transparent 3px) 26px 28px/56px 56px;
+    radial-gradient(circle, rgba(255,255,255,0.55) 2px, transparent 3px) 10px 14px/34px 34px,
+    radial-gradient(circle, rgba(255,255,255,0.35) 2px, transparent 3px) 22px 6px/40px 40px,
+    radial-gradient(circle, rgba(255,230,240,0.50) 2px, transparent 3px) 6px 26px/46px 46px,
+    radial-gradient(circle, rgba(220,245,255,0.45) 2px, transparent 3px) 28px 28px/52px 52px;
 
-  mix-blend-mode: soft-light; /* <-- key change */
   transform: translate3d(0,0,0);
   animation: confettiDrift 6.5s ease-in-out infinite;
 }
 
-/* Keep button label above the confetti */
-.confettiBtn{
-  z-index: 0;
-}
-.confettiBtn > *{
-  position: relative;
-  z-index: 2; /* text */
-}
-
-/* If you DON'T have a span inside, still protect text */
-.confettiBtn{
-  color: #fff;
+/* Soft sparkle sheen layer (makes it obvious even if dots are subtle) */
+.confettiBtn::after{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  pointer-events:none;
+  z-index: 1;
+  opacity: .25;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), transparent 45%);
+  transform: translate3d(0,0,0);
+  animation: confettiSheen 3.2s ease-in-out infinite;
 }
 
 @keyframes confettiDrift{
-  0%   { transform: translate3d(0,0,0) rotate(0deg); }
-  50%  { transform: translate3d(-10px,-6px,0) rotate(2deg); }
-  100% { transform: translate3d(0,0,0) rotate(0deg); }
+  0%   { transform: translate3d(0,0,0); }
+  50%  { transform: translate3d(-10px,-6px,0); }
+  100% { transform: translate3d(0,0,0); }
+}
+@keyframes confettiSheen{
+  0%,100% { transform: translate3d(0,0,0) rotate(0deg); opacity:.18; }
+  50%     { transform: translate3d(8px,6px,0) rotate(2deg); opacity:.32; }
 }
 
-.confettiBtn:hover::before{
-  opacity: .65;
+/* Keep the button text above both layers */
+.confettiBtn > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* If you don't wrap the text in a span, still force it above */
+.confettiBtn{
+  z-index: 0;
 }
 
     
@@ -829,6 +839,7 @@
 
 </body>
 </html>
+
 
 
 
