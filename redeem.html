@@ -678,7 +678,7 @@ async function loadStore() {
   el.innerHTML = "";
 
   (data.items || []).forEach(item => {
-    const dollars = (item.cost_cents / 100).toFixed(2);
+    const credits = (item.cost_cents / 100).toFixed(2);
     const remaining = item.remaining ?? 0;
     const img = ITEM_IMAGES[item.id] || "";
 
@@ -690,7 +690,7 @@ async function loadStore() {
 
       <div style="margin-top:10px;">
         <strong>${item.name}</strong><br>
-        <span class="muted">$${dollars} credits • Remaining keys: ${remaining}</span>
+        <span class="muted">${credits} credits • Remaining keys: ${remaining}</span>
       </div>
 
       <button
@@ -902,6 +902,7 @@ async function redeem(itemId, buttonEl) {
   </script>
 </body>
 </html>
+
 
 
 
