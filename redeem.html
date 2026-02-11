@@ -222,95 +222,95 @@
       font-size: 14px;
     }
 
-.creditsLine{
-  font-size: 14px;
-  color: rgba(27,27,27,0.80);
-  font-weight: 800;
-}
-.creditsLine strong{
-  font-size: 16px;
-  font-weight: 1000;
-}
+    .creditsLine{
+      font-size: 14px;
+      color: rgba(27,27,27,0.80);
+      font-weight: 800;
+    }
+    .creditsLine strong{
+      font-size: 16px;
+      font-weight: 1000;
+    }
 
-.patreonRow{
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  gap: 10px;
-  margin-top: 8px;
-}
+    .patreonRow{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap: 10px;
+      margin-top: 8px;
+    }
 
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(20,20,20,0.14);
-  background: #fff;
-  font-weight: 900;
-  font-size: 13px;
-  color: #333;
-}
-.pillDot{
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  display:inline-block;
-}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,20,20,0.14);
+      background: #fff;
+      font-weight: 900;
+      font-size: 13px;
+      color: #333;
+    }
+    .pillDot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display:inline-block;
+    }
 
-.pill--green .pillDot{ background:#22c55e; }
-.pill--amber .pillDot{ background:#f59e0b; }
-.pill--red   .pillDot{ background:#ef4444; }
-.pill--gray  .pillDot{ background:#9ca3af; }
+    .pill--green .pillDot{ background:#22c55e; }
+    .pill--amber .pillDot{ background:#f59e0b; }
+    .pill--red   .pillDot{ background:#ef4444; }
+    .pill--gray  .pillDot{ background:#9ca3af; }
 
-.infoBtn{
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  border: 1px solid rgba(20,20,20,0.14);
-  background: #fff;
-  font-weight: 900;
-  cursor: pointer;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-}
-.infoBtn:hover{ background: rgba(0,0,0,0.06); }
+    .infoBtn{
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,20,20,0.14);
+      background: #fff;
+      font-weight: 900;
+      cursor: pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .infoBtn:hover{ background: rgba(0,0,0,0.06); }
 
-/* Popup */
-.infoPop{
-  position: fixed;
-  inset: 0;
-  display:none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  z-index: 50;
-  background: rgba(0,0,0,0.18);
-}
-.infoPop.show{ display:flex; }
+    /* Popup */
+    .infoPop{
+      position: fixed;
+      inset: 0;
+      display:none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+      background: rgba(0,0,0,0.18);
+    }
+    .infoPop.show{ display:flex; }
 
-.infoPopInner{
-  width: min(520px, 100%);
-  background: #fff;
-  border: 1px solid rgba(20,20,20,0.14);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
-}
-.infoPopTitle{ font-weight: 1000; margin-bottom: 8px; }
-.infoPopBody{ font-size: 14px; color: #333; line-height: 1.5; }
+    .infoPopInner{
+      width: min(520px, 100%);
+      background: #fff;
+      border: 1px solid rgba(20,20,20,0.14);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    }
+    .infoPopTitle{ font-weight: 1000; margin-bottom: 8px; }
+    .infoPopBody{ font-size: 14px; color: #333; line-height: 1.5; }
 
-.infoClose{
-  margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(20,20,20,0.14);
-  background: #fff;
-  font-weight: 900;
-  cursor: pointer;
-}
+    .infoClose{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(20,20,20,0.14);
+      background: #fff;
+      font-weight: 900;
+      cursor: pointer;
+    }
 
     .hangout{
       text-align: center;
@@ -352,7 +352,7 @@
       align-items: center;
       justify-content: center;
       color: var(--brand);
-      font-size: 28px;     /* change size here */
+      font-size: 28px;
       line-height: 1;
       margin: 0 10px;
       transform: translateY(1px);
@@ -403,36 +403,36 @@
     <h1>Patreon Rewards</h1>
     <p class="sub">Connect Patreon, view your credits, and redeem your itch.io keys.</p>
 
-<div class="card" style="margin: 10px 0 14px;">
-  <div class="row">
-    <button id="connect" class="btnPrimary">Connect Patreon</button>
+    <div class="card" style="margin: 10px 0 14px;">
+      <div class="row">
+        <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-    <div style="text-align:right;">
-      <div id="status" class="creditsLine">
-        Available Credits: <strong id="creditsValue">—</strong>
-      </div>
+        <div style="text-align:right;">
+          <div class="creditsLine">
+            Available Credits: <strong id="creditsValue">—</strong>
+          </div>
 
-      <div class="patreonRow">
-        <span id="patreonPill" class="pill pill--gray">
-          <span class="pillDot"></span> Patreon: —
-        </span>
+          <div class="patreonRow">
+            <span id="patreonPill" class="pill pill--gray">
+              <span class="pillDot"></span> Patreon: —
+            </span>
 
-        <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
+            <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div id="infoPop" class="infoPop" aria-hidden="true">
-  <div class="infoPopInner" role="dialog" aria-modal="false">
-    <div class="infoPopTitle">Patreon credits info</div>
-    <div id="infoPopBody" class="infoPopBody">
-      Your current Patreon status: —<br>
-      If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.
+    <div id="infoPop" class="infoPop" aria-hidden="true">
+      <div class="infoPopInner" role="dialog" aria-modal="false">
+        <div class="infoPopTitle">Patreon credits info</div>
+        <div id="infoPopBody" class="infoPopBody">
+          Your current Patreon status: —<br>
+          If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.
+        </div>
+        <button id="infoClose" class="infoClose" type="button">Close</button>
+      </div>
     </div>
-    <button id="infoClose" class="infoClose" type="button">Close</button>
-  </div>
-</div>
 
     <h2 style="margin: 18px 0 10px;">Rewards Store</h2>
     <div id="store" class="storeGrid"></div>
@@ -487,6 +487,7 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
+    let CURRENT_CREDITS = 0;
 
     const ITEM_IMAGES = {
       fishing_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/fishing_system_image.jpg",
@@ -506,100 +507,110 @@
       return localStorage.getItem("session");
     }
 
-    function showToast(msg) {
+    function showToast(msg, type = "success") {
       const t = document.getElementById("toast");
       t.textContent = msg;
       t.style.display = "block";
+      t.style.background = (type === "error") ? "#b91c1c" : "#111";
       clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => (t.style.display = "none"), 2200);
+      showToast._timer = setTimeout(() => (t.style.display = "none"), 2600);
     }
 
     function isProbablyUrl(s) {
       return typeof s === "string" && /^https?:\/\//i.test(s.trim());
     }
 
-function setPill(status){
-  const pill = document.getElementById("patreonPill");
-  if (!pill) return;
+    function setPill(status){
+      const pill = document.getElementById("patreonPill");
+      if (!pill) return;
 
-  const s = String(status || "").toLowerCase();
+      const s = String(status || "").toLowerCase();
 
-  let cls = "pill--gray";
-  if (s.includes("active")) cls = "pill--green";
-  else if (s.includes("declined")) cls = "pill--red";
-  else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
-  else if (s.includes("former") || s.includes("canceled") || s.includes("cancelled")) cls = "pill--gray";
+      let cls = "pill--gray";
+      if (s.includes("active")) cls = "pill--green";
+      else if (s.includes("declined")) cls = "pill--red";
+      else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
+      else if (s.includes("former") || s.includes("canceled") || s.includes("cancelled")) cls = "pill--gray";
 
-  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray");
-  pill.classList.add(cls);
-  pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
-}
-
-async function loadMe() {
-  const s = getSession();
-  const btn = document.getElementById("connect");
-  const creditsValue = document.getElementById("creditsValue");
-  const infoPopBody = document.getElementById("infoPopBody");
-
-  if (!s) {
-    if (creditsValue) creditsValue.textContent = "not connected";
-    if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
-    setPill("not connected");
-    if (infoPopBody) {
-      infoPopBody.innerHTML =
-        `Your current Patreon status: <strong>not connected</strong><br>` +
-        `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+      pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray");
+      pill.classList.add(cls);
+      pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
     }
-    return null;
-  }
 
-let me;
-try{
-  const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
-  me = await r.json();
-}catch(e){
-  if (creditsValue) creditsValue.textContent = "error";
-  if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
-  setPill("error");
-  if (infoPopBody) {
-    infoPopBody.innerHTML =
-      `Your current Patreon status: <strong>error</strong><br>` +
-      `Couldn’t load your Patreon info right now. Please try again in a moment.`;
-  }
-  return null;
-}
+    async function loadMe() {
+      const s = getSession();
+      const btn = document.getElementById("connect");
+      const creditsValue = document.getElementById("creditsValue");
+      const infoPopBody = document.getElementById("infoPopBody");
 
-  if (!me.loggedIn) {
-    if (creditsValue) creditsValue.textContent = "not connected";
-    if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
-    setPill("not connected");
-    if (infoPopBody) {
-      infoPopBody.innerHTML =
-        `Your current Patreon status: <strong>not connected</strong><br>` +
-        `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+      // ✅ Not connected
+      if (!s) {
+        if (creditsValue) creditsValue.textContent = "not connected";
+        CURRENT_CREDITS = 0;
+
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+        setPill("not connected");
+
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Your current Patreon status: <strong>not connected</strong><br>` +
+            `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+        }
+        return null;
+      }
+
+      // ✅ Connected: fetch /me
+      let me;
+      try{
+        const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
+        me = await r.json();
+      }catch(e){
+        if (creditsValue) creditsValue.textContent = "error";
+        CURRENT_CREDITS = 0;
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+        setPill("error");
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Your current Patreon status: <strong>error</strong><br>` +
+            `Couldn’t load your Patreon info right now. Please try again in a moment.`;
+        }
+        return null;
+      }
+
+      if (!me.loggedIn) {
+        if (creditsValue) creditsValue.textContent = "not connected";
+        CURRENT_CREDITS = 0;
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+        setPill("not connected");
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Your current Patreon status: <strong>not connected</strong><br>` +
+            `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+        }
+        return null;
+      }
+
+      // ✅ Logged in
+      const credits = Number(me.credits ?? 0);
+      CURRENT_CREDITS = credits;
+      if (creditsValue) creditsValue.textContent = String(credits.toFixed(2));
+
+      if (btn) {
+        btn.textContent = "Connected to Patreon ✅";
+        btn.disabled = true;
+      }
+
+      const status = me.patreon_status || "active (connected)";
+      setPill(status);
+
+      if (infoPopBody) {
+        infoPopBody.innerHTML =
+          `Your current Patreon status: <strong>${status}</strong><br>` +
+          `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+      }
+
+      return me;
     }
-    return null;
-  }
-
-  if (creditsValue) creditsValue.textContent = String(me.credits ?? 0);
-
-  if (btn) {
-    btn.textContent = "Connected to Patreon ✅";
-    btn.disabled = true; // optional
-  }
-
-  // If your API returns something like me.patreon_status, show it:
-  const status = me.patreon_status || "active (connected)";
-  setPill(status);
-
-  if (infoPopBody) {
-    infoPopBody.innerHTML =
-      `Your current Patreon status: <strong>${status}</strong><br>` +
-      `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
-  }
-
-  return me;
-}
 
     const redeeming = new Set();
 
@@ -623,7 +634,11 @@ try{
               <strong>${item.name}</strong><br>
               <span class="muted">$${dollars} credits • Remaining keys: ${remaining}</span>
             </div>
-            <button ${remaining <= 0 ? "disabled" : ""} data-id="${item.id}">
+            <button
+              ${remaining <= 0 ? "disabled" : ""}
+              data-id="${item.id}"
+              data-name="${item.name}"
+              data-cost-cents="${item.cost_cents}">
               Redeem
             </button>
           </div>
@@ -705,10 +720,24 @@ try{
       box.prepend(wrap);
     }
 
+    // ✅ Redeem with client-side credits check + nice toasts
     async function redeem(itemId, buttonEl) {
       const s = getSession();
       if (!s) {
-        alert("Connect Patreon first.");
+        showToast("Connect Patreon first.", "error");
+        return;
+      }
+
+      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+      const costCredits = Number((costCents / 100).toFixed(2));
+      const itemName = buttonEl?.dataset?.name || itemId;
+
+      // Friendly client-side check
+      if (CURRENT_CREDITS < costCredits) {
+        showToast(
+          `Sorry — you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} credits for ${itemName}.`,
+          "error"
+        );
         return;
       }
 
@@ -731,16 +760,16 @@ try{
         const out = await r.json();
 
         if (!r.ok) {
-          alert(out.error || "Redeem failed");
+          showToast(out.error || "Redeem failed. Please try again.", "error");
           return;
         }
 
         const raw = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url || "";
         if (raw) {
           addUnlock(out.item?.name || itemId, raw);
-          showToast("🎉 Reward unlocked! Thank you for supporting 💛");
+          showToast(`🎉 Success! ${itemName} unlocked. Your key is now in “Your Unlocks”. 💛`, "success");
         } else {
-          showToast("✅ Redeemed! (No key returned)");
+          showToast("✅ Redeemed! (No key returned)", "success");
         }
 
         await loadMe();
@@ -755,39 +784,39 @@ try{
       }
     }
 
-const infoBtn = document.getElementById("infoBtn");
-const infoPop = document.getElementById("infoPop");
-const infoClose = document.getElementById("infoClose");
+    // Info popup wiring
+    const infoBtn = document.getElementById("infoBtn");
+    const infoPop = document.getElementById("infoPop");
+    const infoClose = document.getElementById("infoClose");
 
-function openInfo(){
-  if (!infoPop) return;
-  infoPop.classList.add("show");
-  infoPop.setAttribute("aria-hidden", "false");
-}
-function closeInfo(){
-  if (!infoPop) return;
-  infoPop.classList.remove("show");
-  infoPop.setAttribute("aria-hidden", "true");
-}
+    function openInfo(){
+      if (!infoPop) return;
+      infoPop.classList.add("show");
+      infoPop.setAttribute("aria-hidden", "false");
+    }
+    function closeInfo(){
+      if (!infoPop) return;
+      infoPop.classList.remove("show");
+      infoPop.setAttribute("aria-hidden", "true");
+    }
 
-infoBtn?.addEventListener("click", () => {
-  if (!infoPop) return;
-  const isOpen = infoPop.classList.contains("show");
-  if (isOpen) closeInfo();
-  else openInfo();
-});
+    infoBtn?.addEventListener("click", () => {
+      if (!infoPop) return;
+      const isOpen = infoPop.classList.contains("show");
+      if (isOpen) closeInfo();
+      else openInfo();
+    });
 
-infoClose?.addEventListener("click", closeInfo);
+    infoClose?.addEventListener("click", closeInfo);
 
-infoPop?.addEventListener("click", (e) => {
-  if (e.target === infoPop) closeInfo();
-});
+    infoPop?.addEventListener("click", (e) => {
+      if (e.target === infoPop) closeInfo();
+    });
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeInfo();
-});
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeInfo();
+    });
 
-    
     (async () => {
       await loadMe();
       await loadStore();
@@ -796,4 +825,3 @@ document.addEventListener("keydown", (e) => {
   </script>
 </body>
 </html>
-
