@@ -57,7 +57,13 @@
     }
 
     *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
+    
+    html, body{
+      height: auto;              /* override the 100% height if needed */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     body{
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -157,6 +163,8 @@
       .topbarInner{
         align-items: center;
       }
+        .topbarInner .brand{ display:none; }
+    }
     
       nav{
         width: 100%;
@@ -173,10 +181,6 @@
         flex: 0 0 auto;
       }
     }
-    
-@media (max-width: 600px){
-  .topbarInner .brand{ display:none; }
-}
     
     .badge{
       font-size: 14px;
@@ -232,6 +236,7 @@
     }
     
     @media (max-width: 900px){
+      html, body{ height: auto; }
       .heroGrid{ grid-template-columns: 1fr; }
     }
     
@@ -939,6 +944,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
