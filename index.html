@@ -136,6 +136,27 @@
       font-size: 20px;
     }
 
+    @media (max-width: 520px){
+      .topbarInner{
+        align-items: center;
+      }
+    
+      nav{
+        width: 100%;
+        flex-wrap: nowrap;          /* no wrapping */
+        justify-content: flex-start;
+        overflow-x: auto;           /* allow swipe */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;      /* Firefox hide */
+      }
+      nav::-webkit-scrollbar{ display:none; } /* Chrome/Safari hide */
+    
+      .navlink{
+        white-space: nowrap;        /* keep each pill intact */
+        flex: 0 0 auto;
+      }
+    }
+    
 @media (max-width: 600px){
   .topbarInner .brand{ display:none; }
 }
@@ -569,6 +590,7 @@
   </script>
 </body>
 </html>
+
 
 
 
