@@ -129,7 +129,6 @@
       100%{ transform: scale(1); }
     }
     
-    /* Top bar */
     .topbar{
       position: sticky;
       top: 0;
@@ -158,40 +157,7 @@
       white-space: nowrap;
       font-size: 20px;
     }
-
-    @media (max-width: 600px){
-      .topbarInner{
-        align-items: center;
-      }
-        .topbarInner .brand{ display:none; }
-    }
     
-      nav{
-        width: 100%;
-        flex-wrap: nowrap;          /* no wrapping */
-        justify-content: flex-start;
-        overflow-x: auto;           /* allow swipe */
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;      /* Firefox hide */
-      }
-      nav::-webkit-scrollbar{ display:none; } /* Chrome/Safari hide */
-    
-      .navlink{
-        white-space: nowrap;        /* keep each pill intact */
-        flex: 0 0 auto;
-      }
-    }
-    
-    .badge{
-      font-size: 14px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.8);
-      color: var(--muted);
-      font-weight: 800;
-    }
-
     nav{
       display:flex;
       align-items:center;
@@ -210,6 +176,16 @@
     .navlink:hover{
       text-decoration: none;
       background: rgba(0,0,0,0.06);
+    }
+    
+    .badge{
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.8);
+      color: var(--muted);
+      font-weight: 800;
     }
 
     /* Hero */
@@ -944,6 +920,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
