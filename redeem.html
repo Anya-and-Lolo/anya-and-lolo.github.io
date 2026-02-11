@@ -66,6 +66,28 @@
       padding: 16px;
     }
 
+    /* Buttons */
+    button, .navlink, a{
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    
+    button:active, .navlink:active{
+      transform: translateY(1px) scale(0.99);
+    }
+    
+    .btnPrimary:hover{
+      box-shadow: 0 14px 30px rgba(244,24,76,.20);
+      transform: translateY(-1px);
+    }
+
+    /* Sparkle pop */
+    a.pop{ animation: pop .28s ease; }
+    @keyframes pop{
+      0%{ transform: scale(1); }
+      45%{ transform: scale(1.04); }
+      100%{ transform: scale(1); }
+    }
+    
     /* Top bar (same vibe as homepage) */
     .topbar{
       position: sticky;
@@ -917,8 +939,46 @@ async function redeem(itemId, buttonEl) {
       await loadUnlocks();
     })();
   </script>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add("reveal");
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(".card").forEach(c => {
+    c.classList.add("preReveal");
+    io.observe(c);
+  });
+</script>
+
+<style>
+.preReveal{
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.reveal{
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+
+  
+<script>
+  document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
+    el.addEventListener("click", () => {
+      el.classList.remove("pop");
+      void el.offsetWidth; // restart animation
+      el.classList.add("pop");
+    });
+  });
+</script>
+
 </body>
 </html>
+
 
 
 
