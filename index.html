@@ -324,54 +324,68 @@
       align-items:flex-start;
     }
 
-/* Confetti foil around the button */
-.confettiBtn{
+/* --- Heart confetti burst (outside button) --- */
+.confettiBurst{
   position: relative;
+  overflow: visible;  /* allow particles outside */
   isolation: isolate;
 }
 
-/* container that sits OUTSIDE the button bounds */
-.confettiBtn::before{
-  content:"";
-  position:absolute;
-  left: -18px;
-  right: -18px;
-  top: -18px;
-  bottom: -18px;
-  pointer-events:none;
-  z-index: 0;
-  opacity: .9;
-
-  /* long foil bits (tiny rectangles) */
-  background:
-    linear-gradient(#fff, #fff)  10%  0%/ 2px 12px no-repeat,
-    linear-gradient(#ffe4ef, #ffe4ef)  22% 15%/ 2px 16px no-repeat,
-    linear-gradient(#e6f6ff, #e6f6ff)  35%  5%/ 2px 14px no-repeat,
-    linear-gradient(#fff7d6, #fff7d6)  48% 10%/ 2px 18px no-repeat,
-    linear-gradient(#e9ffe9, #e9ffe9)  62%  2%/ 2px 14px no-repeat,
-    linear-gradient(#fff, #fff)  74% 18%/ 2px 16px no-repeat,
-    linear-gradient(#e6f6ff, #e6f6ff)  86%  8%/ 2px 12px no-repeat,
-    linear-gradient(#ffe4ef, #ffe4ef)  92% 22%/ 2px 18px no-repeat;
-
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,.10));
-  animation: confettiRain 2.8s ease-in-out infinite;
+.confettiBurst .confettiLayer{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: visible;
 }
 
-/* keep button itself above the confetti */
-.confettiBtn{
-  z-index: 1;
+/* Each particle */
+.confettiBurst .confettiPiece{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--s, 14px);
+  height: var(--s, 14px);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.14));
 }
 
-/* subtle drifting motion */
-@keyframes confettiRain{
-  0%   { transform: translateY(0); opacity: .55; }
-  40%  { transform: translateY(6px); opacity: .9; }
-  100% { transform: translateY(0); opacity: .55; }
+/* Heart shape via inline SVG fill color */
+.confettiBurst .confettiPiece svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.confettiBurst .confettiPiece path{
+  fill: var(--c, rgba(255,255,255,0.95));
 }
 
-/* Respect motion settings */
+/* animate */
+.confettiBurst.is-exploding .confettiPiece{
+  animation: heartPop 780ms cubic-bezier(.2,.7,.2,1) forwards;
+}
+
+@keyframes heartPop{
+  0%{
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85) rotate(var(--r, 0deg));
+  }
+  12%{ opacity: 1; }
+  100%{
+    opacity: 0;
+    transform:
+      translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px)))
+      scale(1)
+      rotate(calc(var(--r, 0deg) + 260deg));
+  }
+}
+
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .confettiBtn::before{ animation: none !important; }
+  .confettiBurst.is-exploding .confettiPiece{ animation: none; }
+  .confettiBurst .confettiPiece{ display:none; }
 }
 
     
@@ -651,9 +665,10 @@
     </div>
 
     <div class="ctaRow">
-      <a class="btn btnPrimary confettiBtn" href="https://anya-and-lolo.github.io/redeem.html">
-  <span>Patreon Rewards</span>
-      </a>
+<a class="btn btnPrimary confettiBurst" id="patreonBtn" href="https://anya-and-lolo.github.io/redeem.html">
+  Patreon Rewards
+  <span class="confettiLayer" aria-hidden="true"></span>
+</a>
 
 
     <a class="btn floatHint" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
@@ -829,10 +844,90 @@
 }
 </style>
 
+<script>
+(() => {
+  const btn = document.getElementById("patreonBtn");
+  if (!btn) return;
+
+  const layer = btn.querySelector(".confettiLayer");
+  if (!layer) return;
+
+  const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (prefersReduced) return;
+
+  const HEART_SVG = `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 21s-7.3-4.6-10-9.2C.1 8.4 1.7 5.3 4.8 4.4c1.9-.6 4 .1 5.2 1.7c1.2-1.6 3.3-2.3 5.2-1.7
+      c3.1.9 4.7 4 2.8 7.4C19.3 16.4 12 21 12 21z"/>
+    </svg>
+  `;
+
+  // cute palette (matches your pastel vibe)
+  const COLORS = [
+    "rgba(255,255,255,0.95)",
+    "rgba(255,182,193,0.95)",  // pink
+    "rgba(173,216,230,0.95)",  // blue
+    "rgba(221,160,221,0.95)",  // purple
+    "rgba(255,225,150,0.95)"   // warm gold
+  ];
+
+  function rand(min, max){ return Math.random() * (max - min) + min; }
+
+  function explode(){
+    if (btn.classList.contains("is-exploding")) return;
+
+    btn.classList.add("is-exploding");
+    layer.innerHTML = "";
+
+    const count = 18;
+
+    for (let i = 0; i < count; i++){
+      const piece = document.createElement("span");
+      piece.className = "confettiPiece";
+      piece.innerHTML = HEART_SVG;
+
+      const angle = rand(-Math.PI, Math.PI);
+      const dist  = rand(55, 110);
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+
+      const size = rand(10, 18);
+      const rot  = rand(0, 180);
+
+      piece.style.setProperty("--dx", dx.toFixed(1) + "px");
+      piece.style.setProperty("--dy", dy.toFixed(1) + "px");
+      piece.style.setProperty("--s",  size.toFixed(1) + "px");
+      piece.style.setProperty("--r",  rot.toFixed(1) + "deg");
+      piece.style.setProperty("--c",  COLORS[(Math.random() * COLORS.length) | 0]);
+
+      // stagger for nicer burst feel
+      piece.style.animationDelay = (i * 10) + "ms";
+
+      layer.appendChild(piece);
+    }
+
+    setTimeout(() => {
+      btn.classList.remove("is-exploding");
+      layer.innerHTML = "";
+    }, 950);
+  }
+
+  // Click to burst
+  btn.addEventListener("click", explode);
+
+  // Optional: burst on keyboard (accessibility)
+  btn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") explode();
+  });
+})();
+</script>
+
+
 <script src="https://app.embed.im/sparkles.js" defer></script>
   
 </body>
 </html>
+
 
 
 
