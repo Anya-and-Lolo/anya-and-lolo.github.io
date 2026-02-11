@@ -324,65 +324,54 @@
       align-items:flex-start;
     }
 
-/* Confetti on Patreon button (guaranteed visible) */
+/* Confetti foil around the button */
 .confettiBtn{
   position: relative;
-  overflow: hidden;
   isolation: isolate;
 }
 
-/* Confetti layer */
+/* container that sits OUTSIDE the button bounds */
 .confettiBtn::before{
   content:"";
   position:absolute;
-  inset:-60%;
+  left: -18px;
+  right: -18px;
+  top: -18px;
+  bottom: -18px;
   pointer-events:none;
-  z-index: 1;
-  opacity: .85;
-
-  /* pastel confetti dots */
-  background:
-    radial-gradient(circle, rgba(255,255,255,0.55) 2px, transparent 3px) 10px 14px/34px 34px,
-    radial-gradient(circle, rgba(255,255,255,0.35) 2px, transparent 3px) 22px 6px/40px 40px,
-    radial-gradient(circle, rgba(255,230,240,0.50) 2px, transparent 3px) 6px 26px/46px 46px,
-    radial-gradient(circle, rgba(220,245,255,0.45) 2px, transparent 3px) 28px 28px/52px 52px;
-
-  transform: translate3d(0,0,0);
-  animation: confettiDrift 6.5s ease-in-out infinite;
-}
-
-/* Soft sparkle sheen layer (makes it obvious even if dots are subtle) */
-.confettiBtn::after{
-  content:"";
-  position:absolute;
-  inset:-30%;
-  pointer-events:none;
-  z-index: 1;
-  opacity: .25;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), transparent 45%);
-  transform: translate3d(0,0,0);
-  animation: confettiSheen 3.2s ease-in-out infinite;
-}
-
-@keyframes confettiDrift{
-  0%   { transform: translate3d(0,0,0); }
-  50%  { transform: translate3d(-10px,-6px,0); }
-  100% { transform: translate3d(0,0,0); }
-}
-@keyframes confettiSheen{
-  0%,100% { transform: translate3d(0,0,0) rotate(0deg); opacity:.18; }
-  50%     { transform: translate3d(8px,6px,0) rotate(2deg); opacity:.32; }
-}
-
-/* Keep the button text above both layers */
-.confettiBtn > *{
-  position: relative;
-  z-index: 2;
-}
-
-/* If you don't wrap the text in a span, still force it above */
-.confettiBtn{
   z-index: 0;
+  opacity: .9;
+
+  /* long foil bits (tiny rectangles) */
+  background:
+    linear-gradient(#fff, #fff)  10%  0%/ 2px 12px no-repeat,
+    linear-gradient(#ffe4ef, #ffe4ef)  22% 15%/ 2px 16px no-repeat,
+    linear-gradient(#e6f6ff, #e6f6ff)  35%  5%/ 2px 14px no-repeat,
+    linear-gradient(#fff7d6, #fff7d6)  48% 10%/ 2px 18px no-repeat,
+    linear-gradient(#e9ffe9, #e9ffe9)  62%  2%/ 2px 14px no-repeat,
+    linear-gradient(#fff, #fff)  74% 18%/ 2px 16px no-repeat,
+    linear-gradient(#e6f6ff, #e6f6ff)  86%  8%/ 2px 12px no-repeat,
+    linear-gradient(#ffe4ef, #ffe4ef)  92% 22%/ 2px 18px no-repeat;
+
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.10));
+  animation: confettiRain 2.8s ease-in-out infinite;
+}
+
+/* keep button itself above the confetti */
+.confettiBtn{
+  z-index: 1;
+}
+
+/* subtle drifting motion */
+@keyframes confettiRain{
+  0%   { transform: translateY(0); opacity: .55; }
+  40%  { transform: translateY(6px); opacity: .9; }
+  100% { transform: translateY(0); opacity: .55; }
+}
+
+/* Respect motion settings */
+@media (prefers-reduced-motion: reduce){
+  .confettiBtn::before{ animation: none !important; }
 }
 
     
@@ -844,6 +833,7 @@
   
 </body>
 </html>
+
 
 
 
