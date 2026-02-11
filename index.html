@@ -344,6 +344,66 @@
 @media (max-width: 900px){
   .embedWrap{ height: 550px; }
 }
+
+/* Loading overlay inside embedWrap */
+.newsPlaceholder{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  text-align:center;
+  padding:28px 18px;
+  background: rgba(255,255,255,0.82);
+  border-radius: inherit;
+}
+
+.newsAvatar{
+  width: 120px;
+  height: 120px;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 1px solid rgba(20,20,20,0.10);
+  box-shadow: 0 10px 18px rgba(0,0,0,.08);
+  animation: floaty 3.2s ease-in-out infinite;
+}
+
+.newsLoading{
+  font-weight: 1000;
+  font-size: 18px;
+  color: rgba(27,27,27,0.90);
+}
+
+.newsHint{
+  max-width: 420px;
+  font-size: 13px;
+  color: rgba(27,27,27,0.62);
+  line-height: 1.5;
+}
+
+@keyframes floaty{
+  0%, 100%{ transform: translateY(0); }
+  50%{ transform: translateY(-6px); }
+}
+
+/* animated dots */
+.dots::after{
+  content: "";
+  display:inline-block;
+  width: 1.6em;
+  text-align:left;
+  animation: dotdot 1.2s steps(4, end) infinite;
+}
+@keyframes dotdot{
+  0%{ content:""; }
+  25%{ content:"."; }
+  50%{ content:".."; }
+  75%{ content:"..."; }
+  100%{ content:""; }
+}
+
     
     .avatar{
       width: 78px;
@@ -523,18 +583,32 @@
 
   </div>
 
-  <!-- RIGHT: ItchBlog embed -->
-  <div class="card" style="padding: 0;">
-    <div class="embedWrap" aria-label="ItchBlog embed">
-      <iframe
-        class="embed"
-        src="https://Anya-and-Lolo.github.io/ItchBlog/"
-        title="Anya & Lolo ItchBlog"
-        loading="lazy"
-        referrerpolicy="no-referrer"
-      ></iframe>
+<!-- RIGHT: ItchBlog embed -->
+<div class="card" style="padding: 0;">
+  <div class="embedWrap" aria-label="ItchBlog embed">
+    <!-- Loading placeholder (shows immediately) -->
+    <div id="newsPlaceholder" class="newsPlaceholder" aria-live="polite">
+      <img
+        class="newsAvatar"
+        src="https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/icon.jpg"
+        alt="Anya & Lolo"
+      />
+      <div class="newsLoading">News are loading<span class="dots" aria-hidden="true"></span></div>
+      <div class="newsHint">If it takes a moment, your browser might be blocking embeds.</div>
     </div>
+
+    <!-- Iframe (hidden until loaded) -->
+    <iframe
+      id="newsFrame"
+      class="embed"
+      src="https://Anya-and-Lolo.github.io/ItchBlog/"
+      title="Anya & Lolo ItchBlog"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      style="display:none;"
+    ></iframe>
   </div>
+</div>
 
 </div>
   
@@ -579,12 +653,32 @@
       </footer>
     </section>
   </main>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const frame = document.getElementById("newsFrame");
+  const placeholder = document.getElementById("newsPlaceholder");
+
+  frame.addEventListener("load", () => {
+    placeholder.style.display = "none";
+    frame.style.display = "block";
+  });
+
+  // fallback hint if it takes too long
+  setTimeout(() => {
+    if (frame.style.display === "none") {
+      const hint = placeholder.querySelector(".newsHint");
+      if (hint) hint.textContent = "Still loading… If you’re on mobile, try opening in your default browser or disabling content blockers for this page.";
+    }
+  }, 8000);
+</script>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
+
 
 
 
