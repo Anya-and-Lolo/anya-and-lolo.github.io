@@ -379,15 +379,12 @@
     }
 
     .sepDot{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: inline-block;
       color: var(--brand);
-      font-size: 28px;
+      font-size: 22px;      /* slightly smaller */
       line-height: 1;
-      margin: 0 10px;
-      transform: translateY(1px);
-      opacity: 0.85;
+      margin: 0 8px;
+      vertical-align: middle;
     }
 
     .footerRight{
@@ -418,8 +415,7 @@
   <header class="topbar">
     <div class="topbarInner">
       <div class="brand">
-        <a href="./">Anya &amp; Lolo</a>
-        <span class="badge">Patreon Rewards</span>
+        <span class="badge">Systems • Mechanics • Game Development</span>
       </div>
 
       <nav aria-label="Primary">
@@ -902,6 +898,7 @@ async function redeem(itemId, buttonEl) {
   </script>
 </body>
 </html>
+
 
 
 
