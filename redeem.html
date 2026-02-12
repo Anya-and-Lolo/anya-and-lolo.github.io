@@ -735,10 +735,6 @@ nav{
       try{
         const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
         me = await r.json();
-        window.__ME = me;
-        document.getElementById("creditsValue").textContent = "debug…";
-        console.log("ME keys:", Object.keys(me));
-        console.log("ME object:", me); 
 
       }catch(e){
         if (creditsValue) creditsValue.textContent = "error";
@@ -767,31 +763,24 @@ nav{
         return null;
       }
       
-      // ✅ Logged in (with creator test)
-      const CREATOR_EMAIL = "lady-anya@hotmail.com";
-      
-      const email =
-        (me.email) ||
-        (me.user && me.user.email) ||
-        (me.patreon_email) ||
-        (me.member && me.member.email) ||
-        ""; // fallback
-      
+      // ✅ Logged in
       let credits = Number(me.credits ?? 0);
-
-      // ✅ TEMP: allow testing credits via URL
+      
+      // ✅ TEMP: allow testing credits via URL (remove later if you want)
       const debug = new URLSearchParams(location.search).get("debug");
-      if (debug === "anya") credits = 999; 
-      
-      // Debug (remove later)
-      console.log("Creator check email:", email);
-      
-      if (email.toLowerCase() === CREATOR_EMAIL.toLowerCase()) {
-        credits = 999;
-      }
+      if (debug === "anya") credits = 999;
       
       CURRENT_CREDITS = credits;
       if (creditsValue) creditsValue.textContent = credits.toFixed(2);
+
+      // Making ?debug=anya page local not public (debug only works on local machine/dev environment.)
+      const isLocalhost =
+        location.hostname === "localhost" || location.hostname === "127.0.0.1";
+      
+      if (isLocalhost) {
+        const debug = new URLSearchParams(location.search).get("debug");
+        if (debug === "anya") credits = 999;
+      }
 
       if (btn) {
         btn.textContent = "Connected ✅";
@@ -1081,6 +1070,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
