@@ -393,30 +393,25 @@
       color: rgba(27,27,27,0.78);
     }
 
-    /* Default (desktop) */
-    .statusStack{
+    /* Desktop: keep it on the right like before */
+    .statusBlock{
       text-align: right;
     }
     
-    /* Mobile: stack nicely */
+    /* Mobile: stack nicely under the button */
     @media (max-width: 600px){
-      .statusStack{
+      .row{ align-items: flex-start; }
+    
+      .statusBlock{
+        width: 100%;
         text-align: left;
-        width: 100%;
       }
     
-      .statusStack .creditsLine{
-        margin-top: 6px;
-      }
+      /* Optional: make button full width so it feels tidy */
+      #connect{ width: 100%; }
     
-      .statusStack .patreonRow{
+      .patreonRow{
         justify-content: flex-start;
-        margin-top: 6px;
-      }
-    
-      /* Optional: make the connect button full width on mobile */
-      #connect{
-        width: 100%;
       }
     }
     
@@ -539,7 +534,7 @@
       <div class="row">
         <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-        <div class="statusStack">  
+        <div class="statusBlock">  
           <div class="creditsLine">
             Credits: <strong id="creditsValue">—</strong>
           </div>
@@ -552,7 +547,6 @@
             <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -1101,6 +1095,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
