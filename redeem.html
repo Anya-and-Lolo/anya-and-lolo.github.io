@@ -130,6 +130,22 @@
       justify-content: flex-end;
     }
 
+      nav{
+        width: 100%;
+        flex-wrap: nowrap;          /* no wrapping */
+        justify-content: flex-start;
+        overflow-x: auto;           /* allow swipe */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;      /* Firefox hide */
+      }
+      nav::-webkit-scrollbar{ display:none; } /* Chrome/Safari hide */
+    
+      .navlink{
+        white-space: nowrap;        /* keep each pill intact */
+        flex: 0 0 auto;
+      }
+    }
+
     .navlink{
       font-weight: 900;
       font-size: 15px;
@@ -425,46 +441,25 @@
       font-weight: 800;
       margin: 0 2px;
     }
-
-    @media (max-width: 900px){
-      .topbarInner{
-        align-items: center;
-      }
-    
-      nav{
-        width: 100%;
-        flex-wrap: nowrap;          /* no wrapping */
-        justify-content: flex-start;
-        overflow-x: auto;           /* allow swipe */
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;      /* Firefox hide */
-      }
-      nav::-webkit-scrollbar{ display:none; } /* Chrome/Safari hide */
-    
-      .navlink{
-        white-space: nowrap;        /* keep each pill intact */
-        flex: 0 0 auto;
-      }
-    }
-    
+   
     @media (max-width: 900px){
       html, body{ height: auto; }
-      .topbarInner{ align-items: flex-start; flex-direction: column; }
+      .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center;}
       nav{ justify-content: flex-start; }
       .footerInner{ grid-template-columns: 1fr; text-align:center; }
       .footerRight{ justify-content: center !important; }
       .socialText{ justify-content: center !important; }
     }
 
-/* Allow page scroll even if a sparkle/canvas overlay exists */
-canvas, 
-#sparkles, 
-.sparkles, 
-.sparkle-canvas,
-[class*="sparkle"]{
-  pointer-events: none !important;
-  touch-action: none !important;
-}
+    /* Allow page scroll even if a sparkle/canvas overlay exists */
+    canvas, 
+    #sparkles, 
+    .sparkles, 
+    .sparkle-canvas,
+    [class*="sparkle"]{
+      pointer-events: none !important;
+      touch-action: none !important;
+    }
 
   </style>
 </head>
@@ -996,6 +991,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
