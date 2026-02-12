@@ -129,70 +129,133 @@
       100%{ transform: scale(1); }
     }
     
-    .topbar{
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(10px);
-      background: rgba(255,255,255,0.65);
-      border-bottom: 1px solid var(--border);
-    }
+/* --- TOP BAR / NAV --- */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.72);
+  border-bottom: 1px solid var(--border);
+}
 
-    .topbarInner{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+.topbarInner{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      font-weight: 900;
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-      font-size: 20px;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  white-space: nowrap;
+}
 
-    nav{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
+.badge{
+  font-size: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  color: var(--muted);
+  font-weight: 900;
+}
 
-      nav{
-        width: 100%;
-        flex-wrap: nowrap;          /* no wrapping */
-        justify-content: flex-start;
-        overflow-x: auto;           /* allow swipe */
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;      /* Firefox hide */
-      }
-      nav::-webkit-scrollbar{ display:none; } /* Chrome/Safari hide */
-    
-      .navlink{
-        white-space: nowrap;        /* keep each pill intact */
-        flex: 0 0 auto;
-      }
-    }
+/* Desktop nav pills */
+nav{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  justify-content: flex-end;
+}
 
-    .navlink{
-      font-weight: 900;
-      font-size: 15px;
-      color: rgba(27,27,27,0.85);
-      padding: 9px 12px;
-      border-radius: 999px;
-    }
-    .navlink:hover{
-      text-decoration: none;
-      background: rgba(0,0,0,0.06);
-    }
+.navlink{
+  display:inline-flex;
+  align-items:center;
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 15px;
+  color: rgba(27,27,27,0.88);
+  text-decoration: none;
+
+  border: 1px solid transparent;
+  background: transparent;
+  transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+.navlink:hover{
+  text-decoration: none;
+  background: rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+.navlink:active{
+  transform: translateY(0px) scale(0.99);
+}
+
+/* Active tab (add aria-current="page" in HTML) */
+.navlink[aria-current="page"]{
+  background: var(--brand2);
+  border-color: rgba(244,24,76,0.22);
+  box-shadow: 0 8px 18px rgba(244,24,76,0.10);
+}
+
+/* Mobile: stacked header + horizontal swipe nav */
+@media (max-width: 600px){
+  .topbarInner{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  nav{
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 2px 2px 4px;
+
+    /* nicer “snap” feel */
+    scroll-snap-type: x mandatory;
+  }
+  nav::-webkit-scrollbar{ display:none; }
+
+  .navlink{
+    flex: 0 0 auto;
+    white-space: nowrap;
+    scroll-snap-align: start;
+
+    background: rgba(255,255,255,0.90);
+    border-color: rgba(20,20,20,0.12);
+  }
+
+  /* Fade edges so it looks intentional */
+  nav{
+    -webkit-mask-image: linear-gradient(to right,
+      transparent 0,
+      #000 16px,
+      #000 calc(100% - 16px),
+      transparent 100%
+    );
+            mask-image: linear-gradient(to right,
+      transparent 0,
+      #000 16px,
+      #000 calc(100% - 16px),
+      transparent 100%
+    );
+  }
+
+  .badge{
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
     
     .badge{
       font-size: 14px;
@@ -935,6 +998,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
