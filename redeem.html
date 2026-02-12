@@ -766,6 +766,10 @@ nav{
       // ✅ Logged in
       let credits = Number(me.credits ?? 0);
 
+      // Add 99 automatically
+      const debug = new URLSearchParams(location.search).get("debug");
+      if (debug === "anya") credits = 999;
+
       // Making ?debug=anya page local not public (debug only works on local machine/dev environment.)
       const isLocalhost =
         location.hostname === "localhost" || location.hostname === "127.0.0.1";
@@ -1089,6 +1093,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
