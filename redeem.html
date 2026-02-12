@@ -204,8 +204,8 @@
       }
 
       .price{
-        font-size: 16px;   /* slightly bigger */
-        font-weight: 1000; /* matches your bold style */
+        font-size: 16px;  
+        font-weight: 1000; 
         color: rgba(27,27,27,0.88);
       }
 
@@ -773,7 +773,7 @@
           <div style="margin-top:10px;">
             <strong>${item.name}</strong><br>
             <span class="muted">
-              <strong style="font-size:15px;">${credits}</strong> credits
+              <strong style="font-size:15px;">${credits} credits</strong>
               • ${isOwned ? "Owned ✅" : `Remaining keys: ${remaining}`}
             </span>
           </div>
@@ -956,11 +956,9 @@
           showStoreMessage(buttonEl, "✅ Redeemed! (No key returned)", "success");
         }
 
-      (async () => {
-        await loadMe();
-        await loadUnlocks(); // fill OWNED_ITEM_IDS first
-        await loadStore();   // now store can show Owned
-      })();
+      await loadMe();
+      await loadUnlocks();
+      await loadStore();
 
       } catch (e) {
         showStoreMessage(buttonEl, "Network error. Please try again.", "error");
@@ -1008,8 +1006,8 @@
 
     (async () => {
       await loadMe();
-      await loadStore();
-      await loadUnlocks();
+      await loadUnlocks(); // fill OWNED_ITEM_IDS first
+      await loadStore();   // then render store with Owned ✅
     })();
   </script>
 
@@ -1051,6 +1049,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
