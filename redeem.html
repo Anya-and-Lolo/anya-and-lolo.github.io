@@ -785,6 +785,12 @@ nav{
 
     const redeeming = new Set();
 
+const CREATOR_EMAIL = "your@email.com";
+
+if (user.email === CREATOR_EMAIL) {
+  credits = 999;
+}
+    
 async function loadStore() {
   const r = await fetch(API + "/store");
   const data = await r.json();
@@ -1054,6 +1060,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
