@@ -203,6 +203,12 @@
         );
       }
 
+      .price{
+        font-size: 16px;   /* slightly bigger */
+        font-weight: 1000; /* matches your bold style */
+        color: rgba(27,27,27,0.88);
+      }
+
       .badge{
         font-size: 13px;
         padding: 6px 10px;
@@ -763,7 +769,9 @@
 
           <div style="margin-top:10px;">
             <strong>${item.name}</strong><br>
-            <span class="muted">${credits} credits • Remaining keys: ${remaining}</span>
+            <span class="muted">
+              <strong class="price">${credits}</strong> credits • Remaining keys: ${remaining}
+            </span>
           </div>
 
           <button
@@ -1021,4 +1029,5 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
