@@ -954,7 +954,7 @@ async function redeem(itemId, buttonEl) {
   }
 
   // show progress inline
-  showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "info");
+  showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
 
   try {
     const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
