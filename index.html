@@ -148,11 +148,6 @@
       margin: 0 auto;
     }
 
-    @media (max-width: 900px){
-      .topbarInner{
-        align-items: center;
-      }
-
     .brand{
       display:flex;
       align-items:center;
@@ -545,12 +540,6 @@
       gap: 12px;
       align-items:center;
     }
-    
-    @media (max-width: 900px){
-      .footerInner{ grid-template-columns: 1fr; text-align:center; }
-      .footerRight{ justify-content: center !important; }
-      .socialText{ justify-content: center !important; }
-    }
 
     .socialText{
       display:flex;
@@ -594,6 +583,15 @@
       margin: 0 2px;
     }
 
+    @media (max-width: 900px){
+      html, body{ height: auto; }
+      .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center;}
+      nav{ justify-content: flex-start; }
+      .footerInner{ grid-template-columns: 1fr; text-align:center; }
+      .footerRight{ justify-content: center !important; }
+      .socialText{ justify-content: center !important; }
+    }
+    
     /* Scrollbar styling (page + any scrollable elements you control) */
     :root{
       --scrollTrack: #226cbb;  /* dark */
@@ -942,6 +940,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
