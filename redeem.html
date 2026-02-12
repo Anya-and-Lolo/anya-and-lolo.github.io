@@ -499,7 +499,7 @@
 
   <main class="wrap">
     <h1>Patreon Rewards</h1>
-    <p class="sub">Connect Patreon, view your credits, and redeem your itch.io keys.</p>
+    <p class="sub">Connect Patreon, view credits, and redeem your itch.io keys for Anya & Lolo rewards.</p>
 
     <div class="card" style="margin: 10px 0 14px;">
       <div class="row">
@@ -743,6 +743,7 @@
 
     const redeeming = new Set();
 
+    // ✅ UPDATED: uses apiUrl("/store") (keeps debug param if present)
     async function loadStore() {
       const r = await fetch(apiUrl("/store"));
       const data = await r.json();
@@ -1020,6 +1021,3 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
-
-
-
