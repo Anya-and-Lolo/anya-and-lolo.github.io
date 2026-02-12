@@ -715,7 +715,7 @@ nav{
 
       // ✅ Not connected
       if (!s) {
-        if (creditsValue) creditsValue.textContent = "not connected";
+        if (creditsValue) creditsValue.textContent = "N/A";
         CURRENT_CREDITS = 0;
 
         if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
@@ -723,8 +723,9 @@ nav{
 
         if (infoPopBody) {
           infoPopBody.innerHTML =
-            `Your current Patreon status: <strong>not connected</strong><br>` +
-            `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+            `Patreon status: <strong>not connected</strong><br>` +
+            `Connect your Patreon to see your credits. ` +
+            `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
         }
         return null;
       }
@@ -1053,6 +1054,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
