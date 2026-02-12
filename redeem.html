@@ -754,6 +754,7 @@ nav{
         if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
         setPill("not connected");
         if (infoPopBody) {
+          infoPopBody.innerHTML =
             `Patreon status: <strong>not connected</strong><br>` +
             `Connect your Patreon to see your credits. ` +
             `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
@@ -761,6 +762,20 @@ nav{
         return null;
       }
 
+      
+    const CREATOR_EMAIL = "lady-anya@hotmail.com";
+    
+    let credits = Number(me.credits ?? 0);
+    
+    // ✅ Creator override (ONLY for Anya)
+    if ((me.email || "").toLowerCase() === CREATOR_EMAIL.toLowerCase()) {
+      credits = 999;
+    }
+    
+    CURRENT_CREDITS = credits;
+    if (creditsValue) creditsValue.textContent = credits.toFixed(2);
+
+      
       // ✅ Logged in
       const credits = Number(me.credits ?? 0);
       CURRENT_CREDITS = credits;
@@ -784,12 +799,6 @@ nav{
     }
 
     const redeeming = new Set();
-
-const CREATOR_EMAIL = "your@email.com";
-
-if (user.email === CREATOR_EMAIL) {
-  credits = 999;
-}
     
 async function loadStore() {
   const r = await fetch(API + "/store");
@@ -1060,6 +1069,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
