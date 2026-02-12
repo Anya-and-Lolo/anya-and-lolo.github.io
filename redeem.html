@@ -765,17 +765,18 @@ nav{
       
       // ✅ Logged in
       let credits = Number(me.credits ?? 0);
-      
-      // ✅ TEMP: allow testing credits via URL (remove later if you want)
-      const debug = new URLSearchParams(location.search).get("debug");
-      if (debug === "anya") credits = 999;
-      
-      CURRENT_CREDITS = credits;
-      if (creditsValue) creditsValue.textContent = credits.toFixed(2);
 
       // Making ?debug=anya page local not public (debug only works on local machine/dev environment.)
       const isLocalhost =
         location.hostname === "localhost" || location.hostname === "127.0.0.1";
+      
+      if (isLocalhost) {
+        const debug = new URLSearchParams(location.search).get("debug");
+        if (debug === "anya") credits = 999;
+      }
+      
+      CURRENT_CREDITS = credits;
+      if (creditsValue) creditsValue.textContent = credits.toFixed(2);
       
       if (isLocalhost) {
         const debug = new URLSearchParams(location.search).get("debug");
@@ -934,7 +935,6 @@ async function redeem(itemId, buttonEl) {
   const costCredits = Number((costCents / 100).toFixed(2));
   const itemName = buttonEl?.dataset?.name || itemId;
 
-  // Friendly client-side check
   if (CURRENT_CREDITS < costCredits) {
     showStoreMessage(
       buttonEl,
@@ -953,9 +953,9 @@ async function redeem(itemId, buttonEl) {
     buttonEl.textContent = "Redeeming…";
   }
 
-  // show progress inline
+  // show progress inline (GREEN)
   showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
-  
+
   // failsafe: if request hangs, revert message after 15s
   const stuckTimer = setTimeout(() => {
     showStoreMessage(buttonEl, "Still working… please try again in a moment.", "info");
@@ -966,13 +966,15 @@ async function redeem(itemId, buttonEl) {
     redeeming.delete(itemId);
   }, 15000);
 
-
   try {
     const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ itemId })
     });
+
+    // ✅ IMPORTANT: stop the stuck timer if we got a response
+    clearTimeout(stuckTimer);
 
     const out = await r.json();
 
@@ -993,7 +995,13 @@ async function redeem(itemId, buttonEl) {
     await loadStore();
     await loadUnlocks();
 
+  } catch (e) {
+    // network error etc
+    showStoreMessage(buttonEl, "Network error. Please try again.", "error");
   } finally {
+    // ✅ IMPORTANT: also stop timer here (extra-safe)
+    clearTimeout(stuckTimer);
+
     redeeming.delete(itemId);
     if (buttonEl) {
       buttonEl.disabled = false;
@@ -1081,6 +1089,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
