@@ -591,6 +591,7 @@
 
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
     let CURRENT_CREDITS = 0;
+    let OWNED_ITEM_IDS = new Set();
 
     // ✅ Parse URL params ONCE
     const params = new URLSearchParams(location.search);
@@ -756,42 +757,52 @@
       const data = await r.json();
       const el = document.getElementById("store");
       el.innerHTML = "";
-
+    
       (data.items || []).forEach(item => {
         const credits = (item.cost_cents / 100).toFixed(2);
         const remaining = item.remaining ?? 0;
         const img = ITEM_IMAGES[item.id] || "";
-
+        const isOwned = OWNED_ITEM_IDS.has(item.id);
+    
         const div = document.createElement("div");
         div.className = "card";
-
+    
         div.innerHTML = `
           ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
-
+    
           <div style="margin-top:10px;">
             <strong>${item.name}</strong><br>
             <span class="muted">
-              <strong class="price">${credits}</strong> credits • Remaining keys: ${remaining}
+              <strong style="font-size:15px;">${credits}</strong> credits
+              • ${isOwned ? "Owned ✅" : `Remaining keys: ${remaining}`}
             </span>
           </div>
-
+    
           <button
             class="storeButton"
-            ${remaining <= 0 ? "disabled" : ""}
+            ${(isOwned || remaining <= 0) ? "disabled" : ""}
             data-id="${item.id}"
             data-name="${item.name}"
             data-cost-cents="${item.cost_cents}">
-            Redeem
+            ${isOwned ? "Owned ✅" : "Redeem"}
           </button>
-
+    
           <div class="storeMsg storeMsg--info show">
-            ${(item.payload && item.payload.instructions) ? item.payload.instructions : "Redeem to receive a unique itch.io key. Open the link below to claim it on itch.io and permanently add it to your library."}
+            ${
+              (item.payload && item.payload.instructions)
+                ? item.payload.instructions
+                : "Redeem to receive a unique itch.io key. Open the link below to claim it on itch.io and permanently add it to your library."
+            }
           </div>
         `;
-
+    
         const btn = div.querySelector("button");
-        btn.onclick = () => redeem(item.id, btn);
-
+    
+        // ✅ only bind redeem if not owned and has stock
+        if (!isOwned && remaining > 0) {
+          btn.onclick = () => redeem(item.id, btn);
+        }
+    
         el.appendChild(div);
       });
     }
@@ -799,31 +810,39 @@
     async function loadUnlocks() {
       const s = getSession();
       const box = document.getElementById("unlocks");
-
+    
+      // reset owned set every refresh
+      OWNED_ITEM_IDS = new Set();
+    
       if (!s) {
         box.classList.add("muted");
         box.textContent = "Connect Patreon to see your unlocks.";
         return;
       }
-
+    
       const r = await fetch(apiUrl("/entitlements", s));
       const data = await r.json();
-
+    
       if (!r.ok) {
         box.classList.add("muted");
         box.textContent = data.error || "Could not load unlocks.";
         return;
       }
-
+    
       if (!data.items || data.items.length === 0) {
         box.classList.add("muted");
         box.textContent = "Redeem something to see it here.";
         return;
       }
-
+    
+      // ✅ record owned item ids
+      data.items.forEach(ent => {
+        if (ent?.item_id) OWNED_ITEM_IDS.add(ent.item_id);
+      });
+    
       box.classList.remove("muted");
       box.innerHTML = "";
-
+    
       data.items.forEach(ent => {
         const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
         const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
@@ -937,9 +956,11 @@
           showStoreMessage(buttonEl, "✅ Redeemed! (No key returned)", "success");
         }
 
+      (async () => {
         await loadMe();
-        await loadStore();
-        await loadUnlocks();
+        await loadUnlocks(); // fill OWNED_ITEM_IDS first
+        await loadStore();   // now store can show Owned
+      })();
 
       } catch (e) {
         showStoreMessage(buttonEl, "Network error. Please try again.", "error");
@@ -1030,6 +1051,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
