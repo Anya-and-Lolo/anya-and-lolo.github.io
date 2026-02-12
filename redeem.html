@@ -1056,6 +1056,8 @@
       if (e.key === "Escape") closeInfo();
     });
 
+    showConnectUI();
+
     (async () => {
       await loadMe();
       await loadUnlocks(); // fill OWNED_ITEM_IDS first
@@ -1101,6 +1103,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
