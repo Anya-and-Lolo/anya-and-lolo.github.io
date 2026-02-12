@@ -977,14 +977,14 @@ canvas,
     setTimeout(() => {
       btn.classList.remove("is-exploding");
       layer.innerHTML = "";
-    }, 500);
+    }, 900);
   }
 
   // --- Auto loop with random timing ---
   let timeout;
 
   function scheduleNext(){
-    const delay = rand(2000, 3000); // 2–3 seconds
+    const delay = rand(500, 1000); // 0.5–1 seconds
     timeout = setTimeout(() => {
       if (!document.hidden) explode();
       scheduleNext();
@@ -1000,6 +1000,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
