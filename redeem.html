@@ -761,20 +761,6 @@ nav{
         }
         return null;
       }
-
-      
-    const CREATOR_EMAIL = "lady-anya@hotmail.com";
-    
-    let credits = Number(me.credits ?? 0);
-    
-    // ✅ Creator override (ONLY for Anya)
-    if ((me.email || "").toLowerCase() === CREATOR_EMAIL.toLowerCase()) {
-      credits = 999;
-    }
-    
-    CURRENT_CREDITS = credits;
-    if (creditsValue) creditsValue.textContent = credits.toFixed(2);
-
       
       // ✅ Logged in
       const credits = Number(me.credits ?? 0);
@@ -1069,6 +1055,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
