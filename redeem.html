@@ -23,7 +23,7 @@
 
     *{ box-sizing: border-box; }
     html, body{
-      height: auto;              /* override the 100% height if needed */
+      height: auto;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -38,7 +38,6 @@
       line-height: 1.6;
     }
 
-    /* animated pastel dot pattern */
     body::before{
       content:"";
       position: fixed;
@@ -71,21 +70,19 @@
       padding: 16px;
     }
 
-    /* Buttons */
     button, .navlink, a{
       transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
-    
+
     button:active, .navlink:active{
       transform: translateY(1px) scale(0.99);
     }
-    
+
     .btnPrimary:hover{
       box-shadow: 0 14px 30px rgba(244,24,76,.20);
       transform: translateY(-1px);
     }
 
-    /* Sparkle pop */
     a.pop{ animation: pop .28s ease; }
     @keyframes pop{
       0%{ transform: scale(1); }
@@ -93,145 +90,125 @@
       100%{ transform: scale(1); }
     }
 
-  /* --- TOP BAR / NAV --- */
-.topbar{
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.72);
-  border-bottom: 1px solid var(--border);
-}
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.72);
+      border-bottom: 1px solid var(--border);
+    }
 
-.topbarInner{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
+    .topbarInner{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  white-space: nowrap;
-}
-
-.badge{
-  font-size: 14px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.85);
-  color: var(--muted);
-  font-weight: 900;
-}
-
-/* Desktop nav pills */
-nav{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.navlink{
-  display:inline-flex;
-  align-items:center;
-  padding: 9px 12px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 15px;
-  color: rgba(27,27,27,0.88);
-  text-decoration: none;
-
-  border: 1px solid transparent;
-  background: transparent;
-  transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
-}
-
-.navlink:hover{
-  text-decoration: none;
-  background: rgba(0,0,0,0.06);
-  transform: translateY(-1px);
-}
-
-.navlink:active{
-  transform: translateY(0px) scale(0.99);
-}
-
-/* Active tab (add aria-current="page" in HTML) */
-.topbar .navlink[aria-current="page"]{
-  background: var(--brand2);
-  color: var(--brand);
-  border-color: rgba(244,24,76,0.25);
-}
-
-/* Mobile: stacked header + horizontal swipe nav */
-@media (max-width: 600px){
-  .topbarInner{
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  nav{
-    justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 2px 2px 4px;
-
-    /* nicer “snap” feel */
-    scroll-snap-type: x mandatory;
-  }
-  nav::-webkit-scrollbar{ display:none; }
-
-  .navlink{
-    flex: 0 0 auto;
-    white-space: nowrap;
-    scroll-snap-align: start;
-
-    background: rgba(255,255,255,0.90);
-    border-color: rgba(20,20,20,0.12);
-  }
-
-  /* Fade edges so it looks intentional */
-  nav{
-    -webkit-mask-image: linear-gradient(to right,
-      transparent 0,
-      #000 16px,
-      #000 calc(100% - 16px),
-      transparent 100%
-    );
-            mask-image: linear-gradient(to right,
-      transparent 0,
-      #000 16px,
-      #000 calc(100% - 16px),
-      transparent 100%
-    );
-  }
-
-  .badge{
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      white-space: nowrap;
+    }
 
     .badge{
       font-size: 14px;
-      padding: 6px 12px;
+      padding: 7px 12px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.85);
       color: var(--muted);
-      font-weight: 800;
+      font-weight: 900;
     }
-    
-    /* Page header */
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .navlink{
+      display:inline-flex;
+      align-items:center;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 15px;
+      color: rgba(27,27,27,0.88);
+      text-decoration: none;
+      border: 1px solid transparent;
+      background: transparent;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+
+    .navlink:hover{
+      text-decoration: none;
+      background: rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+
+    .navlink:active{
+      transform: translateY(0px) scale(0.99);
+    }
+
+    .topbar .navlink[aria-current="page"]{
+      background: var(--brand2);
+      color: var(--brand);
+      border-color: rgba(244,24,76,0.25);
+    }
+
+    @media (max-width: 600px){
+      .topbarInner{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      nav{
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 2px 2px 4px;
+        scroll-snap-type: x mandatory;
+      }
+      nav::-webkit-scrollbar{ display:none; }
+
+      .navlink{
+        flex: 0 0 auto;
+        white-space: nowrap;
+        scroll-snap-align: start;
+        background: rgba(255,255,255,0.90);
+        border-color: rgba(20,20,20,0.12);
+      }
+
+      nav{
+        -webkit-mask-image: linear-gradient(to right,
+          transparent 0,
+          #000 16px,
+          #000 calc(100% - 16px),
+          transparent 100%
+        );
+                mask-image: linear-gradient(to right,
+          transparent 0,
+          #000 16px,
+          #000 calc(100% - 16px),
+          transparent 100%
+        );
+      }
+
+      .badge{
+        font-size: 13px;
+        padding: 6px 10px;
+      }
+    }
+
     h1{
       margin: 14px 0 6px;
       font-size: 34px;
@@ -244,7 +221,6 @@ nav{
       font-size: 16px;
     }
 
-    /* Buttons */
     button{
       padding: 10px 12px;
       border-radius: 12px;
@@ -261,7 +237,6 @@ nav{
       border-color: rgba(244,24,76,0.35);
     }
 
-    /* Cards – white like homepage */
     .card{
       background: rgba(255,255,255,0.95);
       border: 1px solid var(--border);
@@ -304,27 +279,11 @@ nav{
       border: 1px solid rgba(20,20,20,0.08);
     }
 
-    .toast{
-      display:none;
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      background: #111;
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
-      z-index: 20;
-    }
-
     .storeButton{
       margin-top: 10px;
       width: 100%;
     }
-    
-    /* Footer (same structure as homepage) */
+
     footer{
       margin-top: 26px;
       padding: 18px 0 34px;
@@ -388,7 +347,6 @@ nav{
     }
     .infoBtn:hover{ background: rgba(0,0,0,0.06); }
 
-    /* Popup */
     .infoPop{
       position: fixed;
       inset: 0;
@@ -429,7 +387,6 @@ nav{
       color: rgba(27,27,27,0.78);
     }
 
-    /* Inline store messages (replaces toast) */
     .storeMsg{
       margin-top: 8px;
       padding: 10px 12px;
@@ -441,7 +398,7 @@ nav{
       display: none;
     }
     .storeMsg.show{ display: block; }
-    
+
     .storeMsg--success{
       border-color: rgba(34,197,94,0.30);
       background: rgba(34,197,94,0.10);
@@ -454,7 +411,7 @@ nav{
       border-color: rgba(86,167,254,0.30);
       background: rgba(86,167,254,0.10);
     }
-    
+
     .footerInner{
       border-top: 1px solid var(--border);
       padding-top: 14px;
@@ -504,7 +461,7 @@ nav{
       font-weight: 800;
       margin: 0 2px;
     }
-   
+
     @media (max-width: 900px){
       html, body{ height: auto; }
       .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center;}
@@ -514,21 +471,18 @@ nav{
       .socialText{ justify-content: center !important; }
     }
 
-    /* Allow page scroll even if a sparkle/canvas overlay exists */
-    canvas, 
-    #sparkles, 
-    .sparkles, 
+    canvas,
+    #sparkles,
+    .sparkles,
     .sparkle-canvas,
     [class*="sparkle"]{
       pointer-events: none !important;
       touch-action: none !important;
     }
-
   </style>
 </head>
 
 <body>
-  <!-- Top bar -->
   <header class="topbar">
     <div class="topbarInner">
       <div class="brand">
@@ -631,9 +585,11 @@ nav{
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
     let CURRENT_CREDITS = 0;
 
+    // ✅ Parse URL params ONCE
     const params = new URLSearchParams(location.search);
     const DEBUG = params.get("debug"); // "anya" or null
-    
+
+    // ✅ helper: always attach session + debug when needed
     function apiUrl(path, session) {
       const u = new URL(API + path);
       if (session) u.searchParams.set("session", session);
@@ -651,9 +607,9 @@ nav{
       location.href = API + "/auth/patreon/start";
     };
 
-    const params = new URLSearchParams(location.search);
-    const session = params.get("session");
-    if (session) localStorage.setItem("session", session);
+    // ✅ Store session from URL into localStorage (only once)
+    const sessionFromUrl = params.get("session");
+    if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
 
     function getSession() {
       return localStorage.getItem("session");
@@ -661,32 +617,26 @@ nav{
 
     function showStoreMessage(buttonEl, msg, type = "info") {
       if (!buttonEl) return;
-    
+
       const card = buttonEl.closest(".card");
       if (!card) return;
-    
+
       const box = card.querySelector(".storeMsg");
       if (!box) return;
-    
-      // Grab the default blue text (stored on the storeMsg element)
+
       const defaultMsg = box.dataset.defaultMsg || box.textContent;
-    
-      // Save it once (first time)
       if (!box.dataset.defaultMsg) box.dataset.defaultMsg = defaultMsg;
-    
-      // Clear any previous timer
+
       clearTimeout(box._resetTimer);
-    
-      // Apply styles + message
+
       box.classList.remove("storeMsg--success","storeMsg--error","storeMsg--info","show");
       box.classList.add("show");
       if (type === "success") box.classList.add("storeMsg--success");
       else if (type === "error") box.classList.add("storeMsg--error");
       else box.classList.add("storeMsg--info");
-    
+
       box.textContent = msg;
-    
-      // Auto-revert after 5s (only for error/success)
+
       if (type === "error" || type === "success") {
         box._resetTimer = setTimeout(() => {
           box.classList.remove("storeMsg--success","storeMsg--error");
@@ -723,7 +673,6 @@ nav{
       const creditsValue = document.getElementById("creditsValue");
       const infoPopBody = document.getElementById("infoPopBody");
 
-      // ✅ Not connected
       if (!s) {
         if (creditsValue) creditsValue.textContent = "N/A";
         CURRENT_CREDITS = 0;
@@ -740,12 +689,10 @@ nav{
         return null;
       }
 
-      // ✅ Connected: fetch /me
       let me;
       try{
         const r = await fetch(apiUrl("/me", s));
         me = await r.json();
-
       }catch(e){
         if (creditsValue) creditsValue.textContent = "error";
         CURRENT_CREDITS = 0;
@@ -772,27 +719,10 @@ nav{
         }
         return null;
       }
-      
-      // ✅ Logged in
-      let credits = Number(me.credits ?? 0);
 
-      // Add 99 automatically
-      const debug = new URLSearchParams(location.search).get("debug");
-
-      // Making ?debug=anya page local not public (debug only works on local machine/dev environment.)
-      const isLocalhost =
-        location.hostname === "localhost" || location.hostname === "127.0.0.1";
-      
-      if (isLocalhost) {
-        const debug = new URLSearchParams(location.search).get("debug");
-      }
-      
+      const credits = Number(me.credits ?? 0);
       CURRENT_CREDITS = credits;
       if (creditsValue) creditsValue.textContent = credits.toFixed(2);
-      
-      if (isLocalhost) {
-        const debug = new URLSearchParams(location.search).get("debug");
-      }
 
       if (btn) {
         btn.textContent = "Connected ✅";
@@ -805,57 +735,56 @@ nav{
       if (infoPopBody) {
         infoPopBody.innerHTML =
           `Your current Patreon status: <strong>${status}</strong><br>` +
-            `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
+          `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
       }
 
       return me;
     }
 
     const redeeming = new Set();
-    
-async function loadStore() {
-  const r = await fetch(API + "/store");
-  const data = await r.json();
-  const el = document.getElementById("store");
-  el.innerHTML = "";
 
-  (data.items || []).forEach(item => {
-    const credits = (item.cost_cents / 100).toFixed(2);
-    const remaining = item.remaining ?? 0;
-    const img = ITEM_IMAGES[item.id] || "";
+    async function loadStore() {
+      const r = await fetch(apiUrl("/store"));
+      const data = await r.json();
+      const el = document.getElementById("store");
+      el.innerHTML = "";
 
-    const div = document.createElement("div");
-    div.className = "card";
+      (data.items || []).forEach(item => {
+        const credits = (item.cost_cents / 100).toFixed(2);
+        const remaining = item.remaining ?? 0;
+        const img = ITEM_IMAGES[item.id] || "";
 
-    div.innerHTML = `
-      ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
+        const div = document.createElement("div");
+        div.className = "card";
 
-      <div style="margin-top:10px;">
-        <strong>${item.name}</strong><br>
-        <span class="muted">${credits} credits • Remaining keys: ${remaining}</span>
-      </div>
+        div.innerHTML = `
+          ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
 
-      <button
-        class="storeButton"
-        ${remaining <= 0 ? "disabled" : ""}
-        data-id="${item.id}"
-        data-name="${item.name}"
-        data-cost-cents="${item.cost_cents}">
-        Redeem
-      </button>
+          <div style="margin-top:10px;">
+            <strong>${item.name}</strong><br>
+            <span class="muted">${credits} credits • Remaining keys: ${remaining}</span>
+          </div>
 
-      <!-- Inline message area (replaces toast) -->
-      <div class="storeMsg storeMsg--info show">
-        ${item.payload?.instructions || "Redeem to receive a unique itch.io key. Open the link below to claim it on itch.io and permanently add it to your library."}
-      </div>
-    `;
+          <button
+            class="storeButton"
+            ${remaining <= 0 ? "disabled" : ""}
+            data-id="${item.id}"
+            data-name="${item.name}"
+            data-cost-cents="${item.cost_cents}">
+            Redeem
+          </button>
 
-    const btn = div.querySelector("button");
-    btn.onclick = () => redeem(item.id, btn);
+          <div class="storeMsg storeMsg--info show">
+            ${(item.payload && item.payload.instructions) ? item.payload.instructions : "Redeem to receive a unique itch.io key. Open the link below to claim it on itch.io and permanently add it to your library."}
+          </div>
+        `;
 
-    el.appendChild(div);
-  });
-}
+        const btn = div.querySelector("button");
+        btn.onclick = () => redeem(item.id, btn);
+
+        el.appendChild(div);
+      });
+    }
 
     async function loadUnlocks() {
       const s = getSession();
@@ -886,8 +815,8 @@ async function loadStore() {
       box.innerHTML = "";
 
       data.items.forEach(ent => {
-        const title = ent.payload?.title || ent.item_id;
-        const raw = ent.payload?.itch_key_url || ent.payload?.itch_key || ent.payload?.url || "";
+        const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
+        const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
         addUnlock(title, raw);
       });
     }
@@ -934,94 +863,86 @@ async function loadStore() {
       box.prepend(wrap);
     }
 
-    // ✅ Redeem with client-side credits check + nice toasts
-async function redeem(itemId, buttonEl) {
-  const s = getSession();
-  if (!s) {
-    showStoreMessage(buttonEl, "Please connect Patreon first.", "error");
-    return;
-  }
+    async function redeem(itemId, buttonEl) {
+      const s = getSession();
+      if (!s) {
+        showStoreMessage(buttonEl, "Please connect Patreon first.", "error");
+        return;
+      }
 
-  const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
-  const costCredits = Number((costCents / 100).toFixed(2));
-  const itemName = buttonEl?.dataset?.name || itemId;
+      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+      const costCredits = Number((costCents / 100).toFixed(2));
+      const itemName = buttonEl?.dataset?.name || itemId;
 
-  if (CURRENT_CREDITS < costCredits) {
-    showStoreMessage(
-      buttonEl,
-      `Sorry, you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} for ${itemName}.`,
-      "error"
-    );
-    return;
-  }
+      if (CURRENT_CREDITS < costCredits) {
+        showStoreMessage(
+          buttonEl,
+          `Sorry, you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} for ${itemName}.`,
+          "error"
+        );
+        return;
+      }
 
-  if (redeeming.has(itemId)) return;
-  redeeming.add(itemId);
+      if (redeeming.has(itemId)) return;
+      redeeming.add(itemId);
 
-  const originalText = buttonEl ? buttonEl.textContent : "";
-  if (buttonEl) {
-    buttonEl.disabled = true;
-    buttonEl.textContent = "Redeeming…";
-  }
+      const originalText = buttonEl ? buttonEl.textContent : "";
+      if (buttonEl) {
+        buttonEl.disabled = true;
+        buttonEl.textContent = "Redeeming…";
+      }
 
-  // show progress inline (GREEN)
-  showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
+      showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
 
-  // failsafe: if request hangs, revert message after 15s
-  const stuckTimer = setTimeout(() => {
-    showStoreMessage(buttonEl, "Still working… please try again in a moment.", "info");
-    if (buttonEl) {
-      buttonEl.disabled = false;
-      buttonEl.textContent = originalText || "Redeem";
+      const stuckTimer = setTimeout(() => {
+        showStoreMessage(buttonEl, "Still working… please try again in a moment.", "info");
+        if (buttonEl) {
+          buttonEl.disabled = false;
+          buttonEl.textContent = originalText || "Redeem";
+        }
+        redeeming.delete(itemId);
+      }, 15000);
+
+      try {
+        const r = await fetch(apiUrl("/redeem", s), {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ itemId })
+        });
+
+        clearTimeout(stuckTimer);
+
+        const out = await r.json();
+
+        if (!r.ok) {
+          showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
+          return;
+        }
+
+        const raw = (out.payload && (out.payload.itch_key_url || out.payload.itch_key || out.payload.url)) || "";
+        if (raw) {
+          addUnlock((out.item && out.item.name) ? out.item.name : itemId, raw);
+          showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Your key is now in “Your Unlocks”.`, "success");
+        } else {
+          showStoreMessage(buttonEl, "✅ Redeemed! (No key returned)", "success");
+        }
+
+        await loadMe();
+        await loadStore();
+        await loadUnlocks();
+
+      } catch (e) {
+        showStoreMessage(buttonEl, "Network error. Please try again.", "error");
+      } finally {
+        clearTimeout(stuckTimer);
+        redeeming.delete(itemId);
+        if (buttonEl) {
+          buttonEl.disabled = false;
+          buttonEl.textContent = originalText || "Redeem";
+        }
+      }
     }
-    redeeming.delete(itemId);
-  }, 15000);
 
-  try {
-    const r = await fetch(apiUrl("/redeem", s), {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ itemId })
-    });
-
-    // ✅ IMPORTANT: stop the stuck timer if we got a response
-    clearTimeout(stuckTimer);
-
-    const out = await r.json();
-
-    if (!r.ok) {
-      showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
-      return;
-    }
-
-    const raw = out.payload?.itch_key_url || out.payload?.itch_key || out.payload?.url || "";
-    if (raw) {
-      addUnlock(out.item?.name || itemId, raw);
-      showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Your key is now in “Your Unlocks”.`, "success");
-    } else {
-      showStoreMessage(buttonEl, "✅ Redeemed! (No key returned)", "success");
-    }
-
-    await loadMe();
-    await loadStore();
-    await loadUnlocks();
-
-  } catch (e) {
-    // network error etc
-    showStoreMessage(buttonEl, "Network error. Please try again.", "error");
-  } finally {
-    // ✅ IMPORTANT: also stop timer here (extra-safe)
-    clearTimeout(stuckTimer);
-
-    redeeming.delete(itemId);
-    if (buttonEl) {
-      buttonEl.disabled = false;
-      buttonEl.textContent = originalText || "Redeem";
-    }
-  }
-}
-
-    // Info popup wiring
     const infoBtn = document.getElementById("infoBtn");
     const infoPop = document.getElementById("infoPop");
     const infoClose = document.getElementById("infoClose");
@@ -1061,86 +982,41 @@ async function redeem(itemId, buttonEl) {
     })();
   </script>
 
-<script>
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add("reveal");
+  <script>
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add("reveal");
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".card").forEach(c => {
+      c.classList.add("preReveal");
+      io.observe(c);
     });
-  }, { threshold: 0.12 });
+  </script>
 
-  document.querySelectorAll(".card").forEach(c => {
-    c.classList.add("preReveal");
-    io.observe(c);
-  });
-</script>
+  <style>
+    .preReveal{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .reveal{
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 
-<style>
-.preReveal{
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .45s ease, transform .45s ease;
-}
-.reveal{
-  opacity: 1;
-  transform: translateY(0);
-}
-</style>
-  
-<script>
-  document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
-    el.addEventListener("click", () => {
-      el.classList.remove("pop");
-      void el.offsetWidth; // restart animation
-      el.classList.add("pop");
+  <script>
+    document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
+      el.addEventListener("click", () => {
+        el.classList.remove("pop");
+        void el.offsetWidth;
+        el.classList.add("pop");
+      });
     });
-  });
-</script>
+  </script>
 
-<script src="https://app.embed.im/confetti.js" defer></script>
-
+  <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
