@@ -763,9 +763,17 @@ nav{
       }
       
       // ✅ Logged in
+      const CREATOR_EMAIL = "lady-anya@hotmail.com";
       const credits = Number(me.credits ?? 0);
+
+      // ✅ Creator override (ONLY for Anya)
+      // If your API doesn't return me.email, see note below
+      if ((me.email || "").toLowerCase() === CREATOR_EMAIL.toLowerCase()) {
+        credits = 999;
+      }
+      
       CURRENT_CREDITS = credits;
-      if (creditsValue) creditsValue.textContent = String(credits.toFixed(2));
+      if (creditsValue) creditsValue.textContent = credits.toFixed(2);
 
       if (btn) {
         btn.textContent = "Connected ✅";
@@ -1055,6 +1063,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
