@@ -778,6 +778,10 @@ nav{
         ""; // fallback
       
       let credits = Number(me.credits ?? 0);
+
+      // ✅ TEMP: allow testing credits via URL
+      const debug = new URLSearchParams(location.search).get("debug");
+      if (debug === "anya") credits = 999; 
       
       // Debug (remove later)
       console.log("Creator check email:", email);
@@ -1077,6 +1081,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
