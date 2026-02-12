@@ -735,8 +735,10 @@ nav{
       try{
         const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
         me = await r.json();
+        window.__ME = me;
+        document.getElementById("creditsValue").textContent = "debug…";
         console.log("ME keys:", Object.keys(me));
-        console.log("ME object:", me);
+        console.log("ME object:", me); 
 
       }catch(e){
         if (creditsValue) creditsValue.textContent = "error";
@@ -1075,6 +1077,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
