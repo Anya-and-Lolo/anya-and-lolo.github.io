@@ -130,6 +130,43 @@
     }
     
 
+  /* --- TOP BAR / NAV --- */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.72);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbarInner{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.badge{
+  font-size: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  color: var(--muted);
+  font-weight: 900;
+}
+
 /* Desktop nav pills */
 nav{
   display:flex;
@@ -963,6 +1000,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
