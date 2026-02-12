@@ -631,6 +631,16 @@ nav{
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
     let CURRENT_CREDITS = 0;
 
+    const params = new URLSearchParams(location.search);
+    const DEBUG = params.get("debug"); // "anya" or null
+    
+    function apiUrl(path, session) {
+      const u = new URL(API + path);
+      if (session) u.searchParams.set("session", session);
+      if (DEBUG) u.searchParams.set("debug", DEBUG);
+      return u.toString();
+    }
+
     const ITEM_IMAGES = {
       fishing_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/fishing_system_image.jpg",
       visual_novel_system: "https://raw.githubusercontent.com/Anya-and-Lolo/anya-and-lolo.github.io/refs/heads/main/images/VN_system_image.jpg",
@@ -733,7 +743,7 @@ nav{
       // ✅ Connected: fetch /me
       let me;
       try{
-        const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
+        const r = await fetch(apiUrl("/me", s));
         me = await r.json();
 
       }catch(e){
@@ -768,7 +778,6 @@ nav{
 
       // Add 99 automatically
       const debug = new URLSearchParams(location.search).get("debug");
-      if (debug === "anya") credits = 999;
 
       // Making ?debug=anya page local not public (debug only works on local machine/dev environment.)
       const isLocalhost =
@@ -776,7 +785,6 @@ nav{
       
       if (isLocalhost) {
         const debug = new URLSearchParams(location.search).get("debug");
-        if (debug === "anya") credits = 999;
       }
       
       CURRENT_CREDITS = credits;
@@ -784,7 +792,6 @@ nav{
       
       if (isLocalhost) {
         const debug = new URLSearchParams(location.search).get("debug");
-        if (debug === "anya") credits = 999;
       }
 
       if (btn) {
@@ -860,7 +867,7 @@ async function loadStore() {
         return;
       }
 
-      const r = await fetch(API + "/entitlements?session=" + encodeURIComponent(s));
+      const r = await fetch(apiUrl("/entitlements", s));
       const data = await r.json();
 
       if (!r.ok) {
@@ -971,7 +978,7 @@ async function redeem(itemId, buttonEl) {
   }, 15000);
 
   try {
-    const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
+    const r = await fetch(apiUrl("/redeem", s), {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ itemId })
@@ -1093,6 +1100,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
