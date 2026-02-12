@@ -735,6 +735,9 @@ nav{
       try{
         const r = await fetch(API + "/me?session=" + encodeURIComponent(s));
         me = await r.json();
+        console.log("ME keys:", Object.keys(me));
+        console.log("ME object:", me);
+
       }catch(e){
         if (creditsValue) creditsValue.textContent = "error";
         CURRENT_CREDITS = 0;
@@ -762,13 +765,22 @@ nav{
         return null;
       }
       
-      // ✅ Logged in
+      // ✅ Logged in (with creator test)
       const CREATOR_EMAIL = "lady-anya@hotmail.com";
-      const credits = Number(me.credits ?? 0);
-
-      // ✅ Creator override (ONLY for Anya)
-      // If your API doesn't return me.email, see note below
-      if ((me.email || "").toLowerCase() === CREATOR_EMAIL.toLowerCase()) {
+      
+      const email =
+        (me.email) ||
+        (me.user && me.user.email) ||
+        (me.patreon_email) ||
+        (me.member && me.member.email) ||
+        ""; // fallback
+      
+      let credits = Number(me.credits ?? 0);
+      
+      // Debug (remove later)
+      console.log("Creator check email:", email);
+      
+      if (email.toLowerCase() === CREATOR_EMAIL.toLowerCase()) {
         credits = 999;
       }
       
@@ -1063,6 +1075,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
