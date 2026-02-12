@@ -393,6 +393,33 @@
       color: rgba(27,27,27,0.78);
     }
 
+    /* Default (desktop) */
+    .statusStack{
+      text-align: right;
+    }
+    
+    /* Mobile: stack nicely */
+    @media (max-width: 600px){
+      .statusStack{
+        text-align: left;
+        width: 100%;
+      }
+    
+      .statusStack .creditsLine{
+        margin-top: 6px;
+      }
+    
+      .statusStack .patreonRow{
+        justify-content: flex-start;
+        margin-top: 6px;
+      }
+    
+      /* Optional: make the connect button full width on mobile */
+      #connect{
+        width: 100%;
+      }
+    }
+    
     .storeMsg{
       margin-top: 8px;
       padding: 10px 12px;
@@ -512,19 +539,22 @@
       <div class="row">
         <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-        <div style="text-align:right;">
+        <div class="statusStack">
+            <div id="connectStatus" class="muted" style="display:none; font-weight:1000;">Connected ✅</div>
+          
           <div class="creditsLine">
             Credits: <strong id="creditsValue">—</strong>
           </div>
-
+        
           <div class="patreonRow">
             <span id="patreonPill" class="pill pill--gray">
               <span class="pillDot"></span> Patreon: —
             </span>
-
+        
             <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -674,20 +704,36 @@
       pill.classList.add(cls);
       pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
     }
+    
+     function showConnectedUI(){
+      const btn = document.getElementById("connect");
+      const cs = document.getElementById("connectStatus");
+      if (btn) btn.style.display = "none";
+      if (cs) cs.style.display = "block";
+    }
+    
+    function showConnectUI(){
+      const btn = document.getElementById("connect");
+      const cs = document.getElementById("connectStatus");
+      if (btn) btn.style.display = "";
+      if (cs) cs.style.display = "none";
+    }
 
     async function loadMe() {
       const s = getSession();
       const btn = document.getElementById("connect");
       const creditsValue = document.getElementById("creditsValue");
       const infoPopBody = document.getElementById("infoPopBody");
-
+    
+      // NOT LOGGED IN (no session)
       if (!s) {
         if (creditsValue) creditsValue.textContent = "N/A";
         CURRENT_CREDITS = 0;
-
+    
+        showConnectUI();
         if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
         setPill("not connected");
-
+    
         if (infoPopBody) {
           infoPopBody.innerHTML =
             `Patreon status: <strong>not connected</strong><br>` +
@@ -696,16 +742,20 @@
         }
         return null;
       }
-
+    
+      // HAS SESSION → try load /me
       let me;
-      try{
+      try {
         const r = await fetch(apiUrl("/me", s));
         me = await r.json();
-      }catch(e){
+      } catch (e) {
         if (creditsValue) creditsValue.textContent = "error";
         CURRENT_CREDITS = 0;
+    
+        showConnectUI();
         if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
         setPill("error");
+    
         if (infoPopBody) {
           infoPopBody.innerHTML =
             `Patreon status: <strong>error</strong><br>` +
@@ -713,12 +763,16 @@
         }
         return null;
       }
-
+    
+      // SESSION but API says not logged in
       if (!me.loggedIn) {
         if (creditsValue) creditsValue.textContent = "not connected";
         CURRENT_CREDITS = 0;
+    
+        showConnectUI();
         if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
         setPill("not connected");
+    
         if (infoPopBody) {
           infoPopBody.innerHTML =
             `Patreon status: <strong>not connected</strong><br>` +
@@ -727,25 +781,23 @@
         }
         return null;
       }
-
+    
+      // LOGGED IN ✅
       const credits = Number(me.credits ?? 0);
       CURRENT_CREDITS = credits;
       if (creditsValue) creditsValue.textContent = credits.toFixed(2);
-
-      if (btn) {
-        btn.textContent = "Connected ✅";
-        btn.disabled = true;
-      }
-
+    
+      showConnectedUI();
+    
       const status = me.patreon_status || "active (connected)";
       setPill(status);
-
+    
       if (infoPopBody) {
         infoPopBody.innerHTML =
           `Your current Patreon status: <strong>${status}</strong><br>` +
           `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
       }
-
+    
       return me;
     }
 
@@ -1049,6 +1101,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
