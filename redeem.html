@@ -742,8 +742,8 @@ nav{
         setPill("error");
         if (infoPopBody) {
           infoPopBody.innerHTML =
-            `Your current Patreon status: <strong>error</strong><br>` +
-            `Couldn’t load your Patreon info right now. Please try again in a moment.`;
+            `Patreon status: <strong>error</strong><br>` +
+            `Oops! Couldn’t load your Patreon info right now. Please try again in a moment.`;
         }
         return null;
       }
@@ -754,9 +754,9 @@ nav{
         if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
         setPill("not connected");
         if (infoPopBody) {
-          infoPopBody.innerHTML =
-            `Your current Patreon status: <strong>not connected</strong><br>` +
-            `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+            `Patreon status: <strong>not connected</strong><br>` +
+            `Connect your Patreon to see your credits. ` +
+            `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
         }
         return null;
       }
@@ -777,7 +777,7 @@ nav{
       if (infoPopBody) {
         infoPopBody.innerHTML =
           `Your current Patreon status: <strong>${status}</strong><br>` +
-          `If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.`;
+            `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
       }
 
       return me;
@@ -1054,6 +1054,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
