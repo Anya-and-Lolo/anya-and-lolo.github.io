@@ -938,7 +938,7 @@ async function redeem(itemId, buttonEl) {
   if (CURRENT_CREDITS < costCredits) {
     showStoreMessage(
       buttonEl,
-      `Sorry, you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} credits for ${itemName}.`,
+      `Sorry, you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} for ${itemName}.`,
       "error"
     );
     return;
@@ -955,6 +955,17 @@ async function redeem(itemId, buttonEl) {
 
   // show progress inline
   showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
+  
+  // failsafe: if request hangs, revert message after 15s
+  const stuckTimer = setTimeout(() => {
+    showStoreMessage(buttonEl, "Still working… please try again in a moment.", "info");
+    if (buttonEl) {
+      buttonEl.disabled = false;
+      buttonEl.textContent = originalText || "Redeem";
+    }
+    redeeming.delete(itemId);
+  }, 15000);
+
 
   try {
     const r = await fetch(API + "/redeem?session=" + encodeURIComponent(s), {
@@ -1070,6 +1081,7 @@ async function redeem(itemId, buttonEl) {
 
 </body>
 </html>
+
 
 
 
