@@ -148,6 +148,11 @@
       margin: 0 auto;
     }
 
+    @media (max-width: 900px){
+      .topbarInner{
+        align-items: center;
+      }
+
     .brand{
       display:flex;
       align-items:center;
@@ -157,13 +162,29 @@
       white-space: nowrap;
       font-size: 20px;
     }
-    
+
     nav{
       display:flex;
       align-items:center;
       gap: 10px;
       flex-wrap: wrap;
       justify-content: flex-end;
+    }
+
+      nav{
+        width: 100%;
+        flex-wrap: nowrap;          /* no wrapping */
+        justify-content: flex-start;
+        overflow-x: auto;           /* allow swipe */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;      /* Firefox hide */
+      }
+      nav::-webkit-scrollbar{ display:none; } /* Chrome/Safari hide */
+    
+      .navlink{
+        white-space: nowrap;        /* keep each pill intact */
+        flex: 0 0 auto;
+      }
     }
 
     .navlink{
@@ -305,7 +326,7 @@
       align-items:flex-start;
     }
 
-/* --- Heart confetti burst (outside button) --- */
+/* --- confetti burst (outside button) --- */
 .confettiBurst{
   position: relative;
   overflow: visible;  /* allow particles outside */
@@ -333,7 +354,7 @@
   filter: drop-shadow(0 6px 10px rgba(0,0,0,0.14));
 }
 
-/* Heart shape via inline SVG fill color */
+/* shape via inline SVG fill color */
 .confettiBurst .confettiPiece svg{
   width: 100%;
   height: 100%;
@@ -524,6 +545,7 @@
       gap: 12px;
       align-items:center;
     }
+    
     @media (max-width: 900px){
       .footerInner{ grid-template-columns: 1fr; text-align:center; }
       .footerRight{ justify-content: center !important; }
@@ -920,6 +942,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
