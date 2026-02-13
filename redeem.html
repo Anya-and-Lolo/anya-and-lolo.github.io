@@ -536,7 +536,7 @@
 
         <div class="statusBlock">  
           <div class="creditsLine">
-            Credits: <strong id="creditsValue">—</strong>
+            Credits: <strong id="creditsValue">—</strong> <span class="muted">(1 cent = 1 credit)</span>
           </div>
         
           <div class="patreonRow">
@@ -786,11 +786,11 @@
       }
     
       // ✅ Logged in
-      const credits = Number(me.credits ?? 0);
+      const credits = Number(me.credits_raw_cents ?? me.credits ?? 0); // use this if you want 3.99: const credits = Number(me.credits ?? 0);
       CURRENT_CREDITS = credits;
-    
+      
       if (creditsValue) {
-        creditsValue.textContent = formatCredits(credits);
+        creditsValue.textContent = String(Math.floor(credits));
       }
     
       if (btn) {
@@ -821,7 +821,7 @@
       el.innerHTML = "";
     
       (data.items || []).forEach(item => {
-        const credits = (item.cost_cents / 100).toFixed(2);
+        const credits = String(item.cost_cents); // 1 cent = 1 credit
         const remaining = item.remaining ?? 0;
         const img = ITEM_IMAGES[item.id] || "";
         const isOwned = OWNED_ITEM_IDS.has(item.id);
@@ -965,7 +965,7 @@
       if (CURRENT_CREDITS < costCredits) {
         showStoreMessage(
           buttonEl,
-          `Sorry, you don't have enough credits, you need ${costCredits.toFixed(2)} for ${itemName}.`,
+          `Sorry, you don't have enough credits, you need ${costCredits} for ${itemName}.`,
           "error"
         );
         return;
@@ -1110,6 +1110,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
