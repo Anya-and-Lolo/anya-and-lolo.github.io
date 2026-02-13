@@ -717,73 +717,90 @@
       return num.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
     }
 
-    async function loadMe() {
-      const s = getSession();
-      const btn = document.getElementById("connect");
-      const creditsValue = document.getElementById("creditsValue");
-      const infoPopBody = document.getElementById("infoPopBody");
-    
-      // ❌ No session at all
-      if (!s) {
-        CURRENT_CREDITS = 0;
-        if (creditsValue) creditsValue.textContent = "N/A";
-    
-        if (btn) {
-          btn.textContent = "Connect Patreon";
-          btn.disabled = false;
-        }
-    
-        setPill("not connected");
-    
-        if (infoPopBody) {
-          infoPopBody.innerHTML =
-            `Patreon status: <strong>not connected</strong><br>` +
-            `Connect your Patreon to see your credits. ` +
-            `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
-        }
-    
-        return null;
-      }
-    
-      let me;
-    
-      try {
-        const r = await fetch(apiUrl("/me", s));
-        me = await r.json();
-      } catch (e) {
-        CURRENT_CREDITS = 0;
-        if (creditsValue) creditsValue.textContent = "error";
-    
-        if (btn) {
-          btn.textContent = "Connect Patreon";
-          btn.disabled = false;
-        }
-    
-        setPill("error");
-    
-        if (infoPopBody) {
-          infoPopBody.innerHTML =
-            `Patreon status: <strong>error</strong><br>` +
-            `Oops! Couldn’t load your Patreon info right now. Please try again in a moment.`;
-        }
-    
-        return null;
-      }
-    
-      // ❌ Session exists but backend says not logged in
-      if (!me.loggedIn) {
-        CURRENT_CREDITS = 0;
-        if (creditsValue) creditsValue.textContent = "not connected";
-    
-        if (btn) {
-          btn.textContent = "Connect Patreon";
-          btn.disabled = false;
-        }
-    
-        setPill("not connected");
-    
-        return null;
-      }
+async function loadMe() {
+  const s = getSession();
+  const btn = document.getElementById("connect");
+  const creditsValue = document.getElementById("creditsValue");
+  const infoPopBody = document.getElementById("infoPopBody");
+
+  // ❌ No session at all
+  if (!s) {
+    CURRENT_CREDITS = 0;
+    if (creditsValue) creditsValue.textContent = "N/A";
+
+    if (btn) {
+      btn.textContent = "Connect Patreon";
+      btn.disabled = false;
+    }
+
+    setPill("not connected");
+
+    if (infoPopBody) {
+      infoPopBody.innerHTML =
+        `Patreon status: <strong>not connected</strong><br>` +
+        `Connect your Patreon to see your credits. ` +
+        `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
+    }
+
+    return null;
+  }
+
+  let r, text, me;
+
+  // 1) Fetch raw text safely
+  try {
+    r = await fetch(apiUrl("/me", s), { cache: "no-store" });
+    text = await r.text();
+  } catch (e) {
+    CURRENT_CREDITS = 0;
+    if (creditsValue) creditsValue.textContent = "error";
+    setPill("error");
+
+    if (infoPopBody) {
+      infoPopBody.innerHTML =
+        `Patreon status: <strong>error</strong><br>` +
+        `Network failed: <code>${String(e)}</code>`;
+    }
+
+    console.error("[/me] network error", e);
+    return null;
+  }
+
+  // 2) Parse JSON safely
+  try {
+    me = JSON.parse(text || "{}");
+  } catch (e) {
+    CURRENT_CREDITS = 0;
+    if (creditsValue) creditsValue.textContent = "error";
+    setPill("error");
+
+    if (infoPopBody) {
+      infoPopBody.innerHTML =
+        `Patreon status: <strong>error</strong><br>` +
+        `HTTP: <strong>${r.status}</strong><br>` +
+        `Non-JSON response from /me (first 200 chars):<br>` +
+        `<code>${(text || "").slice(0, 200)}</code>`;
+    }
+
+    console.error("[/me] non-json", { status: r.status, text });
+    return null;
+  }
+
+  console.log("[/me] http", r.status, me);
+
+  // ❌ Session exists but backend says not logged in
+  if (!me.loggedIn) {
+    CURRENT_CREDITS = 0;
+    if (creditsValue) creditsValue.textContent = "not connected";
+
+    if (btn) {
+      btn.textContent = "Connect Patreon";
+      btn.disabled = false;
+    }
+
+    setPill("not connected");
+    return null;
+  }
     
       // ✅ Logged in
       const credits = Number(me.credits_raw_cents ?? me.credits ?? 0); // use this if you want 3.99: const credits = Number(me.credits ?? 0);
@@ -1110,6 +1127,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
