@@ -536,7 +536,7 @@
 
         <div class="statusBlock">  
           <div class="creditsLine">
-            Credits: <strong id="creditsValue">—</strong>
+            Credits: <strong id="creditsValue">—</strong> (1 cent = 1 credit)
           </div>
         
           <div class="patreonRow">
@@ -612,7 +612,7 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     const API = "https://patreon-redeem-api.lady-anya.workers.dev";
-    let CURRENT_CREDITS = 0;
+    let CURRENT_CREDITS_CENTS = 0; // always integer cents
     let OWNED_ITEM_IDS = new Set();
 
     // ✅ Parse URL params ONCE
@@ -786,30 +786,54 @@
       }
     
       // ✅ Logged in
-      const credits = Number(me.credits ?? 0);
-      CURRENT_CREDITS = credits;
-    
-      if (creditsValue) {
-        creditsValue.textContent = formatCredits(credits);
+      // Worker returns:
+      // - credits_raw_cents = integer cents available
+      // - credits = points after applying CREDITS_SCALE (optional)
+      const cents = Number.isFinite(Number(me.credits_raw_cents))
+        ? Number(me.credits_raw_cents)
+        : 0;
+      
+      CURRENT_CREDITS_CENTS = Math.floor(cents);
+      
+      // UI label logic you want:
+      const statusRaw = (me.patreon_status ?? "").toString();
+      const statusLower = statusRaw.toLowerCase();
+      
+      // "connected" if logged in but status is missing
+      const prettyStatus = statusRaw ? statusRaw : "connected";
+      
+      // Creator override (unlimited)
+      const isCreator = (DEBUG === "anya"); // your existing debug flag
+      if (isCreator) {
+        if (creditsValue) creditsValue.textContent = "unlimited";
+        if (btn) { btn.textContent = "Connected ✅"; btn.disabled = true; }
+        setPill("connected");
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Patreon status: <strong>connected</strong><br>` +
+            `Creator mode: <strong>unlimited credits</strong>.`;
+        }
+        return me;
       }
-    
+      
+      // Free patron = connected but 0 credits
+      // (This happens naturally if cents = 0)
+      if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
+      
       if (btn) {
         btn.textContent = "Connected ✅";
         btn.disabled = true;
       }
-    
-      const status = me.patreon_status || "active (connected)";
-      setPill(status);
-    
+      
+      setPill(prettyStatus);
+      
       if (infoPopBody) {
         infoPopBody.innerHTML =
-          `Your current Patreon status: <strong>${status}</strong><br>` +
-          `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
+          `Your current Patreon status: <strong>${prettyStatus}</strong><br>` +
+          `If your payment is still processing, declined, or cancelled, your credits may take a moment to appear.`;
       }
-    
+      
       return me;
-    }
-
 
     const redeeming = new Set();
 
@@ -958,14 +982,13 @@
         return;
       }
 
-      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
-      const costCredits = Number((costCents / 100).toFixed(2));
       const itemName = buttonEl?.dataset?.name || itemId;
-
-      if (CURRENT_CREDITS < costCredits) {
+      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+      
+      if (CURRENT_CREDITS_CENTS < costCents) {
         showStoreMessage(
           buttonEl,
-          `Sorry, you don't have enough credits, you need ${costCredits.toFixed(2)} for ${itemName}.`,
+          `Sorry, you don't have enough credits. You need ${costCents} credits for ${itemName}.`,
           "error"
         );
         return;
@@ -1110,3 +1133,4 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
