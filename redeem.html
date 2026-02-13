@@ -711,6 +711,12 @@
       if (cs) cs.style.display = "none";
     }
 
+    function formatCredits(n) {
+      const num = Number(n || 0);
+      // keep up to 2 decimals but remove trailing zeros
+      return num.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
+    }
+
     async function loadMe() {
       const s = getSession();
       const btn = document.getElementById("connect");
@@ -784,7 +790,7 @@
       CURRENT_CREDITS = credits;
     
       if (creditsValue) {
-        creditsValue.textContent = credits.toFixed(2);
+        creditsValue.textContent = formatCredits(credits);
       }
     
       if (btn) {
@@ -912,8 +918,6 @@
 
       const isUrl = isProbablyUrl(rawKeyOrUrl);
       const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
-      const openHref = isUrl ? rawKeyOrUrl : "https://itch.io/claim";
-      const openText = isUrl ? "Open key →" : "Open itch.io claim →";
 
       const wrap = document.createElement("div");
       wrap.className = "card";
@@ -924,7 +928,6 @@
           <div><code class="key">${rawKeyOrUrl || "(missing key)"}</code></div>
           <div style="margin-top:8px" class="row">
             <button class="copy">Copy My Key</button>
-            <a class="open" href="${openHref}" target="_blank" rel="noopener">${openText}</a>
           </div>
           <div class="muted" style="margin-top:8px">
             Thank you for supporting 💃 Anya & Lolo 🦜 Please note: your key can only be used once. If it’s shared accidentally, someone else could claim it, so please keep it safe.
@@ -962,7 +965,7 @@
       if (CURRENT_CREDITS < costCredits) {
         showStoreMessage(
           buttonEl,
-          `Sorry, you have ${CURRENT_CREDITS.toFixed(2)} credits, but need ${costCredits.toFixed(2)} for ${itemName}.`,
+          `Sorry, you don't have enough credits, you need ${costCredits.toFixed(2)} for ${itemName}.`,
           "error"
         );
         return;
@@ -1107,6 +1110,7 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
