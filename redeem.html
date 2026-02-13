@@ -204,8 +204,8 @@
       }
 
       .price{
-        font-size: 16px;  
-        font-weight: 1000; 
+        font-size: 16px;
+        font-weight: 1000;
         color: rgba(27,27,27,0.88);
       }
 
@@ -397,24 +397,23 @@
     .statusBlock{
       text-align: right;
     }
-    
+
     /* Mobile: stack nicely under the button */
     @media (max-width: 600px){
       .row{ align-items: flex-start; }
-    
+
       .statusBlock{
         width: 100%;
         text-align: center;
       }
-    
-      /* Optional: make button full width so it feels tidy */
+
       #connect{ width: 100%; }
-    
+
       .patreonRow{
         justify-content: center;
       }
     }
-    
+
     .storeMsg{
       margin-top: 8px;
       padding: 10px 12px;
@@ -534,16 +533,16 @@
       <div class="row">
         <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-        <div class="statusBlock">  
+        <div class="statusBlock">
           <div class="creditsLine">
             Credits: <strong id="creditsValue">—</strong> <span class="muted">(1 cent = 1 credit)</span>
           </div>
-        
+
           <div class="patreonRow">
             <span id="patreonPill" class="pill pill--gray">
               <span class="pillDot"></span> Patreon: —
             </span>
-        
+
             <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
           </div>
         </div>
@@ -645,6 +644,9 @@
       return localStorage.getItem("session");
     }
 
+    // ✅ OPTIONAL RESET (uncomment once to force reconnect)
+    // localStorage.removeItem("session");
+
     function showStoreMessage(buttonEl, msg, type = "info") {
       if (!buttonEl) return;
 
@@ -696,159 +698,147 @@
       pill.classList.add(cls);
       pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
     }
-    
-     function showConnectedUI(){
+
+    async function loadMe() {
+      const s = getSession();
       const btn = document.getElementById("connect");
-      const cs = document.getElementById("connectStatus");
-      if (btn) btn.style.display = "none";
-      if (cs) cs.style.display = "block";
-    }
-    
-    function showConnectUI(){
-      const btn = document.getElementById("connect");
-      const cs = document.getElementById("connectStatus");
-      if (btn) btn.style.display = "";
-      if (cs) cs.style.display = "none";
-    }
+      const creditsValue = document.getElementById("creditsValue");
+      const infoPopBody = document.getElementById("infoPopBody");
 
-    function formatCredits(n) {
-      const num = Number(n || 0);
-      // keep up to 2 decimals but remove trailing zeros
-      return num.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
-    }
-
-async function loadMe() {
-  const s = getSession();
-  const btn = document.getElementById("connect");
-  const creditsValue = document.getElementById("creditsValue");
-  const infoPopBody = document.getElementById("infoPopBody");
-
-  // ❌ No session at all
-  if (!s) {
-    CURRENT_CREDITS = 0;
-    if (creditsValue) creditsValue.textContent = "N/A";
-
-    if (btn) {
-      btn.textContent = "Connect Patreon";
-      btn.disabled = false;
-    }
-
-    setPill("not connected");
-
-    if (infoPopBody) {
-      infoPopBody.innerHTML =
-        `Patreon status: <strong>not connected</strong><br>` +
-        `Connect your Patreon to see your credits. ` +
-        `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
-    }
-
-    return null;
-  }
-
-  let r, text, me;
-
-  // 1) Fetch raw text safely
-  try {
-    r = await fetch(apiUrl("/me", s), { cache: "no-store" });
-    text = await r.text();
-  } catch (e) {
-    CURRENT_CREDITS = 0;
-    if (creditsValue) creditsValue.textContent = "error";
-    setPill("error");
-
-    if (infoPopBody) {
-      infoPopBody.innerHTML =
-        `Patreon status: <strong>error</strong><br>` +
-        `Network failed: <code>${String(e)}</code>`;
-    }
-
-    console.error("[/me] network error", e);
-    return null;
-  }
-
-  // 2) Parse JSON safely
-  try {
-    me = JSON.parse(text || "{}");
-  } catch (e) {
-    CURRENT_CREDITS = 0;
-    if (creditsValue) creditsValue.textContent = "error";
-    setPill("error");
-
-    if (infoPopBody) {
-      infoPopBody.innerHTML =
-        `Patreon status: <strong>error</strong><br>` +
-        `HTTP: <strong>${r.status}</strong><br>` +
-        `Non-JSON response from /me (first 200 chars):<br>` +
-        `<code>${(text || "").slice(0, 200)}</code>`;
-    }
-
-    console.error("[/me] non-json", { status: r.status, text });
-    return null;
-  }
-
-  console.log("[/me] http", r.status, me);
-
-  // ❌ Session exists but backend says not logged in
-  if (!me.loggedIn) {
-    CURRENT_CREDITS = 0;
-    if (creditsValue) creditsValue.textContent = "not connected";
-
-    if (btn) {
-      btn.textContent = "Connect Patreon";
-      btn.disabled = false;
-    }
-
-    setPill("not connected");
-    return null;
-  }
-    
-      // ✅ Logged in
-      const credits = Number(me.credits_raw_cents ?? me.credits ?? 0); // use this if you want 3.99: const credits = Number(me.credits ?? 0);
-      CURRENT_CREDITS = credits;
-      
-      if (creditsValue) {
-        creditsValue.textContent = String(Math.floor(credits));
+      // No session
+      if (!s) {
+        CURRENT_CREDITS = 0;
+        if (creditsValue) creditsValue.textContent = "N/A";
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+        setPill("not connected");
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Patreon status: <strong>not connected</strong><br>` +
+            `Connect your Patreon to see your credits.`;
+        }
+        return null;
       }
-    
+
+      let r, text, me;
+
+      // 1) Fetch raw text
+      try {
+        r = await fetch(apiUrl("/me", s), { cache: "no-store" });
+        text = await r.text();
+      } catch (e) {
+        CURRENT_CREDITS = 0;
+        if (creditsValue) creditsValue.textContent = "error";
+        setPill("error");
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Patreon status: <strong>error</strong><br>` +
+            `Network failed: <code>${String(e)}</code>`;
+        }
+
+        console.error("[/me] network error", e);
+        return null;
+      }
+
+      // 2) Parse JSON (if possible)
+      try {
+        me = JSON.parse(text || "{}");
+      } catch (e) {
+        CURRENT_CREDITS = 0;
+        if (creditsValue) creditsValue.textContent = "error";
+        setPill("error");
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Patreon status: <strong>error</strong><br>` +
+            `HTTP: <strong>${r.status}</strong><br>` +
+            `Non-JSON response from /me (first 200 chars):<br>` +
+            `<code>${(text || "").slice(0, 200)}</code>`;
+        }
+
+        console.error("[/me] non-json", { status: r.status, text });
+        return null;
+      }
+
+      console.log("[/me] http", r.status, me);
+
+      // If HTTP isn't OK, show error instead of "not connected"
+      if (!r.ok) {
+        CURRENT_CREDITS = 0;
+        if (creditsValue) creditsValue.textContent = "error";
+        setPill("error");
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Patreon status: <strong>error</strong><br>` +
+            `HTTP: <strong>${r.status}</strong><br>` +
+            `<code>${(text || "").slice(0, 200)}</code>`;
+        }
+        return null;
+      }
+
+      // Not logged in
+      if (!me.loggedIn) {
+        CURRENT_CREDITS = 0;
+        if (creditsValue) creditsValue.textContent = "not connected";
+        if (btn) { btn.textContent = "Connect Patreon"; btn.disabled = false; }
+        setPill("not connected");
+
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Patreon status: <strong>not connected</strong><br>` +
+            `Your session expired. Please connect again.`;
+        }
+        return null;
+      }
+
+      // Logged in ✅ (1 cent = 1 credit)
+      const credits = Number(me.credits_raw_cents ?? me.credits ?? 0);
+      CURRENT_CREDITS = credits;
+
+      if (creditsValue) creditsValue.textContent = String(credits);
+
       if (btn) {
         btn.textContent = "Connected ✅";
         btn.disabled = true;
       }
-    
+
       const status = me.patreon_status || "active (connected)";
       setPill(status);
-    
+
       if (infoPopBody) {
         infoPopBody.innerHTML =
           `Your current Patreon status: <strong>${status}</strong><br>` +
-          `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
+          `If your payment is still processing, credits may take a moment to appear.`;
       }
-    
+
       return me;
     }
 
-
     const redeeming = new Set();
 
-    // ✅ UPDATED: uses apiUrl("/store") (keeps debug param if present)
     async function loadStore() {
       const r = await fetch(apiUrl("/store"));
       const data = await r.json();
       const el = document.getElementById("store");
       el.innerHTML = "";
-    
+
       (data.items || []).forEach(item => {
-        const credits = String(item.cost_cents); // 1 cent = 1 credit
+        // 1 cent = 1 credit (store displays cents as credits)
+        const credits = String(item.cost_cents);
         const remaining = item.remaining ?? 0;
         const img = ITEM_IMAGES[item.id] || "";
         const isOwned = OWNED_ITEM_IDS.has(item.id);
-    
+
         const div = document.createElement("div");
         div.className = "card";
-    
+
         div.innerHTML = `
           ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
-    
+
           <div style="margin-top:10px;">
             <strong>${item.name}</strong><br>
             <span class="muted">
@@ -856,7 +846,7 @@ async function loadMe() {
               • ${isOwned ? "System Owned ✅" : `Remaining keys: ${remaining}`}
             </span>
           </div>
-    
+
           <button
             class="storeButton"
             ${(isOwned || remaining <= 0) ? "disabled" : ""}
@@ -865,7 +855,7 @@ async function loadMe() {
             data-cost-cents="${item.cost_cents}">
             ${isOwned ? "Redeemed" : "Redeem"}
           </button>
-    
+
           <div class="storeMsg storeMsg--info show">
             ${
               (item.payload && item.payload.instructions)
@@ -874,14 +864,13 @@ async function loadMe() {
             }
           </div>
         `;
-    
+
         const btn = div.querySelector("button");
-    
-        // ✅ only bind redeem if not owned and has stock
+
         if (!isOwned && remaining > 0) {
           btn.onclick = () => redeem(item.id, btn);
         }
-    
+
         el.appendChild(div);
       });
     }
@@ -889,39 +878,37 @@ async function loadMe() {
     async function loadUnlocks() {
       const s = getSession();
       const box = document.getElementById("unlocks");
-    
-      // reset owned set every refresh
+
       OWNED_ITEM_IDS = new Set();
-    
+
       if (!s) {
         box.classList.add("muted");
         box.textContent = "Connect Patreon to see your unlocks.";
         return;
       }
-    
+
       const r = await fetch(apiUrl("/entitlements", s));
       const data = await r.json();
-    
+
       if (!r.ok) {
         box.classList.add("muted");
         box.textContent = data.error || "Could not load unlocks.";
         return;
       }
-    
+
       if (!data.items || data.items.length === 0) {
         box.classList.add("muted");
         box.textContent = "Redeem something to see it here.";
         return;
       }
-    
-      // ✅ record owned item ids
+
       data.items.forEach(ent => {
         if (ent?.item_id) OWNED_ITEM_IDS.add(ent.item_id);
       });
-    
+
       box.classList.remove("muted");
       box.innerHTML = "";
-    
+
       data.items.forEach(ent => {
         const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
         const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
@@ -975,14 +962,16 @@ async function loadMe() {
         return;
       }
 
-      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
-      const costCredits = Number((costCents / 100).toFixed(2));
       const itemName = buttonEl?.dataset?.name || itemId;
+      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+
+      // ✅ 1 cent = 1 credit
+      const costCredits = costCents;
 
       if (CURRENT_CREDITS < costCredits) {
         showStoreMessage(
           buttonEl,
-          `Sorry, you don't have enough credits, you need ${costCredits} for ${itemName}.`,
+          `Sorry, you don't have enough credits. You need ${costCredits} credits for ${itemName}.`,
           "error"
         );
         return;
@@ -1017,10 +1006,13 @@ async function loadMe() {
 
         clearTimeout(stuckTimer);
 
-        const out = await r.json();
+        const outText = await r.text();
+        let out = {};
+        try { out = JSON.parse(outText || "{}"); } catch(e) {}
 
         if (!r.ok) {
-          showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
+          showStoreMessage(buttonEl, out.error || `Redeem failed (HTTP ${r.status}).`, "error");
+          console.error("[/redeem] failed", r.status, outText);
           return;
         }
 
@@ -1032,12 +1024,13 @@ async function loadMe() {
           showStoreMessage(buttonEl, "✅ Redeemed! (No key returned)", "success");
         }
 
-      await loadMe();
-      await loadUnlocks();
-      await loadStore();
+        await loadMe();
+        await loadUnlocks();
+        await loadStore();
 
       } catch (e) {
         showStoreMessage(buttonEl, "Network error. Please try again.", "error");
+        console.error("[/redeem] network error", e);
       } finally {
         clearTimeout(stuckTimer);
         redeeming.delete(itemId);
@@ -1079,8 +1072,6 @@ async function loadMe() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeInfo();
     });
-
-    showConnectUI();
 
     (async () => {
       await loadMe();
@@ -1127,27 +1118,3 @@ async function loadMe() {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
