@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin • Patreon Rewards</title>
+  <style>
+    body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin:24px; line-height:1.5; }
+    input, button, textarea{ font: inherit; padding:10px; }
+    input, textarea{ width: 100%; max-width: 720px; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0; }
+    .card{ border:1px solid #ddd; border-radius:12px; padding:14px; max-width: 920px; }
+    pre{ background:#f6f6f6; padding:12px; border-radius:10px; overflow:auto; }
+    .muted{ color:#666; font-size: 14px; }
+    button{ cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <p class="muted">Talks to your Cloudflare Worker admin endpoints.</p>
+
+  <div class="card">
+    <div class="row">
+      <label style="min-width:120px;">API Base</label>
+      <input id="apiBase" value="https://patreon-redeem-api.lady-anya.workers.dev" />
+    </div>
+
+    <div class="row">
+      <label style="min-width:120px;">Admin Token</label>
+      <input id="adminToken" type="password" placeholder="Paste ADMIN_TOKEN" />
+      <button id="ping">Ping</button>
+    </div>
+
+    <hr>
+
+    <h2>Lookup user</h2>
+    <div class="row">
+      <label style="min-width:120px;">patreon_user_id</label>
+      <input id="patreonUserId" placeholder="e.g. 466331" />
+      <button id="lookup">Lookup</button>
+    </div>
+
+    <h3>Result</h3>
+    <pre id="out">{}</pre>
+
+    <hr>
+
+    <h2>Migrate entitlements</h2>
+    <p class="muted">Only use if a user’s entitlements were created under an old/random user_id (like a UUID) and you want to move them.</p>
+
+    <div class="row">
+      <label style="min-width:120px;">fromUserId</label>
+      <input id="fromUserId" placeholder="old user_id (uuid etc)" />
+    </div>
+    <div class="row">
+      <label style="min-width:120px;">toUserId</label>
+      <input id="toUserId" placeholder="new user_id (patreon_123...)" />
+      <button id="migrate">Migrate</button>
+    </div>
+
+    <pre id="migrateOut">{}</pre>
+  </div>
+
+<script>
+  function getAuth() {
+    const token = document.getElementById("adminToken").value.trim();
+    return { "Authorization": "Bearer " + token };
+  }
+
+  function apiBase() {
+    return document.getElementById("apiBase").value.trim().replace(/\/+$/, "");
+  }
+
+  function setOut(el, obj) {
+    el.textContent = JSON.stringify(obj, null, 2);
+  }
+
+  document.getElementById("ping").onclick = async () => {
+    const out = document.getElementById("out");
+    try {
+      const r = await fetch(apiBase() + "/admin/ping", { headers: { ...getAuth() }});
+      const j = await r.json().catch(() => ({}));
+      setOut(out, { http: r.status, ...j });
+    } catch (e) {
+      setOut(out, { error: String(e) });
+    }
+  };
+
+  document.getElementById("lookup").onclick = async () => {
+    const out = document.getElementById("out");
+    const id = document.getElementById("patreonUserId").value.trim();
+    if (!id) return setOut(out, { error: "missing patreon_user_id" });
+
+    try {
+      const r = await fetch(apiBase() + "/admin/user?patreon_user_id=" + encodeURIComponent(id), {
+        headers: { ...getAuth() }
+      });
+      const j = await r.json().catch(() => ({}));
+      setOut(out, { http: r.status, ...j });
+    } catch (e) {
+      setOut(out, { error: String(e) });
+    }
+  };
+
+  document.getElementById("migrate").onclick = async () => {
+    const out = document.getElementById("migrateOut");
+    const fromUserId = document.getElementById("fromUserId").value.trim();
+    const toUserId = document.getElementById("toUserId").value.trim();
+    if (!fromUserId || !toUserId) return setOut(out, { error: "missing from/to" });
+
+    try {
+      const r = await fetch(apiBase() + "/admin/migrate", {
+        method: "POST",
+        headers: { "content-type": "application/json", ...getAuth() },
+        body: JSON.stringify({ fromUserId, toUserId })
+      });
+      const j = await r.json().catch(() => ({}));
+      setOut(out, { http: r.status, ...j });
+    } catch (e) {
+      setOut(out, { error: String(e) });
+    }
+  };
+</script>
+</body>
+</html>
