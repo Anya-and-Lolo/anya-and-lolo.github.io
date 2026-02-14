@@ -652,42 +652,17 @@ function setPill(status) {
   if (!pill) return;
 
   const s = String(status || "").toLowerCase();
-
   let cls = "pill--gray";
 
-  // 🟢 Active / Connected
-  if (s.includes("active") || s.includes("connected")) {
-    cls = "pill--green";
-  }
+  // ⚪ Not connected FIRST (so it can't be overridden)
+  if (s.includes("not connected")) cls = "pill--gray";
+  else if (s.includes("not a patron")) cls = "pill--blue";
+  else if (s.includes("active")) cls = "pill--green";
+  else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
+  else if (s.includes("declined") || s.includes("error")) cls = "pill--red";
+  else if (s.includes("connected")) cls = "pill--green"; // last
 
-  // 🔵 Not a patron (neutral state)
-  else if (s.includes("not a patron")) {
-    cls = "pill--blue";
-  }
-
-  // 🟡 Pending / Paused
-  else if (s.includes("paused") || s.includes("pending")) {
-    cls = "pill--amber";
-  }
-
-  // 🔴 Errors / Declined
-  else if (s.includes("declined") || s.includes("error")) {
-    cls = "pill--red";
-  }
-
-  // ⚪ Not connected
-  else if (s.includes("not connected")) {
-    cls = "pill--gray";
-  }
-
-  pill.classList.remove(
-    "pill--green",
-    "pill--amber",
-    "pill--red",
-    "pill--gray",
-    "pill--blue"
-  );
-
+  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray","pill--blue");
   pill.classList.add(cls);
   pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
 }
@@ -786,7 +761,7 @@ function setPill(status) {
       }
 
       items.forEach(item => {
-        const costCreditsLabel = (item.cost_cents / 100).toFixed(2);
+        const costCreditsLabel = String(Math.floor(Number(item.cost_cents || 0)));
         const remaining = item.remaining ?? 0;
         const img = ITEM_IMAGES[item.id] || "";
         const isOwned = OWNED_ITEM_IDS.has(item.id);
@@ -1022,6 +997,7 @@ async function redeem(itemId, buttonEl) {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
