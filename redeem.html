@@ -1038,9 +1038,26 @@ function redactKey(s){
   return t.length <= 6 ? t : ("***" + t.slice(-6));
 }
 
+// ✅ Click Handler for Copy Support Info in the PopUp
 document.getElementById("copySupport")?.addEventListener("click", async () => {
   const sessionPresent = !!getSession();
-  const supportId = getSupportId(); // ✅ keep it OUTSIDE safe{}
+  const supportId = getSupportId();
+
+  // Pull user_id + patreon_user_id from /support (because /me doesn't include them)
+  let support = { user_id: null, patreon_user_id: null };
+  try {
+    const s = getSession();
+    if (s) {
+      const r = await apiFetch("/support", s);
+      const data = await r.json();
+      if (r.ok && data?.loggedIn && data?.support) {
+        support.user_id = data.support.user_id ?? null;
+        support.patreon_user_id = data.support.patreon_user_id ?? null;
+      }
+    }
+  } catch (e) {
+    // ignore — still copy whatever we have
+  }
 
   const entItems = Array.isArray(LAST_ENTITLEMENTS?.items) ? LAST_ENTITLEMENTS.items : [];
   const safeEnt = entItems.map(e => ({
@@ -1058,11 +1075,13 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
     time: new Date().toISOString(),
     session_present: sessionPresent,
 
+    // ✅ now useful for admin search
+    user_id: support.user_id,                 // e.g. "patreon_12345"
+    patreon_user_id: support.patreon_user_id, // e.g. "12345"
+
     // From /me (if connected)
     loggedIn: LAST_ME?.loggedIn ?? null,
     patreon_status: LAST_ME?.patreon_status ?? null,
-    user_id: LAST_ME?.user_id ?? LAST_ME?.userId ?? null,
-    patreon_user_id: LAST_ME?.patreon_user_id ?? LAST_ME?.patreonUserId ?? null,
     credits_raw_cents: LAST_ME?.credits_raw_cents ?? null,
 
     // From /entitlements
@@ -1073,7 +1092,8 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   };
 
   const text =
-    `SUPPORT INFO (paste to Anya)\nSupport ID: ${supportId}\n\n` + // ✅ use the var
+    `SUPPORT INFO (paste to Anya)\nSupport ID: ${supportId}\n` +
+    `Admin lookup: patreon_user_id=${support.patreon_user_id ?? "unknown"}\n\n` +
     JSON.stringify(safe, null, 2);
 
   await navigator.clipboard.writeText(text);
@@ -1092,6 +1112,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
