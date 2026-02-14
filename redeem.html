@@ -718,7 +718,6 @@ function setPill(status) {
         infoPopBody.innerHTML =
           `Patreon status: <strong>not connected</strong><br>` +
           `Connect your Patreon to see your credits.`;
-          updateInfoPopupSupportId();
       }
       return null;
     }
@@ -759,7 +758,6 @@ function setPill(status) {
         infoPopBody.innerHTML =
           `Your current Patreon status: <strong>${prettyStatus}</strong><br>` +
           `Credits shown are based on your lifetime support for this campaign.`;
-          updateInfoPopupSupportId();
       }
 
       return me;
@@ -775,6 +773,16 @@ function setPill(status) {
   } // ✅ IMPORTANT: closes loadMe()
 
   const redeeming = new Set();
+
+async function apiFetch(path, session, opts = {}) {
+  const headers = new Headers(opts.headers || {});
+  headers.set("x-support-id", getSupportId());
+
+  // helpful if you ever want to track which page triggered logs
+  headers.set("x-page", location.pathname);
+
+  return fetch(apiUrl(path, session), { ...opts, headers });
+}
 
   async function loadStore() {
     const el = document.getElementById("store");
@@ -1008,32 +1016,18 @@ async function redeem(itemId, buttonEl) {
   }
 }
 
-  // Info popup handlers (yours are fine)
+  // Info popup handlers
   const infoBtn = document.getElementById("infoBtn");
   const infoPop = document.getElementById("infoPop");
   const infoClose = document.getElementById("infoClose");
 
-  function openInfo(){ updateInfoPopupSupportId(); infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false");}
+  function openInfo(){ infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false");}
   function closeInfo(){ infoPop?.classList.remove("show"); infoPop?.setAttribute("aria-hidden","true"); }
 
   infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
   infoClose?.addEventListener("click", closeInfo);
   infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
-
-  function updateInfoPopupSupportId(){
-  const body = document.getElementById("infoPopBody");
-  if (!body) return;
-
-  // Keep whatever text is already there, but append Support ID line
-  const sid = getSupportId();
-  
-  // Prevent duplicating the line if you open popup multiple times
-  if (!body.dataset.hasSupportId) {
-    body.innerHTML += extra;
-    body.dataset.hasSupportId = "1";
-  }
-}
 
 function redactKey(s){
   const t = String(s || "");
@@ -1097,5 +1091,3 @@ const text =
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
-
-
