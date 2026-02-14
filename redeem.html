@@ -1027,7 +1027,6 @@ async function redeem(itemId, buttonEl) {
 
   // Keep whatever text is already there, but append Support ID line
   const sid = getSupportId();
-  const extra = `<br><br><span class="muted">Support ID:</span> <strong>${sid}</strong>`;
   
   // Prevent duplicating the line if you open popup multiple times
   if (!body.dataset.hasSupportId) {
@@ -1098,4 +1097,5 @@ const text =
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
