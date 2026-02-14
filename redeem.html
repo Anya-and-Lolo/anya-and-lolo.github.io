@@ -654,25 +654,39 @@ function setPill(status) {
 
   let cls = "pill--gray";
 
-  // ✅ green states
-  if (s.includes("active") || s.includes("connected")) cls = "pill--green";
+  // 🟢 Active / Connected
+  if (s.includes("active") || s.includes("connected")) {
+    cls = "pill--green";
+  }
 
-  // ✅ amber states
-  else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
+  // 🔵 Not a patron (neutral state)
+  else if (s.includes("not a patron")) {
+    cls = "pill--blue";
+  }
 
-  // ✅ red states
-  else if (s.includes("declined") || s.includes("error")) cls = "pill--red";
+  // 🟡 Pending / Paused
+  else if (s.includes("paused") || s.includes("pending")) {
+    cls = "pill--amber";
+  }
 
-  // ✅ gray states (explicit)
-  else if (
-    s.includes("former") ||
-    s.includes("canceled") ||
-    s.includes("cancelled") ||
-    s.includes("not connected") ||
-    s.includes("not a patron")
-  ) cls = "pill--gray";
+  // 🔴 Errors / Declined
+  else if (s.includes("declined") || s.includes("error")) {
+    cls = "pill--red";
+  }
 
-  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray");
+  // ⚪ Not connected
+  else if (s.includes("not connected")) {
+    cls = "pill--gray";
+  }
+
+  pill.classList.remove(
+    "pill--green",
+    "pill--amber",
+    "pill--red",
+    "pill--gray",
+    "pill--blue"
+  );
+
   pill.classList.add(cls);
   pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
 }
@@ -1007,6 +1021,7 @@ async function redeem(itemId, buttonEl) {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
