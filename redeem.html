@@ -723,7 +723,7 @@ function setPill(status) {
     }
 
     try {
-      const r = await fetch(apiUrl("/me", s));
+      const r = await apiFetch("/me", s);
       const me = await r.json();
       LAST_ME = me;
 
@@ -741,7 +741,7 @@ function setPill(status) {
         if (creditsValue) creditsValue.textContent = "unlimited";
         showConnectedUI();
         setPill("connected");
-        if (infoPopBody) infoPopBody.innerHTML = `Patreon status: <strong>connected</strong><br>Creator mode: unlimited.`;
+        if (infoPopBody) { infoPopBody.innerHTML = `Your current Patreon status: <strong>connected</strong><br>` + `Creator mode: unlimited.`; }
         return me;
       }
 
@@ -767,29 +767,26 @@ function setPill(status) {
       if (creditsValue) creditsValue.textContent = "error";
       showConnectUI();
       setPill("error");
-      if (infoPopBody) infoPopBody.innerHTML = `Patreon status: <strong>error</strong><br>Couldn’t load your Patreon info.`;
+      if (infoPopBody) { infoPopBody.innerHTML = `Your current Patreon status: <strong>error</strong><br>` + `Couldn’t load your Patreon info.`;}
       return null;
     }
   } // ✅ IMPORTANT: closes loadMe()
 
   const redeeming = new Set();
 
-async function apiFetch(path, session, opts = {}) {
-  const headers = new Headers(opts.headers || {});
-  headers.set("x-support-id", getSupportId());
-
-  // helpful if you ever want to track which page triggered logs
-  headers.set("x-page", location.pathname);
-
-  return fetch(apiUrl(path, session), { ...opts, headers });
-}
+  async function apiFetch(path, session, opts = {}) {
+    const headers = new Headers(opts.headers || {});
+    headers.set("x-support-id", getSupportId());
+    headers.set("x-page", location.pathname);
+    return fetch(apiUrl(path, session), { ...opts, headers });
+  }
 
   async function loadStore() {
     const el = document.getElementById("store");
     if (!el) return;
 
     try {
-      const r = await fetch(apiUrl("/store"));
+      const r = await apiFetch("/store");
       const data = await r.json();
 
       el.innerHTML = "";
@@ -860,7 +857,7 @@ async function apiFetch(path, session, opts = {}) {
       return;
     }
 
-    const r = await fetch(apiUrl("/entitlements", s));
+    const r = await apiFetch("/entitlements", s);
     const data = await r.json();
     LAST_ENTITLEMENTS = data;
 
@@ -988,7 +985,7 @@ async function redeem(itemId, buttonEl) {
     buttonEl.textContent = "Redeeming…";
     showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
 
-    const r = await fetch(apiUrl("/redeem", s), {
+    const r = await apiFetch("/redeem", s, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ itemId })
@@ -1091,3 +1088,4 @@ const text =
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
