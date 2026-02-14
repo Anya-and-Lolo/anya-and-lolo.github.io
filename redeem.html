@@ -646,24 +646,36 @@
     return typeof s === "string" && /^https?:\/\//i.test(s.trim());
   }
 
-  function setPill(status) {
-    const pill = document.getElementById("patreonPill");
-    if (!pill) return;
+function setPill(status) {
+  const pill = document.getElementById("patreonPill");
+  if (!pill) return;
 
-    const s = String(status || "").toLowerCase();
+  const s = String(status || "").toLowerCase();
 
-    let cls = "pill--gray";
-    if (s.includes("active")) cls = "pill--green";
-    else if (s.includes("declined")) cls = "pill--red";
-    else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
-    else if (s.includes("former") || s.includes("canceled") || s.includes("cancelled")) cls = "pill--gray";
-    else if (s.includes("not a patron")) cls = "pill--gray";
-    else if (s.includes("error")) cls = "pill--red";
+  let cls = "pill--gray";
 
-    pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray");
-    pill.classList.add(cls);
-    pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
-  }
+  // ✅ green states
+  if (s.includes("active") || s.includes("connected")) cls = "pill--green";
+
+  // ✅ amber states
+  else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
+
+  // ✅ red states
+  else if (s.includes("declined") || s.includes("error")) cls = "pill--red";
+
+  // ✅ gray states (explicit)
+  else if (
+    s.includes("former") ||
+    s.includes("canceled") ||
+    s.includes("cancelled") ||
+    s.includes("not connected") ||
+    s.includes("not a patron")
+  ) cls = "pill--gray";
+
+  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray");
+  pill.classList.add(cls);
+  pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
+}
 
   function showConnectUI(){
     const btn = document.getElementById("connect");
@@ -995,6 +1007,7 @@ async function redeem(itemId, buttonEl) {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
