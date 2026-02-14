@@ -5,120 +5,610 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Admin • Patreon Rewards</title>
   <style>
-    body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin:24px; line-height:1.5; }
-    input, button, textarea{ font: inherit; padding:10px; }
-    input, textarea{ width: 100%; max-width: 720px; }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0; }
-    .card{ border:1px solid #ddd; border-radius:12px; padding:14px; max-width: 920px; }
-    pre{ background:#f6f6f6; padding:12px; border-radius:10px; overflow:auto; }
-    .muted{ color:#666; font-size: 14px; }
-    button{ cursor:pointer; }
+    :root{
+      --brand:#f4184c;
+      --brand2: rgba(244,24,76,.12);
+      --bg:#ffffff;
+      --card: rgba(255,255,255,0.92);
+      --border: rgba(20,20,20,0.12);
+      --text:#1b1b1b;
+      --muted: rgba(27,27,27,0.70);
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --info:#56a7fe;
+      --shadow: 0 10px 26px rgba(0,0,0,.10);
+      --radius: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height:1.55;
+    }
+
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle, rgba(244,24,76,0.18) 2px, transparent 3.5px) 0 0/44px 44px,
+        radial-gradient(circle, rgba(86,167,254,0.16) 2px, transparent 3.5px) 22px 22px/44px 44px;
+      animation: dots 22s linear infinite;
+    }
+    body::after{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index:-1;
+      background: rgba(255,250,252,0.55);
+    }
+    @keyframes dots{
+      from { transform: translate3d(0,0,0); }
+      to { transform: translate3d(-120px, -90px, 0); }
+    }
+
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.74);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbarInner{
+      max-width: 1180px;
+      margin:0 auto;
+      padding: 12px 18px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      justify-content: space-between;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight: 1000;
+      letter-spacing:-0.2px;
+    }
+    .badge{
+      font-size: 12.5px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.9);
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .wrap{ max-width: 1180px; margin: 0 auto; padding: 18px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    h1{ margin:0; font-size: 20px; }
+    h2{ margin: 0 0 10px; font-size: 17px; letter-spacing:-0.2px; }
+    h3{ margin: 14px 0 8px; font-size: 14px; }
+    .muted{ color: var(--muted); font-size: 13px; }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin: 10px 0; }
+    label{ font-weight: 900; font-size: 13px; color: rgba(27,27,27,0.82); min-width: 120px; }
+
+    input, textarea{
+      font: inherit;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(20,20,20,0.14);
+      background: rgba(255,255,255,0.95);
+      width: 100%;
+      max-width: 760px;
+      outline: none;
+    }
+    textarea{ min-height: 86px; font-family: var(--mono); font-size: 12.5px; }
+
+    button{
+      font: inherit;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(20,20,20,0.14);
+      background: #fff;
+      cursor:pointer;
+      font-weight: 900;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    button:active{ transform: translateY(1px) scale(0.99); }
+    button:hover{ background: rgba(0,0,0,0.04); }
+
+    .btnPrimary{
+      background: var(--brand);
+      color: #fff;
+      border-color: rgba(244,24,76,0.35);
+    }
+    .btnPrimary:hover{
+      background: #e81449;
+      box-shadow: 0 14px 30px rgba(244,24,76,.20);
+      transform: translateY(-1px);
+    }
+    .btnDanger{
+      background: rgba(239,68,68,0.12);
+      border-color: rgba(239,68,68,0.30);
+      color: #991b1b;
+    }
+    .btnDanger:hover{ background: rgba(239,68,68,0.16); }
+
+    .divider{ height:1px; background: rgba(20,20,20,0.10); margin: 12px 0; }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,20,20,0.14);
+      background: #fff;
+      font-weight: 1000;
+      font-size: 12.5px;
+    }
+    .dot{ width: 10px; height:10px; border-radius: 999px; background: #9ca3af; }
+    .pill.ok .dot{ background: var(--ok); }
+    .pill.bad .dot{ background: var(--bad); }
+    .pill.info .dot{ background: var(--info); }
+    .pill.warn .dot{ background: var(--warn); }
+
+    pre{
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(20,20,20,0.10);
+      border-radius: 14px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      max-height: 560px;
+      overflow:auto;
+    }
+
+    details{
+      border: 1px solid rgba(20,20,20,0.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.75);
+      margin-bottom: 10px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 1000;
+      list-style: none;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+    }
+    summary::-webkit-details-marker{ display:none; }
+
+    .two{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 720px){ .two{ grid-template-columns: 1fr; } }
   </style>
 </head>
+
 <body>
-  <h1>Admin Panel</h1>
-  <p class="muted">Talks to your Cloudflare Worker admin endpoints.</p>
-
-  <div class="card">
-    <div class="row">
-      <label style="min-width:120px;">API Base</label>
-      <input id="apiBase" value="https://patreon-redeem-api.lady-anya.workers.dev" />
+  <header class="topbar">
+    <div class="topbarInner">
+      <div class="brand">
+        <span style="color:var(--brand)">Admin Panel</span>
+        <span class="badge">Patreon Rewards Worker</span>
+      </div>
+      <div class="row" style="margin:0">
+        <span id="authPill" class="pill info"><span class="dot"></span><span>Token: not set</span></span>
+        <button id="ping" class="btnPrimary">Ping</button>
+      </div>
     </div>
+  </header>
 
-    <div class="row">
-      <label style="min-width:120px;">Admin Token</label>
-      <input id="adminToken" type="password" placeholder="Paste ADMIN_TOKEN" />
-      <button id="ping">Ping</button>
+  <main class="wrap">
+    <div class="grid">
+      <!-- LEFT -->
+      <section class="card">
+        <h2>Connection</h2>
+
+        <div class="row">
+          <label>API Base</label>
+          <input id="apiBase" value="https://patreon-redeem-api.lady-anya.workers.dev" />
+        </div>
+
+        <div class="row">
+          <label>Admin Token</label>
+          <input id="adminToken" type="password" placeholder="Paste ADMIN_TOKEN (not saved)" />
+          <button id="toggleToken">Show</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>User tools</h2>
+
+        <details open>
+          <summary>Lookup user <span class="muted">GET /admin/user</span></summary>
+          <div class="row">
+            <label>patreon_user_id</label>
+            <input id="patreonUserId" placeholder="e.g. 466331" />
+            <button id="lookup" class="btnPrimary">Lookup</button>
+          </div>
+        </details>
+
+        <details>
+          <summary>Credits add/remove <span class="muted">POST /admin/credits/add</span></summary>
+          <div class="two">
+            <div class="row" style="margin:0">
+              <label>user_id</label>
+              <input id="creditUserId" placeholder="patreon_123" />
+            </div>
+            <div class="row" style="margin:0">
+              <label>delta_cents</label>
+              <input id="deltaCents" type="number" placeholder="500 or -200" />
+            </div>
+          </div>
+          <div class="row">
+            <label>note</label>
+            <input id="creditNote" placeholder="Added 500 credits / Refund correction" />
+            <button id="creditsAdd" class="btnPrimary">Apply</button>
+          </div>
+          <div class="muted">Use integer cents. Negative removes credits.</div>
+        </details>
+
+        <details>
+          <summary>Credits set exact <span class="muted">POST /admin/credits/set</span></summary>
+          <div class="two">
+            <div class="row" style="margin:0">
+              <label>user_id</label>
+              <input id="setCreditUserId" placeholder="patreon_123" />
+            </div>
+            <div class="row" style="margin:0">
+              <label>target_available_cents</label>
+              <input id="targetCents" type="number" placeholder="1320" />
+            </div>
+          </div>
+          <div class="row">
+            <label>note</label>
+            <input id="setCreditNote" placeholder="Set credits to 1320" />
+            <button id="creditsSet" class="btnPrimary">Set</button>
+          </div>
+        </details>
+
+        <details>
+          <summary>Add entitlement <span class="muted">POST /admin/entitlements/add</span></summary>
+          <div class="two">
+            <div class="row" style="margin:0">
+              <label>user_id</label>
+              <input id="entAddUserId" placeholder="patreon_123" />
+            </div>
+            <div class="row" style="margin:0">
+              <label>item_id</label>
+              <input id="entAddItemId" placeholder="fishing_system" />
+            </div>
+          </div>
+          <div class="row">
+            <label>payload (JSON)</label>
+            <textarea id="entAddPayload">{ "note": "Manual grant" }</textarea>
+          </div>
+          <div class="row">
+            <label></label>
+            <button id="entAdd" class="btnPrimary">Add</button>
+          </div>
+        </details>
+
+        <details>
+          <summary>Delete entitlement <span class="muted">POST /admin/entitlements/delete</span></summary>
+          <div class="muted" style="margin-bottom:8px;">
+            Option A: delete by entitlement_id (preferred). Option B: delete by user_id + item_id.
+          </div>
+
+          <div class="two">
+            <div class="row" style="margin:0">
+              <label>entitlement_id</label>
+              <input id="entDelId" placeholder="uuid-here" />
+            </div>
+            <div class="row" style="margin:0">
+              <label></label>
+              <button id="entDelById" class="btnDanger">Delete by ID</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="two">
+            <div class="row" style="margin:0">
+              <label>user_id</label>
+              <input id="entDelUserId" placeholder="patreon_123" />
+            </div>
+            <div class="row" style="margin:0">
+              <label>item_id</label>
+              <input id="entDelItemId" placeholder="fishing_system" />
+            </div>
+          </div>
+          <div class="row">
+            <label></label>
+            <button id="entDelByUserItem" class="btnDanger">Delete by user+item</button>
+          </div>
+        </details>
+
+        <details>
+          <summary>Reissue key <span class="muted">POST /admin/keys/reissue</span></summary>
+          <div class="two">
+            <div class="row" style="margin:0">
+              <label>user_id</label>
+              <input id="reissueUserId" placeholder="patreon_123" />
+            </div>
+            <div class="row" style="margin:0">
+              <label>item_id</label>
+              <input id="reissueItemId" placeholder="fishing_system" />
+            </div>
+          </div>
+          <div class="row">
+            <label></label>
+            <button id="reissue" class="btnPrimary">Reissue</button>
+          </div>
+          <div class="muted">This may burn a key. Use for rotation/leaks.</div>
+        </details>
+
+        <details>
+          <summary>Migrate entitlements <span class="muted">POST /admin/migrate</span></summary>
+          <div class="muted">Move entitlements from an old/random user_id (uuid etc) to the correct patreon_### user.</div>
+          <div class="two">
+            <div class="row" style="margin:0">
+              <label>fromUserId</label>
+              <input id="fromUserId" placeholder="old user_id (uuid etc)" />
+            </div>
+            <div class="row" style="margin:0">
+              <label>toUserId</label>
+              <input id="toUserId" placeholder="new user_id (patreon_123...)" />
+            </div>
+          </div>
+          <div class="row">
+            <label></label>
+            <button id="migrate" class="btnPrimary">Migrate</button>
+          </div>
+        </details>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="card">
+        <h2>Console</h2>
+        <div class="row" style="justify-content:space-between">
+          <div class="muted">Last request + response</div>
+          <div class="row" style="margin:0">
+            <button id="copyOut">Copy JSON</button>
+            <button id="clearOut">Clear</button>
+          </div>
+        </div>
+
+        <h3>Response</h3>
+        <pre id="out">{}</pre>
+
+        <div class="divider"></div>
+
+        <h3>Last request</h3>
+        <pre id="lastReq">{}</pre>
+      </aside>
     </div>
-
-    <hr>
-
-    <h2>Lookup user</h2>
-    <div class="row">
-      <label style="min-width:120px;">patreon_user_id</label>
-      <input id="patreonUserId" placeholder="e.g. 466331" />
-      <button id="lookup">Lookup</button>
-    </div>
-
-    <h3>Result</h3>
-    <pre id="out">{}</pre>
-
-    <hr>
-
-    <h2>Migrate entitlements</h2>
-    <p class="muted">Only use if a user’s entitlements were created under an old/random user_id (like a UUID) and you want to move them.</p>
-
-    <div class="row">
-      <label style="min-width:120px;">fromUserId</label>
-      <input id="fromUserId" placeholder="old user_id (uuid etc)" />
-    </div>
-    <div class="row">
-      <label style="min-width:120px;">toUserId</label>
-      <input id="toUserId" placeholder="new user_id (patreon_123...)" />
-      <button id="migrate">Migrate</button>
-    </div>
-
-    <pre id="migrateOut">{}</pre>
-  </div>
+  </main>
 
 <script>
-  function getAuth() {
-    const token = document.getElementById("adminToken").value.trim();
-    return { "Authorization": "Bearer " + token };
-  }
-
   function apiBase() {
     return document.getElementById("apiBase").value.trim().replace(/\/+$/, "");
   }
 
-  function setOut(el, obj) {
+  function token() {
+    return document.getElementById("adminToken").value.trim();
+  }
+
+  function authHeaders() {
+    const t = token();
+    if (!t) return null;
+    return { "Authorization": "Bearer " + t };
+  }
+
+  function setJson(el, obj) {
     el.textContent = JSON.stringify(obj, null, 2);
   }
 
-  document.getElementById("ping").onclick = async () => {
-    const out = document.getElementById("out");
-    try {
-      const r = await fetch(apiBase() + "/admin/ping", { headers: { ...getAuth() }});
-      const j = await r.json().catch(() => ({}));
-      setOut(out, { http: r.status, ...j });
-    } catch (e) {
-      setOut(out, { error: String(e) });
-    }
+  function updateAuthPill() {
+    const pill = document.getElementById("authPill");
+    const has = !!token();
+    pill.className = "pill " + (has ? "ok" : "info");
+    pill.innerHTML = `<span class="dot"></span><span>Token: ${has ? "set" : "not set"}</span>`;
+  }
+
+  document.getElementById("adminToken").addEventListener("input", updateAuthPill);
+  updateAuthPill();
+
+  document.getElementById("toggleToken").onclick = () => {
+    const i = document.getElementById("adminToken");
+    i.type = (i.type === "password") ? "text" : "password";
+    document.getElementById("toggleToken").textContent = (i.type === "password") ? "Show" : "Hide";
   };
 
-  document.getElementById("lookup").onclick = async () => {
+  async function callJson(path, { method="GET", body=null, query=null, confirmText=null } = {}) {
     const out = document.getElementById("out");
-    const id = document.getElementById("patreonUserId").value.trim();
-    if (!id) return setOut(out, { error: "missing patreon_user_id" });
+    const lastReq = document.getElementById("lastReq");
+
+    const auth = authHeaders();
+    if (!auth) {
+      setJson(out, { error: "missing ADMIN_TOKEN" });
+      return null;
+    }
+
+    if (confirmText) {
+      const ok = confirm(confirmText);
+      if (!ok) return null;
+    }
+
+    let url = apiBase() + path;
+    if (query && typeof query === "object") {
+      const u = new URL(url);
+      for (const [k,v] of Object.entries(query)) u.searchParams.set(k, v);
+      url = u.toString();
+    }
+
+    const headers = { ...auth };
+    if (body) headers["content-type"] = "application/json";
+
+    setJson(lastReq, {
+      url,
+      method,
+      headers: { Authorization: "Bearer ***" },
+      body
+    });
 
     try {
-      const r = await fetch(apiBase() + "/admin/user?patreon_user_id=" + encodeURIComponent(id), {
-        headers: { ...getAuth() }
+      const r = await fetch(url, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : undefined
       });
+
       const j = await r.json().catch(() => ({}));
-      setOut(out, { http: r.status, ...j });
+      setJson(out, { http: r.status, ...j });
+      return { ok: r.ok, status: r.status, json: j };
     } catch (e) {
-      setOut(out, { error: String(e) });
+      setJson(out, { error: String(e) });
+      return null;
     }
+  }
+
+  // Ping
+  document.getElementById("ping").onclick = () => callJson("/admin/ping");
+
+  // Lookup user
+  document.getElementById("lookup").onclick = () => {
+    const id = document.getElementById("patreonUserId").value.trim();
+    if (!id) return setJson(document.getElementById("out"), { error: "missing patreon_user_id" });
+    callJson("/admin/user", { query: { patreon_user_id: id } });
   };
 
-  document.getElementById("migrate").onclick = async () => {
-    const out = document.getElementById("migrateOut");
+  // Credits add/remove
+  document.getElementById("creditsAdd").onclick = () => {
+    const user_id = document.getElementById("creditUserId").value.trim();
+    const delta_cents = Number(document.getElementById("deltaCents").value);
+    const note = document.getElementById("creditNote").value.trim();
+    if (!user_id) return setJson(document.getElementById("out"), { error: "missing user_id" });
+    if (!Number.isFinite(delta_cents)) return setJson(document.getElementById("out"), { error: "delta_cents must be a number" });
+
+    callJson("/admin/credits/add", { method:"POST", body:{ user_id, delta_cents, note }});
+  };
+
+  // Credits set exact
+  document.getElementById("creditsSet").onclick = () => {
+    const user_id = document.getElementById("setCreditUserId").value.trim();
+    const target_available_cents = Number(document.getElementById("targetCents").value);
+    const note = document.getElementById("setCreditNote").value.trim();
+    if (!user_id) return setJson(document.getElementById("out"), { error: "missing user_id" });
+    if (!Number.isFinite(target_available_cents)) return setJson(document.getElementById("out"), { error: "target_available_cents must be a number" });
+
+    callJson("/admin/credits/set", {
+      method:"POST",
+      body:{ user_id, target_available_cents, note },
+      confirmText: `Set credits for ${user_id} to ${target_available_cents}?`
+    });
+  };
+
+  // Add entitlement
+  document.getElementById("entAdd").onclick = () => {
+    const user_id = document.getElementById("entAddUserId").value.trim();
+    const item_id = document.getElementById("entAddItemId").value.trim();
+    const raw = document.getElementById("entAddPayload").value.trim();
+
+    if (!user_id || !item_id) return setJson(document.getElementById("out"), { error: "missing user_id or item_id" });
+
+    let payload = undefined;
+    if (raw) {
+      try { payload = JSON.parse(raw); }
+      catch { return setJson(document.getElementById("out"), { error: "payload must be valid JSON" }); }
+    }
+
+    callJson("/admin/entitlements/add", { method:"POST", body:{ user_id, item_id, payload }});
+  };
+
+  // Delete entitlement by ID
+  document.getElementById("entDelById").onclick = () => {
+    const entitlement_id = document.getElementById("entDelId").value.trim();
+    if (!entitlement_id) return setJson(document.getElementById("out"), { error: "missing entitlement_id" });
+
+    callJson("/admin/entitlements/delete", {
+      method:"POST",
+      body:{ entitlement_id },
+      confirmText:`DELETE entitlement ${entitlement_id}?\nThis cannot be undone.`
+    });
+  };
+
+  // Delete entitlement by user+item
+  document.getElementById("entDelByUserItem").onclick = () => {
+    const user_id = document.getElementById("entDelUserId").value.trim();
+    const item_id = document.getElementById("entDelItemId").value.trim();
+    if (!user_id || !item_id) return setJson(document.getElementById("out"), { error: "missing user_id or item_id" });
+
+    callJson("/admin/entitlements/delete", {
+      method:"POST",
+      body:{ user_id, item_id },
+      confirmText:`DELETE entitlement for ${user_id} / ${item_id}?\nThis cannot be undone.`
+    });
+  };
+
+  // Reissue key
+  document.getElementById("reissue").onclick = () => {
+    const user_id = document.getElementById("reissueUserId").value.trim();
+    const item_id = document.getElementById("reissueItemId").value.trim();
+    if (!user_id || !item_id) return setJson(document.getElementById("out"), { error: "missing user_id or item_id" });
+
+    callJson("/admin/keys/reissue", {
+      method:"POST",
+      body:{ user_id, item_id },
+      confirmText:`Reissue key for ${user_id} / ${item_id}?\nThis may burn a key.`
+    });
+  };
+
+  // Migrate
+  document.getElementById("migrate").onclick = () => {
     const fromUserId = document.getElementById("fromUserId").value.trim();
     const toUserId = document.getElementById("toUserId").value.trim();
-    if (!fromUserId || !toUserId) return setOut(out, { error: "missing from/to" });
+    if (!fromUserId || !toUserId) return setJson(document.getElementById("out"), { error: "missing from/to" });
 
-    try {
-      const r = await fetch(apiBase() + "/admin/migrate", {
-        method: "POST",
-        headers: { "content-type": "application/json", ...getAuth() },
-        body: JSON.stringify({ fromUserId, toUserId })
-      });
-      const j = await r.json().catch(() => ({}));
-      setOut(out, { http: r.status, ...j });
-    } catch (e) {
-      setOut(out, { error: String(e) });
-    }
+    callJson("/admin/migrate", {
+      method:"POST",
+      body:{ fromUserId, toUserId },
+      confirmText:`Migrate ALL entitlements from:\n${fromUserId}\n→ ${toUserId}\nProceed?`
+    });
+  };
+
+  // Console actions
+  document.getElementById("clearOut").onclick = () => {
+    setJson(document.getElementById("out"), {});
+    setJson(document.getElementById("lastReq"), {});
+  };
+
+  document.getElementById("copyOut").onclick = async () => {
+    const txt = document.getElementById("out").textContent || "{}";
+    await navigator.clipboard.writeText(txt);
   };
 </script>
 </body>
