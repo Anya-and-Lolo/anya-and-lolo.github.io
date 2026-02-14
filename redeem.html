@@ -733,6 +733,11 @@ function setPill(status) {
         if (creditsValue) creditsValue.textContent = "not connected";
         showConnectUI();
         setPill("not connected");
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+          `Patreon status: <strong>not connected</strong><br>` +
+          `Connect your Patreon to see your credits.`;
+        }
         return null;
       }
 
@@ -786,7 +791,7 @@ function setPill(status) {
     if (!el) return;
 
     try {
-      const r = await apiFetch("/store");
+      const r = await apiFetch("/store", null);
       const data = await r.json();
 
       el.innerHTML = "";
@@ -1048,8 +1053,8 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
 
   const safe = {
     app: "Anya & Lolo Patreon Rewards",
-    time: new Date().toISOString(),
     page: location.href.split("?")[0],
+    time: new Date().toISOString(),
     session_present: sessionPresent,
 
     // From /me (if connected)
@@ -1087,5 +1092,6 @@ const text =
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
