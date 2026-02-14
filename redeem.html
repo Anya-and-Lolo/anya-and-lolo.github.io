@@ -1040,6 +1040,7 @@ function redactKey(s){
 
 document.getElementById("copySupport")?.addEventListener("click", async () => {
   const sessionPresent = !!getSession();
+  const supportId = getSupportId(); // ✅ keep it OUTSIDE safe{}
 
   const entItems = Array.isArray(LAST_ENTITLEMENTS?.items) ? LAST_ENTITLEMENTS.items : [];
   const safeEnt = entItems.map(e => ({
@@ -1068,13 +1069,12 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
     entitlements_count: safeEnt.length,
     entitlements: safeEnt,
 
-    // Optional client info
     ua: navigator.userAgent
   };
 
-const text =
-  `SUPPORT INFO (paste to Anya)\nSupport ID: ${safe.support_id}\n\n` +
-  JSON.stringify(safe, null, 2);
+  const text =
+    `SUPPORT INFO (paste to Anya)\nSupport ID: ${supportId}\n\n` + // ✅ use the var
+    JSON.stringify(safe, null, 2);
 
   await navigator.clipboard.writeText(text);
 
@@ -1092,6 +1092,7 @@ const text =
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
