@@ -616,7 +616,26 @@
 
   const API = "https://patreon-redeem-api.lady-anya.workers.dev";
   let CURRENT_CREDITS_CENTS = 0; // integer cents
+
+  // --- Support ID (stable per device/browser) ---
+  const SUPPORT_ID_KEY = "support_id_v1";
   
+  function makeSupportId(){
+    // Example: "AL-8F3K-1Q9D"
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no confusing O/0/I/1
+    const part = (len) => Array.from({length: len}, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
+    return `AL-${part(4)}-${part(4)}`;
+  }
+  
+  function getSupportId(){
+    let id = localStorage.getItem(SUPPORT_ID_KEY);
+    if (!id) {
+      id = makeSupportId();
+      localStorage.setItem(SUPPORT_ID_KEY, id);
+    }
+    return id;
+  }
+
   // --- Support bundle state (safe diagnostics) ---
   let LAST_ME = null;
   let LAST_ENTITLEMENTS = null;
@@ -699,6 +718,7 @@ function setPill(status) {
         infoPopBody.innerHTML =
           `Patreon status: <strong>not connected</strong><br>` +
           `Connect your Patreon to see your credits.`;
+          updateInfoPopupSupportId();
       }
       return null;
     }
@@ -739,6 +759,7 @@ function setPill(status) {
         infoPopBody.innerHTML =
           `Your current Patreon status: <strong>${prettyStatus}</strong><br>` +
           `Credits shown are based on your lifetime support for this campaign.`;
+          updateInfoPopupSupportId();
       }
 
       return me;
@@ -992,13 +1013,28 @@ async function redeem(itemId, buttonEl) {
   const infoPop = document.getElementById("infoPop");
   const infoClose = document.getElementById("infoClose");
 
-  function openInfo(){ infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false"); }
+  function openInfo(){ updateInfoPopupSupportId(); infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false");}
   function closeInfo(){ infoPop?.classList.remove("show"); infoPop?.setAttribute("aria-hidden","true"); }
 
   infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
   infoClose?.addEventListener("click", closeInfo);
   infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
+
+  function updateInfoPopupSupportId(){
+  const body = document.getElementById("infoPopBody");
+  if (!body) return;
+
+  // Keep whatever text is already there, but append Support ID line
+  const sid = getSupportId();
+  const extra = `<br><br><span class="muted">Support ID:</span> <strong>${sid}</strong>`;
+  
+  // Prevent duplicating the line if you open popup multiple times
+  if (!body.dataset.hasSupportId) {
+    body.innerHTML += extra;
+    body.dataset.hasSupportId = "1";
+  }
+}
 
 function redactKey(s){
   const t = String(s || "");
@@ -1022,6 +1058,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
 
   const safe = {
     app: "Anya & Lolo Patreon Rewards",
+    support_id: getSupportId(),
     time: new Date().toISOString(),
     page: location.href.split("?")[0],
     session_present: sessionPresent,
@@ -1041,7 +1078,9 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
     ua: navigator.userAgent
   };
 
-  const text = "SUPPORT INFO (paste to Anya)\n" + JSON.stringify(safe, null, 2);
+const text =
+  `SUPPORT INFO (paste to Anya)\nSupport ID: ${safe.support_id}\n\n` +
+  JSON.stringify(safe, null, 2);
 
   await navigator.clipboard.writeText(text);
 
@@ -1059,3 +1098,4 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
