@@ -608,262 +608,175 @@
     </footer>
   </main>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-    const API = "https://patreon-redeem-api.lady-anya.workers.dev";
-    let CURRENT_CREDITS_CENTS = 0; // always integer cents
-    let OWNED_ITEM_IDS = new Set();
+  const API = "https://patreon-redeem-api.lady-anya.workers.dev";
+  let CURRENT_CREDITS_CENTS = 0; // integer cents
+  let OWNED_ITEM_IDS = new Set();
 
-    // ✅ Parse URL params ONCE
-    const params = new URLSearchParams(location.search);
-    const DEBUG = params.get("debug"); // "anya" or null
+  const params = new URLSearchParams(location.search);
+  const DEBUG = params.get("debug"); // "anya" or null
 
-    // ✅ helper: always attach session + debug when needed
-    function apiUrl(path, session) {
-      const u = new URL(API + path);
-      if (session) u.searchParams.set("session", session);
-      if (DEBUG) u.searchParams.set("debug", DEBUG);
-      return u.toString();
-    }
+  function apiUrl(path, session) {
+    const u = new URL(API + path);
+    if (session) u.searchParams.set("session", session);
+    if (DEBUG) u.searchParams.set("debug", DEBUG);
+    return u.toString();
+  }
 
-    const ITEM_IMAGES = {
-      fishing_system: "https://anya-and-lolo.github.io/images/fishing_system_image.jpg",
-      visual_novel_system: "https://anya-and-lolo.github.io/images/VN_system_image.jpg",
-      shooting_system: "https://anya-and-lolo.github.io/images/shooting_system_image.jpg",
-    };
+  const ITEM_IMAGES = {
+    fishing_system: "https://anya-and-lolo.github.io/images/fishing_system_image.jpg",
+    visual_novel_system: "https://anya-and-lolo.github.io/images/VN_system_image.jpg",
+    shooting_system: "https://anya-and-lolo.github.io/images/shooting_system_image.jpg",
+  };
 
-    document.getElementById("connect").onclick = () => {
-      location.href = API + "/auth/patreon/start";
-    };
+  document.getElementById("connect").onclick = () => {
+    location.href = API + "/auth/patreon/start";
+  };
 
-    // ✅ Store session from URL into localStorage (only once)
-    const sessionFromUrl = params.get("session");
-    if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
+  const sessionFromUrl = params.get("session");
+  if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
 
-    function getSession() {
-      return localStorage.getItem("session");
-    }
+  function getSession() {
+    return localStorage.getItem("session");
+  }
 
-    function showStoreMessage(buttonEl, msg, type = "info") {
-      if (!buttonEl) return;
+  function isProbablyUrl(s) {
+    return typeof s === "string" && /^https?:\/\//i.test(s.trim());
+  }
 
-      const card = buttonEl.closest(".card");
-      if (!card) return;
+  function setPill(status) {
+    const pill = document.getElementById("patreonPill");
+    if (!pill) return;
 
-      const box = card.querySelector(".storeMsg");
-      if (!box) return;
+    const s = String(status || "").toLowerCase();
 
-      const defaultMsg = box.dataset.defaultMsg || box.textContent;
-      if (!box.dataset.defaultMsg) box.dataset.defaultMsg = defaultMsg;
+    let cls = "pill--gray";
+    if (s.includes("active")) cls = "pill--green";
+    else if (s.includes("declined")) cls = "pill--red";
+    else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
+    else if (s.includes("former") || s.includes("canceled") || s.includes("cancelled")) cls = "pill--gray";
+    else if (s.includes("not a patron")) cls = "pill--gray";
+    else if (s.includes("error")) cls = "pill--red";
 
-      clearTimeout(box._resetTimer);
+    pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray");
+    pill.classList.add(cls);
+    pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
+  }
 
-      box.classList.remove("storeMsg--success","storeMsg--error","storeMsg--info","show");
-      box.classList.add("show");
-      if (type === "success") box.classList.add("storeMsg--success");
-      else if (type === "error") box.classList.add("storeMsg--error");
-      else box.classList.add("storeMsg--info");
+  function showConnectUI(){
+    const btn = document.getElementById("connect");
+    if (btn) { btn.style.display = ""; btn.disabled = false; btn.textContent = "Connect Patreon"; }
+  }
 
-      box.textContent = msg;
+  function showConnectedUI(){
+    const btn = document.getElementById("connect");
+    if (btn) { btn.disabled = true; btn.textContent = "Connected ✅"; }
+  }
 
-      if (type === "error" || type === "success") {
-        box._resetTimer = setTimeout(() => {
-          box.classList.remove("storeMsg--success","storeMsg--error");
-          box.classList.add("storeMsg--info");
-          box.textContent = box.dataset.defaultMsg || defaultMsg;
-        }, 3000);
+  async function loadMe() {
+    const s = getSession();
+    const creditsValue = document.getElementById("creditsValue");
+    const infoPopBody = document.getElementById("infoPopBody");
+
+    if (!s) {
+      CURRENT_CREDITS_CENTS = 0;
+      if (creditsValue) creditsValue.textContent = "N/A";
+      showConnectUI();
+      setPill("not connected");
+      if (infoPopBody) {
+        infoPopBody.innerHTML =
+          `Patreon status: <strong>not connected</strong><br>` +
+          `Connect your Patreon to see your credits.`;
       }
+      return null;
     }
 
-    function isProbablyUrl(s) {
-      return typeof s === "string" && /^https?:\/\//i.test(s.trim());
-    }
+    try {
+      const r = await fetch(apiUrl("/me", s));
+      const me = await r.json();
 
-    function setPill(status){
-      const pill = document.getElementById("patreonPill");
-      if (!pill) return;
-
-      const s = String(status || "").toLowerCase();
-
-      let cls = "pill--gray";
-      if (s.includes("active")) cls = "pill--green";
-      else if (s.includes("declined")) cls = "pill--red";
-      else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
-      else if (s.includes("former") || s.includes("canceled") || s.includes("cancelled")) cls = "pill--gray";
-
-      pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray");
-      pill.classList.add(cls);
-      pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
-    }
-    
-     function showConnectedUI(){
-      const btn = document.getElementById("connect");
-      const cs = document.getElementById("connectStatus");
-      if (btn) btn.style.display = "none";
-      if (cs) cs.style.display = "block";
-    }
-    
-    function showConnectUI(){
-      const btn = document.getElementById("connect");
-      const cs = document.getElementById("connectStatus");
-      if (btn) btn.style.display = "";
-      if (cs) cs.style.display = "none";
-    }
-
-    function formatCredits(n) {
-      const num = Number(n || 0);
-      // keep up to 2 decimals but remove trailing zeros
-      return num.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
-    }
-
-    async function loadMe() {
-      const s = getSession();
-      const btn = document.getElementById("connect");
-      const creditsValue = document.getElementById("creditsValue");
-      const infoPopBody = document.getElementById("infoPopBody");
-    
-      // ❌ No session at all
-      if (!s) {
-        CURRENT_CREDITS = 0;
-        if (creditsValue) creditsValue.textContent = "N/A";
-    
-        if (btn) {
-          btn.textContent = "Connect Patreon";
-          btn.disabled = false;
-        }
-    
-        setPill("not connected");
-    
-        if (infoPopBody) {
-          infoPopBody.innerHTML =
-            `Patreon status: <strong>not connected</strong><br>` +
-            `Connect your Patreon to see your credits. ` +
-            `If your payment is still processing, or was declined or cancelled, your credits may take a moment to appear.`;
-        }
-    
-        return null;
-      }
-    
-      let me;
-    
-      try {
-        const r = await fetch(apiUrl("/me", s));
-        me = await r.json();
-      } catch (e) {
-        CURRENT_CREDITS = 0;
-        if (creditsValue) creditsValue.textContent = "error";
-    
-        if (btn) {
-          btn.textContent = "Connect Patreon";
-          btn.disabled = false;
-        }
-    
-        setPill("error");
-    
-        if (infoPopBody) {
-          infoPopBody.innerHTML =
-            `Patreon status: <strong>error</strong><br>` +
-            `Oops! Couldn’t load your Patreon info right now. Please try again in a moment.`;
-        }
-    
-        return null;
-      }
-    
-      // ❌ Session exists but backend says not logged in
       if (!me.loggedIn) {
-        CURRENT_CREDITS = 0;
+        CURRENT_CREDITS_CENTS = 0;
         if (creditsValue) creditsValue.textContent = "not connected";
-    
-        if (btn) {
-          btn.textContent = "Connect Patreon";
-          btn.disabled = false;
-        }
-    
+        showConnectUI();
         setPill("not connected");
-    
         return null;
       }
-    
-      // ✅ Logged in
-      // Worker returns:
-      // - credits_raw_cents = integer cents available
-      // - credits = points after applying CREDITS_SCALE (optional)
-      const cents = Number.isFinite(Number(me.credits_raw_cents))
-        ? Number(me.credits_raw_cents)
-        : 0;
-      
-      CURRENT_CREDITS_CENTS = Math.floor(cents);
-      
-      // UI label logic you want:
-      const statusRaw = (me.patreon_status ?? "").toString();
-      const statusLower = statusRaw.toLowerCase();
-      
-      // "connected" if logged in but status is missing
-      const prettyStatus = statusRaw ? statusRaw : "connected";
-      
-      // Creator override (unlimited)
-      const isCreator = (DEBUG === "anya"); // your existing debug flag
-      if (isCreator) {
+
+      // Creator debug mode if you want it:
+      if (DEBUG === "anya") {
         if (creditsValue) creditsValue.textContent = "unlimited";
-        if (btn) { btn.textContent = "Connected ✅"; btn.disabled = true; }
+        showConnectedUI();
         setPill("connected");
-        if (infoPopBody) {
-          infoPopBody.innerHTML =
-            `Patreon status: <strong>connected</strong><br>` +
-            `Creator mode: <strong>unlimited credits</strong>.`;
-        }
+        if (infoPopBody) infoPopBody.innerHTML = `Patreon status: <strong>connected</strong><br>Creator mode: unlimited.`;
         return me;
       }
-      
-      // Free patron = connected but 0 credits
-      // (This happens naturally if cents = 0)
+
+      const cents = Number.isFinite(Number(me.credits_raw_cents)) ? Number(me.credits_raw_cents) : 0;
+      CURRENT_CREDITS_CENTS = Math.max(0, Math.floor(cents));
+
       if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
-      
-      if (btn) {
-        btn.textContent = "Connected ✅";
-        btn.disabled = true;
-      }
-      
+      showConnectedUI();
+
+      const prettyStatus = (me.patreon_status ?? "connected").toString();
       setPill(prettyStatus);
-      
+
       if (infoPopBody) {
         infoPopBody.innerHTML =
           `Your current Patreon status: <strong>${prettyStatus}</strong><br>` +
-          `If your payment is still processing, declined, or cancelled, your credits may take a moment to appear.`;
+          `Credits shown are based on your lifetime support for this campaign.`;
       }
-      
+
       return me;
+    } catch (e) {
+      CURRENT_CREDITS_CENTS = 0;
+      if (creditsValue) creditsValue.textContent = "error";
+      showConnectUI();
+      setPill("error");
+      if (infoPopBody) infoPopBody.innerHTML = `Patreon status: <strong>error</strong><br>Couldn’t load your Patreon info.`;
+      return null;
+    }
+  } // ✅ IMPORTANT: closes loadMe()
 
-    const redeeming = new Set();
+  const redeeming = new Set();
 
-    // ✅ UPDATED: uses apiUrl("/store") (keeps debug param if present)
-    async function loadStore() {
+  async function loadStore() {
+    const el = document.getElementById("store");
+    if (!el) return;
+
+    try {
       const r = await fetch(apiUrl("/store"));
       const data = await r.json();
-      const el = document.getElementById("store");
+
       el.innerHTML = "";
-    
-      (data.items || []).forEach(item => {
-        const credits = (item.cost_cents / 100).toFixed(2);
+      const items = data.items || [];
+
+      if (items.length === 0) {
+        el.innerHTML = `<div class="muted">No rewards available yet.</div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const costCreditsLabel = (item.cost_cents / 100).toFixed(2);
         const remaining = item.remaining ?? 0;
         const img = ITEM_IMAGES[item.id] || "";
         const isOwned = OWNED_ITEM_IDS.has(item.id);
-    
+
         const div = document.createElement("div");
         div.className = "card";
-    
         div.innerHTML = `
           ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
-    
+
           <div style="margin-top:10px;">
             <strong>${item.name}</strong><br>
             <span class="muted">
-              <strong style="font-size:15px;">${credits} credits</strong>
+              <strong style="font-size:15px;">${costCreditsLabel} credits</strong>
               • ${isOwned ? "System Owned ✅" : `Remaining keys: ${remaining}`}
             </span>
           </div>
-    
+
           <button
             class="storeButton"
             ${(isOwned || remaining <= 0) ? "disabled" : ""}
@@ -872,266 +785,163 @@
             data-cost-cents="${item.cost_cents}">
             ${isOwned ? "Redeemed" : "Redeem"}
           </button>
-    
+
           <div class="storeMsg storeMsg--info show">
-            ${
-              (item.payload && item.payload.instructions)
-                ? item.payload.instructions
-                : "Redeem to receive a unique itch.io key. Open the link below to claim it on itch.io and permanently add it to your library."
-            }
+            ${(item.payload && item.payload.instructions)
+              ? item.payload.instructions
+              : "Redeem to receive a unique itch.io key."}
           </div>
         `;
-    
+
         const btn = div.querySelector("button");
-    
-        // ✅ only bind redeem if not owned and has stock
         if (!isOwned && remaining > 0) {
           btn.onclick = () => redeem(item.id, btn);
         }
-    
+
         el.appendChild(div);
       });
+    } catch (e) {
+      el.innerHTML = `<div class="muted">Store failed to load. Check console for errors.</div>`;
+      console.error("loadStore failed", e);
+    }
+  }
+
+  async function loadUnlocks() {
+    const s = getSession();
+    const box = document.getElementById("unlocks");
+
+    OWNED_ITEM_IDS = new Set();
+
+    if (!s) {
+      if (box) { box.classList.add("muted"); box.textContent = "Connect Patreon to see your unlocks."; }
+      return;
     }
 
-    async function loadUnlocks() {
-      const s = getSession();
-      const box = document.getElementById("unlocks");
-    
-      // reset owned set every refresh
-      OWNED_ITEM_IDS = new Set();
-    
-      if (!s) {
-        box.classList.add("muted");
-        box.textContent = "Connect Patreon to see your unlocks.";
-        return;
-      }
-    
-      const r = await fetch(apiUrl("/entitlements", s));
-      const data = await r.json();
-    
-      if (!r.ok) {
-        box.classList.add("muted");
-        box.textContent = data.error || "Could not load unlocks.";
-        return;
-      }
-    
-      if (!data.items || data.items.length === 0) {
-        box.classList.add("muted");
-        box.textContent = "Redeem something to see it here.";
-        return;
-      }
-    
-      // ✅ record owned item ids
-      data.items.forEach(ent => {
-        if (ent?.item_id) OWNED_ITEM_IDS.add(ent.item_id);
-      });
-    
-      box.classList.remove("muted");
-      box.innerHTML = "";
-    
-      data.items.forEach(ent => {
-        const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
-        const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
-        addUnlock(title, raw);
-      });
+    const r = await fetch(apiUrl("/entitlements", s));
+    const data = await r.json();
+
+    if (!r.ok) {
+      if (box) { box.classList.add("muted"); box.textContent = data.error || "Could not load unlocks."; }
+      return;
     }
 
-    function addUnlock(title, rawKeyOrUrl) {
-      const box = document.getElementById("unlocks");
-      if (box.classList.contains("muted")) box.classList.remove("muted");
+    if (!data.items || data.items.length === 0) {
+      if (box) { box.classList.add("muted"); box.textContent = "Redeem something to see it here."; }
+      return;
+    }
 
-      const isUrl = isProbablyUrl(rawKeyOrUrl);
-      const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
+    data.items.forEach(ent => { if (ent?.item_id) OWNED_ITEM_IDS.add(ent.item_id); });
 
-      const wrap = document.createElement("div");
-      wrap.className = "card";
-      wrap.innerHTML = `
-        <strong>${title}</strong>
-        <div class="keybox" style="margin-top:8px">
-          <div>${keyLabel}</div>
-          <div><code class="key">${rawKeyOrUrl || "(missing key)"}</code></div>
-          <div style="margin-top:8px" class="row">
-            <button class="copy">Copy My Key</button>
-          </div>
-          <div class="muted" style="margin-top:8px">
-            Thank you for supporting 💃 Anya & Lolo 🦜 Please note: your key can only be used once. If it’s shared accidentally, someone else could claim it, so please keep it safe.
-          </div>
+    box.classList.remove("muted");
+    box.innerHTML = "";
+
+    data.items.forEach(ent => {
+      const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
+      const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
+      addUnlock(title, raw);
+    });
+  }
+
+  function addUnlock(title, rawKeyOrUrl) {
+    const box = document.getElementById("unlocks");
+    if (!box) return;
+    if (box.classList.contains("muted")) box.classList.remove("muted");
+
+    const isUrl = isProbablyUrl(rawKeyOrUrl);
+    const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
+
+    const wrap = document.createElement("div");
+    wrap.className = "card";
+    wrap.innerHTML = `
+      <strong>${title}</strong>
+      <div class="keybox" style="margin-top:8px">
+        <div>${keyLabel}</div>
+        <div><code class="key">${rawKeyOrUrl || "(missing key)"}</code></div>
+        <div style="margin-top:8px" class="row">
+          <button class="copy">Copy My Key</button>
         </div>
-      `;
+        <div class="muted" style="margin-top:8px">
+          Thank you for supporting 💃 Anya & Lolo 🦜 Please keep your key safe.
+        </div>
+      </div>
+    `;
 
-      wrap.querySelector(".copy").onclick = async () => {
-        await navigator.clipboard.writeText(rawKeyOrUrl || "");
-        const msg = wrap.querySelector(".copiedMsg") || (() => {
-          const m = document.createElement("div");
-          m.className = "muted copiedMsg";
-          m.style.marginTop = "8px";
-          m.textContent = "💛 Copied!";
-          wrap.querySelector(".keybox")?.appendChild(m);
-          return m;
-        })();
-        msg.textContent = "💛 Copied!";
-      };
+    wrap.querySelector(".copy").onclick = async () => {
+      await navigator.clipboard.writeText(rawKeyOrUrl || "");
+      let msg = wrap.querySelector(".copiedMsg");
+      if (!msg) {
+        msg = document.createElement("div");
+        msg.className = "muted copiedMsg";
+        msg.style.marginTop = "8px";
+        wrap.querySelector(".keybox")?.appendChild(msg);
+      }
+      msg.textContent = "💛 Copied!";
+    };
 
-      box.prepend(wrap);
+    box.prepend(wrap);
+  }
+
+  async function redeem(itemId, buttonEl) {
+    const s = getSession();
+    if (!s) return;
+
+    const itemName = buttonEl?.dataset?.name || itemId;
+    const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+
+    if (CURRENT_CREDITS_CENTS < costCents) {
+      alert(`Not enough credits for ${itemName}.`);
+      return;
     }
 
-    async function redeem(itemId, buttonEl) {
-      const s = getSession();
-      if (!s) {
-        showStoreMessage(buttonEl, "Please connect Patreon first.", "error");
-        return;
-      }
+    if (redeeming.has(itemId)) return;
+    redeeming.add(itemId);
 
-      const itemName = buttonEl?.dataset?.name || itemId;
-      const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
-      
-      if (CURRENT_CREDITS_CENTS < costCents) {
-        showStoreMessage(
-          buttonEl,
-          `Sorry, you don't have enough credits. You need ${costCents} credits for ${itemName}.`,
-          "error"
-        );
-        return;
-      }
+    try {
+      buttonEl.disabled = true;
+      buttonEl.textContent = "Redeeming…";
 
-      if (redeeming.has(itemId)) return;
-      redeeming.add(itemId);
+      const r = await fetch(apiUrl("/redeem", s), {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ itemId })
+      });
 
-      const originalText = buttonEl ? buttonEl.textContent : "";
-      if (buttonEl) {
-        buttonEl.disabled = true;
-        buttonEl.textContent = "Redeeming…";
-      }
-
-      showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
-
-      const stuckTimer = setTimeout(() => {
-        showStoreMessage(buttonEl, "Still working… please try again in a moment.", "info");
-        if (buttonEl) {
-          buttonEl.disabled = false;
-          buttonEl.textContent = originalText || "Redeem";
-        }
-        redeeming.delete(itemId);
-      }, 15000);
-
-      try {
-        const r = await fetch(apiUrl("/redeem", s), {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ itemId })
-        });
-
-        clearTimeout(stuckTimer);
-
-        const out = await r.json();
-
-        if (!r.ok) {
-          showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
-          return;
-        }
-
-        const raw = (out.payload && (out.payload.itch_key_url || out.payload.itch_key || out.payload.url)) || "";
-        if (raw) {
-          addUnlock((out.item && out.item.name) ? out.item.name : itemId, raw);
-          showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Your key is now in “Your Unlocks”.`, "success");
-        } else {
-          showStoreMessage(buttonEl, "✅ Redeemed! (No key returned)", "success");
-        }
+      const out = await r.json();
+      if (!r.ok) throw new Error(out.error || "Redeem failed");
 
       await loadMe();
       await loadUnlocks();
       await loadStore();
-
-      } catch (e) {
-        showStoreMessage(buttonEl, "Network error. Please try again.", "error");
-      } finally {
-        clearTimeout(stuckTimer);
-        redeeming.delete(itemId);
-        if (buttonEl) {
-          buttonEl.disabled = false;
-          buttonEl.textContent = originalText || "Redeem";
-        }
-      }
+    } catch (e) {
+      console.error(e);
+      alert("Redeem failed. Check console.");
+    } finally {
+      redeeming.delete(itemId);
+      buttonEl.disabled = false;
+      buttonEl.textContent = "Redeem";
     }
+  }
 
-    const infoBtn = document.getElementById("infoBtn");
-    const infoPop = document.getElementById("infoPop");
-    const infoClose = document.getElementById("infoClose");
+  // Info popup handlers (yours are fine)
+  const infoBtn = document.getElementById("infoBtn");
+  const infoPop = document.getElementById("infoPop");
+  const infoClose = document.getElementById("infoClose");
 
-    function openInfo(){
-      if (!infoPop) return;
-      infoPop.classList.add("show");
-      infoPop.setAttribute("aria-hidden", "false");
-    }
-    function closeInfo(){
-      if (!infoPop) return;
-      infoPop.classList.remove("show");
-      infoPop.setAttribute("aria-hidden", "true");
-    }
+  function openInfo(){ infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false"); }
+  function closeInfo(){ infoPop?.classList.remove("show"); infoPop?.setAttribute("aria-hidden","true"); }
 
-    infoBtn?.addEventListener("click", () => {
-      if (!infoPop) return;
-      const isOpen = infoPop.classList.contains("show");
-      if (isOpen) closeInfo();
-      else openInfo();
-    });
+  infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
+  infoClose?.addEventListener("click", closeInfo);
+  infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
 
-    infoClose?.addEventListener("click", closeInfo);
-
-    infoPop?.addEventListener("click", (e) => {
-      if (e.target === infoPop) closeInfo();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeInfo();
-    });
-
-    showConnectUI();
-
-    (async () => {
-      await loadMe();
-      await loadUnlocks(); // fill OWNED_ITEM_IDS first
-      await loadStore();   // then render store with Owned ✅
-    })();
-  </script>
-
-  <script>
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add("reveal");
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll(".card").forEach(c => {
-      c.classList.add("preReveal");
-      io.observe(c);
-    });
-  </script>
-
-  <style>
-    .preReveal{
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity .45s ease, transform .45s ease;
-    }
-    .reveal{
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
-
-  <script>
-    document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
-      el.addEventListener("click", () => {
-        el.classList.remove("pop");
-        void el.offsetWidth;
-        el.classList.add("pop");
-      });
-    });
-  </script>
+  (async () => {
+    await loadMe();
+    await loadUnlocks();
+    await loadStore();
+  })();
+</script>
 
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
-
-
