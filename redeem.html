@@ -1093,7 +1093,6 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
 
   const text =
     `SUPPORT INFO (paste to Anya)\nSupport ID: ${supportId}\n` +
-    `Admin lookup: patreon_user_id=${support.patreon_user_id ?? "unknown"}\n\n` +
     JSON.stringify(safe, null, 2);
 
   await navigator.clipboard.writeText(text);
@@ -1112,6 +1111,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
