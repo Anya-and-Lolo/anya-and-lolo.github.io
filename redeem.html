@@ -881,46 +881,96 @@
     box.prepend(wrap);
   }
 
-  async function redeem(itemId, buttonEl) {
-    const s = getSession();
-    if (!s) return;
+function showStoreMessage(buttonEl, msg, type = "info") {
+  if (!buttonEl) return;
 
-    const itemName = buttonEl?.dataset?.name || itemId;
-    const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+  const card = buttonEl.closest(".card");
+  if (!card) return;
 
-    if (CURRENT_CREDITS_CENTS < costCents) {
-      alert(`Not enough credits for ${itemName}.`);
+  const box = card.querySelector(".storeMsg");
+  if (!box) return;
+
+  const defaultMsg = box.dataset.defaultMsg || box.textContent;
+  if (!box.dataset.defaultMsg) box.dataset.defaultMsg = defaultMsg;
+
+  clearTimeout(box._resetTimer);
+
+  box.classList.remove("storeMsg--success","storeMsg--error","storeMsg--info","show");
+  box.classList.add("show");
+
+  if (type === "success") box.classList.add("storeMsg--success");
+  else if (type === "error") box.classList.add("storeMsg--error");
+  else box.classList.add("storeMsg--info");
+
+  box.textContent = msg;
+
+  if (type === "error" || type === "success") {
+    box._resetTimer = setTimeout(() => {
+      box.classList.remove("storeMsg--success","storeMsg--error");
+      box.classList.add("storeMsg--info");
+      box.textContent = box.dataset.defaultMsg || defaultMsg;
+    }, 3000);
+  }
+}
+  
+async function redeem(itemId, buttonEl) {
+  const s = getSession();
+
+  // ✅ show message instead of silent return
+  if (!s) {
+    showStoreMessage(buttonEl, "Please connect your Patreon account first.", "error");
+    return;
+  }
+
+  const itemName = buttonEl?.dataset?.name || itemId;
+  const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+
+  if (CURRENT_CREDITS_CENTS < costCents) {
+    showStoreMessage(
+      buttonEl,
+      `Not enough credits for ${itemName}. You need ${costCents} credits.`,
+      "error"
+    );
+    return;
+  }
+
+  if (redeeming.has(itemId)) return;
+  redeeming.add(itemId);
+
+  const originalText = buttonEl?.textContent || "Redeem";
+
+  try {
+    buttonEl.disabled = true;
+    buttonEl.textContent = "Redeeming…";
+    showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
+
+    const r = await fetch(apiUrl("/redeem", s), {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ itemId })
+    });
+
+    const out = await r.json();
+
+    if (!r.ok) {
+      showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
       return;
     }
 
-    if (redeeming.has(itemId)) return;
-    redeeming.add(itemId);
+    showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Check “Your Unlocks”.`, "success");
 
-    try {
-      buttonEl.disabled = true;
-      buttonEl.textContent = "Redeeming…";
-
-      const r = await fetch(apiUrl("/redeem", s), {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ itemId })
-      });
-
-      const out = await r.json();
-      if (!r.ok) throw new Error(out.error || "Redeem failed");
-
-      await loadMe();
-      await loadUnlocks();
-      await loadStore();
-    } catch (e) {
-      console.error(e);
-      alert("Redeem failed. Check console.");
-    } finally {
-      redeeming.delete(itemId);
-      buttonEl.disabled = false;
-      buttonEl.textContent = "Redeem";
-    }
+    await loadMe();
+    await loadUnlocks();
+    await loadStore();
+  } catch (e) {
+    console.error(e);
+    showStoreMessage(buttonEl, "Network error. Please try again.", "error");
+  } finally {
+    redeeming.delete(itemId);
+    buttonEl.disabled = false;
+    buttonEl.textContent = originalText;
   }
+}
 
   // Info popup handlers (yours are fine)
   const infoBtn = document.getElementById("infoBtn");
@@ -945,3 +995,4 @@
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
