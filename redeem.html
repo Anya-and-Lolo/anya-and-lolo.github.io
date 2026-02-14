@@ -616,6 +616,11 @@
 
   const API = "https://patreon-redeem-api.lady-anya.workers.dev";
   let CURRENT_CREDITS_CENTS = 0; // integer cents
+  
+  // --- Support bundle state (safe diagnostics) ---
+  let LAST_ME = null;
+  let LAST_ENTITLEMENTS = null;
+
   let OWNED_ITEM_IDS = new Set();
 
   const params = new URLSearchParams(location.search);
@@ -700,9 +705,11 @@ function setPill(status) {
     try {
       const r = await fetch(apiUrl("/me", s));
       const me = await r.json();
+      LAST_ME = me;
 
       if (!me.loggedIn) {
         CURRENT_CREDITS_CENTS = 0;
+        LAST_ME = null;
         if (creditsValue) creditsValue.textContent = "not connected";
         showConnectUI();
         setPill("not connected");
@@ -817,12 +824,14 @@ function setPill(status) {
     OWNED_ITEM_IDS = new Set();
 
     if (!s) {
+      LAST_ENTITLEMENTS = null;
       if (box) { box.classList.add("muted"); box.textContent = "Connect Patreon to see your unlocks."; }
       return;
     }
 
     const r = await fetch(apiUrl("/entitlements", s));
     const data = await r.json();
+    LAST_ENTITLEMENTS = data;
 
     if (!r.ok) {
       if (box) { box.classList.add("muted"); box.textContent = data.error || "Could not load unlocks."; }
@@ -989,6 +998,55 @@ async function redeem(itemId, buttonEl) {
   infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
 
+function redactKey(s){
+  const t = String(s || "");
+  if (!t) return "";
+  // Keep only last 6 chars so you can correlate, but not leak the full key
+  return t.length <= 6 ? t : ("***" + t.slice(-6));
+}
+
+document.getElementById("copySupport")?.addEventListener("click", async () => {
+  const sessionPresent = !!getSession();
+
+  const entItems = Array.isArray(LAST_ENTITLEMENTS?.items) ? LAST_ENTITLEMENTS.items : [];
+  const safeEnt = entItems.map(e => ({
+    entitlement_id: e?.id ?? null,
+    item_id: e?.item_id ?? null,
+    title: e?.payload?.title ?? null,
+    claimed_at: e?.payload?.claimed_at ?? null,
+    itch_key_code_last6: redactKey(e?.payload?.itch_key_code),
+    itch_key_url_present: !!e?.payload?.itch_key_url
+  }));
+
+  const safe = {
+    app: "Anya & Lolo Patreon Rewards",
+    time: new Date().toISOString(),
+    page: location.href.split("?")[0],
+    session_present: sessionPresent,
+
+    // From /me (if connected)
+    loggedIn: LAST_ME?.loggedIn ?? null,
+    patreon_status: LAST_ME?.patreon_status ?? null,
+    user_id: LAST_ME?.user_id ?? LAST_ME?.userId ?? null,
+    patreon_user_id: LAST_ME?.patreon_user_id ?? LAST_ME?.patreonUserId ?? null,
+    credits_raw_cents: LAST_ME?.credits_raw_cents ?? null,
+
+    // From /entitlements
+    entitlements_count: safeEnt.length,
+    entitlements: safeEnt,
+
+    // Optional client info
+    ua: navigator.userAgent
+  };
+
+  const text = "SUPPORT INFO (paste to Anya)\n" + JSON.stringify(safe, null, 2);
+
+  await navigator.clipboard.writeText(text);
+
+  const msg = document.getElementById("supportCopied");
+  if (msg) msg.textContent = "Copied! Paste this to Anya 💛";
+});
+
   (async () => {
     await loadMe();
     await loadUnlocks();
@@ -999,6 +1057,7 @@ async function redeem(itemId, buttonEl) {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
