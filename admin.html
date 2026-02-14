@@ -113,7 +113,32 @@
     .muted{ color: var(--muted); font-size: 13px; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin: 10px 0; }
-    label{ font-weight: 900; font-size: 13px; color: rgba(27,27,27,0.82); min-width: 120px; }
+    label{ font-weight: 900; font-size: 13px; color: rgba(27,27,27,0.82); }
+
+    /* --- Form layout helpers: consistent left-aligned actions --- */
+    .formRow{
+      display:grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .formRow .field{
+      width: 100%;
+      max-width: 760px;
+    }
+    .formRow .actions{
+      display:flex;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+    .formRow .actions button{ white-space: nowrap; }
+
+    @media (max-width: 720px){
+      .formRow{ grid-template-columns: 1fr; }
+      .formRow .actions{ justify-content: stretch; }
+      .formRow .actions button{ width: 100%; }
+    }
 
     input, textarea{
       font: inherit;
@@ -157,6 +182,11 @@
     }
     .btnDanger:hover{ background: rgba(239,68,68,0.16); }
 
+    .btnGhost{
+      background: rgba(0,0,0,0.04);
+      border-color: rgba(20,20,20,0.12);
+    }
+
     .divider{ height:1px; background: rgba(20,20,20,0.10); margin: 12px 0; }
 
     .pill{
@@ -186,7 +216,7 @@
       padding: 12px;
       font-family: var(--mono);
       font-size: 12.5px;
-      max-height: 560px;
+      max-height: 420px;
       overflow:auto;
     }
 
@@ -207,8 +237,58 @@
     }
     summary::-webkit-details-marker{ display:none; }
 
-    .two{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    @media (max-width: 720px){ .two{ grid-template-columns: 1fr; } }
+    /* Readable user view */
+    .kv{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 12px;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .kv .k{ color: rgba(27,27,27,0.75); font-weight: 900; }
+    .kv .v{ font-family: var(--mono); font-size: 12.5px; word-break: break-word; }
+
+    .entList{ display:flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+    .entCard{
+      border: 1px solid rgba(20,20,20,0.10);
+      background: rgba(255,255,255,0.85);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .entTop{
+      display:flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .entTitle{
+      font-weight: 1000;
+      letter-spacing: -0.1px;
+    }
+    .entMeta{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(27,27,27,0.72);
+      word-break: break-word;
+      margin-top: 6px;
+    }
+    .entActions{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .smallBtn{
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 12.5px;
+    }
+    .linkBtn{
+      text-decoration: none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
   </style>
 </head>
 
@@ -232,15 +312,18 @@
       <section class="card">
         <h2>Connection</h2>
 
-        <div class="row">
+        <div class="formRow">
           <label>API Base</label>
-          <input id="apiBase" value="https://patreon-redeem-api.lady-anya.workers.dev" />
+          <input id="apiBase" class="field" value="https://patreon-redeem-api.lady-anya.workers.dev" />
+          <div class="actions"></div>
         </div>
 
-        <div class="row">
+        <div class="formRow">
           <label>Admin Token</label>
-          <input id="adminToken" type="password" placeholder="Paste ADMIN_TOKEN (not saved)" />
-          <button id="toggleToken">Show</button>
+          <input id="adminToken" class="field" type="password" placeholder="Paste ADMIN_TOKEN (not saved)" />
+          <div class="actions">
+            <button id="toggleToken" class="btnGhost">Show</button>
+          </div>
         </div>
 
         <div class="divider"></div>
@@ -249,71 +332,92 @@
 
         <details open>
           <summary>Lookup user <span class="muted">GET /admin/user</span></summary>
-          <div class="row">
+          <div class="formRow">
             <label>patreon_user_id</label>
-            <input id="patreonUserId" placeholder="e.g. 466331" />
-            <button id="lookup" class="btnPrimary">Lookup</button>
+            <input id="patreonUserId" class="field" placeholder="e.g. 466331" />
+            <div class="actions">
+              <button id="lookup" class="btnPrimary">Lookup</button>
+            </div>
           </div>
         </details>
 
         <details>
           <summary>Credits add/remove <span class="muted">POST /admin/credits/add</span></summary>
-          <div class="two">
-            <div class="row" style="margin:0">
-              <label>user_id</label>
-              <input id="creditUserId" placeholder="patreon_123" />
-            </div>
-            <div class="row" style="margin:0">
-              <label>delta_cents</label>
-              <input id="deltaCents" type="number" placeholder="500 or -200" />
-            </div>
+
+          <div class="formRow">
+            <label>user_id</label>
+            <input id="creditUserId" class="field" placeholder="patreon_123" />
+            <div class="actions"></div>
           </div>
-          <div class="row">
+
+          <div class="formRow">
+            <label>delta_cents</label>
+            <input id="deltaCents" class="field" type="number" placeholder="500 or -200" />
+            <div class="actions"></div>
+          </div>
+
+          <div class="formRow">
             <label>note</label>
-            <input id="creditNote" placeholder="Added 500 credits / Refund correction" />
-            <button id="creditsAdd" class="btnPrimary">Apply</button>
+            <input id="creditNote" class="field" placeholder="Added 500 credits / Refund correction" />
+            <div class="actions">
+              <button id="creditsAdd" class="btnPrimary">Apply</button>
+            </div>
           </div>
+
           <div class="muted">Use integer cents. Negative removes credits.</div>
         </details>
 
         <details>
           <summary>Credits set exact <span class="muted">POST /admin/credits/set</span></summary>
-          <div class="two">
-            <div class="row" style="margin:0">
-              <label>user_id</label>
-              <input id="setCreditUserId" placeholder="patreon_123" />
-            </div>
-            <div class="row" style="margin:0">
-              <label>target_available_cents</label>
-              <input id="targetCents" type="number" placeholder="1320" />
-            </div>
+
+          <div class="formRow">
+            <label>user_id</label>
+            <input id="setCreditUserId" class="field" placeholder="patreon_123" />
+            <div class="actions"></div>
           </div>
-          <div class="row">
+
+          <div class="formRow">
+            <label>target_available_cents</label>
+            <input id="targetCents" class="field" type="number" placeholder="1320" />
+            <div class="actions"></div>
+          </div>
+
+          <div class="formRow">
             <label>note</label>
-            <input id="setCreditNote" placeholder="Set credits to 1320" />
-            <button id="creditsSet" class="btnPrimary">Set</button>
+            <input id="setCreditNote" class="field" placeholder="Set credits to 1320" />
+            <div class="actions">
+              <button id="creditsSet" class="btnPrimary">Set</button>
+            </div>
           </div>
         </details>
 
         <details>
           <summary>Add entitlement <span class="muted">POST /admin/entitlements/add</span></summary>
-          <div class="two">
-            <div class="row" style="margin:0">
-              <label>user_id</label>
-              <input id="entAddUserId" placeholder="patreon_123" />
-            </div>
-            <div class="row" style="margin:0">
-              <label>item_id</label>
-              <input id="entAddItemId" placeholder="fishing_system" />
-            </div>
+
+          <div class="formRow">
+            <label>user_id</label>
+            <input id="entAddUserId" class="field" placeholder="patreon_123" />
+            <div class="actions"></div>
           </div>
-          <div class="row">
+
+          <div class="formRow">
+            <label>item_id</label>
+            <input id="entAddItemId" class="field" placeholder="fishing_system" />
+            <div class="actions"></div>
+          </div>
+
+          <div class="formRow" style="align-items:start;">
             <label>payload (JSON)</label>
-            <textarea id="entAddPayload">{ "note": "Manual grant" }</textarea>
+            <textarea id="entAddPayload" class="field">{ "note": "Manual grant" }</textarea>
+            <div class="actions"></div>
           </div>
-          <div class="row">
+
+          <div class="formRow">
             <label></label>
-            <button id="entAdd" class="btnPrimary">Add</button>
+            <div class="field"></div>
+            <div class="actions">
+              <button id="entAdd" class="btnPrimary">Add</button>
+            </div>
           </div>
         </details>
 
@@ -323,76 +427,84 @@
             Option A: delete by entitlement_id (preferred). Option B: delete by user_id + item_id.
           </div>
 
-          <div class="two">
-            <div class="row" style="margin:0">
-              <label>entitlement_id</label>
-              <input id="entDelId" placeholder="uuid-here" />
-            </div>
-            <div class="row" style="margin:0">
-              <label></label>
+          <!-- Option A -->
+          <div class="formRow">
+            <label>entitlement_id</label>
+            <input id="entDelId" class="field" placeholder="uuid-here" />
+            <div class="actions">
               <button id="entDelById" class="btnDanger">Delete by ID</button>
             </div>
           </div>
 
           <div class="divider"></div>
 
-          <div class="two">
-            <div class="row" style="margin:0">
-              <label>user_id</label>
-              <input id="entDelUserId" placeholder="patreon_123" />
-            </div>
-            <div class="row" style="margin:0">
-              <label>item_id</label>
-              <input id="entDelItemId" placeholder="fishing_system" />
-            </div>
+          <!-- Option B -->
+          <div class="formRow">
+            <label>user_id</label>
+            <input id="entDelUserId" class="field" placeholder="patreon_123" />
+            <div class="actions"></div>
           </div>
-          <div class="row">
-            <label></label>
-            <button id="entDelByUserItem" class="btnDanger">Delete by user+item</button>
+
+          <div class="formRow">
+            <label>item_id</label>
+            <input id="entDelItemId" class="field" placeholder="fishing_system" />
+            <div class="actions">
+              <button id="entDelByUserItem" class="btnDanger">Delete by user+item</button>
+            </div>
           </div>
         </details>
 
         <details>
           <summary>Reissue key <span class="muted">POST /admin/keys/reissue</span></summary>
-          <div class="two">
-            <div class="row" style="margin:0">
-              <label>user_id</label>
-              <input id="reissueUserId" placeholder="patreon_123" />
-            </div>
-            <div class="row" style="margin:0">
-              <label>item_id</label>
-              <input id="reissueItemId" placeholder="fishing_system" />
+
+          <div class="formRow">
+            <label>user_id</label>
+            <input id="reissueUserId" class="field" placeholder="patreon_123" />
+            <div class="actions"></div>
+          </div>
+
+          <div class="formRow">
+            <label>item_id</label>
+            <input id="reissueItemId" class="field" placeholder="fishing_system" />
+            <div class="actions">
+              <button id="reissue" class="btnPrimary">Reissue</button>
             </div>
           </div>
-          <div class="row">
-            <label></label>
-            <button id="reissue" class="btnPrimary">Reissue</button>
-          </div>
+
           <div class="muted">This may burn a key. Use for rotation/leaks.</div>
         </details>
 
         <details>
           <summary>Migrate entitlements <span class="muted">POST /admin/migrate</span></summary>
           <div class="muted">Move entitlements from an old/random user_id (uuid etc) to the correct patreon_### user.</div>
-          <div class="two">
-            <div class="row" style="margin:0">
-              <label>fromUserId</label>
-              <input id="fromUserId" placeholder="old user_id (uuid etc)" />
-            </div>
-            <div class="row" style="margin:0">
-              <label>toUserId</label>
-              <input id="toUserId" placeholder="new user_id (patreon_123...)" />
-            </div>
+
+          <div class="formRow">
+            <label>fromUserId</label>
+            <input id="fromUserId" class="field" placeholder="old user_id (uuid etc)" />
+            <div class="actions"></div>
           </div>
-          <div class="row">
-            <label></label>
-            <button id="migrate" class="btnPrimary">Migrate</button>
+
+          <div class="formRow">
+            <label>toUserId</label>
+            <input id="toUserId" class="field" placeholder="new user_id (patreon_123...)" />
+            <div class="actions">
+              <button id="migrate" class="btnPrimary">Migrate</button>
+            </div>
           </div>
         </details>
       </section>
 
       <!-- RIGHT -->
       <aside class="card">
+        <h2>User Summary</h2>
+        <div class="muted">After “Lookup”, you’ll get a readable view here + quick actions per entitlement.</div>
+
+        <div id="userSummary" class="muted" style="margin-top:10px;">
+          No user loaded yet.
+        </div>
+
+        <div class="divider"></div>
+
         <h2>Console</h2>
         <div class="row" style="justify-content:space-between">
           <div class="muted">Last request + response</div>
@@ -488,22 +600,118 @@
       });
 
       const j = await r.json().catch(() => ({}));
-      setJson(out, { http: r.status, ...j });
-      return { ok: r.ok, status: r.status, json: j };
+      const payload = { http: r.status, ...j };
+      setJson(out, payload);
+      return { ok: r.ok, status: r.status, json: payload };
     } catch (e) {
       setJson(out, { error: String(e) });
       return null;
     }
   }
 
+  function escapeHtml(s){
+    return String(s ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function renderUserSummary(data){
+    const box = document.getElementById("userSummary");
+
+    if (!data || !data.userId) {
+      box.className = "muted";
+      box.textContent = "No user loaded yet.";
+      return;
+    }
+
+    const userId = data.userId;
+    const patreonId = data.link?.patreon_user_id || "";
+    const expires = data.link?.token_expires_at ? new Date(data.link.token_expires_at * 1000).toISOString() : "";
+    const ent = Array.isArray(data.entitlements) ? data.entitlements : [];
+
+    const entHtml = ent.length ? ent.map(e => {
+      const entId = e.id || "";
+      const itemId = e.item_id || "";
+      const title = e.payload?.title || itemId || "Untitled";
+      const claimedAt = e.payload?.claimed_at || "";
+      const keyCode = e.payload?.itch_key_code || "";
+      const keyUrl = e.payload?.itch_key_url || "";
+
+      return `
+        <div class="entCard">
+          <div class="entTop">
+            <div>
+              <div class="entTitle">${escapeHtml(title)}</div>
+              <div class="entMeta">item_id: ${escapeHtml(itemId)}</div>
+            </div>
+            <div class="entActions">
+              ${keyUrl ? `<a class="smallBtn linkBtn btnGhost" href="${escapeHtml(keyUrl)}" target="_blank" rel="noopener">Open key</a>` : ""}
+              <button class="smallBtn btnPrimary" data-act="reissue" data-user="${escapeHtml(userId)}" data-item="${escapeHtml(itemId)}">Reissue</button>
+              <button class="smallBtn btnDanger" data-act="deleteById" data-ent="${escapeHtml(entId)}">Delete</button>
+            </div>
+          </div>
+
+          <div class="kv">
+            <div class="k">entitlement_id</div><div class="v">${escapeHtml(entId)}</div>
+            <div class="k">key_code</div><div class="v">${escapeHtml(keyCode || "(none)")}</div>
+            <div class="k">claimed_at</div><div class="v">${escapeHtml(claimedAt || "(not set)")}</div>
+          </div>
+        </div>
+      `;
+    }).join("") : `<div class="muted" style="margin-top:10px;">No entitlements found.</div>`;
+
+    box.className = "";
+    box.innerHTML = `
+      <div class="kv">
+        <div class="k">user_id</div><div class="v">${escapeHtml(userId)}</div>
+        <div class="k">patreon_user_id</div><div class="v">${escapeHtml(patreonId || "(unknown)")}</div>
+        <div class="k">token_expires_at</div><div class="v">${escapeHtml(expires || "(unknown)")}</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3 style="margin:0 0 6px;">Entitlements (${ent.length})</h3>
+      <div class="entList">${entHtml}</div>
+    `;
+
+    // wire entitlement buttons
+    box.querySelectorAll("button[data-act='reissue']").forEach(btn => {
+      btn.onclick = () => {
+        const user_id = btn.getAttribute("data-user");
+        const item_id = btn.getAttribute("data-item");
+        callJson("/admin/keys/reissue", {
+          method:"POST",
+          body:{ user_id, item_id },
+          confirmText:`Reissue key for ${user_id} / ${item_id}?\nThis may burn a key.`
+        });
+      };
+    });
+
+    box.querySelectorAll("button[data-act='deleteById']").forEach(btn => {
+      btn.onclick = () => {
+        const entitlement_id = btn.getAttribute("data-ent");
+        callJson("/admin/entitlements/delete", {
+          method:"POST",
+          body:{ entitlement_id },
+          confirmText:`DELETE entitlement ${entitlement_id}?\nThis cannot be undone.`
+        });
+      };
+    });
+  }
+
   // Ping
   document.getElementById("ping").onclick = () => callJson("/admin/ping");
 
   // Lookup user
-  document.getElementById("lookup").onclick = () => {
+  document.getElementById("lookup").onclick = async () => {
     const id = document.getElementById("patreonUserId").value.trim();
     if (!id) return setJson(document.getElementById("out"), { error: "missing patreon_user_id" });
-    callJson("/admin/user", { query: { patreon_user_id: id } });
+
+    const res = await callJson("/admin/user", { query: { patreon_user_id: id } });
+    if (res?.ok) renderUserSummary(res.json);
   };
 
   // Credits add/remove
@@ -604,6 +812,8 @@
   document.getElementById("clearOut").onclick = () => {
     setJson(document.getElementById("out"), {});
     setJson(document.getElementById("lastReq"), {});
+    document.getElementById("userSummary").className = "muted";
+    document.getElementById("userSummary").textContent = "No user loaded yet.";
   };
 
   document.getElementById("copyOut").onclick = async () => {
