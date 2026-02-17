@@ -157,16 +157,6 @@
   white-space: nowrap;
 }
 
-.badge{
-  font-size: 14px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.85);
-  color: var(--muted);
-  font-weight: 900;
-}
-
 /* Desktop nav pills */
 nav{
   display:flex;
@@ -252,21 +242,23 @@ nav{
     );
   }
 
+.badge{
+  font-size: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  color: var(--muted);
+  font-weight: 900;
+}
+
+/* Mobile tweak only */
+@media (max-width: 600px){
   .badge{
     font-size: 13px;
     padding: 6px 10px;
   }
 }
-
-    .badge{
-      font-size: 14px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.8);
-      color: var(--muted);
-      font-weight: 800;
-    }
 
     /* Hero */
     .hero{
@@ -999,6 +991,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
