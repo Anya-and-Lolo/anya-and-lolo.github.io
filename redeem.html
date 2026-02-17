@@ -679,18 +679,38 @@ function setPill(status) {
 
   const s = String(status || "").toLowerCase();
   let cls = "pill--gray";
+  let label = status ?? "unknown";
 
-  // ⚪ Not connected FIRST (so it can't be overridden)
-  if (s.includes("not connected")) cls = "pill--gray";
-  else if (s.includes("not a patron")) cls = "pill--blue";
-  else if (s.includes("active")) cls = "pill--green";
-  else if (s.includes("paused") || s.includes("pending")) cls = "pill--amber";
-  else if (s.includes("declined") || s.includes("error")) cls = "pill--red";
-  else if (s.includes("connected")) cls = "pill--green"; // last
+  if (s.includes("not connected")) {
+    cls = "pill--gray";
+    label = "Not connected";
+  }
+  else if (s.includes("not a patron")) {
+    cls = "pill--blue";
+    label = "Connected (No active pledge)";
+  }
+  else if (s.includes("active")) {
+    cls = "pill--green";
+    label = "Active Member";
+  }
+  else if (s.includes("paused") || s.includes("pending")) {
+    cls = "pill--amber";
+    label = "Membership Pending";
+  }
+  else if (s.includes("declined")) {
+    cls = "pill--red";
+    label = "Payment Declined";
+  }
 
-  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray","pill--blue");
+  pill.classList.remove(
+    "pill--green",
+    "pill--amber",
+    "pill--red",
+    "pill--gray",
+    "pill--blue"
+  );
   pill.classList.add(cls);
-  pill.innerHTML = `<span class="pillDot"></span> Patreon: ${status ?? "unknown"}`;
+  pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
 }
 
   function showConnectUI(){
@@ -1111,6 +1131,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
