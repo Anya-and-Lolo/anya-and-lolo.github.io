@@ -687,7 +687,7 @@ function setPill(status) {
   }
   else if (s.includes("not a patron")) {
     cls = "pill--blue";
-    label = "Connected (No active pledge)";
+    label = "Connected • Not pledged";
   }
   else if (s.includes("active")) {
     cls = "pill--green";
@@ -1131,6 +1131,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
