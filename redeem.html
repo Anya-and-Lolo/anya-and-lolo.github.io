@@ -3,8 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Patreon Rewards • Anya & Lolo</title>
-  <meta name="description" content="Connect Patreon, view credits, and redeem itch.io keys for Anya & Lolo rewards." />
+<title>Patreon Rewards & Key Redeem | Anya & Lolo</title>
+<meta name="description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
+<link rel="canonical" href="https://anya-and-lolo.github.io/redeem.html" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Anya & Lolo" />
+<meta property="og:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
+<meta property="og:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
+<meta property="og:url" content="https://anya-and-lolo.github.io/redeem.html" />
+<meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@Anya_and_Lolo" />
+<meta name="twitter:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
+<meta name="twitter:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
+<meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Patreon Rewards & Key Redeem",
+  "url": "https://anya-and-lolo.github.io/redeem.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Anya & Lolo",
+    "url": "https://anya-and-lolo.github.io/"
+  }
+}
+</script>
 
   <style>
     :root{
@@ -315,6 +343,29 @@
       margin-top: 8px;
     }
 
+    .activityList{ display:flex; flex-direction:column; gap:10px; }
+    .activityItem{
+      background:#fff;
+      border:1px solid rgba(20,20,20,0.10);
+      border-radius:14px;
+      padding:12px;
+    }
+    .activityTop{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .activityAmt{
+      font-weight:1000;
+      font-size:15px;
+    }
+    .activityAmt.plus{ color:#16a34a; }
+    .activityAmt.minus{ color:#dc2626; }
+    .activityMeta{ font-size:13px; color: rgba(27,27,27,0.70); margin-top:6px; }
+    .activityTag{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12.5px; font-weight:900;
+      padding:4px 10px; border-radius:999px;
+      border:1px solid rgba(20,20,20,0.12);
+      background: rgba(0,0,0,0.03);
+    }
+
     .pill{
       display:inline-flex;
       align-items:center;
@@ -529,8 +580,10 @@
 
   <main class="wrap">
     <h1>Patreon Rewards</h1>
-    <p class="sub">Connect Patreon, view credits, and redeem your itch.io keys for Anya & Lolo rewards. Credits are earned from successful paid Patreon pledges.
-</p>
+    <p class="sub">
+      Connect your Patreon to view your credits and redeem itch.io keys.
+      Credits are earned from successful paid Patreon pledges.
+    </p>
 
     <div class="card" style="margin: 10px 0 14px;">
       <div class="row">
@@ -564,6 +617,9 @@
         <div class="muted" id="supportCopied" style="margin-top:8px;"></div>
       </div>
     </div>
+
+  <h2 style="margin: 22px 0 10px;">Recent activity</h2>
+  <div id="activity" class="muted">Connect Patreon to see your recent actions.</div>
 
     <h2 style="margin: 18px 0 10px;">Rewards Store</h2>
     <div id="store" class="storeGrid"></div>
@@ -670,6 +726,15 @@
     return localStorage.getItem("session");
   }
 
+  function escapeHtml(str){
+    return String(str ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+ 
   function isProbablyUrl(s) {
     return typeof s === "string" && /^https?:\/\//i.test(s.trim());
   }
@@ -678,15 +743,21 @@ function setPill(status) {
   const pill = document.getElementById("patreonPill");
   if (!pill) return;
 
-  const s = String(status || "").toLowerCase();
+  const raw = (status ?? "").toString();
+  const s = raw.toLowerCase();
+
   let cls = "pill--gray";
-  let label = status ?? "unknown";
+  let label = raw || "unknown";
 
   if (s.includes("not connected")) {
     cls = "pill--gray";
     label = "Not connected";
   }
-  else if (s.includes("not a patron")) {
+  else if (s.includes("reconnect_required") || s.includes("reconnect")) {
+    cls = "pill--amber";
+    label = "Reconnect required";
+  }
+  else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
     cls = "pill--blue";
     label = "Connected • Not pledged";
   }
@@ -701,6 +772,14 @@ function setPill(status) {
   else if (s.includes("declined")) {
     cls = "pill--red";
     label = "Payment Declined";
+  }
+  else if (s.includes("error")) {
+    cls = "pill--red";
+    label = "Error loading status";
+  }
+  else if (s.includes("unknown")) {
+    cls = "pill--amber";
+    label = "Status unknown";
   }
 
   pill.classList.remove(
@@ -807,6 +886,94 @@ function setPill(status) {
     return fetch(apiUrl(path, session), { ...opts, headers });
   }
 
+let LAST_ACTIVITY = null;
+
+function niceSourceLabel(src){
+  const s = String(src || "").toLowerCase();
+  if (s === "patreon_charge") return "Patreon pledge";
+  if (s === "redeem") return "Redeem";
+  if (s === "admin_grant") return "Admin bonus";
+  if (s === "refund") return "Refund";
+  return src || "Activity";
+}
+
+function fmtCredits(n){
+  const v = Math.trunc(Number(n || 0));
+  const sign = v >= 0 ? "+" : "−";
+  return `${sign}${Math.abs(v)} credits`;
+}
+
+function fmtWhen(iso){
+  try{
+    const d = new Date(String(iso));
+    if (!Number.isFinite(d.getTime())) return "(unknown time)";
+    return new Intl.DateTimeFormat("en-AU", {
+      day:"2-digit", month:"2-digit", year:"numeric",
+      hour:"2-digit", minute:"2-digit"
+    }).format(d);
+  } catch {
+    return "(unknown time)";
+  }
+}
+
+function renderActivity(list){
+  const box = document.getElementById("activity");
+  if (!box) return;
+
+  if (!Array.isArray(list) || list.length === 0){
+    box.classList.add("muted");
+    box.textContent = "No recent activity yet.";
+    return;
+  }
+
+  box.classList.remove("muted");
+  box.innerHTML = `<div class="activityList">${
+    list.map(x => {
+      const delta = Number(x.delta_cents || 0);
+      const amtCls = delta >= 0 ? "plus" : "minus";
+      const note = (x.public_note || x.note || "").toString(); // you can control what you expose
+      return `
+        <div class="activityItem">
+          <div class="activityTop">
+            <span class="activityTag">${niceSourceLabel(x.source)}</span>
+            <span class="activityAmt ${amtCls}">${fmtCredits(delta)}</span>
+          </div>
+          <div class="activityMeta">
+            ${note ? `${escapeHtml(note)} • ` : ""}${escapeHtml(fmtWhen(x.created_at))}
+          </div>
+        </div>
+      `;
+    }).join("")
+  }</div>`;
+}
+
+async function loadActivity(){
+  const s = getSession();
+  const box = document.getElementById("activity");
+  if (!s){
+    if (box){ box.classList.add("muted"); box.textContent = "Connect Patreon to see your recent actions."; }
+    return;
+  }
+
+  try{
+    const r = await apiFetch("/activity", s);   // ✅ new endpoint
+    let data = null;
+    try { data = await r.json(); } catch { data = { error: "Invalid JSON from /activity" }; }
+    LAST_ACTIVITY = data;
+
+    if (!r.ok){
+      if (box){ box.classList.add("muted"); box.textContent = data.error || "Could not load activity."; }
+      return;
+    }
+
+    // Expect: { items: [ {delta_cents, source, note/public_note, created_at}, ... ] }
+    renderActivity(Array.isArray(data.items) ? data.items : []);
+  } catch (e){
+    if (box){ box.classList.add("muted"); box.textContent = "Network error loading activity."; }
+  }
+}
+
+  
   async function loadStore() {
     const el = document.getElementById("store");
     if (!el) return;
@@ -1122,13 +1289,23 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   if (msg) msg.textContent = "Copied! Paste this to Anya 💛";
 });
 
+window.addEventListener("error", (e) => {
+  console.error("Global error:", e.error || e.message);
+});
+window.addEventListener("unhandledrejection", (e) => {
+  console.error("Unhandled promise rejection:", e.reason);
+});
+  
   (async () => {
-    await loadMe();
-    await loadUnlocks();
-    await loadStore();
-  })();
+  try { await loadMe(); } catch(e){ console.error("loadMe failed", e); }
+  try { await loadUnlocks(); } catch(e){ console.error("loadUnlocks failed", e); }
+  try { await loadActivity(); } catch(e){ console.error("loadActivity failed", e); } // for user to see updates on account like credit spent etc
+  try { await loadStore(); } catch(e){ console.error("loadStore failed", e); }
+})();
+
 </script>
 
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
