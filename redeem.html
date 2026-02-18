@@ -708,15 +708,21 @@ function setPill(status) {
   const pill = document.getElementById("patreonPill");
   if (!pill) return;
 
-  const s = String(status || "").toLowerCase();
+  const raw = (status ?? "").toString();
+  const s = raw.toLowerCase();
+
   let cls = "pill--gray";
-  let label = status ?? "unknown";
+  let label = raw || "unknown";
 
   if (s.includes("not connected")) {
     cls = "pill--gray";
     label = "Not connected";
   }
-  else if (s.includes("not a patron")) {
+  else if (s.includes("reconnect_required") || s.includes("reconnect")) {
+    cls = "pill--amber";
+    label = "Reconnect required";
+  }
+  else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
     cls = "pill--blue";
     label = "Connected • Not pledged";
   }
@@ -731,6 +737,14 @@ function setPill(status) {
   else if (s.includes("declined")) {
     cls = "pill--red";
     label = "Payment Declined";
+  }
+  else if (s.includes("error")) {
+    cls = "pill--red";
+    label = "Error loading status";
+  }
+  else if (s.includes("unknown")) {
+    cls = "pill--amber";
+    label = "Status unknown";
   }
 
   pill.classList.remove(
@@ -1162,6 +1176,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
