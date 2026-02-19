@@ -324,6 +324,23 @@
       width: 100%;
     }
 
+    .storeMeta{
+      margin-top: 12px;
+      text-align: center;
+    }
+    
+    .storeTitle{
+      font-weight: 1000;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    
+    .storeInfo{
+      font-size: 14px;
+      opacity: .75;
+      font-weight: 700;
+    }
+
     footer{
       margin-top: 26px;
       padding: 18px 0 34px;
@@ -341,6 +358,42 @@
       font-weight: 1000;
     }
 
+    .creditsBox{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 4px;
+    }
+    
+    .creditsMain{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 26px;
+      font-weight: 1000;
+      letter-spacing: -0.5px;
+    }
+    
+    .creditsIcon{
+      font-size: 22px;
+    }
+    
+    .creditsAmount{
+      font-size: 30px;
+      font-weight: 1000;
+    }
+    
+    .creditsLabel{
+      font-size: 16px;
+      font-weight: 800;
+      opacity: .75;
+    }
+    
+    .creditsSub{
+      font-size: 13px;
+      opacity: .6;
+    }
+    
     .patreonRow{
       display:flex;
       align-items:center;
@@ -723,8 +776,13 @@
         <button id="connect" class="btnPrimary">Connect Patreon</button>
 
         <div class="statusBlock">  
-          <div class="creditsLine">
-            My Credits: <strong id="creditsValue">N/A</strong> (1¢ = 1 credit)
+          <div class="creditsBox">
+            <div class="creditsMain">
+              <span class="creditsIcon">💰</span>
+              <span id="creditsValue" class="creditsAmount">N/A</span>
+              <span class="creditsLabel">Credits</span>
+            </div>
+            <div class="creditsSub">1¢ = 1 credit</div>
           </div>
         
           <div class="patreonRow">
@@ -1284,13 +1342,13 @@ async function loadActivity(){
         div.innerHTML = `
           ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
 
-          <div style="margin-top:10px;">
-            <strong>${item.name}</strong><br>
-            <span class="muted">
-              <strong style="font-size:15px;">${costCreditsLabel} credits</strong>
-              • ${isOwned ? "System Owned ✅" : `Remaining keys: ${remaining}`}
-            </span>
+        <div class="storeMeta">
+          <div class="storeTitle">${item.name}</div>
+          <div class="storeInfo">
+            ${costCreditsLabel} credits 
+            ${isOwned ? "• System Owned ✅" : `• ${remaining} keys left`}
           </div>
+        </div>
 
           <button
             class="storeButton"
@@ -1592,6 +1650,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
