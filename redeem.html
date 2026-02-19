@@ -978,6 +978,10 @@ function friendlyActivityText(x){
   const cleanNote = note
     .replace(/^admin_(set|adjust|grant)\s*/i, "")
     .replace(/^•\s*/, "")
+    // remove any "(target=1234)" or "(target_store=1234)" anywhere
+    .replace(/\s*\(target(?:_store)?=\s*\d+\)\s*/gi, " ")
+    // remove outer wrapping parentheses like "(reason: ...)" if any show up
+    .replace(/^\((.*)\)$/s, "$1")
     .trim();
 
   if (src === "redeem") {
@@ -986,11 +990,17 @@ function friendlyActivityText(x){
   }
 
   if (delta > 0 && src.startsWith("admin")) {
-    return { title: "Yay! Bonus credits added 🎉", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
+    return {
+      title: "Yay! Bonus credits added 🎉",
+      detail: cleanNote ? `Reason: ${cleanNote}` : ""
+    };
   }
-
+  
   if (delta < 0 && src.startsWith("admin")) {
-    return { title: "Credit adjustment by Anya", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
+    return {
+      title: "Credit adjustment by Anya",
+      detail: cleanNote ? `Reason: ${cleanNote}` : ""
+    };
   }
 
   if (src === "patreon_charge") return { title: "Patreon credits added", detail: "" };
@@ -1417,6 +1427,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
