@@ -1041,7 +1041,7 @@ function renderActivity(list){
       const amtCls = delta >= 0 ? "plus" : "minus";
 
       const sign = delta >= 0 ? "+" : "−";
-      const amount = `${sign}${Math.abs(Math.trunc(delta))} credits`;
+      const amount = `${sign}${Math.abs(Math.trunc(delta))}`;
       
       const pillCls = delta >= 0 ? "pill--green" : "pill--red";
 
@@ -1054,7 +1054,7 @@ function renderActivity(list){
             <div class="activityPillWrap">
               <span class="pill activityPill ${pillCls}">
                 <span class="pillDot"></span>
-                ${escapeHtml(amount)}
+                ${escapeHtml(amount)} <span style="opacity:.65;">💰</span>
               </span>
             </div>
       
@@ -1433,6 +1433,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
