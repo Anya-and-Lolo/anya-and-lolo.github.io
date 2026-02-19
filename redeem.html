@@ -692,12 +692,10 @@
     <h2 style="margin: 22px 0 10px;">Your Unlocks</h2>
     <div id="unlocks" class="muted">Redeem something to see it here.</div>
 
-
 <h2 style="margin: 22px 0 10px;">Account activity</h2>
 <div id="activity" class="muted">
   Connect Patreon to see actions on your account (like credits spent and more).
 </div>
-
 
     <footer>
       <div class="hangout">
@@ -983,58 +981,23 @@ function friendlyActivityText(x){
     .replace(/^•\s*/, "")
     .trim();
 
-  // 🛍 Redeem
   if (src === "redeem") {
     const clean = cleanNote.replace(/^redeemed\s*/i, "");
     return clean ? `You redeemed ${clean}` : "You redeemed a reward";
   }
 
-  // 🎁 Positive admin bonus
   if (delta > 0 && src.startsWith("admin")) {
-    return `Yay! Bonus credits added 🎉${
-      cleanNote ? ` (reason: ${cleanNote})` : ""
-    }`;
+    return `Yay! Bonus credits added 🎉${cleanNote ? ` (reason: ${cleanNote})` : ""}`;
   }
 
-  // ➖ Negative admin adjustment
   if (delta < 0 && src.startsWith("admin")) {
-    return `Credit adjustment by Anya${
-      cleanNote ? ` (reason: ${cleanNote})` : ""
-    }`;
+    return `Credit adjustment by Anya${cleanNote ? ` (reason: ${cleanNote})` : ""}`;
   }
 
   if (src === "patreon_charge") return "Patreon credits added";
   if (src === "refund") return "Credits refunded";
 
   return cleanNote || "Account update";
-}
-  
-function niceSourceLabel(src){
-  const s = String(src || "").toLowerCase();
-  if (s === "patreon_charge") return "Patreon pledge";
-  if (s === "redeem") return "Redeem";
-  if (s === "admin_grant") return "Admin bonus";
-  if (s === "refund") return "Refund";
-  return src || "Activity";
-}
-
-function fmtCredits(n){
-  const v = Math.trunc(Number(n || 0));
-  const sign = v >= 0 ? "+" : "−";
-  return `${sign}${Math.abs(v)} credits`;
-}
-
-function fmtWhen(iso){
-  try{
-    const d = new Date(String(iso));
-    if (!Number.isFinite(d.getTime())) return "(unknown time)";
-    return new Intl.DateTimeFormat("en-AU", {
-      day:"2-digit", month:"2-digit", year:"numeric",
-      hour:"2-digit", minute:"2-digit"
-    }).format(d);
-  } catch {
-    return "(unknown time)";
-  }
 }
 
 function renderActivity(list){
@@ -1051,42 +1014,38 @@ function renderActivity(list){
 
   box.innerHTML = `<div class="activityList">${
     list.map(x => {
-      const delta = Number(x.delta_cents || 0);
-      const amtCls = delta >= 0 ? "plus" : "minus";
+      const delta = Number(x?.delta_cents || 0);
 
       const sign = delta >= 0 ? "+" : "−";
       const amount = `${sign}${Math.abs(Math.trunc(delta))}`;
-      
+
       const pillCls = delta >= 0 ? "pill--green" : "pill--red";
 
       const text = friendlyActivityText(x);
-      const when = fmtPrettyWhen(x.created_at);
+      const when = fmtPrettyWhen(x?.created_at);
 
       return `
         <div class="activityItem">
           <div class="activityRow">
             <div class="activityPillWrap">
               <span class="pill activityPill ${pillCls}">
-               function friendlyActivityText(x){
-  const src = String(x?.source || "").toLowerCase();
-  const note = String(x?.public_note || x?.note || "").trim();
+                <span class="pillDot"></span>
+                ${escapeHtml(amount)} <span style="opacity:.65;">💰</span>
+              </span>
+            </div>
 
-  // Redeem: make it feel like the user did it
-  if (src === "redeem") {
-    // note usually like: "Redeemed Advanced Fishing System (Itch)"
-    const clean = note.replace(/^redeemed\s*/i, "");
-    return clean ? `You redeemed ${clean}` : "You redeemed a reward";
-  }
+            <span class="activityText">
+              ${escapeHtml(text)}
+            </span>
 
-  // Admin changes: soft + human
-  if (src === "admin_set" || src === "admin_adjust" || src === "admin_grant") {
-    return "Credit adjustment by Anya";
-  }
-
-  if (src === "patreon_charge") return "Patreon credits added";
-  if (src === "refund") return "Credits refunded";
-
-  return note || "Account update";
+            <span class="activityTime">
+              ${escapeHtml(when)}
+            </span>
+          </div>
+        </div>
+      `;
+    }).join("")
+  }</div>`;
 }
   
 function niceSourceLabel(src){
@@ -1543,6 +1502,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
