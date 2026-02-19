@@ -360,7 +360,7 @@
   align-items: baseline;
 }
 
-/* Left amount = pops */
+/* Left part */
 .activityAmt{
   font-weight: 1000;
   font-size: 18px;    
@@ -371,15 +371,20 @@
 .activityAmt.minus{ color:#dc2626; }
 
 /* Right line */
-.activityLine{
-  font-size: 16px;     
-  color: rgba(27,27,27,0.82);
+.activityText{
+  font-size: 16px;
+  color: rgba(27,27,27,0.88);
   line-height: 1.35;
   min-width: 0;
-
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activityTime{
+  font-size: 13px;
+  color: rgba(27,27,27,0.65);  /* same muted vibe */
+  white-space: nowrap;
 }
 
 /* Mobile: allow wrapping + tighter column */
@@ -1004,9 +1009,16 @@ function renderActivity(list){
       return `
         <div class="activityItem">
           <div class="activityRow">
-            <span class="activityAmt ${amtCls}">${escapeHtml(amount)}</span>
-            <span class="activityLine">
-              ${escapeHtml(text)} • ${escapeHtml(when)}
+            <span class="activityAmt ${amtCls}">
+              ${escapeHtml(amount)}
+            </span>
+      
+            <span class="activityText">
+              ${escapeHtml(text)}
+            </span>
+      
+            <span class="activityTime">
+              ${escapeHtml(when)}
             </span>
           </div>
         </div>
@@ -1376,6 +1388,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
