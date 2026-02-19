@@ -1029,6 +1029,7 @@ function maybeToastNewActivity(items){
       if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint");
       else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint");
       else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue");
+      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint");
       else if (delta > 0) toast("✨ Credits added!", "mint");
     }
   }
@@ -1070,6 +1071,15 @@ function friendlyActivityText(x){
     .replace(/^\((.*)\)$/s, "$1")
     .trim();
 
+  // Entitlement grants (delta 0)
+  if (src === "entitlement" || cleanNote.toLowerCase().startsWith("granted entitlement:")) {
+    const item = cleanNote.replace(/^granted entitlement:\s*/i, "").trim();
+    return {
+      title: item ? `Unlocked: ${item} ✅` : "Unlocked a reward ✅",
+      detail: cleanNote.toLowerCase().startsWith("granted entitlement:") ? "" : `Reason: ${cleanNote}`
+    };
+  }
+  
   // If your backend uses admin_set/admin_adjust/admin_grant, prettify it
   if (src.startsWith("admin")) {
     cleanNote = cleanNote
@@ -1119,9 +1129,21 @@ function renderActivity(list){
   box.innerHTML = `<div class="activityList">${
     list.map(x => {
       const delta = Number(x?.delta_cents || 0);
-      const sign = delta >= 0 ? "+" : "−";
-      const amount = `${sign}${Math.abs(Math.trunc(delta))}`;
-      const pillCls = delta >= 0 ? "pill--green" : "pill--red";
+
+      let amount = "";
+      let pillCls = "pill--gray";
+      
+      if (delta > 0){
+        amount = `+${Math.abs(Math.trunc(delta))}`;
+        pillCls = "pill--green";
+      } else if (delta < 0){
+        amount = `−${Math.abs(Math.trunc(delta))}`;
+        pillCls = "pill--red";
+      } else {
+        amount = "—";
+        pillCls = "pill--blue"; // or gray, your choice
+      }
+
       const when = fmtPrettyWhen(x?.created_at);
       const { title, detail } = friendlyActivityText(x);
       
@@ -1520,6 +1542,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
