@@ -390,6 +390,11 @@
       border-color: rgba(239,68,68,0.22);
     }
     
+    .activityPill.pill--blue{
+      background: rgba(86,167,254,0.10);
+      border-color: rgba(86,167,254,0.22);
+    }
+    
     .activityItem{
       background:#fff;
       border:1px solid rgba(20,20,20,0.10);
@@ -433,9 +438,12 @@
     }
 
     .activityReason{
-      display: inline-block;
-      margin-left: 12px;     /* adjust */
-      opacity: .65;
+      display:block;
+      margin-top:4px;
+      font-size:15px;          /* 1px smaller */
+      font-style: italic;
+      font-family: "Georgia", "Times New Roman", serif;
+      opacity:.75;
     }
 
     .activityTime{
@@ -899,7 +907,7 @@ function setPill(status) {
 
   function showConnectedUI(){
     const btn = document.getElementById("connect");
-    if (btn) { btn.disabled = true; btn.textContent = "Connected ✅"; }
+    if (btn) { btn.disabled = true; btn.textContent = "Connected "; }
   }
 
   function toast(msg, type="blue"){
@@ -1139,7 +1147,7 @@ list.map(x => {
   if (source === "entitlement") {
     amount = "Unlock";
     pillCls = "pill--blue";
-    icon = "✅";
+    icon = "🔑";
   } 
   else if (delta > 0) {
     amount = `+${Math.abs(Math.trunc(delta))}`;
@@ -1556,6 +1564,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
