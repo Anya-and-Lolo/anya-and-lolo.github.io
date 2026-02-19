@@ -1082,7 +1082,7 @@ function friendlyActivityText(x){
 
   if (delta > 0 && src.startsWith("admin")) {
     return {
-      title: "Yay! Bonus credits added 🎉",
+      title: "Yay, Bonus credits added! 🎉",
       detail: cleanNote ? `Reason: ${cleanNote}` : ""
     };
   }
@@ -1094,7 +1094,7 @@ function friendlyActivityText(x){
     };
   }
 
-  if (src === "patreon_charge") return { title: "Patreon credits added", detail: "" };
+  if (src === "patreon_charge") return { title: "Your fresh Patreon credits arrived! 🎉", detail: "" };
   if (src === "refund")        return { title: "Credits refunded", detail: "" };
 
   return { title: cleanNote || "Account update", detail: "" };
@@ -1516,6 +1516,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
