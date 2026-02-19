@@ -759,7 +759,7 @@
 
 <h2 style="margin: 22px 0 10px;">Account activity</h2>
 <div id="activity" class="muted">
-  Connect Patreon to see actions on your account (like credits spent and more).
+  Connect Patreon to see recent activity on your account.
 </div>
 
     <footer>
@@ -1227,7 +1227,7 @@ async function loadActivity(){
   if (!s){
     if (box){
       box.classList.add("muted");
-      box.textContent = "Connect Patreon to see recent actions on your account (like credits spent and more).";
+      box.textContent = "Connect Patreon to see recent activity on your account.";
     }
     return;
   }
@@ -1592,6 +1592,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
