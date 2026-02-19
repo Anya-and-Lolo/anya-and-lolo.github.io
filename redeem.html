@@ -352,27 +352,27 @@
   padding:12px;
 }
 
-/* ✅ Perfect alignment: fixed left column + flexible right column */
+/* Perfect alignment: fixed left column + flexible right column */
 .activityRow{
   display:grid;
   grid-template-columns: 110px 1fr; 
-  gap: 18px;                        
+  gap: 25px;                        
   align-items: baseline;
 }
 
 /* Left amount = pops */
 .activityAmt{
   font-weight: 1000;
-  font-size: 17px;    
+  font-size: 16px;    
   line-height: 1.2;
   white-space: nowrap;
 }
 .activityAmt.plus{ color:#16a34a; }
 .activityAmt.minus{ color:#dc2626; }
 
-/* Right line = slightly smaller + tidy */
+/* Right line */
 .activityLine{
-  font-size: 14px;     
+  font-size: 16px;     
   color: rgba(27,27,27,0.82);
   line-height: 1.35;
   min-width: 0;
@@ -1376,6 +1376,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
