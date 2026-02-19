@@ -393,6 +393,18 @@
       font-size: 13px;
       opacity: .6;
     }
+
+    .connectBlock{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    
+    .patreonRowLeft{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
     
     .patreonRow{
       display:flex;
@@ -637,14 +649,25 @@
     }
     
     /* Mobile: stack nicely under the button */
+
     @media (max-width: 600px){
-      .row{ align-items: flex-start; }
-    
-      .statusBlock{
-        width: 100%;
-        text-align: center;
+      .row{
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
       }
     
+      .connectBlock{
+        align-items: center;
+      }
+    
+      .statusBlock{
+        text-align:center;
+      }
+    }
+    
+    @media (max-width: 600px){
+  
       /* Optional: make button full width so it feels tidy */
       #connect{ width: 100%; }
     
@@ -772,29 +795,34 @@
     </p>
 
     <div class="card" style="margin: 10px 0 14px;">
-      <div class="row">
-        <button id="connect" class="btnPrimary">Connect Patreon</button>
+<div class="row">
 
-        <div class="statusBlock">  
-          <div class="creditsBox">
-            <div class="creditsMain">
-              <span class="creditsIcon">💰</span>
-              <span id="creditsValue" class="creditsAmount">N/A</span>
-              <span class="creditsLabel">Credits</span>
-            </div>
-            <div class="creditsSub">1¢ = 1 credit</div>
-          </div>
-        
-          <div class="patreonRow">
-            <span id="patreonPill" class="pill pill--gray">
-              <span class="pillDot"></span> Patreon: not connected
-            </span>
-        
-            <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
-          </div>
-        </div>
-      </div>
+  <!-- LEFT COLUMN -->
+  <div class="connectBlock">
+    <button id="connect" class="btnPrimary">Connect Patreon</button>
+
+    <div class="patreonRowLeft">
+      <span id="patreonPill" class="pill pill--gray">
+        <span class="pillDot"></span> Patreon: not connected
+      </span>
+
+      <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
     </div>
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="statusBlock">
+    <div class="creditsBox">
+      <div class="creditsMain">
+        <span class="creditsIcon">💰</span>
+        <span id="creditsValue" class="creditsAmount">0</span>
+        <span class="creditsLabel">Credits</span>
+      </div>
+      <div class="creditsSub">1¢ = 1 credit</div>
+    </div>
+  </div>
+
+</div>
 
     <div id="infoPop" class="infoPop" aria-hidden="true">
       <div class="infoPopInner" role="dialog" aria-modal="false">
@@ -1650,6 +1678,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
