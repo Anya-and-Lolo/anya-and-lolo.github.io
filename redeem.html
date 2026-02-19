@@ -354,10 +354,10 @@
 
 /* Perfect alignment: fixed left column + flexible right column */
 .activityRow{
-  display:grid;
-  grid-template-columns: 110px 1fr; 
-  gap: 30px; /* big gap */    
+  display:flex;
   align-items: baseline;
+  gap: 30px;              /* controls spacing between parts */
+  flex-wrap: nowrap;      /* force single line */
 }
 
 /* Left part */
@@ -374,10 +374,6 @@
 .activityText{
   font-size: 16px;
   color: rgba(27,27,27,0.88);
-  line-height: 1.35;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -1388,6 +1384,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
