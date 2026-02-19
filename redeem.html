@@ -1022,9 +1022,9 @@ function maybeToastNewActivity(items){
       const src = String(it.source || "");
       const delta = Number(it.delta_cents || 0);
 
-      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon payment processed — credits added!", "mint");
-      else if (src === "refund" && delta > 0) toast("✅ Refund successful — credits returned!", "mint");
-      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful — check Your Unlocks!", "blue");
+      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint");
+      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint");
+      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue");
       else if (delta > 0) toast("✨ Credits added!", "mint");
     }
   }
@@ -1094,7 +1094,7 @@ function friendlyActivityText(x){
     };
   }
 
-  if (src === "patreon_charge") return { title: "Your fresh Patreon credits arrived! 🎉", detail: "" };
+  if (src === "patreon_charge") return { title: "Patreon payment processed, your credits arrived 💖", detail: "" };
   if (src === "refund")        return { title: "Credits refunded", detail: "" };
 
   return { title: cleanNote || "Account update", detail: "" };
@@ -1516,6 +1516,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
