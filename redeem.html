@@ -412,9 +412,17 @@
     /* Perfect alignment: fixed left column + flexible right column */
     .activityRow{
       display:flex;
-      align-items: baseline;
-      gap: 30px;              /* controls spacing between parts */
-      flex-wrap: nowrap;      /* force single line */
+      align-items:center;   /* was baseline */
+      gap: 30px;
+      flex-wrap: nowrap;
+    }
+    
+    /* Right line */
+    .activityText{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      line-height: 1.25;
     }
     
     /* Left part */
@@ -428,14 +436,6 @@
     }
     .activityAmt.plus{ color:#16a34a; }
     .activityAmt.minus{ color:#dc2626; }
-    
-    /* Right line */
-    .activityText{
-      flex: 1 1 auto;         /* fills middle space */
-      font-size: 16px;
-      color: rgba(27,27,27,0.88);
-      white-space: nowrap;
-    }
 
     .activityReason{
       display:block;
@@ -1564,6 +1564,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
