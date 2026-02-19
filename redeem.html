@@ -277,7 +277,6 @@
       border-radius: 16px;
       padding: 14px;
       margin: 12px 0;
-      box-shadow: 0 8px 18px rgba(0,0,0,.05);
     }
 
     .row{
@@ -343,56 +342,57 @@
       margin-top: 8px;
     }
 
-.activityList{ display:flex; flex-direction:column; gap:10px; }
-
-.activityItem{
-  background:#fff;
-  border:1px solid rgba(20,20,20,0.10);
-  border-radius:14px;
-  padding:12px;
-}
-
-/* Perfect alignment: fixed left column + flexible right column */
-.activityRow{
-  display:flex;
-  align-items: baseline;
-  gap: 30px;              /* controls spacing between parts */
-  flex-wrap: nowrap;      /* force single line */
-}
-
-/* Left part */
-.activityAmt{
-  width: 130px;           /* fixed column width */
-  flex: 0 0 130px;
-  font-weight: 1000;
-  font-size: 18px;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-.activityAmt.plus{ color:#16a34a; }
-.activityAmt.minus{ color:#dc2626; }
-
-/* Right line */
-.activityText{
-  flex: 1 1 auto;         /* fills middle space */
-  font-size: 16px;
-  color: rgba(27,27,27,0.88);
-  white-space: nowrap;
-}
-
-.activityTime{
-  font-size: 13px;
-  color: rgba(27,27,27,0.65);
-  white-space: nowrap;
-  margin-left: auto;   /* this pushes it to the far right */
-}
-
-/* Mobile: allow wrapping + tighter column */
-@media (max-width: 520px){
-  .activityRow{ grid-template-columns: 92px 1fr; gap: 12px; }
-  .activityLine{ white-space: normal; }
-}
-
+    .activityList{ display:flex; flex-direction:column; gap:10px; }
+    
+    .activityItem{
+      background:#fff;
+      border:1px solid rgba(20,20,20,0.10);
+      border-radius:14px;
+      padding:12px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+      transition: box-shadow .15s ease, transform .15s ease;
+    }
+    
+    /* Perfect alignment: fixed left column + flexible right column */
+    .activityRow{
+      display:flex;
+      align-items: baseline;
+      gap: 30px;              /* controls spacing between parts */
+      flex-wrap: nowrap;      /* force single line */
+    }
+    
+    /* Left part */
+    .activityAmt{
+      width: 130px;           /* fixed column width */
+      flex: 0 0 130px;
+      font-weight: 1000;
+      font-size: 18px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .activityAmt.plus{ color:#16a34a; }
+    .activityAmt.minus{ color:#dc2626; }
+    
+    /* Right line */
+    .activityText{
+      flex: 1 1 auto;         /* fills middle space */
+      font-size: 16px;
+      color: rgba(27,27,27,0.88);
+      white-space: nowrap;
+    }
+    
+    .activityTime{
+      font-size: 13px;
+      color: rgba(27,27,27,0.65);
+      white-space: nowrap;
+      margin-left: auto;   /* this pushes it to the far right */
+    }
+    
+    /* Mobile: allow wrapping + tighter column */
+    @media (max-width: 520px){
+      .activityRow{ grid-template-columns: 92px 1fr; gap: 12px; }
+      .activityLine{ white-space: normal; }
+    }
 
     .pill{
       display:inline-flex;
@@ -1388,6 +1388,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
