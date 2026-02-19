@@ -981,22 +981,22 @@ function friendlyActivityText(x){
     .trim();
 
   if (src === "redeem") {
-    const clean = cleanNote.replace(/^redeemed\s*/i, "");
-    return clean ? `<b>You redeemed ${clean}</b>` : "<b>You redeemed a reward</b>";
+    const clean = cleanNote.replace(/^redeemed\s*/i, "").trim();
+    return { title: clean ? `You redeemed ${clean}` : "You redeemed a reward", detail: "" };
   }
 
   if (delta > 0 && src.startsWith("admin")) {
-    return `<b>Yay! Bonus credits added</b> 🎉${cleanNote ? ` <span style="opacity:.65;">(reason: ${cleanNote})</span>` : ""}`;
+    return { title: "Yay! Bonus credits added 🎉", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
   }
 
   if (delta < 0 && src.startsWith("admin")) {
-    return `<b>Credit adjustment by Anya</b>${cleanNote ? ` <span style="opacity:.65;">(reason: ${cleanNote})</span>` : ""}`;
+    return { title: "Credit adjustment by Anya", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
   }
 
-  if (src === "patreon_charge") return "Patreon credits added";
-  if (src === "refund") return "Credits refunded";
+  if (src === "patreon_charge") return { title: "Patreon credits added", detail: "" };
+  if (src === "refund")        return { title: "Credits refunded", detail: "" };
 
-  return cleanNote || "Account update";
+  return { title: cleanNote || "Account update", detail: "" };
 }
 
 function renderActivity(list){
@@ -1023,6 +1023,8 @@ function renderActivity(list){
       const text = friendlyActivityText(x);
       const when = fmtPrettyWhen(x?.created_at);
 
+      const { title, detail } = friendlyActivityText(x);
+      
       return `
         <div class="activityItem">
           <div class="activityRow">
@@ -1032,14 +1034,13 @@ function renderActivity(list){
                 ${escapeHtml(amount)} <span style="opacity:.65;">💰</span>
               </span>
             </div>
-
+      
             <span class="activityText">
-              ${escapeHtml(text)}
+              <strong>${escapeHtml(title)}</strong>
+              ${detail ? ` <span style="opacity:.65;">(${escapeHtml(detail)})</span>` : ""}
             </span>
-
-            <span class="activityTime">
-              ${escapeHtml(when)}
-            </span>
+      
+            <span class="activityTime">${escapeHtml(when)}</span>
           </div>
         </div>
       `;
@@ -1416,6 +1417,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
