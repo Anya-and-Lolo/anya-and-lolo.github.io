@@ -351,13 +351,10 @@
       padding:12px;
     }
     .activityTop{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
-    .activityAmt{
-      font-weight:1000;
-      font-size:15px;
-    }
     .activityAmt.plus{ color:#16a34a; }
     .activityAmt.minus{ color:#dc2626; }
-    .activityMeta{ font-size:13px; color: rgba(27,27,27,0.70); margin-top:6px; }
+    .activityMeta{ font-size:12.8px; }
+    .activityAmt{ font-size:14.5px; }
     .activityTag{
       display:inline-flex; align-items:center; gap:8px;
       font-size:12.5px; font-weight:900;
@@ -892,6 +889,41 @@ function setPill(status) {
 
 let LAST_ACTIVITY = null;
 
+function fmtPrettyWhen(iso){
+  try{
+    const d = new Date(String(iso));
+    if (!Number.isFinite(d.getTime())) return "(unknown time)";
+    // "16 February 08:47 pm"
+    const dayMonth = new Intl.DateTimeFormat("en-AU", { day:"numeric", month:"long" }).format(d);
+    const time = new Intl.DateTimeFormat("en-AU", { hour:"2-digit", minute:"2-digit" }).format(d).toLowerCase();
+    return `${dayMonth} ${time}`;
+  } catch {
+    return "(unknown time)";
+  }
+}
+
+function friendlyActivityText(x){
+  const src = String(x?.source || "").toLowerCase();
+  const note = String(x?.public_note || x?.note || "").trim();
+
+  // Redeem: make it feel like the user did it
+  if (src === "redeem") {
+    // note usually like: "Redeemed Advanced Fishing System (Itch)"
+    const clean = note.replace(/^redeemed\s*/i, "");
+    return clean ? `You redeemed ${clean}` : "You redeemed a reward";
+  }
+
+  // Admin changes: soft + human
+  if (src === "admin_set" || src === "admin_adjust" || src === "admin_grant") {
+    return "Credit adjustment by Anya";
+  }
+
+  if (src === "patreon_charge") return "Patreon credits added";
+  if (src === "refund") return "Credits refunded";
+
+  return note || "Account update";
+}
+  
 function niceSourceLabel(src){
   const s = String(src || "").toLowerCase();
   if (s === "patreon_charge") return "Patreon pledge";
@@ -931,19 +963,26 @@ function renderActivity(list){
   }
 
   box.classList.remove("muted");
+
   box.innerHTML = `<div class="activityList">${
     list.map(x => {
       const delta = Number(x.delta_cents || 0);
       const amtCls = delta >= 0 ? "plus" : "minus";
-      const note = (x.public_note || x.note || "").toString(); // you can control what you expose
+
+      const sign = delta >= 0 ? "+" : "−";
+      const amount = `${sign}${Math.abs(Math.trunc(delta))} credits`;
+
+      const text = friendlyActivityText(x);
+      const when = fmtPrettyWhen(x.created_at);
+
       return `
         <div class="activityItem">
           <div class="activityTop">
-            <span class="activityTag">${niceSourceLabel(x.source)}</span>
-            <span class="activityAmt ${amtCls}">${fmtCredits(delta)}</span>
+            <span class="activityAmt ${amtCls}">${escapeHtml(amount)}</span>
           </div>
+
           <div class="activityMeta">
-            ${note ? `${escapeHtml(note)} • ` : ""}${escapeHtml(fmtWhen(x.created_at))}
+            ${escapeHtml(text)} • ${escapeHtml(when)}
           </div>
         </div>
       `;
@@ -1312,6 +1351,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
