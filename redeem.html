@@ -1076,71 +1076,6 @@ function fmtWhen(iso){
   }
 }
 
-function renderActivity(list){
-  const box = document.getElementById("activity");
-  if (!box) return;
-
-  if (!Array.isArray(list) || list.length === 0){
-    box.classList.add("muted");
-    box.textContent = "No recent activity yet.";
-    return;
-  }
-
-  box.classList.remove("muted");
-
-  box.innerHTML = `<div class="activityList">${
-    list.map(x => {
-      const delta = Number(x.delta_cents || 0);
-      const amtCls = delta >= 0 ? "plus" : "minus";
-
-      const sign = delta >= 0 ? "+" : "−";
-      const amount = `${sign}${Math.abs(Math.trunc(delta))}`;
-      
-      const pillCls = delta >= 0 ? "pill--green" : "pill--red";
-
-      const text = friendlyActivityText(x);
-      const when = fmtPrettyWhen(x.created_at);
-
-      return `
-        <div class="activityItem">
-          <div class="activityRow">
-            <div class="activityPillWrap">
-              <span class="pill activityPill ${pillCls}">
-                <span class="pillDot"></span>
-                ${escapeHtml(amount)} <span style="opacity:.65;">💰</span>
-              </span>
-            </div>
-      
-            <span class="activityText">
-              ${escapeHtml(text)}
-            </span>
-      
-            <span class="activityTime">
-              ${escapeHtml(when)}
-            </span>
-          </div>
-        </div>
-      `;
-    }).join("")
-  }</div>`;
-}
-              </span>
-            </div>
-      
-            <span class="activityText">
-              ${escapeHtml(text)}
-            </span>
-      
-            <span class="activityTime">
-              ${escapeHtml(when)}
-            </span>
-          </div>
-        </div>
-      `;
-    }).join("")
-  }</div>`;
-}
-
 async function loadActivity(){
   const s = getSession();
   const box = document.getElementById("activity");
@@ -1502,6 +1437,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
