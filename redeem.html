@@ -343,54 +343,51 @@
       margin-top: 8px;
     }
 
-    .activityTop{
-      display:flex;
-      align-items: baseline;
-      justify-content: flex-start;
-      gap: 18px;              /* normal gap */
-    }
-    
-    .activityRight{
-      flex: 1 1 auto;
-      min-width: 0;
-      display:flex;
-      align-items: baseline;
-      gap: 0;                 /* we’ll use a spacer element */
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .activitySpacer{
-      display:inline-block;
-      width: 26px;            /* ✅ bigger space between amount and text */
-      flex: 0 0 26px;
-    }
-    
-    @media (max-width: 520px){
-      .activitySpacer{ width: 14px; flex-basis: 14px; }
-      .activityRight{ white-space: normal; } /* allow wrap on tiny screens */
-    }
+.activityList{ display:flex; flex-direction:column; gap:10px; }
 
-    .activityList{ display:flex; flex-direction:column; gap:10px; }
-    .activityItem{
-      background:#fff;
-      border:1px solid rgba(20,20,20,0.10);
-      border-radius:14px;
-      padding:12px;
-    }
-    .activityTop{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
-    .activityAmt.plus{ color:#16a34a; }
-    .activityAmt.minus{ color:#dc2626; }
-    .activityMeta{ font-size:13px;}
-    .activityAmt{ font-size:16px; font-weight:1000;}
-    .activityTag{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:12.5px; font-weight:900;
-      padding:4px 10px; border-radius:999px;
-      border:1px solid rgba(20,20,20,0.12);
-      background: rgba(0,0,0,0.03);
-    }
+.activityItem{
+  background:#fff;
+  border:1px solid rgba(20,20,20,0.10);
+  border-radius:14px;
+  padding:12px;
+}
+
+/* ✅ Perfect alignment: fixed left column + flexible right column */
+.activityRow{
+  display:grid;
+  grid-template-columns: 110px 1fr; 
+  gap: 18px;                        
+  align-items: baseline;
+}
+
+/* Left amount = pops */
+.activityAmt{
+  font-weight: 1000;
+  font-size: 17px;    
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.activityAmt.plus{ color:#16a34a; }
+.activityAmt.minus{ color:#dc2626; }
+
+/* Right line = slightly smaller + tidy */
+.activityLine{
+  font-size: 14px;     
+  color: rgba(27,27,27,0.82);
+  line-height: 1.35;
+  min-width: 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mobile: allow wrapping + tighter column */
+@media (max-width: 520px){
+  .activityRow{ grid-template-columns: 92px 1fr; gap: 12px; }
+  .activityLine{ white-space: normal; }
+}
+
 
     .pill{
       display:inline-flex;
@@ -1006,12 +1003,9 @@ function renderActivity(list){
 
       return `
         <div class="activityItem">
-          <div class="activityTop">
+          <div class="activityRow">
             <span class="activityAmt ${amtCls}">${escapeHtml(amount)}</span>
-      
-            <span class="activitySpacer" aria-hidden="true"></span>
-      
-            <span class="activityRight">
+            <span class="activityLine">
               ${escapeHtml(text)} • ${escapeHtml(when)}
             </span>
           </div>
@@ -1382,6 +1376,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
