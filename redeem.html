@@ -962,7 +962,6 @@ function fmtPrettyWhen(iso){
   try{
     const d = new Date(String(iso));
     if (!Number.isFinite(d.getTime())) return "(unknown time)";
-    // "16 February 08:47 pm"
     const dayMonth = new Intl.DateTimeFormat("en-AU", { day:"numeric", month:"long" }).format(d);
     const time = new Intl.DateTimeFormat("en-AU", { hour:"2-digit", minute:"2-digit" }).format(d).toLowerCase();
     return `${dayMonth} ${time}`;
@@ -1047,61 +1046,41 @@ function renderActivity(list){
     }).join("")
   }</div>`;
 }
-  
-function niceSourceLabel(src){
-  const s = String(src || "").toLowerCase();
-  if (s === "patreon_charge") return "Patreon pledge";
-  if (s === "redeem") return "Redeem";
-  if (s === "admin_grant") return "Admin bonus";
-  if (s === "refund") return "Refund";
-  return src || "Activity";
-}
-
-function fmtCredits(n){
-  const v = Math.trunc(Number(n || 0));
-  const sign = v >= 0 ? "+" : "−";
-  return `${sign}${Math.abs(v)} credits`;
-}
-
-function fmtWhen(iso){
-  try{
-    const d = new Date(String(iso));
-    if (!Number.isFinite(d.getTime())) return "(unknown time)";
-    return new Intl.DateTimeFormat("en-AU", {
-      day:"2-digit", month:"2-digit", year:"numeric",
-      hour:"2-digit", minute:"2-digit"
-    }).format(d);
-  } catch {
-    return "(unknown time)";
-  }
-}
 
 async function loadActivity(){
   const s = getSession();
   const box = document.getElementById("activity");
+
   if (!s){
-    if (box){ box.classList.add("muted"); box.textContent = "Connect Patreon to see resent actions on your account (like credits spent and more)."; }
+    if (box){
+      box.classList.add("muted");
+      box.textContent = "Connect Patreon to see recent actions on your account (like credits spent and more).";
+    }
     return;
   }
 
   try{
-    const r = await apiFetch("/activity", s);   // ✅ new endpoint
+    const r = await apiFetch("/activity", s);
     let data = null;
     try { data = await r.json(); } catch { data = { error: "Invalid JSON from /activity" }; }
     LAST_ACTIVITY = data;
 
     if (!r.ok){
-      if (box){ box.classList.add("muted"); box.textContent = data.error || "Could not load activity."; }
+      if (box){
+        box.classList.add("muted");
+        box.textContent = data?.error || "Could not load activity.";
+      }
       return;
     }
 
-    // Expect: { items: [ {delta_cents, source, note/public_note, created_at}, ... ] }
-    renderActivity(Array.isArray(data.items) ? data.items : []);
+    renderActivity(Array.isArray(data?.items) ? data.items : []);
   } catch (e){
-    if (box){ box.classList.add("muted"); box.textContent = "Network error loading activity."; }
+    if (box){
+      box.classList.add("muted");
+      box.textContent = "Network error loading activity.";
+    }
   }
 }
-
   
   async function loadStore() {
     const el = document.getElementById("store");
@@ -1437,6 +1416,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
