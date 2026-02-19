@@ -349,6 +349,28 @@
       margin-top: 8px;
     }
 
+    .toastWrap{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast{
+      width: min(420px, calc(100vw - 28px));
+      background: #fff;
+      border: 1px solid rgba(20,20,20,0.14);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    }
+    .toast strong{ font-weight: 1000; }
+    .toast.mint{ border-color: rgba(34,197,94,0.30); background: rgba(34,197,94,0.10); }
+    .toast.red{  border-color: rgba(239,68,68,0.30); background: rgba(239,68,68,0.10); }
+    .toast.blue{ border-color: rgba(86,167,254,0.30); background: rgba(86,167,254,0.10); }
+
     .activityList{ display:flex; flex-direction:column; gap:10px; }
 
     /* Credits pill inside activity row (left column) */
@@ -419,8 +441,9 @@
     
     /* Mobile: allow wrapping + tighter column */
     @media (max-width: 520px){
-      .activityRow{ grid-template-columns: 92px 1fr; gap: 12px; }
-      .activityLine{ white-space: normal; }
+      .activityRow{ flex-wrap: wrap; gap: 10px; }
+      .activityPillWrap{ width: 110px; flex: 0 0 110px; }
+      .activityText{ white-space: normal; }
     }
 
     .pill{
@@ -873,6 +896,36 @@ function setPill(status) {
     if (btn) { btn.disabled = true; btn.textContent = "Connected ✅"; }
   }
 
+  function toast(msg, type="blue"){
+    const wrap = document.getElementById("toastWrap");
+    if (!wrap) return;
+  
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    el.innerHTML = `<strong>${escapeHtml(msg)}</strong>`;
+    wrap.appendChild(el);
+  
+    setTimeout(() => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(6px)";
+      el.style.transition = "opacity .2s ease, transform .2s ease";
+      setTimeout(() => el.remove(), 250);
+    }, 3500);
+  }
+
+  const LAST_CREDITS_KEY = "last_credits_raw_cents_v1";
+  
+  function maybeToastCreditsChange(newCents){
+    const prev = Number(localStorage.getItem(LAST_CREDITS_KEY) || "0");
+    localStorage.setItem(LAST_CREDITS_KEY, String(newCents));
+  
+    if (!Number.isFinite(prev) || prev === 0) return; // first time -> no toast
+  
+    const diff = newCents - prev;
+    if (diff > 0) toast(`🎉 ${diff} new credits added!`, "mint");
+    if (diff < 0) toast(`✅ ${Math.abs(diff)} credits used/refunded.`, "blue");
+  }
+
   async function loadMe() {
     const s = getSession();
     const creditsValue = document.getElementById("creditsValue");
@@ -881,6 +934,7 @@ function setPill(status) {
     if (!s) {
       LAST_ME = null;
       CURRENT_CREDITS_CENTS = 0;
+      
       if (creditsValue) creditsValue.textContent = "N/A";
       showConnectUI();
       setPill("not connected");
@@ -922,6 +976,7 @@ function setPill(status) {
 
       const cents = Number.isFinite(Number(me.credits_raw_cents)) ? Number(me.credits_raw_cents) : 0;
       CURRENT_CREDITS_CENTS = Math.max(0, Math.floor(cents));
+      maybeToastCreditsChange(CURRENT_CREDITS_CENTS);
 
       if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
       showConnectedUI();
@@ -945,10 +1000,39 @@ function setPill(status) {
       if (infoPopBody) { infoPopBody.innerHTML = `Your current Patreon status: <strong>error</strong><br>` + `Couldn’t load your Patreon info.`;}
       return null;
     }
-  } // ✅ IMPORTANT: closes loadMe()
+  } 
 
   const redeeming = new Set();
 
+  const LAST_ACTIVITY_SEEN_KEY = "last_activity_seen_v1";
+
+function maybeToastNewActivity(items){
+  if (!Array.isArray(items) || items.length === 0) return;
+
+  const lastSeen = localStorage.getItem(LAST_ACTIVITY_SEEN_KEY) || "";
+  const newest = items[0]?.created_at || "";
+  if (!newest) return;
+
+  // only toast if we have seen something before
+  if (lastSeen && newest !== lastSeen){
+    // show toasts for any items newer than lastSeen (usually just 1)
+    for (const it of items){
+      if (it.created_at === lastSeen) break;
+
+      const src = String(it.source || "");
+      const delta = Number(it.delta_cents || 0);
+
+      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon payment processed — credits added!", "mint");
+      else if (src === "refund" && delta > 0) toast("✅ Refund successful — credits returned!", "mint");
+      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful — check Your Unlocks!", "blue");
+      else if (delta > 0) toast("✨ Credits added!", "mint");
+    }
+  }
+
+  localStorage.setItem(LAST_ACTIVITY_SEEN_KEY, newest);
+}
+
+  
   async function apiFetch(path, session, opts = {}) {
     const headers = new Headers(opts.headers || {});
     headers.set("x-support-id", getSupportId());
@@ -971,18 +1055,25 @@ function fmtPrettyWhen(iso){
 }
 
 function friendlyActivityText(x){
-  const src = String(x?.source || "").toLowerCase();
+  const src  = String(x?.source || "").toLowerCase();
   const note = String(x?.public_note || x?.note || "").trim();
   const delta = Number(x?.delta_cents || 0);
 
-  const cleanNote = note
-    .replace(/^admin_(set|adjust|grant)\s*/i, "")
+  // Start with raw note, clean common junk
+  let cleanNote = note
     .replace(/^•\s*/, "")
-    // remove any "(target=1234)" or "(target_store=1234)" anywhere
     .replace(/\s*\(target(?:_store)?=\s*\d+\)\s*/gi, " ")
-    // remove outer wrapping parentheses like "(reason: ...)" if any show up
     .replace(/^\((.*)\)$/s, "$1")
     .trim();
+
+  // If your backend uses admin_set/admin_adjust/admin_grant, prettify it
+  if (src.startsWith("admin")) {
+    cleanNote = cleanNote
+      .replace(/^admin_set\s*/i, "Admin set ")
+      .replace(/^admin_adjust\s*/i, "Admin adjusted ")
+      .replace(/^admin_grant\s*/i, "Admin granted ")
+      .trim();
+  }
 
   if (src === "redeem") {
     const clean = cleanNote.replace(/^redeemed\s*/i, "").trim();
@@ -995,7 +1086,7 @@ function friendlyActivityText(x){
       detail: cleanNote ? `Reason: ${cleanNote}` : ""
     };
   }
-  
+
   if (delta < 0 && src.startsWith("admin")) {
     return {
       title: "Credit adjustment by Anya",
@@ -1024,15 +1115,10 @@ function renderActivity(list){
   box.innerHTML = `<div class="activityList">${
     list.map(x => {
       const delta = Number(x?.delta_cents || 0);
-
       const sign = delta >= 0 ? "+" : "−";
       const amount = `${sign}${Math.abs(Math.trunc(delta))}`;
-
       const pillCls = delta >= 0 ? "pill--green" : "pill--red";
-
-      const text = friendlyActivityText(x);
       const when = fmtPrettyWhen(x?.created_at);
-
       const { title, detail } = friendlyActivityText(x);
       
       return `
@@ -1047,7 +1133,7 @@ function renderActivity(list){
       
             <span class="activityText">
               <strong>${escapeHtml(title)}</strong>
-              ${detail ? ` <span style="opacity:.65;">(${escapeHtml(detail)})</span>` : ""}
+              ${detail ? ` <span style="opacity:.65;">${escapeHtml(detail)}</span>` : ""}
             </span>
       
             <span class="activityTime">${escapeHtml(when)}</span>
@@ -1084,7 +1170,9 @@ async function loadActivity(){
       return;
     }
 
-    renderActivity(Array.isArray(data?.items) ? data.items : []);
+    const items = Array.isArray(data?.items) ? data.items : [];
+    renderActivity(items);
+    maybeToastNewActivity(items);
   } catch (e){
     if (box){
       box.classList.add("muted");
@@ -1269,7 +1357,6 @@ function showStoreMessage(buttonEl, msg, type = "info") {
 async function redeem(itemId, buttonEl) {
   const s = getSession();
 
-  // ✅ show message instead of silent return
   if (!s) {
     showStoreMessage(buttonEl, "Please connect your Patreon account first.", "error");
     return;
@@ -1425,8 +1512,11 @@ window.addEventListener("unhandledrejection", (e) => {
 </script>
 
   <script src="https://app.embed.im/confetti.js" defer></script>
+  <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
 </body>
 </html>
+
 
 
 
