@@ -412,19 +412,19 @@
     /* Perfect alignment: fixed left column + flexible right column */
     .activityRow{
       display:flex;
-      align-items:center;   /* was baseline */
+      align-items:center;
       gap: 30px;
       flex-wrap: nowrap;
     }
     
-    /* Right line */
-    .activityText{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      line-height: 1.25;
+    /* Right column */
+    .activityText{ min-width: 0; } /* IMPORTANT: let the right column shrink + wrap nicely */
+    .activityText strong,
+    .activityReason{
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
-    
+
     /* Left part */
     .activityAmt{
       width: 130px;           /* fixed column width */
@@ -453,11 +453,35 @@
       margin-left: auto;   /* this pushes it to the far right */
     }
     
-    /* Mobile: allow wrapping + tighter column */
+    /* --- Mobile: force 2-column layout --- */
     @media (max-width: 520px){
-      .activityRow{ flex-wrap: wrap; gap: 10px; }
-      .activityPillWrap{ width: 110px; flex: 0 0 110px; }
-      .activityText{ white-space: normal; }
+      .activityRow{
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        grid-template-areas:
+          "pill text"
+          "pill time";
+        column-gap: 12px;
+        row-gap: 6px;
+        align-items: center;
+      }
+    
+      .activityPillWrap{
+        width: 120px;
+        flex: none;            /* stop flex sizing */
+        grid-area: pill;
+      }
+    
+      .activityText{
+        grid-area: text;
+        white-space: normal;   /* allow 2nd/3rd line on the right */
+      }
+    
+      .activityTime{
+        grid-area: time;
+        margin-left: 0;        /* remove the flex push */
+        justify-self: start;   /* align under text */
+      }
     }
 
     .pill{
@@ -478,6 +502,7 @@
       height: 10px;
       border-radius: 999px;
       display:inline-block;
+      flex: 0 0 10px;     /* never shrink */
     }
     
     .pill--blue .pillDot{ background:#56a7fe; }
@@ -506,7 +531,10 @@
       cursor: pointer;
       display:inline-flex;
       align-items:center;
-      justify-content:center;
+      justify-content: flex-start; /* instead of center */
+      padding-left: 12px;          /* give the dot breathing room */
+      gap: 8px;
+      overflow: visible;
     }
     .infoBtn:hover{ background: rgba(0,0,0,0.06); }
 
@@ -1564,6 +1592,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
