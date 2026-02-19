@@ -982,15 +982,15 @@ function friendlyActivityText(x){
 
   if (src === "redeem") {
     const clean = cleanNote.replace(/^redeemed\s*/i, "");
-    return clean ? `You redeemed ${clean}` : "You redeemed a reward";
+    return clean ? `<b>You redeemed ${clean}</b>` : "<b>You redeemed a reward</b>";
   }
 
   if (delta > 0 && src.startsWith("admin")) {
-    return `Yay! Bonus credits added 🎉${cleanNote ? ` (reason: ${cleanNote})` : ""}`;
+    return `<b>Yay! Bonus credits added</b> 🎉${cleanNote ? ` <span style="opacity:.65;">(reason: ${cleanNote})</span>` : ""}`;
   }
 
   if (delta < 0 && src.startsWith("admin")) {
-    return `Credit adjustment by Anya${cleanNote ? ` (reason: ${cleanNote})` : ""}`;
+    return `<b>Credit adjustment by Anya</b>${cleanNote ? ` <span style="opacity:.65;">(reason: ${cleanNote})</span>` : ""}`;
   }
 
   if (src === "patreon_charge") return "Patreon credits added";
@@ -1416,6 +1416,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
