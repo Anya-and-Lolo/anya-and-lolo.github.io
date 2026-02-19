@@ -350,6 +350,30 @@
     }
 
     .activityList{ display:flex; flex-direction:column; gap:10px; }
+
+    /* Credits pill inside activity row (left column) */
+    .activityPillWrap{
+      width: 130px;      /* same as your old activityAmt */
+      flex: 0 0 130px;
+    }
+    
+    .activityPill{
+      width: 100%;
+      justify-content: center; /* center text inside pill */
+      border-color: rgba(20,20,20,0.10);
+      background: rgba(255,255,255,0.95);
+    }
+    
+    /* Optional: slightly tinted backgrounds per type */
+    .activityPill.pill--green{
+      background: rgba(34,197,94,0.10);
+      border-color: rgba(34,197,94,0.22);
+    }
+    
+    .activityPill.pill--red{
+      background: rgba(239,68,68,0.10);
+      border-color: rgba(239,68,68,0.22);
+    }
     
     .activityItem{
       background:#fff;
@@ -1014,6 +1038,8 @@ function renderActivity(list){
 
       const sign = delta >= 0 ? "+" : "−";
       const amount = `${sign}${Math.abs(Math.trunc(delta))} credits`;
+      
+      const pillCls = delta >= 0 ? "pill--green" : "pill--red";
 
       const text = friendlyActivityText(x);
       const when = fmtPrettyWhen(x.created_at);
@@ -1021,9 +1047,12 @@ function renderActivity(list){
       return `
         <div class="activityItem">
           <div class="activityRow">
-            <span class="activityAmt ${amtCls}">
-              ${escapeHtml(amount)}
-            </span>
+            <div class="activityPillWrap">
+              <span class="pill activityPill ${pillCls}">
+                <span class="pillDot"></span>
+                ${escapeHtml(amount)}
+              </span>
+            </div>
       
             <span class="activityText">
               ${escapeHtml(text)}
@@ -1400,6 +1429,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
