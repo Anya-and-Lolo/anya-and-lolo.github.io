@@ -343,6 +343,35 @@
       margin-top: 8px;
     }
 
+    .activityTop{
+      display:flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 18px;              /* normal gap */
+    }
+    
+    .activityRight{
+      flex: 1 1 auto;
+      min-width: 0;
+      display:flex;
+      align-items: baseline;
+      gap: 0;                 /* we’ll use a spacer element */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .activitySpacer{
+      display:inline-block;
+      width: 26px;            /* ✅ bigger space between amount and text */
+      flex: 0 0 26px;
+    }
+    
+    @media (max-width: 520px){
+      .activitySpacer{ width: 14px; flex-basis: 14px; }
+      .activityRight{ white-space: normal; } /* allow wrap on tiny screens */
+    }
+
     .activityList{ display:flex; flex-direction:column; gap:10px; }
     .activityItem{
       background:#fff;
@@ -979,10 +1008,12 @@ function renderActivity(list){
         <div class="activityItem">
           <div class="activityTop">
             <span class="activityAmt ${amtCls}">${escapeHtml(amount)}</span>
-          </div>
-
-          <div class="activityMeta">
-            ${escapeHtml(text)} • ${escapeHtml(when)}
+      
+            <span class="activitySpacer" aria-hidden="true"></span>
+      
+            <span class="activityRight">
+              ${escapeHtml(text)} • ${escapeHtml(when)}
+            </span>
           </div>
         </div>
       `;
@@ -1351,6 +1382,7 @@ window.addEventListener("unhandledrejection", (e) => {
   <script src="https://app.embed.im/confetti.js" defer></script>
 </body>
 </html>
+
 
 
 
