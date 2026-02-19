@@ -433,9 +433,9 @@
     }
 
     .activityReason{
-      margin-left: 18px;   /* same feel as pill gap */
+      display: inline-block;
+      margin-left: 12px;     /* adjust */
       opacity: .65;
-      white-space: nowrap;
     }
 
     .activityTime{
@@ -1075,7 +1075,7 @@ function friendlyActivityText(x){
   if (src === "entitlement" || cleanNote.toLowerCase().startsWith("granted entitlement:")) {
     const item = cleanNote.replace(/^granted entitlement:\s*/i, "").trim();
     return {
-      title: item ? `Unlocked: ${item} ✅` : "Unlocked a reward ✅",
+      title: item ? `Unlocked: ${item}` : "Unlocked a reward",
       detail: cleanNote.toLowerCase().startsWith("granted entitlement:") ? "" : `Reason: ${cleanNote}`
     };
   }
@@ -1127,46 +1127,60 @@ function renderActivity(list){
   box.classList.remove("muted");
 
   box.innerHTML = `<div class="activityList">${
-    list.map(x => {
-      const delta = Number(x?.delta_cents || 0);
 
-      let amount = "";
-      let pillCls = "pill--gray";
-      
-      if (delta > 0){
-        amount = `+${Math.abs(Math.trunc(delta))}`;
-        pillCls = "pill--green";
-      } else if (delta < 0){
-        amount = `−${Math.abs(Math.trunc(delta))}`;
-        pillCls = "pill--red";
-      } else {
-        amount = "—";
-        pillCls = "pill--blue"; // or gray, your choice
-      }
+list.map(x => {
+  const delta = Number(x?.delta_cents || 0);
+  const source = String(x?.source || "").toLowerCase();
 
-      const when = fmtPrettyWhen(x?.created_at);
-      const { title, detail } = friendlyActivityText(x);
-      
-      return `
-        <div class="activityItem">
-          <div class="activityRow">
-            <div class="activityPillWrap">
-              <span class="pill activityPill ${pillCls}">
-                <span class="pillDot"></span>
-                ${escapeHtml(amount)} <span style="opacity:.65;">💰</span>
-              </span>
-            </div>
-      
-            <span class="activityText">
-              <strong>${escapeHtml(title)}</strong>
-              ${detail ? `<span class="activityReason">${escapeHtml(detail)}</span>` : ""}
-            </span>
-      
-            <span class="activityTime">${escapeHtml(when)}</span>
-          </div>
+  let amount = "";
+  let pillCls = "pill--gray";
+  let icon = "💰";
+
+  if (source === "entitlement") {
+    amount = "Unlock";
+    pillCls = "pill--blue";
+    icon = "✅";
+  } 
+  else if (delta > 0) {
+    amount = `+${Math.abs(Math.trunc(delta))}`;
+    pillCls = "pill--green";
+    icon = "💰";
+  } 
+  else if (delta < 0) {
+    amount = `−${Math.abs(Math.trunc(delta))}`;
+    pillCls = "pill--red";
+    icon = "💰";
+  } 
+  else {
+    amount = "—";
+    pillCls = "pill--gray";
+    icon = "💰";
+  }
+
+  const when = fmtPrettyWhen(x?.created_at);
+  const { title, detail } = friendlyActivityText(x);
+
+  return `
+    <div class="activityItem">
+      <div class="activityRow">
+        <div class="activityPillWrap">
+          <span class="pill activityPill ${pillCls}">
+            <span class="pillDot"></span>
+            ${escapeHtml(amount)} 
+            <span style="opacity:.75;">${icon}</span>
+          </span>
         </div>
-      `;
-    }).join("")
+
+        <span class="activityText">
+          <strong>${escapeHtml(title)}</strong>
+          ${detail ? `<span class="activityReason">${escapeHtml(detail)}</span>` : ""}
+        </span>
+
+        <span class="activityTime">${escapeHtml(when)}</span>
+      </div>
+    </div>
+  `;
+}).join("")
   }</div>`;
 }
 
@@ -1542,6 +1556,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
