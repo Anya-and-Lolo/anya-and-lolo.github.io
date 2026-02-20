@@ -286,6 +286,17 @@
       transform: translateY(-1px);
     }
 
+    .subcard{
+      margin: 10px 0 0;
+      box-shadow: 0 8px 18px rgba(0,0,0,.04);
+      padding: 12px;
+    }
+
+    .subcard:hover{
+      box-shadow: 0 14px 28px rgba(0,0,0,.06);
+      transform: translateY(-1px);
+    }
+
     .row{
       display:flex;
       gap: 12px;
@@ -1538,7 +1549,7 @@ async function loadActivity(){
     const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
 
     const wrap = document.createElement("div");
-    wrap.className = "card";
+    wrap.className = "card subcard";
     wrap.innerHTML = `
       <strong>${title}</strong>
       <div class="keybox" style="margin-top:8px">
@@ -1762,6 +1773,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
