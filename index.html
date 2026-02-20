@@ -458,7 +458,7 @@ nav{
     /* Each tile (white cards on dark bg) */
     .featuredTile{
       flex: 0 0 auto;
-      width: 630px;
+      width: clamp(280px, 55vw, 520px); /* responsive width: never too small, never too huge */
       background: rgba(255,255,255,0.96);
       border: 1px solid rgba(20,20,20,0.10);
       border-radius: 16px;
@@ -476,14 +476,23 @@ nav{
     
       .featuredTile img{
         width: 100%;
-        height: 500px;
-        object-fit: contain; /* looks premium; change to cover for  crop */
+        height: 500px;    /* desktop gallery height */
+        object-fit: contain; /* premium look; change to cover for crop */
+        object-position: center;
+        display: block;
         background: #fff;
       }
 
     @media (max-width: 700px){
+      .featuredTile{
+        width: 82vw;         /* looks intentional in a marquee */
+        max-width: 420px;    /* prevents huge tiles on tablets */
+      }
+      
       .featuredTile img{
         height: 320px;   /* better mobile balance */
+        padding: 10px;
+        box-sizing: border-box;
       }
     }
     
@@ -1324,6 +1333,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
