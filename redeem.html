@@ -144,6 +144,15 @@
       white-space: nowrap;
     }
 
+    .sectionHead{
+      text-align: center;
+    }
+    
+    .sectionTitle::after{
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
     .sectionTitle{
       position: relative;
       font-size: 28px;
@@ -839,7 +848,7 @@
       }
     
       #connect{
-        width: 80% !important;            
+        width: 90% !important;            
         max-width: 360px;                
         min-width: 260px;                
         padding: 14px 16px;             
@@ -948,15 +957,15 @@
     </div>
 
 <div class="card">
-  <h2 class="sectionTitle">Rewards Store</h2>
+  <div class="sectionHead"><h2 class="sectionTitle">Rewards Store</h2></div>
   <div id="store" class="storeGrid"></div>
 
-  <h2 class="sectionTitle">Your Unlocks</h2>
+  <div class="sectionHead"><h2 class="sectionTitle">Your Unlocks</h2></div>
   <div id="unlocks" class="muted">Redeem something to see it here.</div>
 </div>
 
 <div class="card">
-  <h2 class="sectionTitle">Account activity</h2>
+  <div class="sectionHead"><h2 class="sectionTitle">Account activity</h2></div>
   <div id="activity" class="muted">
     Connect Patreon to see recent activity on your account.
   </div>
@@ -1810,6 +1819,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
