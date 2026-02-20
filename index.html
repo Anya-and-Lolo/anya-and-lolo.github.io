@@ -488,6 +488,14 @@ nav{
         animation-play-state: paused;
       }
     }
+
+    /* Desktop: use CSS marquee animation */
+    @media (hover: hover) and (pointer: fine){
+      .featuredTrack{
+        will-change: transform;
+        animation: featuredScroll 22s linear infinite;
+      }
+    }
     
     /* On touch devices: allow horizontal swipe */
     @media (hover: none) and (pointer: coarse){
@@ -1379,19 +1387,25 @@ canvas,
   const track   = document.querySelector(".featuredTrack");
   if (!marquee || !track) return;
 
-  // Duplicate items once for seamless loop
+  const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
+  if (!isTouch) return; // IMPORTANT: do nothing on desktop
+
+  // Mobile: enable horizontal scroll
+  marquee.style.overflowX = "auto";
+  marquee.style.overflowY = "hidden";
+  marquee.style.webkitOverflowScrolling = "touch";
+
+  // Mobile: turn off CSS animation so it doesn't fight JS
+  track.style.animation = "none";
+
+  // Duplicate once for seamless loop
   const kids = Array.from(track.children);
   kids.forEach(node => track.appendChild(node.cloneNode(true)));
 
   let paused = false;
   let resumeTimer = null;
 
-  const SPEED = 45; // desktop speed (px/sec)
-  const MOBILE_SPEED = 120; // faster on mobile
-
-  const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
-  const speed = isTouch ? MOBILE_SPEED : SPEED;
-
+  const MOBILE_SPEED = 120; // px/sec (fast)
   let last = performance.now();
 
   function tick(now){
@@ -1399,42 +1413,31 @@ canvas,
     last = now;
 
     if (!paused){
-      marquee.scrollLeft += speed * dt;
+      marquee.scrollLeft += MOBILE_SPEED * dt;
 
       const half = track.scrollWidth / 2;
       if (marquee.scrollLeft >= half){
         marquee.scrollLeft -= half;
       }
     }
-
     requestAnimationFrame(tick);
   }
-
   requestAnimationFrame(tick);
 
-  function pause(){
+  function pauseThenResume(){
     paused = true;
     clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { paused = false; }, 1200);
   }
 
-  function resumeDelayed(){
-    clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(() => paused = false, 1200);
-  }
-
-  // Desktop hover pause
-  marquee.addEventListener("mouseenter", pause);
-  marquee.addEventListener("mouseleave", resumeDelayed);
-
-  // Mobile touch pause
-  marquee.addEventListener("touchstart", pause, { passive: true });
-  marquee.addEventListener("touchmove", resumeDelayed, { passive: true });
-
+  marquee.addEventListener("touchstart", pauseThenResume, { passive: true });
+  marquee.addEventListener("touchmove",  pauseThenResume, { passive: true });
 })();
 </script>
   
 </body>
 </html>
+
 
 
 
