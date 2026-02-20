@@ -415,6 +415,12 @@
       color: rgba(20,20,20,0.86);
     }
     .connectedPill .pillDot{ background:#22c55e; }
+
+    .patreonStatusLine{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
     
     .patreonSub{
       font-size: 13px;
@@ -868,23 +874,16 @@
 <div class="connectBlock">
   <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-  <!-- Connected layout (shows only when connected) -->
-  <div id="connectedLine" class="connectedLine" style="display:none;">
-    <span id="patreonConnectedPill" class="pill pill--green connectedPill">
-      <span class="pillDot"></span> Patreon: Connected
-    </span>
-  </div>
-
-  <div class="patreonRowLeft">
-    <!-- This pill is for NOT CONNECTED states only -->
-    <span id="patreonPill" class="pill pill--gray">
+  <!-- Always visible pill (color + text changes depending on status) -->
+  <div class="patreonStatusLine">
+    <span id="patreonStatusPill" class="pill pill--gray">
       <span class="pillDot"></span> Patreon: not connected
     </span>
 
     <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
   </div>
 
-  <!-- Sub status line (e.g. No active pledges) -->
+  <!-- Sub status line -->
   <div id="patreonSub" class="patreonSub" style="display:none;">
     No active pledges
   </div>
@@ -1041,47 +1040,44 @@
   }
 
 function setPill(status) {
-  const pill = document.getElementById("patreonPill");
+  const pill = document.getElementById("patreonStatusPill");
   if (!pill) return;
 
   const raw = (status ?? "").toString();
   const s = raw.toLowerCase();
 
   let cls = "pill--gray";
-  let label = raw || "unknown";
+  let label = "not connected";
 
-  if (s.includes("not connected")) {
+  if (!raw || s.includes("not connected")) {
     cls = "pill--gray";
-    label = "Not connected";
+    label = "not connected";
   }
   else if (s.includes("reconnect_required") || s.includes("reconnect")) {
     cls = "pill--amber";
     label = "Reconnect required";
   }
-  else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
-    cls = "pill--blue";
-    label = "Connected • Not pledged";
+  else if (s.includes("declined")) {
+    cls = "pill--red";
+    label = "Payment declined";
   }
   else if (s.includes("active")) {
     cls = "pill--green";
-    label = "Active Member";
+    label = "Connected";
   }
-  else if (s.includes("paused") || s.includes("pending")) {
-    cls = "pill--amber";
-    label = "Membership Pending";
+  else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
+    cls = "pill--green";
+    label = "Connected";
   }
-  else if (s.includes("declined")) {
-    cls = "pill--red";
-    label = "Payment Declined";
-  }
-  else if (s.includes("error")) {
-    cls = "pill--red";
-    label = "Error loading status";
-  }
-  else if (s.includes("unknown")) {
+  else {
     cls = "pill--amber";
     label = "Status unknown";
   }
+
+  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray","pill--blue");
+  pill.classList.add(cls);
+  pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
+}
 
   pill.classList.remove(
     "pill--green",
@@ -1096,8 +1092,6 @@ function setPill(status) {
 
 function showConnectUI(){
   const btn = document.getElementById("connect");
-  const pill = document.getElementById("patreonPill");
-  const connectedLine = document.getElementById("connectedLine");
   const sub = document.getElementById("patreonSub");
 
   if (btn){
@@ -1105,21 +1099,14 @@ function showConnectUI(){
     btn.disabled = false;
     btn.textContent = "Connect Patreon";
   }
-
-  if (pill) pill.style.display = "";
-  if (connectedLine) connectedLine.style.display = "none";
   if (sub) sub.style.display = "none";
 }
 
 function showConnectedUI({ connectedSubText = "" } = {}){
   const btn = document.getElementById("connect");
-  const pill = document.getElementById("patreonPill");
-  const connectedLine = document.getElementById("connectedLine");
   const sub = document.getElementById("patreonSub");
 
-  if (btn) btn.style.display = "none";               // ✅ hide button when connected
-  if (pill) pill.style.display = "none";             // ✅ hide the non-connected pill
-  if (connectedLine) connectedLine.style.display = ""; // ✅ show green “Patreon: Connected”
+  if (btn) btn.style.display = "none";
 
   if (sub){
     if (connectedSubText){
@@ -1242,33 +1229,25 @@ function showConnectedUI({ connectedSubText = "" } = {}){
       const prettyStatus = (me.patreon_status ?? "connected").toString();
       setPill(prettyStatus);
       
-      // Decide the subline
       const statusLower = prettyStatus.toLowerCase();
       let subText = "";
       
-      if (statusLower.includes("not a patron") || statusLower.includes("not pledged") || statusLower.includes("no pledge")){
+      if (statusLower.includes("not a patron") || statusLower.includes("not pledged") || statusLower.includes("no pledge")) {
         subText = "No active pledges";
       }
-      
-      if (statusLower.includes("active")){
-        subText = ""; // or "Active pledge"
-      }
-      
-      if (statusLower.includes("declined")){
+      if (statusLower.includes("declined")) {
         subText = "Payment declined";
       }
-
+      // active -> no subtext
+      if (statusLower.includes("active")) {
+        subText = "";
+      }
+      
       if (statusLower.includes("not connected") || statusLower.includes("reconnect")) {
         showConnectUI();
       } else {
         showConnectedUI({ connectedSubText: subText });
       }
-    
-    if (ss.includes("not connected") || ss.includes("reconnect")) {
-      showConnectUI();
-    } else {
-      showConnectedUI({ connectedSubText: subText });
-    }
 
       if (infoPopBody) {
         infoPopBody.innerHTML =
@@ -1838,6 +1817,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
