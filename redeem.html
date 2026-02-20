@@ -1181,7 +1181,36 @@ function showConnectedUI({ connectedSubText = "" } = {}){
 
     try {
       const r = await apiFetch("/me", s);
-      const me = await r.json();
+      
+      const ct = (r.headers.get("content-type") || "").toLowerCase();
+      const raw = await r.text();
+      let me = null;
+      
+      if (ct.includes("application/json")) {
+        try { me = raw ? JSON.parse(raw) : null; } catch {}
+      }
+      
+      if (!r.ok || !me) {
+        // if the session is bad, clear it so user can reconnect cleanly
+        if (r.status === 401 || r.status === 403) {
+          localStorage.removeItem("session");
+        }
+      
+        CURRENT_CREDITS_CENTS = 0;
+        LAST_ME = null;
+        if (creditsValue) creditsValue.textContent = "0";
+        showConnectUI();
+        setPill("error");
+        if (infoPopBody) {
+          infoPopBody.innerHTML =
+            `Your current Patreon status: <strong>error</strong><br>` +
+            `API returned <strong>${r.status}</strong> (${escapeHtml(ct || "no content-type")}).<br>` +
+            `Response: <code>${escapeHtml(raw.slice(0, 140))}</code>`;
+        }
+        return null;
+      }
+
+LAST_ME = me;
       LAST_ME = me;
 
       if (!me.loggedIn) {
@@ -1802,6 +1831,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
