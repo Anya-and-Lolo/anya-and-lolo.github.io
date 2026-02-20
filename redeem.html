@@ -1197,24 +1197,10 @@ function showConnectedUI(){
       setPill(prettyStatus);
       
       const statusLower = prettyStatus.toLowerCase();
-      let subText = "";
-      
-      // your desired left subline
-      if (statusLower.includes("not a patron") || statusLower.includes("not pledged") || statusLower.includes("no pledge")) {
-        subText = "No active pledges";
-      } else if (statusLower.includes("declined")) {
-        subText = "Payment declined";
-      } else if (statusLower.includes("paused") || statusLower.includes("pending")) {
-        subText = "Membership pending";
-      } else {
-        subText = "";
-      }
-      
-      // If they truly need to reconnect, show connect UI
       if (statusLower.includes("reconnect") || statusLower.includes("reconnect_required")) {
         showConnectUI();
       } else {
-        showConnectedUI({ connectedSubText: subText });
+        showConnectedUI();
       }
 
       if (infoPopBody) {
@@ -1785,6 +1771,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
