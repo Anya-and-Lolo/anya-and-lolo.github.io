@@ -329,6 +329,7 @@ nav{
       display:block;
       width: 100%;
       height: auto;
+      object-fit: contain;
       border: 0;           /* important inside a card */
       border-radius: 0;    /* card handles rounding */
       box-shadow: none;    /* card handles shadow */
@@ -352,9 +353,9 @@ nav{
       .cardFlush { border-radius: 16px; overflow: hidden; }
     
       .banner{
-        height: 220px;        /* tweak: 180–260 */
-        object-fit: cover;    /* crops instead of looking tiny */
-        object-position: center;
+        height: 220px;              /* adjust to make it taller */
+        object-fit: cover;          /* enables cropping */
+        object-position: 36.5% 50%; /* focuses on the desired region */
       }
     }
 
@@ -1424,6 +1425,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
