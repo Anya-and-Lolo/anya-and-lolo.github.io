@@ -285,6 +285,12 @@ nav{
       padding: 18px 0 8px;
     }
 
+    .heroH1{
+      margin: 2px 0 12px;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
     .banner{
       display:block;
       width: 100%;
@@ -452,6 +458,47 @@ nav{
       font-size: 14px;
       color: rgba(27,27,27,0.72);
       line-height: 1.45;
+    }
+
+    .featuredCta{
+      margin-top: 12px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+    
+      color: rgba(255,255,255,0.95);
+      text-decoration: none;
+      font-weight: 1000;
+      font-size: 18px;
+    
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+    }
+    
+    .featuredCta:hover{
+      background: rgba(255,255,255,0.10);
+      text-decoration: none;
+    }
+    
+    .featuredCtaTitle,
+    .featuredCtaLink{
+      white-space: nowrap;     /* keep one line */
+    }
+    
+    .featuredCtaLink{
+      color: rgba(255,255,255,0.90);
+      opacity: .95;
+    }
+    
+    /* On very tiny screens, allow it to wrap cleanly instead of breaking layout */
+    @media (max-width: 420px){
+      .featuredCta{
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
     
     /* Mobile tiles: a bit narrower */
@@ -894,12 +941,13 @@ canvas,
 
   <!-- CARD 2: ONE card that holds LEFT welcome/about + RIGHT news -->
   <div class="card" style="margin-top:14px;">
+
+    <h1 class="heroH1">RPG Maker Tutorials for Indie Game Developers</h1>
+    
     <div class="heroGrid">
 
       <!-- LEFT -->
       <div>
-        <h1>RPG Maker Tutorials for Indie Game Developers</h1>
-
         <div class="heroText">
           <p>
             Free RPG Maker Tutorials for MZ, MV, XP, VX Ace, 2k, and 2k3, including day/night cycle, fishing mini-game, ARPG shooting and more.
@@ -971,7 +1019,6 @@ canvas,
   
   <!-- CARD 3: Featured (full width, same width as banner) -->
 <div class="card featuredCard" style="margin-top:14px;">
-  <h2 class="sectionTitle sectionTitle--light">Featured Systems</h2>
 
   <div class="featuredMarquee" aria-label="Featured Systems Gallery">
     <div class="featuredTrack" id="featuredTrack">
@@ -1003,6 +1050,12 @@ canvas,
       </a>
     </div>
   </div>
+
+  <a class="featuredCta" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+  <span class="featuredCtaTitle">Smart Systems for RPG Maker</span>
+  <span class="featuredCtaLink">View on itch.io →</span>
+  </a>
+  
 </div>
 
   <!-- CARD 4: Footer (full width, matches banner) -->
@@ -1227,6 +1280,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
