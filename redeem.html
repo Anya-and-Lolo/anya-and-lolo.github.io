@@ -72,6 +72,9 @@
       inset: 0;
       z-index: -2;
       opacity: 1;
+      /* helps Safari/Chrome on some GPUs */
+      transform: translateZ(0);
+      will-change: background-position;
     
       background:
         radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
@@ -90,8 +93,9 @@
         background-position: 0 0, 21px 21px;
       }
       to{
-        /* Move both layers together so it feels “floating” */
-        background-position: -120px -90px, calc(21px - 120px) calc(21px - 90px);
+        /* multiples of 42px = seamless loop */
+        background-position: -168px -84px, -147px -63px; 
+        /* because 21-168=-147 and 21-84=-63 */
       }
     }
 
@@ -1844,6 +1848,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
