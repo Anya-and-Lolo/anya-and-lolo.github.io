@@ -150,29 +150,33 @@
 
     .sectionTitle{
       position: relative;
+      display: block;
+      width: fit-content;
+      margin: 6px auto 10px;   /* change 10px for smaller bottom margin */
       font-size: 28px;
       font-weight: 1000;
-      margin: 6px 0 14px;
       letter-spacing: -0.3px;
-      display: inline-block;
     }
     
     .sectionTitle::after{
       content:"";
       position: absolute;
       left: 0;
-      bottom: -6px;
-      width: 38px;
+      bottom: -3px; /* closer to text */
       width: 100%;  /* full width of the text */
-      height: 4px;
-      left: 50%;
+      height: 5px;
       border-radius: 6px;
+      
       transform: translateX(-50%);
       background: linear-gradient(
         90deg,
-        var(--brand),
-        #ff6b9c
+        #ff2d6f 0%,
+        var(--brand) 35%,
+        #ff6ba8 70%,
+        #ff2d6f 100%
       );
+      
+      box-shadow: 0 4px 12px rgba(244,24,76,0.35); /* subtle glow */
     }
 
     .badge{
@@ -1821,6 +1825,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
