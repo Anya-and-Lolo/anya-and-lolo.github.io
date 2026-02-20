@@ -401,6 +401,71 @@
       flex-direction:column;
       gap:10px;
     }
+
+    /* Left area */
+    .connectedLine{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    
+    .connectedPill{
+      background: rgba(34,197,94,0.10);
+      border-color: rgba(34,197,94,0.22);
+      color: rgba(20,20,20,0.86);
+    }
+    .connectedPill .pillDot{ background:#22c55e; }
+    
+    .patreonSub{
+      font-size: 13px;
+      font-weight: 800;
+      opacity: .65;
+      margin-top: -2px;
+      padding-left: 4px;
+    }
+    
+    /* Make the left row look like a compact “status bar” */
+    .patreonRowLeft{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    
+    /* Credits right aligned on desktop, same as you wanted */
+    .row{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: nowrap; /* keep one row on desktop */
+    }
+
+    .connectRow{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: nowrap; /* desktop stays in one line */
+    }
+    
+    @media (max-width: 600px){
+      .connectRow{
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+    }
+    
+    /* Mobile stacking remains tidy */
+    @media (max-width: 600px){
+      .row{
+        flex-wrap: wrap;
+      }
+      .connectBlock{ width: 100%; }
+      .statusBlock{ width: 100%; }
+      .creditsBox{ align-items:center; }
+    }
     
     .patreonRowLeft{
       display:flex;
@@ -797,20 +862,33 @@
     </p>
 
     <div class="card" style="margin: 10px 0 14px;">
-<div class="row">
+<div class="connectRow">
 
   <!-- LEFT COLUMN -->
-  <div class="connectBlock">
-    <button id="connect" class="btnPrimary">Connect Patreon</button>
+<div class="connectBlock">
+  <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-    <div class="patreonRowLeft">
-      <span id="patreonPill" class="pill pill--gray">
-        <span class="pillDot"></span> Patreon: not connected
-      </span>
-
-      <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
-    </div>
+  <!-- Connected layout (shows only when connected) -->
+  <div id="connectedLine" class="connectedLine" style="display:none;">
+    <span id="patreonConnectedPill" class="pill pill--green connectedPill">
+      <span class="pillDot"></span> Patreon: Connected
+    </span>
   </div>
+
+  <div class="patreonRowLeft">
+    <!-- This pill is for NOT CONNECTED states only -->
+    <span id="patreonPill" class="pill pill--gray">
+      <span class="pillDot"></span> Patreon: not connected
+    </span>
+
+    <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
+  </div>
+
+  <!-- Sub status line (e.g. No active pledges) -->
+  <div id="patreonSub" class="patreonSub" style="display:none;">
+    No active pledges
+  </div>
+</div>
 
   <!-- RIGHT COLUMN -->
   <div class="statusBlock">
@@ -1016,15 +1094,42 @@ function setPill(status) {
   pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
 }
 
-  function showConnectUI(){
-    const btn = document.getElementById("connect");
-    if (btn) { btn.style.display = ""; btn.disabled = false; btn.textContent = "Connect Patreon"; }
+function showConnectUI(){
+  const btn = document.getElementById("connect");
+  const pill = document.getElementById("patreonPill");
+  const connectedLine = document.getElementById("connectedLine");
+  const sub = document.getElementById("patreonSub");
+
+  if (btn){
+    btn.style.display = "";
+    btn.disabled = false;
+    btn.textContent = "Connect Patreon";
   }
 
-  function showConnectedUI(){
-    const btn = document.getElementById("connect");
-    if (btn) { btn.disabled = true; btn.textContent = "Connected "; }
+  if (pill) pill.style.display = "";
+  if (connectedLine) connectedLine.style.display = "none";
+  if (sub) sub.style.display = "none";
+}
+
+function showConnectedUI({ connectedSubText = "" } = {}){
+  const btn = document.getElementById("connect");
+  const pill = document.getElementById("patreonPill");
+  const connectedLine = document.getElementById("connectedLine");
+  const sub = document.getElementById("patreonSub");
+
+  if (btn) btn.style.display = "none";               // ✅ hide button when connected
+  if (pill) pill.style.display = "none";             // ✅ hide the non-connected pill
+  if (connectedLine) connectedLine.style.display = ""; // ✅ show green “Patreon: Connected”
+
+  if (sub){
+    if (connectedSubText){
+      sub.textContent = connectedSubText;
+      sub.style.display = "";
+    } else {
+      sub.style.display = "none";
+    }
   }
+}
 
   function toast(msg, type="blue"){
     const wrap = document.getElementById("toastWrap");
@@ -1096,8 +1201,7 @@ function setPill(status) {
       // Creator debug mode if you want it:
       if (DEBUG === "anya") {
         if (creditsValue) creditsValue.textContent = "unlimited";
-        showConnectedUI();
-        setPill("connected");
+        showConnectedUI({ connectedSubText: "Creator mode" });
         if (infoPopBody) { infoPopBody.innerHTML = `Your current Patreon status: <strong>connected</strong><br>` + `Creator mode: unlimited.`; }
         return me;
       }
@@ -1107,10 +1211,28 @@ function setPill(status) {
       maybeToastCreditsChange(CURRENT_CREDITS_CENTS);
 
       if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
-      showConnectedUI();
-
       const prettyStatus = (me.patreon_status ?? "connected").toString();
-      setPill(prettyStatus);
+      
+      // Decide the subline
+      const s = prettyStatus.toLowerCase();
+      let subText = "";
+      
+      // If user is connected but not pledged
+      if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")){
+        subText = "No active pledges";
+      }
+      
+      // If active member, you can hide subText (or show “Active pledge” if you want)
+      if (s.includes("active")){
+        subText = ""; // or "Active pledge"
+      }
+      
+      // If declined etc, you might want this too
+      if (s.includes("declined")){
+        subText = "Payment declined";
+      }
+
+showConnectedUI({ connectedSubText: subText });
 
       if (infoPopBody) {
         infoPopBody.innerHTML =
@@ -1680,6 +1802,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
