@@ -166,8 +166,8 @@
       width: 100%;  /* full width of the text */
       height: 5px;
       border-radius: 6px;
-      
-      transform: translateX(-50%);
+      background-size: 200% 100%;
+      animation: titleShimmer 3s linear infinite;
       background: linear-gradient(
         90deg,
         #ff2d6f 0%,
@@ -179,6 +179,11 @@
       box-shadow: 0 4px 12px rgba(244,24,76,0.35); /* subtle glow */
     }
 
+    @keyframes titleShimmer{
+      0%{ background-position: 0% 50%; }
+      100%{ background-position: 200% 50%; }
+    }
+    
     .badge{
       font-size: 14px;
       padding: 7px 12px;
@@ -1825,6 +1830,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
