@@ -1210,7 +1210,6 @@ function showConnectedUI({ connectedSubText = "" } = {}){
         return null;
       }
 
-LAST_ME = me;
       LAST_ME = me;
 
       if (!me.loggedIn) {
@@ -1244,25 +1243,26 @@ LAST_ME = me;
       setPill(prettyStatus);
       
       // Decide the subline
-      const s = prettyStatus.toLowerCase();
+      const statusLower = prettyStatus.toLowerCase();
       let subText = "";
       
-      // If user is connected but not pledged
-      if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")){
+      if (statusLower.includes("not a patron") || statusLower.includes("not pledged") || statusLower.includes("no pledge")){
         subText = "No active pledges";
       }
       
-      // If active member, you can hide subText (or show “Active pledge” if you want)
-      if (s.includes("active")){
+      if (statusLower.includes("active")){
         subText = ""; // or "Active pledge"
       }
       
-      // If declined etc, you might want this too
-      if (s.includes("declined")){
+      if (statusLower.includes("declined")){
         subText = "Payment declined";
       }
 
-    const ss = prettyStatus.toLowerCase();
+      if (statusLower.includes("not connected") || statusLower.includes("reconnect")) {
+        showConnectUI();
+      } else {
+        showConnectedUI({ connectedSubText: subText });
+      }
     
     if (ss.includes("not connected") || ss.includes("reconnect")) {
       showConnectUI();
@@ -1838,6 +1838,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
