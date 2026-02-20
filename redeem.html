@@ -1213,7 +1213,11 @@ function showConnectedUI({ connectedSubText = "" } = {}){
         subText = "Payment declined";
       }
       
-      showConnectedUI({ connectedSubText: subText });
+      if (statusLower.includes("reconnect") || statusLower.includes("not connected")) {
+        showConnectUI();
+      } else {
+        showConnectedUI({ connectedSubText: subText });
+      }
 
       if (infoPopBody) {
         infoPopBody.innerHTML =
@@ -1783,6 +1787,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
