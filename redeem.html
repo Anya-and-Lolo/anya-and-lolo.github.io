@@ -157,17 +157,16 @@
       font-weight: 1000;
       letter-spacing: -0.3px;
     }
-    
+
     .sectionTitle::after{
       content:"";
       position: absolute;
-      left: 0;
-      bottom: -3px; /* closer to text */
-      width: 100%;  /* full width of the text */
+      left: 0;              /* keep this */
+      bottom: -3px;         /* closer to text */
+      width: 100%;          /* full width of the text */
       height: 5px;
       border-radius: 6px;
-      background-size: 200% 100%;
-      animation: titleShimmer 3s linear infinite;
+    
       background: linear-gradient(
         90deg,
         #ff2d6f 0%,
@@ -175,7 +174,10 @@
         #ff6ba8 70%,
         #ff2d6f 100%
       );
-      
+    
+      background-size: 200% 100%;
+      animation: titleShimmer 3s linear infinite;
+    
       box-shadow: 0 4px 12px rgba(244,24,76,0.35); /* subtle glow */
     }
 
@@ -1830,6 +1832,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
