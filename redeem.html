@@ -399,6 +399,53 @@
       flex-direction:column;
       gap:10px;
     }
+
+    /* Left area */
+    .connectedLine{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    
+    .connectedPill{
+      background: rgba(34,197,94,0.10);
+      border-color: rgba(34,197,94,0.22);
+      color: rgba(20,20,20,0.86);
+    }
+    
+    .patreonSub{
+      font-size: 13px;
+      font-weight: 800;
+      opacity: .65;
+      margin-top: -2px;
+      padding-left: 4px;
+    }
+    
+    /* Make the left row look like a compact “status bar” */
+    .patreonRowLeft{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    
+    /* Credits right aligned on desktop, same as you wanted */
+    .row{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: nowrap; /* keep one row on desktop */
+    }
+    
+    /* Mobile stacking remains tidy */
+    @media (max-width: 600px){
+      .row{
+        flex-wrap: wrap;
+      }
+      .connectBlock{ width: 100%; }
+      .statusBlock{ width: 100%; }
+      .creditsBox{ align-items:center; }
+    }
     
     .patreonRowLeft{
       display:flex;
@@ -798,17 +845,30 @@
 <div class="row">
 
   <!-- LEFT COLUMN -->
-  <div class="connectBlock">
-    <button id="connect" class="btnPrimary">Connect Patreon</button>
+<div class="connectBlock">
+  <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-    <div class="patreonRowLeft">
-      <span id="patreonPill" class="pill pill--gray">
-        <span class="pillDot"></span> Patreon: not connected
-      </span>
-
-      <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
-    </div>
+  <!-- Connected layout (shows only when connected) -->
+  <div id="connectedLine" class="connectedLine" style="display:none;">
+    <span id="patreonConnectedPill" class="pill pill--green connectedPill">
+      <span class="pillDot"></span> Patreon: Connected
+    </span>
   </div>
+
+  <div class="patreonRowLeft">
+    <!-- This pill is for NOT CONNECTED states only -->
+    <span id="patreonPill" class="pill pill--gray">
+      <span class="pillDot"></span> Patreon: not connected
+    </span>
+
+    <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
+  </div>
+
+  <!-- Sub status line (e.g. No active pledges) -->
+  <div id="patreonSub" class="patreonSub" style="display:none;">
+    No active pledges
+  </div>
+</div>
 
   <!-- RIGHT COLUMN -->
   <div class="statusBlock">
@@ -1678,3 +1738,4 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
