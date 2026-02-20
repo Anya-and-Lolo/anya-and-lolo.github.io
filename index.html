@@ -335,7 +335,7 @@ nav{
     
     .heroFeatures li{
       color: rgba(27,27,27,0.78);
-      font-weight: 600;
+      font-weight: 800;
     }
     
     .banner{
@@ -345,8 +345,6 @@ nav{
       border: 0;           /* important inside a card */
       border-radius: 0;    /* card handles rounding */
       box-shadow: none;    /* card handles shadow */
-      animation: floatHint 2.8s ease-in-out infinite;
-      will-change: transform;
     }
 
     .banner:hover{
@@ -433,15 +431,10 @@ nav{
 
     /* Dark featured card */
     .featuredCard{
-      width: 100vw;
-      margin-left: 50%;
-      transform: translateX(-50%);
-      border-radius: 0;  /* optional for full-bleed look */
-      
       background: rgba(17, 24, 39, 0.92);        /* dark grey */
       border-color: rgba(255,255,255,0.10);
       box-shadow: 0 18px 50px rgba(0,0,0,0.18);
-      padding: 16px;          /* card padding */
+      padding: 18px;          /* card padding */
       min-height: 300px;      /* height of the gallery */
       display: flex;
       flex-direction: column;
@@ -650,21 +643,16 @@ nav{
     .heroText{
       margin: 28px 0 34px;
       font-size: 18px;
-      line-height: 1.5;
+      line-height: 1.75;
       color: rgba(27,27,27,0.85);
-    }
-
-    .heroText .heroFeatures{
-      line-height: 1.5;
     }
 
     .ctaRow{
       display:flex;
       gap: 12px;
       flex-wrap:wrap;
-      margin: 20px 0 28px;
-      padding: 0;
-      gap: 10px;
+      margin: 34px 0 46px;
+      padding: 8px 0;
     }
 
     .btn{
@@ -891,7 +879,7 @@ nav{
   will-change: transform;
 }
 
-@keyframes floatHint {
+@keyframes floatHint{
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-3px); }
 }
@@ -997,13 +985,13 @@ nav{
     /* Firefox */
     html{
       scrollbar-color: var(--scrollThumb) var(--scrollTrack);
-      scrollbar-width: auto;
+      scrollbar-width: thin;
     }
     
     /* Chrome/Edge/Safari */
     ::-webkit-scrollbar{
-      width: 16px;
-      height: 16px; /* horizontal */
+      width: 12px;
+      height: 12px; /* horizontal */
     }
     ::-webkit-scrollbar-track{
       background: var(--scrollTrack);
@@ -1011,7 +999,7 @@ nav{
     ::-webkit-scrollbar-thumb{
       background: var(--scrollThumb);
       border-radius: 999px;
-      border: 4px solid var(--scrollTrack);
+      border: 3px solid var(--scrollTrack);
     }
     ::-webkit-scrollbar-thumb:hover{
       filter: brightness(0.95);
@@ -1074,7 +1062,7 @@ canvas,
             Build day and night cycles, fishing mini-games, ARPG shooting systems and more.
           </p>
         
-          <p class="subtitle" style="margin-top:10px;">New here? Start with:</p>
+          <p class="subtitle" style="margin-top:10px;">New here? Start here:</p>
         
           <ul class="heroFeatures">
             <li>✔ Watch beginner-friendly <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">tutorials</a></li>
@@ -1136,7 +1124,7 @@ canvas,
 </div>
   
   <!-- CARD 3: Featured (full width, same width as banner) -->
-<div class="card featuredCard" style="margin-top:8px;">
+<div class="card featuredCard" style="margin-top:14px;">
 
   <div class="featuredMarquee" aria-label="Featured Systems Gallery">
     <div class="featuredTrack" id="featuredTrack">
@@ -1447,9 +1435,3 @@ canvas,
   
 </body>
 </html>
-
-
-
-
-
-
