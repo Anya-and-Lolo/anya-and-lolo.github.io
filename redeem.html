@@ -713,6 +713,16 @@
         text-align:center;
       }
     }
+
+    /* Make connect/reconnect feel like a bar */
+    #connect{
+      min-width: 260px;
+    }
+    
+    /* On mobile you already have width:100%, keep it */
+    @media (max-width: 600px){
+      #connect{ width: 100%; min-width: 0; }
+    }
     
     @media (max-width: 600px){
   
@@ -848,42 +858,29 @@
   <!-- LEFT COLUMN -->
 <div class="connectBlock">
   <button id="connect" class="btnPrimary">Connect Patreon</button>
-
-  <!-- Connected layout (shows only when connected) -->
-  <div id="connectedLine" class="connectedLine" style="display:none;">
-    <span id="patreonConnectedPill" class="pill pill--green connectedPill">
-      <span class="pillDot"></span> Patreon: Connected
-    </span>
-  </div>
-
+  
+  <!-- pill + info button in one line -->
   <div class="patreonRowLeft">
-    <!-- This pill is for NOT CONNECTED states only -->
     <span id="patreonPill" class="pill pill--gray">
       <span class="pillDot"></span> Patreon: not connected
     </span>
-
+  
     <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
   </div>
-
-  <!-- Sub status line (e.g. No active pledges) -->
-  <div id="patreonSub" class="patreonSub" style="display:none;">
-    No active pledges
-  </div>
-</div>
-
-  <!-- RIGHT COLUMN -->
-  <div class="statusBlock">
-    <div class="creditsBox">
-      <div class="creditsMain">
-        <span class="creditsIcon">💰</span>
-        <span id="creditsValue" class="creditsAmount">0</span>
-        <span class="creditsLabel">Credits</span>
+  
+    <!-- RIGHT COLUMN -->
+    <div class="statusBlock">
+      <div class="creditsBox">
+        <div class="creditsMain">
+          <span class="creditsIcon">💰</span>
+          <span id="creditsValue" class="creditsAmount">0</span>
+          <span class="creditsLabel">Credits</span>
+        </div>
+        <div class="creditsSub">1¢ = 1 credit</div>
       </div>
-      <div class="creditsSub">1¢ = 1 credit</div>
     </div>
+  
   </div>
-
-</div>
 
     <div id="infoPop" class="infoPop" aria-hidden="true">
       <div class="infoPopInner" role="dialog" aria-modal="false">
@@ -1031,59 +1028,52 @@ function setPill(status) {
   const s = raw.toLowerCase();
 
   let cls = "pill--gray";
-  let label = raw || "unknown";
+  let label = "not connected";
 
-  if (s.includes("not connected")) {
+  if (!raw || s.includes("not connected")) {
     cls = "pill--gray";
-    label = "Not connected";
+    label = "not connected";
   }
   else if (s.includes("reconnect_required") || s.includes("reconnect")) {
     cls = "pill--amber";
     label = "Reconnect required";
   }
-  else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
-    cls = "pill--blue";
-    label = "Connected • Not pledged";
+  else if (s.includes("declined")) {
+    cls = "pill--red";
+    label = "Payment declined";
   }
   else if (s.includes("active")) {
     cls = "pill--green";
-    label = "Active Member";
+    label = "Connected";
+  }
+  else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
+    /* ✅ your desired look */
+    cls = "pill--green";
+    label = "Connected • No active pledges";
   }
   else if (s.includes("paused") || s.includes("pending")) {
     cls = "pill--amber";
-    label = "Membership Pending";
-  }
-  else if (s.includes("declined")) {
-    cls = "pill--red";
-    label = "Payment Declined";
+    label = "Connected • Membership pending";
   }
   else if (s.includes("error")) {
     cls = "pill--red";
     label = "Error loading status";
   }
-  else if (s.includes("unknown")) {
+  else {
     cls = "pill--amber";
     label = "Status unknown";
   }
 
-  pill.classList.remove(
-    "pill--green",
-    "pill--amber",
-    "pill--red",
-    "pill--gray",
-    "pill--blue"
-  );
+  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray","pill--blue");
   pill.classList.add(cls);
+
   pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
 }
 
 function showConnectUI(){
   const btn = document.getElementById("connect");
-  const pill = document.getElementById("patreonPill");
-  const connectedLine = document.getElementById("connectedLine");
   const sub = document.getElementById("patreonSub");
 
-  // Button visible + acts as connect
   if (btn){
     btn.style.display = "";
     btn.disabled = false;
@@ -1091,23 +1081,17 @@ function showConnectUI(){
     btn.dataset.mode = "connect";
   }
 
-  // Show the normal pill row, hide "connected" line + subtext
-  if (pill) pill.style.display = "";
-  if (connectedLine) connectedLine.style.display = "none";
+  // We are NOT using patreonSub anymore
   if (sub) sub.style.display = "none";
 
-  // Right side subline: "Connect Patreon"
   const creditsSub = document.querySelector(".creditsSub");
   if (creditsSub) creditsSub.textContent = "Connect Patreon";
 }
 
-function showConnectedUI({ connectedSubText = "" } = {}){
+function showConnectedUI(){
   const btn = document.getElementById("connect");
-  const pill = document.getElementById("patreonPill");
-  const connectedLine = document.getElementById("connectedLine");
   const sub = document.getElementById("patreonSub");
 
-  // Button visible + acts as reconnect
   if (btn){
     btn.style.display = "";
     btn.disabled = false;
@@ -1115,19 +1099,12 @@ function showConnectedUI({ connectedSubText = "" } = {}){
     btn.dataset.mode = "reconnect";
   }
 
-  // Hide non-connected pill, show connected pill line
-  if (pill) pill.style.display = "none";
-  if (connectedLine) connectedLine.style.display = "";
+  // We are NOT using patreonSub anymore
+  if (sub) sub.style.display = "none";
 
-  // Left subtext (No active pledges / Payment declined etc)
-  if (sub){
-    if (connectedSubText){
-      sub.textContent = connectedSubText;
-      sub.style.display = "";
-    } else {
-      sub.style.display = "none";
-    }
-  }
+  const creditsSub = document.querySelector(".creditsSub");
+  if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
+}
 
   // Right side subline: "1¢ = 1 credit"
   const creditsSub = document.querySelector(".creditsSub");
@@ -1808,6 +1785,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
