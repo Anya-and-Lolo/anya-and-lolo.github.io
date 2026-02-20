@@ -345,8 +345,31 @@ nav{
       border: 0;           /* important inside a card */
       border-radius: 0;    /* card handles rounding */
       box-shadow: none;    /* card handles shadow */
-      animation: floatHint 2.8s ease-in-out infinite;
+      transform: none; /* important for animation */
+    }
+
+    /* Banner card wrapper */
+    .bannerCard{
+      padding: 0;
+      overflow: hidden;
       will-change: transform;
+      transform: translateZ(0);
+    }
+    
+    /* gentle “float like a button” */
+    @media (prefers-reduced-motion: no-preference){
+      .bannerCard{
+        animation: floatHint 3.2s ease-in-out infinite;
+      }
+    }
+    
+    /* hover lift (desktop) */
+    @media (hover: hover) and (pointer: fine){
+      .bannerCard:hover{
+        animation-play-state: paused; /* optional: feels snappy */
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(0,0,0,.07);
+      }
     }
 
     .banner:hover{
@@ -1064,8 +1087,8 @@ canvas,
 <section class="hero">
 
   <!-- CARD 1: Banner (separate card) -->
-  <div class="card cardFlush">
-    <img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner">
+  <div class="card cardFlush bannerCard">
+    <img class="banner" src="..." alt="Anya & Lolo banner">
   </div>
 
   <!-- CARD 2: ONE card that holds LEFT welcome/about + RIGHT news -->
@@ -1456,6 +1479,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
