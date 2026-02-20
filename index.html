@@ -339,6 +339,25 @@ nav{
       transform: translateY(-1px);
     }
 
+    /* On desktop keep natural look */
+    @media (min-width: 701px){
+      .banner{
+        height: auto;
+        object-fit: contain;
+      }
+    }
+    
+    /* On mobile: make it taller + crop nicely */
+    @media (max-width: 700px){
+      .cardFlush { border-radius: 16px; overflow: hidden; }
+    
+      .banner{
+        height: 220px;        /* tweak: 180–260 */
+        object-fit: cover;    /* crops instead of looking tiny */
+        object-position: center;
+      }
+    }
+
     .heroGrid{
       display:grid;
       grid-template-columns: 1fr 400px;
@@ -1405,6 +1424,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
