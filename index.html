@@ -286,11 +286,45 @@ nav{
     }
 
     .heroH1{
-      margin: 2px 0 12px;
+      position: relative;
+      display: block;
+      width: fit-content;
+      margin: 6px auto 14px;
+      font-size: 34px;
+      font-weight: 1000;
       letter-spacing: -0.5px;
       line-height: 1.15;
+      text-align: center;
     }
 
+    .heroH1::after{
+      content:"";
+      position: absolute;
+      left: 0;              /* keep this */
+      bottom: -3px;         /* change to -3 to make it closer to text */
+      width: 100%;          /* full width of the text */
+      height: 5px;
+      border-radius: 6px;
+    
+      background: linear-gradient(
+        90deg,
+        #ff2d6f 0%,
+        var(--brand) 35%,
+        #9fdf28 70%,
+        #ff2d6f 100%
+      );
+    
+      background-size: 200% 100%;
+      animation: titleShimmer 3s linear infinite;
+    
+      box-shadow: 0 4px 12px rgba(244,24,76,0.35); /* subtle glow */
+    }
+
+    @keyframes titleShimmer{
+      0%{ background-position: 0% 50%; }
+      100%{ background-position: 200% 50%; }
+    }
+    
     .banner{
       display:block;
       width: 100%;
@@ -1280,6 +1314,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
