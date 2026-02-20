@@ -859,12 +859,10 @@
     <div class="connectBlock">
       <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-      <!-- pill + info button in one line -->
       <div class="patreonRowLeft">
         <span id="patreonPill" class="pill pill--gray">
           <span class="pillDot"></span> Patreon: not connected
         </span>
-
         <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
       </div>
     </div>
@@ -897,56 +895,60 @@
       </div>
     </div>
 
-    <h2 style="margin: 18px 0 10px;">Rewards Store</h2>
-    <div id="store" class="storeGrid"></div>
+<div class="card">
+  <h2 style="margin: 6px 0 10px;">Rewards Store</h2>
+  <div id="store" class="storeGrid"></div>
 
-    <h2 style="margin: 22px 0 10px;">Your Unlocks</h2>
-    <div id="unlocks" class="muted">Redeem something to see it here.</div>
-
-<h2 style="margin: 22px 0 10px;">Account activity</h2>
-<div id="activity" class="muted">
-  Connect Patreon to see recent activity on your account.
+  <h2 style="margin: 22px 0 10px;">Your Unlocks</h2>
+  <div id="unlocks" class="muted">Redeem something to see it here.</div>
 </div>
 
-    <footer>
-      <div class="hangout">
-        Want to hang out? Join the
-        <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">Discord</a>
-        or follow us on your favourite platform below 💛
+<div class="card">
+  <h2 style="margin: 6px 0 10px;">Account activity</h2>
+  <div id="activity" class="muted">
+    Connect Patreon to see recent activity on your account.
+  </div>
+
+  <footer style="margin-top: 18px;">
+    <div class="hangout">
+      Want to hang out? Join the
+      <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">Discord</a>
+      or follow us on your favourite platform below 💛
+    </div>
+
+    <div class="footerInner">
+      <div>© <span id="year"></span> Anya &amp; Lolo</div>
+
+      <div class="socialText" aria-label="Social links">
+        <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+        <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+        <span class="sepDot"></span>
+
+        <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+        <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+
+        <span class="sepDot"></span>
+
+        <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+        <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+        <span class="sepDot"></span>
+
+        <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+        <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
       </div>
 
-      <div class="footerInner">
-        <div>© <span id="year"></span> Anya &amp; Lolo</div>
-
-        <div class="socialText" aria-label="Social links">
-          <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
-          <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
-          <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
-
-          <span class="sepDot"></span>
-
-          <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
-          <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
-          <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
-
-          <span class="sepDot"></span>
-
-          <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
-          <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
-
-          <span class="sepDot"></span>
-
-          <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
-          <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
-        </div>
-
-        <div class="footerRight">
-          <a href="./terms.html">Terms</a>
-          <span class="sep">|</span>
-          <a href="./privacy.html">Privacy</a>
-        </div>
+      <div class="footerRight">
+        <a href="./terms.html">Terms</a>
+        <span class="sep">|</span>
+        <a href="./privacy.html">Privacy</a>
       </div>
-    </footer>
+    </div>
+  </footer>
+</div>
   </main>
 
 <script>
@@ -1760,6 +1762,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
