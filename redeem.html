@@ -724,20 +724,15 @@
         text-align:center;
       }
     }
-
-    /* Make connect/reconnect feel like a bar */
-    #connect{
-      min-width: 260px;
-    }
-    
-      @media (max-width: 600px){
-        #connect{ width: 100%; }
-      }
-    
+      
       .patreonRow{
         justify-content: center;
       }
     }
+
+        #connect{ width: 100%; min-width: 0; 
+       }
+      }
     
     .storeMsg{
       margin-top: 8px;
@@ -1763,6 +1758,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
