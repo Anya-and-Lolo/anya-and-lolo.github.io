@@ -458,8 +458,11 @@ nav{
     /* Each tile (white cards on dark bg) */
     .featuredTile{
       flex: 0 0 auto;
-      width: 320px;
-      background: rgba(255,255,255,0.96);
+      width: 630px;
+      height: 500px;          /* locked height */
+      object-fit: contain;   /* keeps 630x500 ratio, NO crop */
+      display: block;
+      background: #fff;   /* matches your tile */
       border: 1px solid rgba(20,20,20,0.10);
       border-radius: 16px;
       overflow: hidden;
@@ -1324,6 +1327,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
