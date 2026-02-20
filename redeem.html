@@ -147,12 +147,7 @@
     .sectionHead{
       text-align: center;
     }
-    
-    .sectionTitle::after{
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    
+
     .sectionTitle{
       position: relative;
       font-size: 28px;
@@ -168,9 +163,12 @@
       left: 0;
       bottom: -6px;
       width: 38px;
+      width: 100%;  /* full width of the text */
       height: 4px;
       border-radius: 4px;
       background: var(--brand);
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .badge{
@@ -848,7 +846,7 @@
       }
     
       #connect{
-        width: 90% !important;            
+        width: 95% !important;            
         max-width: 360px;                
         min-width: 260px;                
         padding: 14px 16px;             
@@ -1819,6 +1817,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
