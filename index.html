@@ -614,10 +614,19 @@ nav{
     }
     
     /* On very tiny screens, allow it to wrap cleanly instead of breaking layout */
-    @media (max-width: 420px){
+    @media (max-width: 600px){
       .featuredCta{
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
+        gap: 6px;
+      }
+      .featuredCtaTitle{
+        font-size: 16px;
+      }
+      .featuredCtaLink{
+        font-size: 14px;
+        opacity: 0.9;
       }
     }
     
@@ -651,8 +660,20 @@ nav{
       display:flex;
       gap: 12px;
       flex-wrap:wrap;
-      margin: 34px 0 46px;
+      margin: 22px 0 30px;
       padding: 8px 0;
+      gap: 10px;
+    }
+
+    @media (max-width: 600px){
+      .ctaRow{
+        flex-direction: column;
+        align-items: stretch;
+      }
+    
+      .btn{
+        justify-content: center;
+      }
     }
 
     .btn{
@@ -985,13 +1006,13 @@ nav{
     /* Firefox */
     html{
       scrollbar-color: var(--scrollThumb) var(--scrollTrack);
-      scrollbar-width: thin;
+      scrollbar-width: auto;
     }
     
     /* Chrome/Edge/Safari */
     ::-webkit-scrollbar{
-      width: 12px;
-      height: 12px; /* horizontal */
+      width: 14px;
+      height: 14px; /* horizontal */
     }
     ::-webkit-scrollbar-track{
       background: var(--scrollTrack);
@@ -1435,3 +1456,4 @@ canvas,
   
 </body>
 </html>
+
