@@ -852,22 +852,23 @@
       Credits are earned from successful paid Patreon pledges.
     </p>
 
-    <div class="card" style="margin: 10px 0 14px;">
-<div class="row">
+<div class="card" style="margin: 10px 0 14px;">
+  <div class="row">
 
-  <!-- LEFT COLUMN -->
-<div class="connectBlock">
-  <button id="connect" class="btnPrimary">Connect Patreon</button>
-  
-  <!-- pill + info button in one line -->
-  <div class="patreonRowLeft">
-    <span id="patreonPill" class="pill pill--gray">
-      <span class="pillDot"></span> Patreon: not connected
-    </span>
-  
-    <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
-  </div>
-  
+    <!-- LEFT COLUMN -->
+    <div class="connectBlock">
+      <button id="connect" class="btnPrimary">Connect Patreon</button>
+
+      <!-- pill + info button in one line -->
+      <div class="patreonRowLeft">
+        <span id="patreonPill" class="pill pill--gray">
+          <span class="pillDot"></span> Patreon: not connected
+        </span>
+
+        <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
+      </div>
+    </div>
+
     <!-- RIGHT COLUMN -->
     <div class="statusBlock">
       <div class="creditsBox">
@@ -879,8 +880,9 @@
         <div class="creditsSub">1¢ = 1 credit</div>
       </div>
     </div>
-  
+
   </div>
+</div>
 
     <div id="infoPop" class="infoPop" aria-hidden="true">
       <div class="infoPopInner" role="dialog" aria-modal="false">
@@ -1072,7 +1074,6 @@ function setPill(status) {
 
 function showConnectUI(){
   const btn = document.getElementById("connect");
-  const sub = document.getElementById("patreonSub");
 
   if (btn){
     btn.style.display = "";
@@ -1081,16 +1082,12 @@ function showConnectUI(){
     btn.dataset.mode = "connect";
   }
 
-  // We are NOT using patreonSub anymore
-  if (sub) sub.style.display = "none";
-
   const creditsSub = document.querySelector(".creditsSub");
   if (creditsSub) creditsSub.textContent = "Connect Patreon";
 }
 
 function showConnectedUI(){
   const btn = document.getElementById("connect");
-  const sub = document.getElementById("patreonSub");
 
   if (btn){
     btn.style.display = "";
@@ -1099,14 +1096,6 @@ function showConnectedUI(){
     btn.dataset.mode = "reconnect";
   }
 
-  // We are NOT using patreonSub anymore
-  if (sub) sub.style.display = "none";
-
-  const creditsSub = document.querySelector(".creditsSub");
-  if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
-}
-
-  // Right side subline: "1¢ = 1 credit"
   const creditsSub = document.querySelector(".creditsSub");
   if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
 }
@@ -1771,6 +1760,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
