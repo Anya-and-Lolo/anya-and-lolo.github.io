@@ -1241,6 +1241,7 @@ LAST_ME = me;
 
       if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
       const prettyStatus = (me.patreon_status ?? "connected").toString();
+      setPill(prettyStatus);
       
       // Decide the subline
       const s = prettyStatus.toLowerCase();
@@ -1261,7 +1262,13 @@ LAST_ME = me;
         subText = "Payment declined";
       }
 
-showConnectedUI({ connectedSubText: subText });
+    const ss = prettyStatus.toLowerCase();
+    
+    if (ss.includes("not connected") || ss.includes("reconnect")) {
+      showConnectUI();
+    } else {
+      showConnectedUI({ connectedSubText: subText });
+    }
 
       if (infoPopBody) {
         infoPopBody.innerHTML =
@@ -1831,6 +1838,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
