@@ -459,21 +459,18 @@ nav{
       }
     }
     
-    /* On touch devices: disable autoplay and allow horizontal swipe */
+    /* On touch devices: allow horizontal swipe */
     @media (hover: none) and (pointer: coarse){
       .featuredMarquee{
-        overflow-x: auto;                 /* swipe */
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;    /* optional: nice snapping */
-        touch-action: pan-x;              /* prevents “stuck” gestures */
+        scrollbar-width: none;
       }
+      .featuredMarquee::-webkit-scrollbar{ display:none; }
     
+      /* IMPORTANT: don't run the transform animation on mobile */
       .featuredTrack{
-        animation: none;                  /* no autoplay on mobile */
-      }
-    
-      .featuredTile{
-        scroll-snap-align: start;         /* optional */
+        animation: none !important;
       }
     }
     
@@ -1337,18 +1334,66 @@ canvas,
 </script>
 
 <script>
-  (function(){
-    const track = document.getElementById("featuredTrack");
-    if (!track) return;
+(() => {
+  const marquee = document.querySelector(".featuredMarquee");
+  const track   = document.querySelector(".featuredTrack");
+  if (!marquee || !track) return;
 
-    // Duplicate children so the animation can scroll "halfway" and look endless
-    const kids = Array.from(track.children);
-    kids.forEach(node => track.appendChild(node.cloneNode(true)));
-  })();
+  // Only run this logic on touch/mobile-ish devices
+  const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
+  if (!isTouch) return;
+
+  // Duplicate items so scroll can loop seamlessly
+  const kids = Array.from(track.children);
+  kids.forEach(node => track.appendChild(node.cloneNode(true)));
+
+  let paused = false;
+  let resumeTimer = null;
+
+  // speed in pixels per second (tweak)
+  const speed = 35;
+
+  // rAF loop
+  let last = performance.now();
+  function tick(now){
+    const dt = (now - last) / 1000;
+    last = now;
+
+    if (!paused){
+      marquee.scrollLeft += speed * dt;
+
+      // loop point: when we reach half the track, jump back by half (no visible jump)
+      const half = track.scrollWidth / 2;
+      if (marquee.scrollLeft >= half){
+        marquee.scrollLeft -= half;
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  function pauseThenAutoResume(){
+    paused = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { paused = false; }, 1200); // resume after 1.2s idle
+  }
+
+  // User touches/drags -> pause autoplay
+  marquee.addEventListener("touchstart", pauseThenAutoResume, { passive: true });
+  marquee.addEventListener("touchmove",  pauseThenAutoResume, { passive: true });
+
+  // If they flick-scroll, keep pausing while scrolling continues
+  marquee.addEventListener("scroll", () => {
+    if (paused) pauseThenAutoResume();
+  }, { passive: true });
+
+})();
 </script>
   
 </body>
 </html>
+
 
 
 
