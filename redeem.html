@@ -347,7 +347,7 @@
     }
     
     .storeInfo{
-      font-size: 14px;
+      font-size: 16px;
       opacity: .75;
       font-weight: 700;
     }
@@ -1091,7 +1091,13 @@ function showConnectUI(){
   if (btn){
     btn.style.display = "";
     btn.disabled = false;
-    btn.textContent = "Connect Patreon";
+
+    if (window.innerWidth <= 600){
+      btn.textContent = "Connect";
+    } else {
+      btn.textContent = "Connect Patreon";
+    }
+
     btn.dataset.mode = "connect";
   }
 
@@ -1105,30 +1111,20 @@ function showConnectedUI(){
   if (btn){
     btn.style.display = "";
     btn.disabled = false;
-    btn.textContent = "Re-connect Patreon";
+
+    // Shorter text on mobile
+    if (window.innerWidth <= 600){
+      btn.textContent = "Re-connect";
+    } else {
+      btn.textContent = "Re-connect Patreon";
+    }
+
     btn.dataset.mode = "reconnect";
   }
 
   const creditsSub = document.querySelector(".creditsSub");
   if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
 }
-
-  function toast(msg, type="blue"){
-    const wrap = document.getElementById("toastWrap");
-    if (!wrap) return;
-  
-    const el = document.createElement("div");
-    el.className = `toast ${type}`;
-    el.innerHTML = `<strong>${escapeHtml(msg)}</strong>`;
-    wrap.appendChild(el);
-  
-    setTimeout(() => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(6px)";
-      el.style.transition = "opacity .2s ease, transform .2s ease";
-      setTimeout(() => el.remove(), 250);
-    }, 3500);
-  }
 
   const LAST_CREDITS_KEY = "last_credits_raw_cents_v1";
   
@@ -1773,6 +1769,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
