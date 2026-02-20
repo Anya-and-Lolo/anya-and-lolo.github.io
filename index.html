@@ -329,7 +329,6 @@ nav{
       display:block;
       width: 100%;
       height: auto;
-      object-fit: contain;
       border: 0;           /* important inside a card */
       border-radius: 0;    /* card handles rounding */
       box-shadow: none;    /* card handles shadow */
@@ -355,7 +354,6 @@ nav{
       .banner{
         height: 220px;              /* adjust to make it taller */
         object-fit: cover;          /* enables cropping */
-        object-position: 36.5% 50%; /* focuses on the desired region */
       }
     }
 
@@ -1032,7 +1030,10 @@ canvas,
 
   <!-- CARD 1: Banner (separate card) -->
   <div class="card cardFlush">
+    <picture>
+    <source media="(max-width: 700px)" srcset="https://anya-and-lolo.github.io/images/banner-mobile.jpg">
     <img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner">
+    </picture>
   </div>
 
   <!-- CARD 2: ONE card that holds LEFT welcome/about + RIGHT news -->
@@ -1425,6 +1426,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
