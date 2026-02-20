@@ -1074,15 +1074,42 @@ function setPill(status) {
   pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
 }
 
-  function showConnectUI(){
-    const btn = document.getElementById("connect");
-    if (btn) { btn.style.display = ""; btn.disabled = false; btn.textContent = "Connect Patreon"; }
+function showConnectUI(){
+  const btn = document.getElementById("connect");
+  const pill = document.getElementById("patreonPill");
+  const connectedLine = document.getElementById("connectedLine");
+  const sub = document.getElementById("patreonSub");
+
+  if (btn){
+    btn.style.display = "";
+    btn.disabled = false;
+    btn.textContent = "Connect Patreon";
   }
 
-  function showConnectedUI(){
-    const btn = document.getElementById("connect");
-    if (btn) { btn.disabled = true; btn.textContent = "Connected "; }
+  if (pill) pill.style.display = "";
+  if (connectedLine) connectedLine.style.display = "none";
+  if (sub) sub.style.display = "none";
+}
+
+function showConnectedUI({ connectedSubText = "" } = {}){
+  const btn = document.getElementById("connect");
+  const pill = document.getElementById("patreonPill");
+  const connectedLine = document.getElementById("connectedLine");
+  const sub = document.getElementById("patreonSub");
+
+  if (btn) btn.style.display = "none";               // hide button when connected
+  if (pill) pill.style.display = "none";             // hide the non-connected pill
+  if (connectedLine) connectedLine.style.display = ""; // show green “Patreon: Connected”
+
+  if (sub){
+    if (connectedSubText){
+      sub.textContent = connectedSubText;
+      sub.style.display = "";
+    } else {
+      sub.style.display = "none";
+    }
   }
+}
 
   function toast(msg, type="blue"){
     const wrap = document.getElementById("toastWrap");
@@ -1738,4 +1765,5 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
