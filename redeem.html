@@ -1193,6 +1193,8 @@ function showConnectedUI({ connectedSubText = "" } = {}){
 
       if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
 
+      showConnectedUI();
+      
       const prettyStatus = (me.patreon_status ?? "connected").toString();
       setPill(prettyStatus);
       
@@ -1214,8 +1216,6 @@ function showConnectedUI({ connectedSubText = "" } = {}){
       if (s.includes("declined")){
         subText = "Payment declined";
       }
-      
-      showConnectedUI({ connectedSubText: subText });
 
       if (infoPopBody) {
         infoPopBody.innerHTML =
@@ -1785,6 +1785,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
