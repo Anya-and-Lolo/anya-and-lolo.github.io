@@ -823,6 +823,28 @@
       .socialText{ justify-content: center !important; }
     }
 
+    @media (max-width: 600px){
+    
+      /* Keep left column aligned like desktop */
+      .connectBlock{
+        width: 100%;
+        align-items: flex-start; /* key: left align inside the column */
+      }
+    
+      /* Make the button hug its content (not full width) */
+      #connect{
+        width: fit-content;
+        min-width: 170px;      /* tweak: makes it feel like a bar, but not huge */
+        max-width: 100%;
+        align-self: flex-start; /* line up with the pill row */
+      }
+    
+      /* Keep pill+info row as the “reference width” */
+      .patreonRowLeft{
+        width: fit-content;
+      }
+    }
+
     canvas,
     #sparkles,
     .sparkles,
@@ -1763,6 +1785,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
