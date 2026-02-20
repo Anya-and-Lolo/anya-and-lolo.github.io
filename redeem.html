@@ -1192,30 +1192,27 @@ function showConnectedUI({ connectedSubText = "" } = {}){
       maybeToastCreditsChange(CURRENT_CREDITS_CENTS);
 
       if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
-
-      showConnectedUI();
       
       const prettyStatus = (me.patreon_status ?? "connected").toString();
       setPill(prettyStatus);
       
       // Decide the subline
-      const s = prettyStatus.toLowerCase();
+      const statusLower = prettyStatus.toLowerCase();
       let subText = "";
       
-      // If user is connected but not pledged
-      if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")){
+      if (statusLower.includes("not a patron") || statusLower.includes("not pledged") || statusLower.includes("no pledge")) {
         subText = "No active pledges";
       }
       
-      // If active member, you can hide subText (or show “Active pledge” if you want)
-      if (s.includes("active")){
-        subText = ""; // or "Active pledge"
+      if (statusLower.includes("active")) {
+        subText = "";
       }
       
-      // If declined etc, you might want this too
-      if (s.includes("declined")){
+      if (statusLower.includes("declined")) {
         subText = "Payment declined";
       }
+      
+      showConnectedUI({ connectedSubText: subText });
 
       if (infoPopBody) {
         infoPopBody.innerHTML =
@@ -1785,6 +1782,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
