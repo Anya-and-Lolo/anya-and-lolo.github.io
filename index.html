@@ -83,6 +83,9 @@
       inset: 0;
       z-index: -2;
       opacity: 1;
+      /* helps Safari/Chrome on some GPUs */
+      transform: translateZ(0);
+      will-change: background-position;
     
       background:
         radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
@@ -101,8 +104,9 @@
         background-position: 0 0, 21px 21px;
       }
       to{
-        /* Move both layers together so it feels “floating” */
-        background-position: -120px -90px, calc(21px - 120px) calc(21px - 90px);
+        /* multiples of 42px = seamless loop */
+        background-position: -168px -84px, -147px -63px; 
+        /* because 21-168=-147 and 21-84=-63 */
       }
     }
 
@@ -282,13 +286,12 @@ nav{
     }
 
     .banner{
+      display:block;
       width: 100%;
       height: auto;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      display:block;
-      background: #fff;
+      border: 0;           /* important inside a card */
+      border-radius: 0;    /* card handles rounding */
+      box-shadow: none;    /* card handles shadow */
     }
 
     .banner:hover{
@@ -298,10 +301,12 @@ nav{
 
     .heroGrid{
       display:grid;
-      grid-template-columns: 1fr 365px; /* LEFT flexible, RIGHT fixed */
+      grid-template-columns: 1fr 400px;
       gap: 14px;
-      margin-top: 14px;
       align-items: start;
+    }
+    @media (max-width: 900px){
+      .heroGrid{ grid-template-columns: 1fr; }
     }
     
     .card{
@@ -326,6 +331,28 @@ nav{
       border-radius: 14px;
       padding: 14px;
       margin-top: 10px;
+    }
+
+    /* A card that has NO padding (so banner/news can touch edges nicely) */
+    .cardFlush{
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    /* Inner padding when you *do* want breathing room inside a flush card */
+    .cardPad{
+      padding: 18px;
+    }
+    
+    /* Featured grid (3 nice tiles) */
+    .featureGrid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    
+    @media (max-width: 900px){
+      .featureGrid{ grid-template-columns: 1fr; }
     }
 
     h1{
@@ -734,130 +761,162 @@ canvas,
   </header>
 
   <main class="wrap">
-    <section class="hero">
-      <img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner">
 
-<div class="heroGrid">
-  <!-- LEFT: Welcome + About together -->
-  <div class="card">
-    <h1>RPG Maker Tutorials for Indie Game Developers</h1>
+<section class="hero">
 
-    <div class="heroText">
-      <p>
-        Free RPG Maker Tutorials for MZ, MV, XP, VX Ace, 2k, and 2k3, including day/night cycle, fishing mini-game, ARPG shooting and more.
-        <br><br>
-        New here? Start with
-        <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
-        to connect your Patreon, see your credits, and redeem your itch keys.
-        Please follow us for updates, dev diaries, and new releases!
-        Want updates in your inbox? Check the
-        <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">Substack</a>.
-      </p>
-      <p class="subtitle">
-  Watch tutorials on <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>,
-  grab downloads on <a class="linkBrand" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">itch.io</a>,
-  and redeem Patreon rewards <a class="linkBrand" href="./redeem.html">here</a>.
-</p>
+  <!-- CARD 1: Banner (separate card) -->
+  <div class="card cardFlush">
+    <img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner">
+  </div>
 
-    </div>
+  <!-- CARD 2: ONE card that holds LEFT welcome/about + RIGHT news -->
+  <div class="card" style="margin-top:14px;">
+    <div class="heroGrid">
 
-    <div class="ctaRow">
-<a class="btn btnPrimary confettiBurst" id="patreonBtn" href="https://anya-and-lolo.github.io/redeem.html">
-  Patreon Rewards
-  <span class="confettiLayer" aria-hidden="true"></span>
-</a>
+      <!-- LEFT -->
+      <div>
+        <h1>RPG Maker Tutorials for Indie Game Developers</h1>
 
+        <div class="heroText">
+          <p>
+            Free RPG Maker Tutorials for MZ, MV, XP, VX Ace, 2k, and 2k3, including day/night cycle, fishing mini-game, ARPG shooting and more.
+            <br><br>
+            New here? Start with
+            <a class="linkBrand" href="https://anya-and-lolo.github.io/redeem.html">Patreon Rewards</a>
+            to connect your Patreon, see your credits, and redeem your itch keys.
+            Want updates in your inbox? Check the
+            <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">Substack</a>.
+          </p>
 
-    <a class="btn floatHint" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-      <span class="linkBrand">Browse Smart Systems on itch.io →</span>
-    </a>
-    </div>
-
-    <!-- About section nested inside left card -->
-    <div class="subcard" id="about">
-      <div class="aboutRow">
-        <img class="avatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo avatar">
-        <div>
-          <p class="subtitle" style="margin:0;">
-            Hi, I'm Anya, a gamer and artist living in sunny Sydney, and this is my feathered bestie Lolo.
-            We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that
-            make game dev feel warm, simple, and genuinely fun.
+          <p class="subtitle" style="margin-top:10px;">
+            Watch tutorials on <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>,
+            grab downloads on <a class="linkBrand" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">itch.io</a>,
+            and redeem Patreon rewards <a class="linkBrand" href="./redeem.html">here</a>.
           </p>
         </div>
+
+        <div class="ctaRow">
+          <a class="btn btnPrimary confettiBurst" id="patreonBtn" href="https://anya-and-lolo.github.io/redeem.html">
+            Patreon Rewards
+            <span class="confettiLayer" aria-hidden="true"></span>
+          </a>
+
+          <a class="btn floatHint" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+            <span class="linkBrand">Browse Smart Systems on itch.io →</span>
+          </a>
+        </div>
+
+        <!-- About (inside same LEFT column, but visually separated) -->
+        <div class="subcard" id="about">
+          <div class="aboutRow">
+            <img class="avatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo avatar">
+            <div>
+              <p class="subtitle" style="margin:0;">
+                Hi, I'm Anya, a gamer and artist living in sunny Sydney, and this is my feathered bestie Lolo.
+                We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that
+                make game dev feel warm, simple, and genuinely fun.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT (News) -->
+      <div class="cardFlush" style="border:1px solid rgba(20,20,20,0.10); border-radius:16px;">
+        <div class="embedWrap" aria-label="ItchBlog embed">
+          <div id="newsPlaceholder" class="newsPlaceholder" aria-live="polite">
+            <img class="newsAvatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo" />
+            <div class="newsLoading">News are loading<span class="dots" aria-hidden="true"></span></div>
+            <div class="newsHint">If it takes a moment, your browser might be blocking embeds.</div>
+          </div>
+
+          <iframe
+            id="newsFrame"
+            class="embed"
+            title="Anya & Lolo ItchBlog"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            style="opacity:0; pointer-events:none;"
+          ></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CARD 3: Featured (full width, same width as banner) -->
+  <div class="card" style="margin-top:14px;">
+    <h2 class="sectionTitle">Featured Systems</h2>
+
+    <div class="featureGrid">
+      <div class="subcard">
+        <img class="banner" src="https://anya-and-lolo.github.io/images/fishing_system_image.jpg" alt="Fishing System" style="border-radius:14px;">
+        <div style="margin-top:10px; font-weight:1000; font-size:18px;">Fishing System</div>
+        <div class="subtitle" style="margin:6px 0 12px;">Mini-game + cozy vibes + easy setup.</div>
+        <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">View on itch.io →</a>
+      </div>
+
+      <div class="subcard">
+        <img class="banner" src="https://anya-and-lolo.github.io/images/VN_system_image.jpg" alt="Visual Novel System" style="border-radius:14px;">
+        <div style="margin-top:10px; font-weight:1000; font-size:18px;">Visual Novel System</div>
+        <div class="subtitle" style="margin:6px 0 12px;">Dialogue scenes, choices, clean UI flow.</div>
+        <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">View on itch.io →</a>
+      </div>
+
+      <div class="subcard">
+        <img class="banner" src="https://anya-and-lolo.github.io/images/shooting_system_image.jpg" alt="Shooting System" style="border-radius:14px;">
+        <div style="margin-top:10px; font-weight:1000; font-size:18px;">Shooting System</div>
+        <div class="subtitle" style="margin:6px 0 12px;">ARPG-style shooting with polish.</div>
+        <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">View on itch.io →</a>
       </div>
     </div>
-
   </div>
 
-<!-- RIGHT: ItchBlog embed -->
-<div class="card" style="padding: 0;">
-  <div class="embedWrap" aria-label="ItchBlog embed">
-    <!-- Loading placeholder (shows immediately) -->
-    <div id="newsPlaceholder" class="newsPlaceholder" aria-live="polite">
-      <img
-        class="newsAvatar"
-        src="https://anya-and-lolo.github.io/icon.jpg"
-        alt="Anya & Lolo"
-      />
-      <div class="newsLoading">News are loading<span class="dots" aria-hidden="true"></span></div>
-      <div class="newsHint">If it takes a moment, your browser might be blocking embeds.</div>
+  <!-- CARD 4: Footer (full width, matches banner) -->
+  <div class="card" style="margin-top:14px;">
+    <div class="hangout" style="margin-top:0;">
+      Want to hang out? Join the
+      <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
+      or follow us on your favourite platform below 💛
     </div>
 
-    <!-- Iframe (hidden until loaded) -->
-    <iframe
-      id="newsFrame"
-      class="embed"
-      title="Anya & Lolo ItchBlog"
-      loading="lazy"
-      referrerpolicy="no-referrer"
-      style="opacity:0; pointer-events:none;"
-    ></iframe>
+    <footer style="margin-top: 12px; padding: 0;">
+      <div class="footerInner">
+        <div>© <span id="year"></span> Anya &amp; Lolo</div>
 
+        <div class="socialText" aria-label="Social links">
+          <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+          <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+          <span class="sepDot"></span>
+
+          <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+          <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+
+          <span class="sepDot"></span>
+
+          <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+          <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+          <span class="sepDot"></span>
+
+          <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+          <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+        </div>
+
+        <div class="footerRight">
+          <a href="./terms.html">Terms</a>
+          <span class="sep">|</span>
+          <a href="./privacy.html">Privacy</a>
+        </div>
+      </div>
+    </footer>
   </div>
-</div>
 
-</div>
-  
-      <footer>
-        <div class="hangout">
-          Want to hang out? Join the
-          <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
-          or follow us on your favourite platform below 💛
-        </div>
+</section>
 
-        <div class="footerInner">
-          <div>© <span id="year"></span> Anya &amp; Lolo</div>
-
-          <div class="socialText" aria-label="Social links">
-            <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
-            <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
-            <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
-
-            <span class="sepDot"></span>
-
-            <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
-            <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
-            <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
-
-            <span class="sepDot"></span>
-
-            <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
-            <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
-
-            <span class="sepDot"></span>
-
-            <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
-            <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
-          </div>
-
-          <div class="footerRight">
-            <a href="./terms.html">Terms</a>
-            <span class="sep">|</span>
-            <a href="./privacy.html">Privacy</a>
-          </div>
-        </div>
-      </footer>
-    </section>
   </main>
   
 <script>
@@ -1024,6 +1083,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
