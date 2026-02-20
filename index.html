@@ -289,10 +289,10 @@ nav{
       position: relative;
       display: block;
       width: fit-content;
-      margin: 6px auto 14px;
+      margin: 6px auto 18px;
       font-size: 34px;
-      font-weight: 1000;
-      letter-spacing: -0.5px;
+      font-weight: 780;
+      letter-spacing: -0.3px;
       line-height: 1.15;
       text-align: center;
     }
@@ -301,7 +301,7 @@ nav{
       content:"";
       position: absolute;
       left: 0;              /* keep this */
-      bottom: -3px;         /* change to -3 to make it closer to text */
+      bottom: -6px;         /* change to -3 to make it closer to text */
       width: 100%;          /* full width of the text */
       height: 5px;
       border-radius: 6px;
@@ -402,6 +402,11 @@ nav{
       background: rgba(17, 24, 39, 0.92);        /* dark grey */
       border-color: rgba(255,255,255,0.10);
       box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+      padding: 18px;          /* match your card padding */
+      min-height: 360px;      /* adjust if you want taller */
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* vertically centers content if there's extra height */
     }
     
     /* White heading in dark section */
@@ -1314,6 +1319,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
