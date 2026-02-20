@@ -998,6 +998,8 @@
   };
 
   document.getElementById("connect").onclick = () => {
+    // Both connect + reconnect go through the same OAuth start.
+    // "Reconnect" is just a clearer label for users.
     location.href = API + "/auth/patreon/start";
   };
 
@@ -1081,15 +1083,22 @@ function showConnectUI(){
   const connectedLine = document.getElementById("connectedLine");
   const sub = document.getElementById("patreonSub");
 
+  // Button visible + acts as connect
   if (btn){
     btn.style.display = "";
     btn.disabled = false;
     btn.textContent = "Connect Patreon";
+    btn.dataset.mode = "connect";
   }
 
+  // Show the normal pill row, hide "connected" line + subtext
   if (pill) pill.style.display = "";
   if (connectedLine) connectedLine.style.display = "none";
   if (sub) sub.style.display = "none";
+
+  // Right side subline: "Connect Patreon"
+  const creditsSub = document.querySelector(".creditsSub");
+  if (creditsSub) creditsSub.textContent = "Connect Patreon";
 }
 
 function showConnectedUI({ connectedSubText = "" } = {}){
@@ -1098,10 +1107,19 @@ function showConnectedUI({ connectedSubText = "" } = {}){
   const connectedLine = document.getElementById("connectedLine");
   const sub = document.getElementById("patreonSub");
 
-  if (btn) btn.style.display = "none";               // hide button when connected
-  if (pill) pill.style.display = "none";             // hide the non-connected pill
-  if (connectedLine) connectedLine.style.display = ""; // show green “Patreon: Connected”
+  // Button visible + acts as reconnect
+  if (btn){
+    btn.style.display = "";
+    btn.disabled = false;
+    btn.textContent = "Re-connect Patreon";
+    btn.dataset.mode = "reconnect";
+  }
 
+  // Hide non-connected pill, show connected pill line
+  if (pill) pill.style.display = "none";
+  if (connectedLine) connectedLine.style.display = "";
+
+  // Left subtext (No active pledges / Payment declined etc)
   if (sub){
     if (connectedSubText){
       sub.textContent = connectedSubText;
@@ -1110,6 +1128,10 @@ function showConnectedUI({ connectedSubText = "" } = {}){
       sub.style.display = "none";
     }
   }
+
+  // Right side subline: "1¢ = 1 credit"
+  const creditsSub = document.querySelector(".creditsSub");
+  if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
 }
 
   function toast(msg, type="blue"){
@@ -1197,23 +1219,22 @@ function showConnectedUI({ connectedSubText = "" } = {}){
       const prettyStatus = (me.patreon_status ?? "connected").toString();
       setPill(prettyStatus);
       
-      // Decide the subline
       const statusLower = prettyStatus.toLowerCase();
       let subText = "";
       
+      // your desired left subline
       if (statusLower.includes("not a patron") || statusLower.includes("not pledged") || statusLower.includes("no pledge")) {
         subText = "No active pledges";
-      }
-      
-      if (statusLower.includes("active")) {
+      } else if (statusLower.includes("declined")) {
+        subText = "Payment declined";
+      } else if (statusLower.includes("paused") || statusLower.includes("pending")) {
+        subText = "Membership pending";
+      } else {
         subText = "";
       }
       
-      if (statusLower.includes("declined")) {
-        subText = "Payment declined";
-      }
-      
-      if (statusLower.includes("reconnect") || statusLower.includes("not connected")) {
+      // If they truly need to reconnect, show connect UI
+      if (statusLower.includes("reconnect") || statusLower.includes("reconnect_required")) {
         showConnectUI();
       } else {
         showConnectedUI({ connectedSubText: subText });
@@ -1787,6 +1808,7 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
 
