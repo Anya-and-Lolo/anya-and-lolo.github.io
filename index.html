@@ -451,8 +451,30 @@ nav{
     }
     
     /* Pause on hover (premium feel) */
-    .featuredMarquee:hover .featuredTrack{
-      animation-play-state: paused;
+    /* Only pause on devices that actually have hover (desktop / trackpad) */
+    @media (hover: hover) and (pointer: fine){
+      .featuredMarquee:hover .featuredTrack,
+      .featuredMarquee:focus-within .featuredTrack{
+        animation-play-state: paused;
+      }
+    }
+    
+    /* On touch devices: disable autoplay and allow horizontal swipe */
+    @media (hover: none) and (pointer: coarse){
+      .featuredMarquee{
+        overflow-x: auto;                 /* swipe */
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;    /* optional: nice snapping */
+        touch-action: pan-x;              /* prevents “stuck” gestures */
+      }
+    
+      .featuredTrack{
+        animation: none;                  /* no autoplay on mobile */
+      }
+    
+      .featuredTile{
+        scroll-snap-align: start;         /* optional */
+      }
     }
     
     /* Each tile (white cards on dark bg) */
@@ -1327,6 +1349,7 @@ canvas,
   
 </body>
 </html>
+
 
 
 
