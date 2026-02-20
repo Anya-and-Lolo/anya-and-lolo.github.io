@@ -446,8 +446,6 @@ nav{
       gap: 14px;
       width: max-content;
       padding: 6px 6px 10px;
-      will-change: transform;
-      animation: featuredScroll 22s linear infinite;
     }
     
     /* Pause on hover (premium feel) */
@@ -589,12 +587,6 @@ nav{
         flex-direction: column;
         align-items: flex-start;
       }
-    }
-    
-    /* The animation itself */
-    @keyframes featuredScroll{
-      from{ transform: translateX(0); }
-      to  { transform: translateX(-50%); } /* we will duplicate items so -50% loops perfectly */
     }
     
     /* Respect reduced motion */
@@ -1357,22 +1349,21 @@ canvas,
   const track   = document.querySelector(".featuredTrack");
   if (!marquee || !track) return;
 
-  // Only run this logic on touch/mobile-ish devices
-  const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
-  if (!isTouch) return;
-
-  // Duplicate items so scroll can loop seamlessly
+  // Duplicate items once for seamless loop
   const kids = Array.from(track.children);
   kids.forEach(node => track.appendChild(node.cloneNode(true)));
 
   let paused = false;
   let resumeTimer = null;
 
-  // speed in pixels per second (tweak)
-  const speed = 105;
+  const SPEED = 80; // desktop speed (px/sec)
+  const MOBILE_SPEED = 140; // faster on mobile
 
-  // rAF loop
+  const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const speed = isTouch ? MOBILE_SPEED : SPEED;
+
   let last = performance.now();
+
   function tick(now){
     const dt = (now - last) / 1000;
     last = now;
@@ -1380,7 +1371,6 @@ canvas,
     if (!paused){
       marquee.scrollLeft += speed * dt;
 
-      // loop point: when we reach half the track, jump back by half (no visible jump)
       const half = track.scrollWidth / 2;
       if (marquee.scrollLeft >= half){
         marquee.scrollLeft -= half;
@@ -1389,28 +1379,33 @@ canvas,
 
     requestAnimationFrame(tick);
   }
+
   requestAnimationFrame(tick);
 
-  function pauseThenAutoResume(){
+  function pause(){
     paused = true;
     clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(() => { paused = false; }, 1200); // resume after 1.2s idle
   }
 
-  // User touches/drags -> pause autoplay
-  marquee.addEventListener("touchstart", pauseThenAutoResume, { passive: true });
-  marquee.addEventListener("touchmove",  pauseThenAutoResume, { passive: true });
+  function resumeDelayed(){
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => paused = false, 1200);
+  }
 
-  // If they flick-scroll, keep pausing while scrolling continues
-  marquee.addEventListener("scroll", () => {
-    if (paused) pauseThenAutoResume();
-  }, { passive: true });
+  // Desktop hover pause
+  marquee.addEventListener("mouseenter", pause);
+  marquee.addEventListener("mouseleave", resumeDelayed);
+
+  // Mobile touch pause
+  marquee.addEventListener("touchstart", pause, { passive: true });
+  marquee.addEventListener("touchmove", resumeDelayed, { passive: true });
 
 })();
 </script>
   
 </body>
 </html>
+
 
 
 
