@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anya & Lolo's News Archive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.css">
+
+  <style>
+    :root{
+      --brand:#f4184c;
+      --text:#1b1b1b;
+      --muted:rgba(27,27,27,0.72);
+      --radius:16px;
+
+      --scrollTrack:#226cbb;
+      --scrollThumb:#56a7fe;
+    }
+    :root{ color-scheme: dark; }
+
+    html, body{
+      margin:0;
+      padding:0;
+      background-image:url("https://img.itch.zone/aW1nLzE1Njg4NTU2LmpwZw==/original/oJsslX.jpg");
+      background-repeat:repeat;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: rgba(255,255,255,0.92);
+    }
+
+    /* Scrollbar styling */
+    html{ scrollbar-color: var(--scrollThumb) var(--scrollTrack); scrollbar-width:auto; }
+    ::-webkit-scrollbar{ width:13px; height:13px; }
+    ::-webkit-scrollbar-track{ background:var(--scrollTrack); }
+    ::-webkit-scrollbar-thumb{
+      background:var(--scrollThumb);
+      border-radius:999px;
+      border:3px solid var(--scrollTrack);
+    }
+    ::-webkit-scrollbar-corner{ background:var(--scrollTrack); }
+
+    .top{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 14px 0;
+    }
+    .titleBar{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(244, 24, 76, 0.92);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.25);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.22);
+    }
+    .titleBar h1{
+      margin: 0;
+      font-weight: 1000;
+      font-size: 22px;
+      letter-spacing: 0.4px;
+      color:#fff;
+      line-height:1.1;
+    }
+    .subtitle{
+      text-align:center;
+      margin: 10px 0 0;
+      font-size: 22px;
+      color: rgba(255,255,255,0.82);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    }
+
+    .yearBlock{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 14px 28px;
+    }
+	.yearTitle{
+	  margin: 26px 0 16px;
+	  font-size: 28px;           
+	  font-weight: 1000;
+	  letter-spacing: 0.6px;
+	  color: #fff;
+	  text-shadow: 0 4px 18px rgba(0,0,0,0.35);
+	  border-left: 6px solid rgba(244,24,76,0.92);  /* optional accent */
+	  padding-left: 12px;
+	}
+
+    /* ✅ FIX overlap: real grid */
+    .archiveGrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 1100px){ .archiveGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 700px){ .archiveGrid{ grid-template-columns: 1fr; } }
+
+    /* ✅ SAME card styling as embed, readable text */
+    .loop-item{
+      background: rgba(255,255,255,0.92);
+      border-radius: var(--radius);
+      padding: 12px 12px 10px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+      display:flex;
+      flex-direction:column;
+      color: var(--text);
+    }
+    .loop-item img{ width:100%; height:auto; display:block; border-radius:12px; }
+
+    .loop-item h4, .loop-item .h5{
+      color: rgba(244,24,76,0.92) !important;
+      font-weight: 1000;
+      letter-spacing:-0.2px;
+      margin: 10px 0 6px;
+      line-height:1.15;
+    }
+
+    .entry-meta{
+      color: rgba(27,27,27,0.62) !important;
+      margin: 0 0 8px !important;
+      font-size: 13px;
+    }
+
+    .loop-item p{
+      margin: 0 0 10px !important;
+      color: var(--muted) !important;
+      line-height:1.4;
+      font-size: 17px;
+	  color: rgba(27,27,27,0.78) !important;
+    }
+
+    .btnAL{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:10px 14px;
+      border-radius:14px;
+      font-weight:1000;
+      font-size:15px;
+      border:1px solid rgba(244,24,76,0.35);
+      background:#f4184c;
+      color:#fff !important;
+      box-shadow:0 10px 22px rgba(0,0,0,.10);
+      text-decoration:none !important;
+      white-space:nowrap;
+    }
+    .btnAL.secondary{
+      background: rgba(255,255,255,0.92);
+      color: rgba(27,27,27,0.88) !important;
+      border: 1px solid rgba(20,20,20,0.14);
+    }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+      justify-content:flex-start;
+      flex-wrap:wrap;
+      margin-top:auto;
+      padding-top:6px;
+    }
+
+    a{ text-decoration:none; }
+    a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+  </style>
+</head>
+
+<body>
+  <div class="top">
+    <div class="titleBar"><h1>Anya & Lolo's News Archive</h1></div>
+    <div class="subtitle">All updates in one place. (Newest at the top)</div>
+  </div>
+
+  
+    <div class="yearBlock">
+      <div class="yearTitle">2025</div>
+      <div class="archiveGrid">
+        
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&amp;utm_campaign=post&amp;utm_medium=web&amp;showWelcomeOnShare=true">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-Anya_and_Lolo_Substack_Newsletter_RPG_Maker_Free_Plugins_Gamedev_Assets_Game_Development_Resources_RPG_Maker_Tips_Tricks.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&amp;utm_campaign=post&amp;utm_medium=web&amp;showWelcomeOnShare=true">
+      <h4 class="h5 text-left">What If RPG Maker News Landed Right in Your Inbox? 💌</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2025-11-17">17 November 2025</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>Interested in free RPG Maker plugins, game development tips, and assets? Subscribe to our Game Development Digest!</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&amp;utm_campaign=post&amp;utm_medium=web&amp;showWelcomeOnShare=true"
+             class="btnAL ">✍ Yes! Send Me the Plugins</a>
+        
+      </div>
+    </div>
+  
+  </div>
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://itch.io/s/163176/happy-halloween-sale-">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-Anya_and_Lolo_Halloween.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://itch.io/s/163176/happy-halloween-sale-">
+      <h4 class="h5 text-left">It&#039;s Here! Happy Halloween Sale 🎃 Join The Party! 👻</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2025-10-26">26 October 2025</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>It’s been too long since our last sale, so we’re throwing open the doors to a Halloween party full of treats (and no tricks!) 🦇💜</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://itch.io/s/163176/happy-halloween-sale-"
+             class="btnAL ">🍬 Will You Join the Fun?</a>
+        
+      </div>
+    </div>
+  
+  </div>
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://forms.gle/db2EJA1Je6y19i6f7">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-News_RPG_Maker_MZ_MV_Unite_RPG_Maker_XP_VX_Ace_2k_2k3_Giveaway.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://forms.gle/db2EJA1Je6y19i6f7">
+      <h4 class="h5 text-left">Win RPG Maker Software 🎁 Anya &amp; Lolo&#039;s Giveaway!</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2025-08-14">14 August 2025</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>Anya &amp; Lolo are giving away copies of RPG Maker! Missing one? I’ll cover the costs for you, just lend a little hand in return! (,,&gt; ᴗ &lt;,,)</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://forms.gle/db2EJA1Je6y19i6f7"
+             class="btnAL ">✋ Want in? Click Here to Join</a>
+        
+      </div>
+    </div>
+  
+  </div>
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=g_lLFJqsy8g">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-News-Day_Night_Cycle_in_RPG_Maker_MZ_MV_XP_Ace.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=g_lLFJqsy8g">
+      <h4 class="h5 text-left">Day &amp; Night System Re-FORGED To V3.0: Even More Goodies! 🌞</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2025-07-01">1 July 2025</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>We dropped a fresh YouTube tutorial to go with your demo download — and V3.0 is packed with extra goodies! 👇</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=g_lLFJqsy8g"
+             class="btnAL ">🎥 Video</a>
+        
+          <a target="_blank" rel="noopener" href="https://anya-and-lolo.itch.io/daynightsystem/devlog/977559/-video-tutorial-out-make-day-night-cycle-in-any-rpg-maker"
+             class="btnAL secondary">Devlog #1</a>
+        
+          <a target="_blank" rel="noopener" href="https://anya-and-lolo.itch.io/daynightsystem/devlog/956657/-day-night-system-re-forged-to-v30-even-more-goodies"
+             class="btnAL secondary">Devlog #2</a>
+        
+      </div>
+    </div>
+  
+  </div>
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://itch.io/s/151807/-anya-lolo-1-year-anniversary">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-Anya_and_Lolo_Anniversary.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://itch.io/s/151807/-anya-lolo-1-year-anniversary">
+      <h4 class="h5 text-left">Let&#039;s Celebrate 💃 Anya &amp; Lolo 🦜 One Year Anniversary with a SALE!</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2025-04-22">22 April 2025</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>It’s been one year of RPG Maker goodies + cozy tutorials from us… so we’re celebrating with a party sale! 🥳🎉</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://itch.io/s/151807/-anya-lolo-1-year-anniversary"
+             class="btnAL ">🎈 Join the Party</a>
+        
+      </div>
+    </div>
+  
+  </div>
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=WqYna6SDv70&amp;list=PLa_AhIV96MuZBex9o0ULiuLkh1jF4ANL0">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-News-FFMasterclass.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=WqYna6SDv70&amp;list=PLa_AhIV96MuZBex9o0ULiuLkh1jF4ANL0">
+      <h4 class="h5 text-left">Upcoming Tutorial Series! Let&#039;s Learn RPG Maker With A Twist 👀</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2025-03-25">25 March 2025</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>Heads up! I’m working on a new tutorial series for RPG Maker MZ &amp; MV — bite-sized, fun, and a little different 😏</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=WqYna6SDv70&amp;list=PLa_AhIV96MuZBex9o0ULiuLkh1jF4ANL0"
+             class="btnAL ">▶ Watch the Announcement</a>
+        
+      </div>
+    </div>
+  
+  </div>
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=4WEm8oRmF04&amp;list=PLa_AhIV96MuYzR-T7bmclm8BkbpxNWyOK">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-News-UniteMasterclass.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=4WEm8oRmF04&amp;list=PLa_AhIV96MuYzR-T7bmclm8BkbpxNWyOK">
+      <h4 class="h5 text-left">YouTube Special: NEW Exclusive Unite Master Class! 🎓</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2025-02-25">25 February 2025</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>Want to try Unite? Jump into our “First Steps” master class for bite-sized tutorials and practical tips 🌟</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=4WEm8oRmF04&amp;list=PLa_AhIV96MuYzR-T7bmclm8BkbpxNWyOK"
+             class="btnAL ">🎓 Start the Master Class</a>
+        
+      </div>
+    </div>
+  
+  </div>
+      </div>
+    </div>
+  
+    <div class="yearBlock">
+      <div class="yearTitle">2024</div>
+      <div class="archiveGrid">
+        
+  <div class="loop-item">
+    <a target="_blank" rel="noopener" href="https://anya-and-lolo.itch.io/lets-fish/">
+      <img class="img-fluid mb-2" src="https://raw.githubusercontent.com/Anya-and-Lolo/ItchBlog/main/Blog-News-Fishing1.jpg" alt="">
+    </a>
+
+    <a target="_blank" rel="noopener" href="https://anya-and-lolo.itch.io/lets-fish/">
+      <h4 class="h5 text-left">Let&#039;s Fish System! Fishing System + Assets Finally Out 🌊 🎣</h4>
+    </a>
+
+    <div class="entry-meta text-left small">
+      <i>Posted on <time datetime="2024-03-04">4 March 2024</time> by Anya &amp; Lolo</i>
+    </div>
+
+    <div class="text-left mt-2">
+      <p>The Fishing System is live! Mini-game + assets + cozy vibes — snag it while the launch discount is up 👀</p>
+    </div>
+
+    
+    <div class="cardSpacer" aria-hidden="true"></div>
+    <div class="cardBottom">
+      <div class="btnRow">
+        
+          <a target="_blank" rel="noopener" href="https://anya-and-lolo.itch.io/lets-fish/"
+             class="btnAL ">🎣 Let’s Fish</a>
+        
+      </div>
+    </div>
+  
+  </div>
+      </div>
+    </div>
+  
+
+</body>
+</html>
