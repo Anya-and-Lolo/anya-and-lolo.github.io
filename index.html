@@ -3,25 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Free RPG Maker Tutorials & Systems | Anya & Lolo</title>
   <meta name="description" content="RPG Maker tutorials and game systems for indie game developers (MZ, MV, XP, VX Ace, 2k, 2k3). Free tools, mechanics, and cozy dev guides by Anya & Lolo." />
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="RPG Maker Tutorials & Systems | Anya & Lolo" />
   <meta property="og:description" content="RPG Maker tutorials and game systems for indie game developers (MZ, MV, XP, VX Ace, 2k, 2k3). Free tools, mechanics, and cozy dev guides by Anya & Lolo." />
   <meta property="og:url" content="https://anya-and-lolo.github.io/" />
   <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
   <meta property="og:site_name" content="Anya & Lolo" />
-  <meta name="twitter:site" content="@Anya_and_Lolo" />
 
+  <!-- Twitter -->
+  <meta name="twitter:site" content="@Anya_and_Lolo" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="RPG Maker Tutorials & Systems | Anya & Lolo" />
   <meta name="twitter:description" content="RPG Maker tutorials and game systems for indie game developers (MZ, MV, XP, VX Ace, 2k, 2k3). Free tools, mechanics, and cozy dev guides by Anya & Lolo." />
   <meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
-  
+
   <link rel="canonical" href="https://anya-and-lolo.github.io/" />
   <link rel="icon" href="./favicon.ico?v=1" sizes="any">
   <link rel="icon" type="image/x-icon" href="./favicon.ico?v=1">
 
+  <!-- Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -40,6 +45,7 @@
   </script>
 
   <style>
+    /* THEME TOKENS */
     :root{
       --brand: #f4184c;
       --brand2: rgba(244, 24, 76, 0.12);
@@ -50,19 +56,17 @@
       --text: #1b1b1b;
       --muted: rgba(27,27,27,0.70);
 
-      --dot1: rgba(255, 182, 193, 0.55);
-      --dot2: rgba(173, 216, 230, 0.55);
-      --dot3: rgba(221, 160, 221, 0.45);
-      --dot4: rgba(255, 250, 205, 0.55);
-
       --radius: 16px;
       --shadow: 0 10px 28px rgba(0,0,0,.10);
+
+      --scrollTrack: #226cbb;
+      --scrollThumb: #56a7fe;
     }
 
     *{ box-sizing: border-box; }
-    
+
     html, body{
-      height: auto;              /* override the 100% height if needed */
+      height: auto;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -77,39 +81,6 @@
       line-height: 1.6;
     }
 
-    body::before{
-      content:"";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      opacity: 1;
-      /* helps Safari/Chrome on some GPUs */
-      transform: translateZ(0);
-      will-change: background-position;
-    
-      background:
-        radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
-        radial-gradient(circle, rgba(86,167,254,0.12) 2px, transparent 3.5px);
-    
-      background-size: 42px 42px, 42px 42px;
-      background-position: 0 0, 21px 21px;
-      background-repeat: repeat, repeat;
-    
-      animation: dotsFloat 22s linear infinite;
-      /* IMPORTANT: remove transform animation entirely */
-    }
-    
-    @keyframes dotsFloat{
-      from{
-        background-position: 0 0, 21px 21px;
-      }
-      to{
-        /* multiples of 42px = seamless loop */
-        background-position: -168px -84px, -147px -63px; 
-        /* because 21-168=-147 and 21-84=-63 */
-      }
-    }
-
     a{ color: inherit; text-decoration: none; }
     a:hover{ text-decoration: underline; text-underline-offset: 4px; }
 
@@ -119,171 +90,169 @@
       padding: 16px;
     }
 
-    /* Buttons */
+    /* BACKGROUND DOTS */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      opacity: 1;
+      transform: translateZ(0);
+      will-change: background-position;
+
+      background:
+        radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
+        radial-gradient(circle, rgba(86,167,254,0.12) 2px, transparent 3.5px);
+
+      background-size: 42px 42px, 42px 42px;
+      background-position: 0 0, 21px 21px;
+      background-repeat: repeat, repeat;
+
+      animation: dotsFloat 22s linear infinite;
+    }
+
+    @keyframes dotsFloat{
+      from{ background-position: 0 0, 21px 21px; }
+      to{ background-position: -168px -84px, -147px -63px; }
+    }
+
+    /* BUTTONS + MICRO ANIM */
     button, .navlink, a{
       transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
-    
+
     button:active, .navlink:active{
       transform: translateY(1px) scale(0.99);
     }
-    
+
     .btnPrimary:hover{
       box-shadow: 0 14px 30px rgba(244,24,76,.20);
       transform: translateY(-1px);
     }
 
-    /* Sparkle pop */
     a.pop{ animation: pop .28s ease; }
     @keyframes pop{
       0%{ transform: scale(1); }
       45%{ transform: scale(1.04); }
       100%{ transform: scale(1); }
     }
-    
 
-  /* --- TOP BAR / NAV --- */
-.topbar{
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.72);
-  border-bottom: 1px solid var(--border);
-}
+    /* TOP BAR / NAV */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.72);
+      border-bottom: 1px solid var(--border);
+    }
 
-.topbarInner{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
+    .topbarInner{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  white-space: nowrap;
-}
-
-.badge{
-  font-size: 14px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.85);
-  color: var(--muted);
-  font-weight: 900;
-}
-
-/* Desktop nav pills */
-nav{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.navlink{
-  display:inline-flex;
-  align-items:center;
-  padding: 9px 12px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 15px;
-  color: rgba(27,27,27,0.88);
-  text-decoration: none;
-
-  border: 1px solid transparent;
-  background: transparent;
-  transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
-}
-
-.navlink:hover{
-  text-decoration: none;
-  background: rgba(0,0,0,0.06);
-  transform: translateY(-1px);
-}
-
-.navlink:active{
-  transform: translateY(0px) scale(0.99);
-}
-
-/* Active tab (add aria-current="page" in HTML) */
-.topbar .navlink[aria-current="page"]{
-  background: var(--brand2);
-  color: var(--brand);
-  border-color: rgba(244,24,76,0.25);
-}
-
-/* Mobile: stacked header + horizontal swipe nav */
-@media (max-width: 600px){
-  .topbarInner{
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  nav{
-    justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 2px 2px 4px;
-
-    /* nicer “snap” feel */
-    scroll-snap-type: x mandatory;
-  }
-  nav::-webkit-scrollbar{ display:none; }
-
-  .navlink{
-    flex: 0 0 auto;
-    white-space: nowrap;
-    scroll-snap-align: start;
-
-    background: rgba(255,255,255,0.90);
-    border-color: rgba(20,20,20,0.12);
-  }
-
-  /* Fade edges so it looks intentional */
-  nav{
-    -webkit-mask-image: linear-gradient(to right,
-      transparent 0,
-      #000 16px,
-      #000 calc(100% - 16px),
-      transparent 100%
-    );
-            mask-image: linear-gradient(to right,
-      transparent 0,
-      #000 16px,
-      #000 calc(100% - 16px),
-      transparent 100%
-    );
-  }
-
-  .badge{
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      white-space: nowrap;
+    }
 
     .badge{
       font-size: 14px;
       padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.85);
       color: var(--muted);
-      font-weight: 800;
+      font-weight: 900;
     }
 
-    /* Hero */
-    .hero{
-      padding: 18px 0 8px;
+    nav{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      justify-content: flex-end;
     }
+
+    .navlink{
+      display:inline-flex;
+      align-items:center;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 15px;
+      color: rgba(27,27,27,0.88);
+      border: 1px solid transparent;
+      background: transparent;
+      text-decoration: none;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+
+    .navlink:hover{
+      text-decoration: none;
+      background: rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+
+    .topbar .navlink[aria-current="page"]{
+      background: var(--brand2);
+      color: var(--brand);
+      border-color: rgba(244,24,76,0.25);
+    }
+
+    @media (max-width: 600px){
+      .topbarInner{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      nav{
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 2px 2px 4px;
+        scroll-snap-type: x mandatory;
+
+        -webkit-mask-image: linear-gradient(to right,
+          transparent 0,
+          #000 16px,
+          #000 calc(100% - 16px),
+          transparent 100%
+        );
+                mask-image: linear-gradient(to right,
+          transparent 0,
+          #000 16px,
+          #000 calc(100% - 16px),
+          transparent 100%
+        );
+      }
+      nav::-webkit-scrollbar{ display:none; }
+
+      .navlink{
+        flex: 0 0 auto;
+        white-space: nowrap;
+        scroll-snap-align: start;
+        background: rgba(255,255,255,0.90);
+        border-color: rgba(20,20,20,0.12);
+      }
+
+      .badge{
+        font-size: 13px;
+        padding: 6px 10px;
+      }
+    }
+
+    /* HERO / TYPOGRAPHY */
+    .hero{ padding: 18px 0 8px; }
 
     .heroH1{
       position: relative;
@@ -300,371 +269,21 @@ nav{
     .heroH1::after{
       content:"";
       position: absolute;
-      left: 0;              /* keep this */
-      bottom: -6px;         /* change to -3 to make it closer to text */
-      width: 100%;          /* full width of the text */
+      left: 0;
+      bottom: -6px;
+      width: 100%;
       height: 5px;
       border-radius: 6px;
-    
-      background: linear-gradient(
-        90deg,
-        #ff2d6f 0%,
-        var(--brand) 35%,
-        #9fdf28 70%,
-        #ff2d6f 100%
-      );
-    
+
+      background: linear-gradient(90deg, #ff2d6f 0%, var(--brand) 35%, #9fdf28 70%, #ff2d6f 100%);
       background-size: 200% 100%;
       animation: titleShimmer 3s linear infinite;
-    
-      box-shadow: 0 4px 12px rgba(244,24,76,0.35); /* subtle glow */
+      box-shadow: 0 4px 12px rgba(244,24,76,0.35);
     }
 
     @keyframes titleShimmer{
       0%{ background-position: 0% 50%; }
       100%{ background-position: 200% 50%; }
-    }
-
-    .heroFeatures{
-      margin: 10px 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 8px;
-    }
-    
-    .heroFeatures li{
-      color: rgba(27,27,27,0.78);
-      font-weight: 740;
-    }
-    
-    .banner{
-      display:block;
-      width: 100%;
-      height: auto;
-      border: 0;           /* important inside a card */
-      border-radius: 0;    /* card handles rounding */
-      box-shadow: none;    /* card handles shadow */
-      transform: none; /* important for animation */
-    }
-
-    /* Banner card wrapper */
-    .bannerCard{
-      padding: 0;
-      overflow: hidden;
-      will-change: transform;
-      transform: translateZ(0);
-    }
-    
-    /* gentle “float like a button” */
-    @media (prefers-reduced-motion: no-preference){
-      .bannerCard{
-        animation: floatHint 3.2s ease-in-out infinite;
-      }
-    }
-    
-    /* hover lift (desktop) */
-    @media (hover: hover) and (pointer: fine){
-      .bannerCard:hover{
-        animation-play-state: paused; /* optional: feels snappy */
-        transform: translateY(-2px);
-        box-shadow: 0 14px 28px rgba(0,0,0,.07);
-      }
-    }
-
-    .banner:hover{
-      box-shadow: 0 14px 28px rgba(0,0,0,.07);
-      transform: translateY(-1px);
-    }
-
-    /* On desktop keep natural look */
-    @media (min-width: 701px){
-      .banner{
-        height: auto;
-        object-fit: contain;
-      }
-    }
-    
-    /* On mobile: make it taller + crop nicely */
-    @media (max-width: 700px){
-      .cardFlush { border-radius: 16px; overflow: hidden; }
-    
-      .banner{
-        height: 165px;              /* adjust to make it taller or shorter */
-        object-fit: cover;          /* enables cropping */
-        object-position: 20% 50%; /* focuses on the desired region */
-      }
-    }
-
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1fr 400px;
-      gap: 14px;
-      margin-top: 14px;
-      align-items: stretch; /* important: let columns match height */
-    }
-    
-    @media (max-width: 900px){
-      .heroGrid{ grid-template-columns: 1fr; }
-    }
-    
-    .card{
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 10px 28px rgba(0,0,0,.06);
-      transition: box-shadow .15s ease, transform .15s ease;
-      will-change: transform;
-      transform: translateZ(0); /* helps smooth hover on some browsers */
-    }
-
-    .card:hover{
-      box-shadow: 0 14px 28px rgba(0,0,0,.07);
-      transform: translateY(-2px);
-    }
-
-    .subcard{
-      background: rgba(255,255,255,0.78);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      margin-top: 10px;
-    }
-
-    /* A card that has NO padding (so banner/news can touch edges nicely) */
-    .cardFlush{
-      padding: 0;
-      overflow: hidden;
-    }
-    
-    /* Inner padding when you *do* want breathing room inside a flush card */
-    .cardPad{
-      padding: 18px;
-    }
-    
-    /* Featured grid (3 nice tiles) */
-    .featureGrid{
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-    
-    @media (max-width: 900px){
-      .featureGrid{ grid-template-columns: 1fr; }
-    }
-
-    /* Dark featured card */
-    .featuredCard{
-      background: rgba(17, 24, 39, 0.92);        /* dark grey */
-      border-color: rgba(255,255,255,0.10);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
-      padding: 14px;          /* card padding */
-      min-height: 300px;      /* height of the gallery */
-      display: flex;
-      flex-direction: column;
-      justify-content: center; /* vertically centers content if there's extra height */
-    }
-    
-    /* White heading in dark section */
-    .sectionTitle--light{
-      color: rgba(255,255,255,0.95);
-    }
-    .sectionTitle--light::after{
-      background: linear-gradient(90deg, #ffffff 0%, rgba(244,24,76,0.95) 45%, #ffffff 100%);
-      box-shadow: 0 6px 16px rgba(255,255,255,0.16);
-    }
-    
-    /* Premium marquee wrapper */
-    .featuredMarquee{
-      position: relative;
-      margin-top: 3px;
-      overflow: hidden;
-      border-radius: 16px;
-    
-      /* soft edge fade */
-      -webkit-mask-image: linear-gradient(to right,
-        transparent 0,
-        #000 34px,
-        #000 calc(100% - 34px),
-        transparent 100%
-      );
-              mask-image: linear-gradient(to right,
-        transparent 0,
-        #000 34px,
-        #000 calc(100% - 34px),
-        transparent 100%
-      );
-    }
-    
-    /* Track that scrolls */
-    .featuredTrack{
-      display: flex;
-      gap: 14px;
-      width: max-content;
-      padding: 0 6px 10px;
-    }
-    
-    /* Pause on hover (premium feel) */
-    /* Only pause on devices that actually have hover (desktop / trackpad) */
-    @media (hover: hover) and (pointer: fine){
-      .featuredMarquee:hover .featuredTrack,
-      .featuredMarquee:focus-within .featuredTrack{
-        animation-play-state: paused;
-      }
-    }
-    
-    /* On touch devices: allow horizontal swipe */
-    @media (hover: none) and (pointer: coarse){
-      .featuredMarquee{
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      .featuredMarquee::-webkit-scrollbar{ display:none; }
-    
-      /* IMPORTANT: don't run the transform animation on mobile */
-      .featuredTrack{
-        animation: none !important;
-      }
-    }
-    
-    /* Mobile: reduce side fade */
-    @media (hover: none) and (pointer: coarse){
-      .featuredMarquee{
-        -webkit-mask-image: linear-gradient(to right,
-          transparent 0,
-          #000 8px,
-          #000 calc(100% - 8px),
-          transparent 100%
-        );
-        mask-image: linear-gradient(to right,
-          transparent 0,
-          #000 8px,
-          #000 calc(100% - 8px),
-          transparent 100%
-        );
-      }
-    }
-    
-    /* Each tile (white cards on dark bg) */
-    .featuredTile{
-      flex: 0 0 auto;
-      width: clamp(260px, 32vw, 380px); /* responsive width: never too small, never too huge */
-      background: rgba(255,255,255,0.96);
-      border: 1px solid rgba(20,20,20,0.10);
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.20);
-      transform: translateZ(0);
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-    
-    .featuredTile:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 18px 44px rgba(0,0,0,0.24);
-    }
-    
-      .featuredTile img{
-        width: 100%;
-        height: 300px;    /* desktop gallery height */
-        object-fit: cover; /* premium look */
-        object-position: center; /* focus center */
-        display: block;
-        background: #fff;
-      }
-
-    @media (max-width: 700px){
-      .featuredTile{
-        width: 82vw;         /* looks intentional in a marquee */
-        max-width: 420px;    /* prevents huge tiles on tablets */
-      }
-      
-      .featuredTile img{
-        height: 320px;   /* better mobile balance */
-        padding: 10px;
-        box-sizing: border-box;
-      }
-    }
-    
-    .featuredMeta{
-      padding: 12px 12px 14px;
-    }
-    
-    .featuredName{
-      font-weight: 1000;
-      font-size: 18px;
-      letter-spacing: -0.2px;
-      margin-bottom: 4px;
-    }
-    
-    .featuredDesc{
-      font-size: 14px;
-      color: rgba(27,27,27,0.72);
-      line-height: 1.45;
-    }
-
-    .featuredCta{
-      margin-top: 12px;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-    
-      color: rgba(255,255,255,0.95);
-      text-decoration: none;
-      font-weight: 1000;
-      font-size: 18px;
-    
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
-    }
-    
-    .featuredCta:hover{
-      background: rgba(255,255,255,0.10);
-      text-decoration: none;
-    }
-    
-    .featuredCtaTitle,
-    .featuredCtaLink{
-      white-space: nowrap;     /* keep one line */
-    }
-    
-    .featuredCtaLink{
-      color: rgba(255,255,255,0.90);
-      opacity: .95;
-    }
-    
-    /* On very tiny screens, allow it to wrap cleanly instead of breaking layout */
-    @media (max-width: 600px){
-      .featuredCta{
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 6px;
-      }
-      .featuredCtaTitle{
-        font-size: 16px;
-      }
-      .featuredCtaLink{
-        font-size: 14px;
-        opacity: 0.9;
-      }
-    }
-    
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .featuredTrack{ animation: none; }
-    }
-
-    h1{
-      margin: 0 0 8px 0;
-      font-size: 34px;
-      letter-spacing: -0.5px;
-      line-height: 1.15;
     }
 
     .subtitle{
@@ -681,6 +300,70 @@ nav{
       color: rgba(27,27,27,0.85);
     }
 
+    .heroFeatures{
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+    .heroFeatures li{
+      color: rgba(27,27,27,0.78);
+      font-weight: 740;
+    }
+
+    .linkBrand{
+      color: var(--brand);
+      font-weight: 900;
+    }
+    .linkBrand:hover{
+      text-decoration: none;
+      background: var(--brand2);
+      border-radius: 10px;
+      padding: 2px 6px;
+      margin: -2px -6px;
+    }
+
+    /* LAYOUT / CARDS */
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1fr 400px;
+      gap: 14px;
+      margin-top: 14px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 900px){
+      .heroGrid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.06);
+      transition: box-shadow .15s ease, transform .15s ease;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .card:hover{
+      box-shadow: 0 14px 28px rgba(0,0,0,.07);
+      transform: translateY(-2px);
+    }
+
+    .cardFlush{ padding: 0; overflow: hidden; }
+    .cardPad{ padding: 18px; }
+
+    .subcard{
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
     .ctaRow{
       display:flex;
       flex-wrap:wrap;
@@ -689,14 +372,8 @@ nav{
     }
 
     @media (max-width: 600px){
-      .ctaRow{
-        flex-direction: column;
-        align-items: stretch;
-      }
-    
-      .btn{
-        justify-content: center;
-      }
+      .ctaRow{ flex-direction: column; align-items: stretch; }
+      .btn{ justify-content: center; }
     }
 
     .btn{
@@ -713,6 +390,7 @@ nav{
       text-decoration:none;
       font-size: 16px;
     }
+
     .btn:hover{
       text-decoration:none;
       transform: translateY(-1px);
@@ -723,216 +401,57 @@ nav{
       color: #fff;
       border-color: rgba(244,24,76,0.35);
     }
-    
-    .linkBrand{
-      color: var(--brand);
-      font-weight: 900;
-    }
-    .linkBrand:hover{
-      text-decoration: none;
-      background: var(--brand2);
-      border-radius: 10px;
-      padding: 2px 6px;
-      margin: -2px -6px;
+
+    /* BANNER */
+    .banner{
+      display:block;
+      width: 100%;
+      height: auto;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      transform: none;
     }
 
+    .bannerCard{
+      padding: 0;
+      overflow: hidden;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    @media (prefers-reduced-motion: no-preference){
+      .bannerCard{ animation: floatHint 3.2s ease-in-out infinite; }
+    }
+
+    @media (hover: hover) and (pointer: fine){
+      .bannerCard:hover{
+        animation-play-state: paused;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(0,0,0,.07);
+      }
+    }
+
+    @media (min-width: 701px){
+      .banner{ height: auto; object-fit: contain; }
+    }
+
+    @media (max-width: 700px){
+      .cardFlush { border-radius: 16px; overflow: hidden; }
+      .banner{
+        height: 165px;
+        object-fit: cover;
+        object-position: 20% 50%;
+      }
+    }
+
+    /* ABOUT */
     .aboutRow{
       display:flex;
       gap: 12px;
       align-items:flex-start;
     }
 
-/* --- confetti burst (outside button) --- */
-.confettiBurst{
-  position: relative;
-  overflow: visible;  /* allow particles outside */
-  isolation: isolate;
-}
-
-.confettiBurst .confettiLayer{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 10;
-  overflow: visible;
-}
-
-/* Each particle */
-.confettiBurst .confettiPiece{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: var(--s, 14px);
-  height: var(--s, 14px);
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  will-change: transform, opacity;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.14));
-}
-
-/* shape via inline SVG fill color */
-.confettiBurst .confettiPiece svg{
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.confettiBurst .confettiPiece path{
-  fill: var(--c, rgba(255,255,255,0.95));
-}
-
-/* animate */
-.confettiBurst.is-exploding .confettiPiece{
-  animation: heartPop 780ms cubic-bezier(.2,.7,.2,1) forwards;
-}
-
-@keyframes heartPop{
-  0%{
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.85) rotate(var(--r, 0deg));
-  }
-  12%{ opacity: 1; }
-  100%{
-    opacity: 0;
-    transform:
-      translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px)))
-      scale(1)
-      rotate(calc(var(--r, 0deg) + 260deg));
-  }
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .confettiBurst.is-exploding .confettiPiece{ animation: none; }
-  .confettiBurst .confettiPiece{ display:none; }
-}
-
-    
-/* Embed styling */
-.embedWrap{
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.95);
-  box-shadow: 0 10px 22px rgba(0,0,0,.06);
-  height: 550px; /* right card height */
-  position: relative;
-}
-
-/* If embedWrap is inside a card with padding:0, remove double border */
-.card > .embedWrap{
-  border: 0;
-  border-radius: var(--radius);
-  box-shadow: none;
-}
-
-/* subtle fade edges */
-.embedWrap::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background: linear-gradient(180deg,
-    rgba(255,255,255,0.35),
-    rgba(255,255,255,0) 18%,
-    rgba(255,255,255,0) 82%,
-    rgba(255,255,255,0.35)
-  );
-}    
-
-.embed{
-  width: 100%;
-  height: 100%;
-  border: 0;
-  transition: opacity .4s ease;
-}
-
-/* Mobile: slightly taller */
-@media (max-width: 900px){
-  .embedWrap{ height: 550px; }
-}
-
-/* Loading overlay inside embedWrap */
-.newsPlaceholder{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-  text-align:center;
-  padding:28px 18px;
-  background: rgba(255,255,255,0.82);
-  border-radius: inherit;
-  transition: opacity .4s ease;
-}
-
-.newsAvatar{
-  width: 120px;
-  height: 120px;
-  border-radius: 18px;
-  object-fit: cover;
-  border: 1px solid rgba(20,20,20,0.10);
-  animation: floaty 3.2s ease-in-out infinite;
-}
-
-.newsLoading{
-  font-weight: 1000;
-  font-size: 18px;
-  color: rgba(27,27,27,0.90);
-}
-
-.newsHint{
-  max-width: 420px;
-  font-size: 13px;
-  color: rgba(27,27,27,0.62);
-  line-height: 1.5;
-}
-    
-.newsBottom{
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* pushes the news block to the bottom */
-  height: 100%;
-}
-    
-@keyframes floaty{
-  0%, 100%{ transform: translateY(0); }
-  50%{ transform: translateY(-6px); }
-}
-
-/* animated dots */
-.dots::after{
-  content: "";
-  display:inline-block;
-  width: 1.6em;
-  text-align:left;
-  animation: dotdot 1.2s steps(4, end) infinite;
-}
-@keyframes dotdot{
-  0%{ content:""; }
-  25%{ content:"."; }
-  50%{ content:".."; }
-  75%{ content:"..."; }
-  100%{ content:""; }
-}
-
-/* Subtle float to hint it's clickable */
-.floatHint{
-  animation: floatHint 2.8s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes floatHint{
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
-}
-
-/* On hover, keep your existing hover lift but a bit nicer */
-.floatHint:hover{
-  transform: translateY(-4px);
-}
-  
     .avatar{
       width: 78px;
       height: 78px;
@@ -944,7 +463,348 @@ nav{
       flex: 0 0 auto;
     }
 
-    /* Footer */
+    /* CONFETTI BURST */
+    .confettiBurst{
+      position: relative;
+      overflow: visible;
+      isolation: isolate;
+    }
+
+    .confettiBurst .confettiLayer{
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+
+    .confettiBurst .confettiPiece{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--s, 14px);
+      height: var(--s, 14px);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.14));
+    }
+
+    .confettiBurst .confettiPiece svg{
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .confettiBurst .confettiPiece path{
+      fill: var(--c, rgba(255,255,255,0.95));
+    }
+
+    .confettiBurst.is-exploding .confettiPiece{
+      animation: heartPop 780ms cubic-bezier(.2,.7,.2,1) forwards;
+    }
+
+    @keyframes heartPop{
+      0%{
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.85) rotate(var(--r, 0deg));
+      }
+      12%{ opacity: 1; }
+      100%{
+        opacity: 0;
+        transform:
+          translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px)))
+          scale(1)
+          rotate(calc(var(--r, 0deg) + 260deg));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .confettiBurst.is-exploding .confettiPiece{ animation: none; }
+      .confettiBurst .confettiPiece{ display:none; }
+    }
+
+    /* EMBED (NEWS) */
+    .embedWrap{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+      height: 600px;
+      position: relative;
+    }
+
+    .card > .embedWrap{
+      border: 0;
+      border-radius: var(--radius);
+      box-shadow: none;
+    }
+
+    .embedWrap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.35),
+        rgba(255,255,255,0) 18%,
+        rgba(255,255,255,0) 82%,
+        rgba(255,255,255,0.35)
+      );
+    }
+
+    .embed{
+      width: 100%;
+      height: 100%;
+      border: 0;
+      transition: opacity .4s ease;
+    }
+
+    @media (max-width: 900px){
+      .embedWrap{ height: 550px; }
+    }
+
+    .newsPlaceholder{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      text-align:center;
+      padding:28px 18px;
+      background: rgba(255,255,255,0.82);
+      border-radius: inherit;
+      transition: opacity .4s ease;
+    }
+
+    .newsAvatar{
+      width: 120px;
+      height: 120px;
+      border-radius: 18px;
+      object-fit: cover;
+      border: 1px solid rgba(20,20,20,0.10);
+      animation: floaty 3.2s ease-in-out infinite;
+    }
+
+    .newsLoading{
+      font-weight: 1000;
+      font-size: 18px;
+      color: rgba(27,27,27,0.90);
+    }
+
+    .newsHint{
+      max-width: 420px;
+      font-size: 13px;
+      color: rgba(27,27,27,0.62);
+      line-height: 1.5;
+    }
+
+    .newsBottom{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+    }
+
+    @keyframes floaty{
+      0%, 100%{ transform: translateY(0); }
+      50%{ transform: translateY(-6px); }
+    }
+
+    .dots::after{
+      content: "";
+      display:inline-block;
+      width: 1.6em;
+      text-align:left;
+      animation: dotdot 1.2s steps(4, end) infinite;
+    }
+    @keyframes dotdot{
+      0%{ content:""; }
+      25%{ content:"."; }
+      50%{ content:".."; }
+      75%{ content:"..."; }
+      100%{ content:""; }
+    }
+
+    /* FEATURED MARQUEE */
+    .featuredCard{
+      background: rgba(17, 24, 39, 0.92);
+      border-color: rgba(255,255,255,0.10);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+      padding: 14px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .featuredMarquee{
+      position: relative;
+      margin-top: 3px;
+      overflow: hidden;
+      border-radius: 16px;
+
+      -webkit-mask-image: linear-gradient(to right,
+        transparent 0,
+        #000 34px,
+        #000 calc(100% - 34px),
+        transparent 100%
+      );
+              mask-image: linear-gradient(to right,
+        transparent 0,
+        #000 34px,
+        #000 calc(100% - 34px),
+        transparent 100%
+      );
+    }
+
+    .featuredTrack{
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      padding: 0 6px 10px;
+    }
+
+    @media (hover: none) and (pointer: coarse){
+      .featuredMarquee{
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+
+        -webkit-mask-image: linear-gradient(to right,
+          transparent 0,
+          #000 8px,
+          #000 calc(100% - 8px),
+          transparent 100%
+        );
+                mask-image: linear-gradient(to right,
+          transparent 0,
+          #000 8px,
+          #000 calc(100% - 8px),
+          transparent 100%
+        );
+      }
+      .featuredMarquee::-webkit-scrollbar{ display:none; }
+      .featuredTrack{ animation: none !important; }
+    }
+
+    .featuredTile{
+      flex: 0 0 auto;
+      width: clamp(260px, 32vw, 380px);
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(20,20,20,0.10);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.20);
+      transform: translateZ(0);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .featuredTile:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.24);
+    }
+
+    .featuredTile img{
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      background: #fff;
+    }
+
+    @media (max-width: 700px){
+      .featuredTile{
+        width: 82vw;
+        max-width: 420px;
+      }
+
+      .featuredTile img{
+        height: 320px;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+    }
+
+    .featuredMeta{ padding: 12px 12px 14px; }
+
+    .featuredName{
+      font-weight: 1000;
+      font-size: 18px;
+      letter-spacing: -0.2px;
+      margin-bottom: 4px;
+    }
+
+    .featuredDesc{
+      font-size: 14px;
+      color: rgba(27,27,27,0.72);
+      line-height: 1.45;
+    }
+
+    .featuredCta{
+      margin-top: 12px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+
+      color: rgba(255,255,255,0.95);
+      text-decoration: none;
+      font-weight: 1000;
+      font-size: 18px;
+
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .featuredCta:hover{
+      background: rgba(255,255,255,0.10);
+      text-decoration: none;
+    }
+
+    .featuredCtaTitle,
+    .featuredCtaLink{ white-space: nowrap; }
+
+    .featuredCtaLink{
+      color: rgba(255,255,255,0.90);
+      opacity: .95;
+    }
+
+    @media (max-width: 600px){
+      .featuredCta{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 6px;
+      }
+      .featuredCtaTitle{ font-size: 16px; }
+      .featuredCtaLink{ font-size: 14px; opacity: 0.9; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .featuredTrack{ animation: none; }
+    }
+
+    /* FLOAT HINT */
+    .floatHint{
+      animation: floatHint 2.8s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes floatHint{
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-3px); }
+    }
+
+    .floatHint:hover{ transform: translateY(-4px); }
+
+    /* FOOTER */
     footer{
       margin-top: 26px;
       padding: 18px 0 34px;
@@ -1012,57 +872,50 @@ nav{
 
     @media (max-width: 900px){
       html, body{ height: auto; }
-      .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center;}
+      .topbarInner{ flex-direction: column; align-items: center; }
       .topbar nav{ justify-content: flex-start; }
-      .heroGrid{grid-template-columns: 1fr;} /* Stack homepage cards on mobile */
+      .heroGrid{ grid-template-columns: 1fr; }
       .footerInner{ grid-template-columns: 1fr; text-align:center; }
       .footerRight{ justify-content: center !important; }
       .socialText{ justify-content: center !important; }
     }
-    
-    /* Scrollbar styling (page + any scrollable elements you control) */
-    :root{
-      --scrollTrack: #226cbb;  /* dark */
-      --scrollThumb: #56a7fe;  /* light */
-    }
-    
-    /* Firefox */
+
+    /* SCROLLBAR */
     html{
       scrollbar-color: var(--scrollThumb) var(--scrollTrack);
       scrollbar-width: auto;
     }
-    
-    /* Chrome/Edge/Safari */
-    ::-webkit-scrollbar{
-      width: 24px;
-      height: 24px; /* horizontal */
-    }
-    ::-webkit-scrollbar-track{
-      background: var(--scrollTrack);
-    }
+
+    ::-webkit-scrollbar{ width: 24px; height: 24px; }
+    ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
     ::-webkit-scrollbar-thumb{
       background: var(--scrollThumb);
       border-radius: 999px;
       border: 6px solid var(--scrollTrack);
     }
-    ::-webkit-scrollbar-thumb:hover{
-      filter: brightness(0.95);
-    }
-    
-    /* Scrollbar corner (where two scrollbars meet) */
-    ::-webkit-scrollbar-corner{
-      background: var(--scrollTrack);
+    ::-webkit-scrollbar-thumb:hover{ filter: brightness(0.95); }
+    ::-webkit-scrollbar-corner{ background: var(--scrollTrack); }
+
+    /* Allow page scroll even if a sparkle/canvas overlay exists */
+    canvas,
+    #sparkles,
+    .sparkles,
+    .sparkle-canvas,
+    [class*="sparkle"]{
+      pointer-events: none !important;
+      touch-action: none !important;
     }
 
-/* Allow page scroll even if a sparkle/canvas overlay exists */
-canvas, 
-#sparkles, 
-.sparkles, 
-.sparkle-canvas,
-[class*="sparkle"]{
-  pointer-events: none !important;
-  touch-action: none !important;
-}    
+    /* REVEAL */
+    .preReveal{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .reveal{
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 
@@ -1083,411 +936,361 @@ canvas,
   </header>
 
   <main class="wrap">
+    <section class="hero">
 
-<section class="hero">
+      <!-- CARD 1: Banner -->
+      <div class="card cardFlush bannerCard">
+        <img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner">
+      </div>
 
-  <!-- CARD 1: Banner (separate card) -->
-  <div class="card cardFlush bannerCard">
-    <img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner">
-  </div>
+      <!-- CARD 2: Welcome + News -->
+      <div class="card" style="margin-top:14px;">
+        <h1 class="heroH1">Free RPG Maker Tutorials for Indie Game Developers</h1>
 
-  <!-- CARD 2: ONE card that holds LEFT welcome/about + RIGHT news -->
-  <div class="card" style="margin-top:14px;">
-
-    <h1 class="heroH1">Free RPG Maker Tutorials for Indie Game Developers</h1>
-    
-    <div class="heroGrid">
-
-      <!-- LEFT -->
-      <div>
-        <div class="heroText">
-          <p class="heroIntro">
-            Anya & Lolo create free RPG Maker MZ tutorials, MV systems, XP mechanics, and guides for VX Ace, RPG Maker 2000 and 2003.
-            Build day and night cycles, fishing mini-games, ARPG shooting systems and more.
-          </p>
-        
-          <p class="subtitle" style="margin-top:10px;">New here? Start with these essentials:</p>
-        
-          <ul class="heroFeatures">
-            <li>✔ Watch beginner-friendly <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">RPG Maker tutorials</a></li>
-            <li>✔ Download our Smart Systems on <a class="linkBrand" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">itch.io</a></li>
-            <li>✔ Redeem Patreon rewards and bonuses <a class="linkBrand" href="./redeem.html">here</a></li>
-            <li>✔ Join the mailing list <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">for updates!</a></li>
-          </ul>
-        </div>
-
-        <div class="ctaRow">
-          <a class="btn btnPrimary confettiBurst" id="patreonBtn" href="https://anya-and-lolo.github.io/redeem.html">
-            Patreon Rewards
-            <span class="confettiLayer" aria-hidden="true"></span>
-          </a>
-
-          <a class="btn floatHint" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-            <span class="linkBrand">Browse Smart Systems on itch.io →</span>
-          </a>
-        </div>
-
-        <!-- About (inside same LEFT column, but visually separated) -->
-        <div class="subcard" id="about">
-          <div class="aboutRow">
-            <img class="avatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo avatar">
-            <div>
-              <p class="subtitle" style="margin:0;">
-                Hi, I'm Anya, a gamer and artist living in sunny Sydney, and this is my feathered bestie Lolo.
-                We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that
-                make game dev feel warm, simple, and genuinely fun.
+        <div class="heroGrid">
+          <!-- LEFT -->
+          <div>
+            <div class="heroText">
+              <p class="heroIntro">
+                Anya & Lolo create free RPG Maker MZ tutorials, MV systems, XP mechanics, and guides for VX Ace, RPG Maker 2000 and 2003.
+                Build day and night cycles, fishing mini-games, ARPG shooting systems and more.
               </p>
+
+              <p class="subtitle" style="margin-top:10px;">New here? Start with these essentials:</p>
+
+              <ul class="heroFeatures">
+                <li>✔ Watch beginner-friendly <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">RPG Maker tutorials</a></li>
+                <li>✔ Download our Smart Systems on <a class="linkBrand" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">itch.io</a></li>
+                <li>✔ Redeem Patreon rewards and bonuses <a class="linkBrand" href="./redeem.html">here</a></li>
+                <li>✔ Join the mailing list <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">for updates!</a></li>
+              </ul>
+            </div>
+
+            <div class="ctaRow">
+              <a class="btn btnPrimary confettiBurst" id="patreonBtn" href="https://anya-and-lolo.github.io/redeem.html">
+                Patreon Rewards
+                <span class="confettiLayer" aria-hidden="true"></span>
+              </a>
+
+              <a class="btn floatHint" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+                <span class="linkBrand">Browse Smart Systems on itch.io →</span>
+              </a>
+            </div>
+
+            <!-- About -->
+            <div class="subcard" id="about">
+              <div class="aboutRow">
+                <img class="avatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo avatar">
+                <div>
+                  <p class="subtitle" style="margin:0;">
+                    Hi, I'm Anya, a gamer and artist living in sunny Sydney, and this is my feathered bestie Lolo.
+                    We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that
+                    make game dev feel warm, simple, and genuinely fun.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="newsBottom">
+            <div class="cardFlush" style="border:1px solid rgba(20,20,20,0.10); border-radius:16px;">
+              <div class="embedWrap" aria-label="ItchBlog embed">
+                <div id="newsPlaceholder" class="newsPlaceholder" aria-live="polite">
+                  <img class="newsAvatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo" />
+                  <div class="newsLoading">News are loading<span class="dots" aria-hidden="true"></span></div>
+                  <div class="newsHint">If it takes a moment, your browser might be blocking embeds.</div>
+                </div>
+
+                <iframe
+                  id="newsFrame"
+                  class="embed"
+                  title="Anya & Lolo ItchBlog"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  style="opacity:0; pointer-events:none;"
+                ></iframe>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- RIGHT (News) -->
-      <div class="newsBottom">
-      <div class="cardFlush" style="border:1px solid rgba(20,20,20,0.10); border-radius:16px;">
-        <div class="embedWrap" aria-label="ItchBlog embed">
-          <div id="newsPlaceholder" class="newsPlaceholder" aria-live="polite">
-            <img class="newsAvatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo" />
-            <div class="newsLoading">News are loading<span class="dots" aria-hidden="true"></span></div>
-            <div class="newsHint">If it takes a moment, your browser might be blocking embeds.</div>
+      <!-- CARD 3: Featured -->
+      <div class="card featuredCard" style="margin-top:14px;">
+        <div class="featuredMarquee" aria-label="Featured Systems Gallery">
+          <div class="featuredTrack" id="featuredTrack">
+            <a class="featuredTile" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+              <img src="https://anya-and-lolo.github.io/images/fishing_system_image.jpg" alt="Fishing System">
+              <div class="featuredMeta">
+                <div class="featuredName">Fishing System</div>
+                <div class="featuredDesc">Mini-game + cozy vibes + easy setup.</div>
+              </div>
+            </a>
+
+            <a class="featuredTile" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+              <img src="https://anya-and-lolo.github.io/images/VN_system_image.jpg" alt="Visual Novel System">
+              <div class="featuredMeta">
+                <div class="featuredName">Visual Novel System</div>
+                <div class="featuredDesc">Dialogue scenes, choices, clean UI flow.</div>
+              </div>
+            </a>
+
+            <a class="featuredTile" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+              <img src="https://anya-and-lolo.github.io/images/shooting_system_image.jpg" alt="Shooting System">
+              <div class="featuredMeta">
+                <div class="featuredName">Shooting System</div>
+                <div class="featuredDesc">ARPG-style shooting with polish.</div>
+              </div>
+            </a>
           </div>
-
-          <iframe
-            id="newsFrame"
-            class="embed"
-            title="Anya & Lolo ItchBlog"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            style="opacity:0; pointer-events:none;"
-          ></iframe>
         </div>
+
+        <a class="featuredCta" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+          <span class="featuredCtaTitle">Smart Systems for RPG Maker</span>
+          <span class="featuredCtaLink">View on itch.io →</span>
+        </a>
       </div>
 
-    </div>
-  </div>
-</div>
-  
-  <!-- CARD 3: Featured (full width, same width as banner) -->
-<div class="card featuredCard" style="margin-top:14px;">
-
-  <div class="featuredMarquee" aria-label="Featured Systems Gallery">
-    <div class="featuredTrack" id="featuredTrack">
-      <!-- item 1 -->
-      <a class="featuredTile" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-        <img src="https://anya-and-lolo.github.io/images/fishing_system_image.jpg" alt="Fishing System">
-        <div class="featuredMeta">
-          <div class="featuredName">Fishing System</div>
-          <div class="featuredDesc">Mini-game + cozy vibes + easy setup.</div>
-        </div>
-      </a>
-
-      <!-- item 2 -->
-      <a class="featuredTile" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-        <img src="https://anya-and-lolo.github.io/images/VN_system_image.jpg" alt="Visual Novel System">
-        <div class="featuredMeta">
-          <div class="featuredName">Visual Novel System</div>
-          <div class="featuredDesc">Dialogue scenes, choices, clean UI flow.</div>
-        </div>
-      </a>
-
-      <!-- item 3 -->
-      <a class="featuredTile" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-        <img src="https://anya-and-lolo.github.io/images/shooting_system_image.jpg" alt="Shooting System">
-        <div class="featuredMeta">
-          <div class="featuredName">Shooting System</div>
-          <div class="featuredDesc">ARPG-style shooting with polish.</div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <a class="featuredCta" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
-  <span class="featuredCtaTitle">Smart Systems for RPG Maker</span>
-  <span class="featuredCtaLink">View on itch.io →</span>
-  </a>
-  
-</div>
-
-  <!-- CARD 4: Footer (full width, matches banner) -->
-  <div class="card" style="margin-top:14px;">
-    <div class="hangout" style="margin-top:0;">
-      Want to hang out? Join the
-      <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
-      or follow us on your favourite platform below 💛
-    </div>
-
-    <footer style="margin-top: 12px; padding: 0;">
-      <div class="footerInner">
-        <div>© <span id="year"></span> Anya &amp; Lolo</div>
-
-        <div class="socialText" aria-label="Social links">
-          <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
-          <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
-          <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
-
-          <span class="sepDot"></span>
-
-          <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
-          <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
-          <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
-
-          <span class="sepDot"></span>
-
-          <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
-          <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
-
-          <span class="sepDot"></span>
-
-          <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
-          <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+      <!-- CARD 4: Footer -->
+      <div class="card" style="margin-top:14px;">
+        <div class="hangout" style="margin-top:0;">
+          Want to hang out? Join the
+          <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
+          or follow us on your favourite platform below 💛
         </div>
 
-        <div class="footerRight">
-          <a href="./terms.html">Terms</a>
-          <span class="sep">|</span>
-          <a href="./privacy.html">Privacy</a>
-        </div>
+        <footer style="margin-top: 12px; padding: 0;">
+          <div class="footerInner">
+            <div>© <span id="year"></span> Anya &amp; Lolo</div>
+
+            <div class="socialText" aria-label="Social links">
+              <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+              <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+              <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+              <span class="sepDot"></span>
+
+              <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+              <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+              <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+
+              <span class="sepDot"></span>
+
+              <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+              <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+              <span class="sepDot"></span>
+
+              <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+              <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+            </div>
+
+            <div class="footerRight">
+              <a href="./terms.html">Terms</a>
+              <span class="sep">|</span>
+              <a href="./privacy.html">Privacy</a>
+            </div>
+          </div>
+        </footer>
       </div>
-    </footer>
-  </div>
 
-</section>
-
+    </section>
   </main>
-  
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
 
-  const frame = document.getElementById("newsFrame");
-  const placeholder = document.getElementById("newsPlaceholder");
-  const hint = placeholder.querySelector(".newsHint");
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-  const MIN_VISIBLE_TIME = 2000; // 2 seconds
-  const startTime = Date.now();
-  let frameLoaded = false;
+    // Pop animation on itch links
+    document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
+      el.addEventListener("click", () => {
+        el.classList.remove("pop");
+        void el.offsetWidth;
+        el.classList.add("pop");
+      });
+    });
 
-  function revealFrame() {
-    const elapsed = Date.now() - startTime;
-    const remaining = Math.max(0, MIN_VISIBLE_TIME - elapsed);
+    // Card reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add("reveal");
+      });
+    }, { threshold: 0.12 });
 
-    setTimeout(() => {
-      placeholder.style.opacity = "0";
-      frame.style.opacity = "1";
-      frame.style.pointerEvents = "auto";
+    document.querySelectorAll(".card").forEach(c => {
+      c.classList.add("preReveal");
+      io.observe(c);
+    });
 
-      // remove placeholder after fade
+    // News iframe loader
+    const frame = document.getElementById("newsFrame");
+    const placeholder = document.getElementById("newsPlaceholder");
+    const hint = placeholder?.querySelector(".newsHint");
+
+    const MIN_VISIBLE_TIME = 2000;
+    const startTime = Date.now();
+    let frameLoaded = false;
+
+    function revealFrame(){
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, MIN_VISIBLE_TIME - elapsed);
+
       setTimeout(() => {
-        placeholder.style.display = "none";
-      }, 400);
-
-    }, remaining);
-  }
-
-  frame.addEventListener("load", () => {
-    frameLoaded = true;
-    revealFrame();
-  });
-
-  frame.src = "https://anya-and-lolo.github.io/ItchBlog/";
-
-  // fallback hint after 8s
-  setTimeout(() => {
-    if (!frameLoaded) {
-      hint.innerHTML =
-        `Still loading… <a href="${frame.src}" target="_blank" rel="noopener" style="color:#f4184c;font-weight:900;">Open news in a new tab →</a><br>` +
-        `If you’re on iPhone, content blockers/private mode can block embeds.`;
+        placeholder.style.opacity = "0";
+        frame.style.opacity = "1";
+        frame.style.pointerEvents = "auto";
+        setTimeout(() => { placeholder.style.display = "none"; }, 400);
+      }, remaining);
     }
-  }, 8000);
-</script>
 
-
-<script>
-  document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
-    el.addEventListener("click", () => {
-      el.classList.remove("pop");
-      void el.offsetWidth; // restart animation
-      el.classList.add("pop");
+    frame.addEventListener("load", () => {
+      frameLoaded = true;
+      revealFrame();
     });
-  });
-</script>
 
-<script>
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add("reveal");
-    });
-  }, { threshold: 0.12 });
-
-  document.querySelectorAll(".card").forEach(c => {
-    c.classList.add("preReveal");
-    io.observe(c);
-  });
-</script>
-
-<style>
-.preReveal{
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .45s ease, transform .45s ease;
-}
-.reveal{
-  opacity: 1;
-  transform: translateY(0);
-}
-</style>
-
-<script>
-(() => {
-  const btn = document.getElementById("patreonBtn");
-  if (!btn) return;
-
-  const layer = btn.querySelector(".confettiLayer");
-  if (!layer) return;
-
-  const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  if (prefersReduced) return;
-
-  const HEART_SVG = `
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M12 21s-7.3-4.6-10-9.2C.1 8.4 1.7 5.3 4.8 4.4c1.9-.6 4 .1 5.2 1.7c1.2-1.6 3.3-2.3 5.2-1.7
-      c3.1.9 4.7 4 2.8 7.4C19.3 16.4 12 21 12 21z"/>
-    </svg>
-  `;
-
-  const COLORS = [
-    "rgba(255,255,255,0.95)",
-    "rgba(255,182,193,0.95)",
-    "rgba(173,216,230,0.95)",
-    "rgba(221,160,221,0.95)",
-    "rgba(255,225,150,0.95)"
-  ];
-
-  function rand(min, max){ return Math.random() * (max - min) + min; }
-
-  function explode(){
-    if (btn.classList.contains("is-exploding")) return;
-
-    btn.classList.add("is-exploding");
-    layer.innerHTML = "";
-
-    const count = 14; // slightly softer for auto mode
-
-    for (let i = 0; i < count; i++){
-      const piece = document.createElement("span");
-      piece.className = "confettiPiece";
-      piece.innerHTML = HEART_SVG;
-
-      const angle = rand(-Math.PI, Math.PI);
-      const dist  = rand(45, 95);
-      const dx = Math.cos(angle) * dist;
-      const dy = Math.sin(angle) * dist;
-
-      const size = rand(10, 16);
-      const rot  = rand(0, 180);
-
-      piece.style.setProperty("--dx", dx.toFixed(1) + "px");
-      piece.style.setProperty("--dy", dy.toFixed(1) + "px");
-      piece.style.setProperty("--s",  size.toFixed(1) + "px");
-      piece.style.setProperty("--r",  rot.toFixed(1) + "deg");
-      piece.style.setProperty("--c",  COLORS[(Math.random() * COLORS.length) | 0]);
-
-      piece.style.animationDelay = (i * 12) + "ms";
-      layer.appendChild(piece);
-    }
+    frame.src = "https://anya-and-lolo.github.io/ItchBlog/";
 
     setTimeout(() => {
-      btn.classList.remove("is-exploding");
-      layer.innerHTML = "";
-    }, 900);
-  }
-
-  // --- Auto loop with random timing ---
-  let timeout;
-
-  function scheduleNext(){
-    const delay = rand(500, 1000); // 0.5–1 seconds
-    timeout = setTimeout(() => {
-      if (!document.hidden) explode();
-      scheduleNext();
-    }, delay);
-  }
-
-  scheduleNext();
-
-})();
-</script>
-
-<script>
-(() => {
-  const marquee = document.querySelector(".featuredMarquee");
-  const track   = document.querySelector(".featuredTrack");
-  if (!marquee || !track) return;
-
-  // Duplicate items once for seamless loop
-  const kids = Array.from(track.children);
-  kids.forEach(node => track.appendChild(node.cloneNode(true)));
-
-  let paused = false;
-  let resumeTimer = null;
-
-  const SPEED = 50; // desktop speed (px/sec)
-  const MOBILE_SPEED = 140; // faster on mobile
-
-  const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
-  const speed = isTouch ? MOBILE_SPEED : SPEED;
-
-  let last = performance.now();
-
-  function tick(now){
-    const dt = (now - last) / 1000;
-    last = now;
-
-    if (!paused){
-      marquee.scrollLeft += speed * dt;
-
-      const half = track.scrollWidth / 2;
-      if (marquee.scrollLeft >= half){
-        marquee.scrollLeft -= half;
+      if (!frameLoaded && hint){
+        hint.innerHTML =
+          `Still loading… <a href="${frame.src}" target="_blank" rel="noopener" style="color:#f4184c;font-weight:900;">Open news in a new tab →</a><br>` +
+          `If you’re on iPhone, content blockers/private mode can block embeds.`;
       }
-    }
+    }, 8000);
 
-    requestAnimationFrame(tick);
-  }
+    // Confetti burst (auto loop)
+    (() => {
+      const btn = document.getElementById("patreonBtn");
+      if (!btn) return;
 
-  requestAnimationFrame(tick);
+      const layer = btn.querySelector(".confettiLayer");
+      if (!layer) return;
 
-  function pause(){
-    paused = true;
-    clearTimeout(resumeTimer);
-  }
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      if (prefersReduced) return;
 
-  function resumeDelayed(){
-    clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(() => paused = false, 1200);
-  }
+      const HEART_SVG = `
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 21s-7.3-4.6-10-9.2C.1 8.4 1.7 5.3 4.8 4.4c1.9-.6 4 .1 5.2 1.7c1.2-1.6 3.3-2.3 5.2-1.7
+          c3.1.9 4.7 4 2.8 7.4C19.3 16.4 12 21 12 21z"/>
+        </svg>
+      `;
 
-  // Desktop hover pause
-  marquee.addEventListener("mouseenter", pause);
-  marquee.addEventListener("mouseleave", resumeDelayed);
+      const COLORS = [
+        "rgba(255,255,255,0.95)",
+        "rgba(255,182,193,0.95)",
+        "rgba(173,216,230,0.95)",
+        "rgba(221,160,221,0.95)",
+        "rgba(255,225,150,0.95)"
+      ];
 
-  // Mobile touch pause
-  marquee.addEventListener("touchstart", pause, { passive: true });
-  marquee.addEventListener("touchmove", resumeDelayed, { passive: true });
+      function rand(min, max){ return Math.random() * (max - min) + min; }
 
-})();
-</script>
-  
+      function explode(){
+        if (btn.classList.contains("is-exploding")) return;
+
+        btn.classList.add("is-exploding");
+        layer.innerHTML = "";
+
+        const count = 14;
+
+        for (let i = 0; i < count; i++){
+          const piece = document.createElement("span");
+          piece.className = "confettiPiece";
+          piece.innerHTML = HEART_SVG;
+
+          const angle = rand(-Math.PI, Math.PI);
+          const dist  = rand(45, 95);
+          const dx = Math.cos(angle) * dist;
+          const dy = Math.sin(angle) * dist;
+
+          const size = rand(10, 16);
+          const rot  = rand(0, 180);
+
+          piece.style.setProperty("--dx", dx.toFixed(1) + "px");
+          piece.style.setProperty("--dy", dy.toFixed(1) + "px");
+          piece.style.setProperty("--s",  size.toFixed(1) + "px");
+          piece.style.setProperty("--r",  rot.toFixed(1) + "deg");
+          piece.style.setProperty("--c",  COLORS[(Math.random() * COLORS.length) | 0]);
+
+          piece.style.animationDelay = (i * 12) + "ms";
+          layer.appendChild(piece);
+        }
+
+        setTimeout(() => {
+          btn.classList.remove("is-exploding");
+          layer.innerHTML = "";
+        }, 900);
+      }
+
+      function scheduleNext(){
+        const delay = rand(500, 1000);
+        setTimeout(() => {
+          if (!document.hidden) explode();
+          scheduleNext();
+        }, delay);
+      }
+
+      scheduleNext();
+    })();
+
+    // Featured marquee auto-scroll
+    (() => {
+      const marquee = document.querySelector(".featuredMarquee");
+      const track   = document.querySelector(".featuredTrack");
+      if (!marquee || !track) return;
+
+      // Duplicate items once
+      Array.from(track.children).forEach(node => track.appendChild(node.cloneNode(true)));
+
+      let paused = false;
+      let resumeTimer = null;
+
+      const SPEED = 50;
+      const MOBILE_SPEED = 140;
+
+      const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
+      const speed = isTouch ? MOBILE_SPEED : SPEED;
+
+      let last = performance.now();
+
+      function tick(now){
+        const dt = (now - last) / 1000;
+        last = now;
+
+        if (!paused){
+          marquee.scrollLeft += speed * dt;
+
+          const half = track.scrollWidth / 2;
+          if (marquee.scrollLeft >= half){
+            marquee.scrollLeft -= half;
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+
+      function pause(){
+        paused = true;
+        clearTimeout(resumeTimer);
+      }
+
+      function resumeDelayed(){
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => paused = false, 1200);
+      }
+
+      marquee.addEventListener("mouseenter", pause);
+      marquee.addEventListener("mouseleave", resumeDelayed);
+
+      marquee.addEventListener("touchstart", pause, { passive: true });
+      marquee.addEventListener("touchmove", resumeDelayed, { passive: true });
+    })();
+
+  });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
