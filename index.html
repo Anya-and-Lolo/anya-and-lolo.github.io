@@ -327,7 +327,7 @@
     /* LAYOUT / CARDS */
     .heroGrid{
       display:grid;
-      grid-template-columns: minmax(0, 1fr) minmax(420px, 480px);
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
       gap: 14px;
       margin-top: 14px;
       align-items: stretch;
@@ -530,8 +530,9 @@
       overflow: hidden;
       background: rgba(255,255,255,0.95);
       box-shadow: 0 10px 22px rgba(0,0,0,.06);
-      height: 530px;
+      height: 540px;
       position: relative;
+      margin: 14px auto 0; /* space above */
     }
 
     .card > .embedWrap{
@@ -606,6 +607,7 @@
       flex-direction: column;
       justify-content: flex-start;
       height: 100%;
+      padding-top: 14px;  /* space above iframe to push it away from h1 and align with paragraph */
     }
 
     @keyframes floaty{
@@ -1294,5 +1296,6 @@
   </script>
 </body>
 </html>
+
 
 
