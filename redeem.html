@@ -1180,10 +1180,10 @@ function maybeToastNewActivity(items){
       const src = String(it.source || "");
       const delta = Number(it.delta_cents || 0);
 
-      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint", 4200, { confetti: "credits" });
-      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint", 4200, { confetti: "credits" });
-      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue", 4200, { confetti: "unlock" });
-      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint", 4200, { confetti: "unlock" });
+      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint", 4000, { confetti: "credits" });
+      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint", 4000, { confetti: "credits" });
+      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue", 4000, { confetti: "unlock" });
+      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint", 4000, { confetti: "unlock" });
       else if (delta > 0) toast("✨ Credits added!", "mint");
     }
   }
@@ -1945,6 +1945,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
