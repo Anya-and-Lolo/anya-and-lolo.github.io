@@ -1394,8 +1394,8 @@ async function loadMe() {
       return null;
     }
 
-    // ✅ logged in users: disable confetti
-    ALLOW_CONFETTI = false;
+    // ✅ logged in users
+    ALLOW_CONFETTI = true;
     
     if (DEBUG === "anya") {
       if (creditsValue) creditsValue.textContent = "unlimited";
@@ -2028,4 +2028,5 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
