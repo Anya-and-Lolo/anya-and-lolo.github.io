@@ -1086,45 +1086,54 @@ function fmtPrettyWhen(iso){
 }
 
 /* TOASTS  */
-function closeToast() {
+function closeToast(animated = true){
   const wrap = document.getElementById("toastWrap");
   if (!wrap) return;
 
   if (TOAST_TIMER) clearTimeout(TOAST_TIMER);
   TOAST_TIMER = null;
 
-  if (TOAST_EL) {
-    TOAST_EL.style.opacity = "0";
-    TOAST_EL.style.transform = "scale(0.96)";
-    setTimeout(() => TOAST_EL?.remove(), 200);
-    TOAST_EL = null;
+  const el = TOAST_EL;
+  TOAST_EL = null;
+
+  if (!el) {
+    wrap.classList.remove("show");
+    wrap.innerHTML = "";
+    return;
   }
 
-  wrap.classList.remove("show");
+  if (!animated) {
+    el.remove();
+    wrap.classList.remove("show");
+    wrap.innerHTML = "";
+    return;
+  }
+
+  // Animate out without breaking centering
+  el.style.opacity = "0";
+  el.style.transform = "scale(0.96)";
+
+  setTimeout(() => {
+    el.remove();
+    wrap.classList.remove("show");
+    wrap.innerHTML = "";
+  }, 200);
 }
 
-function maybeConfetti(kind) {
-  // kind: "credits" | "unlock"
-  // Uses https://app.embed.im/confetti.js (window.confetti)
+function maybeConfetti(kind){
   if (typeof window.confetti !== "function") return;
 
-  // small, quick burst (not insane)
   const base = { particleCount: 90, spread: 70, origin: { y: 0.55 } };
-
-  if (kind === "unlock") {
-    window.confetti({ ...base, particleCount: 130, spread: 90 });
-  } else if (kind === "credits") {
-    window.confetti(base);
-  }
+  if (kind === "unlock") window.confetti({ ...base, particleCount: 130, spread: 90 });
+  else if (kind === "credits") window.confetti(base);
 }
 
-function toast(message, variant = "blue", ms = 4200, opts = {}) {
-  // opts: { confetti: "credits"|"unlock"|null }
+function toast(message, variant = "blue", ms = 4200, opts = {}){
   const wrap = document.getElementById("toastWrap");
   if (!wrap) return;
 
-  // Close previous toast if one is already showing
-  closeToast();
+  // IMPORTANT: close instantly so we don't stack/shift during rapid tests
+  closeToast(false);
 
   wrap.classList.add("show");
 
@@ -1137,15 +1146,15 @@ function toast(message, variant = "blue", ms = 4200, opts = {}) {
 
   if (opts?.confetti) maybeConfetti(opts.confetti);
 
-  TOAST_TIMER = setTimeout(() => closeToast(), ms);
+  TOAST_TIMER = setTimeout(() => closeToast(true), ms);
 }
 
-// Close on click anywhere (overlay or toast)
-document.getElementById("toastWrap")?.addEventListener("click", closeToast);
+// close on click anywhere (overlay or toast)
+document.getElementById("toastWrap")?.addEventListener("click", () => closeToast(true));
 
-// Close on ESC
+// close on Esc
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeToast();
+  if (e.key === "Escape") closeToast(true);
 });
   
 function maybeToastCreditsChange(newCents){
@@ -1171,8 +1180,8 @@ function maybeToastNewActivity(items){
       const src = String(it.source || "");
       const delta = Number(it.delta_cents || 0);
 
-      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint", 4200, { confetti: "unlock" });
-      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint", 4200, { confetti: "unlock" });
+      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint", 4200, { confetti: "credits" });
+      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint", 4200, { confetti: "credits" });
       else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue", 4200, { confetti: "unlock" });
       else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint", 4200, { confetti: "unlock" });
       else if (delta > 0) toast("✨ Credits added!", "mint");
@@ -1936,6 +1945,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
