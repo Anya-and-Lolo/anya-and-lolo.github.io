@@ -1115,6 +1115,10 @@ async function maybeConfetti(kind){
 }
   
 /* TOASTS  */
+// TOAST CONTROLLER (globals)
+let TOAST_TIMER = null;
+let TOAST_EL = null;
+  
 function closeToast(animated = true){
   const wrap = document.getElementById("toastWrap");
   if (!wrap) return;
@@ -2024,3 +2028,4 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
