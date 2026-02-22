@@ -14,6 +14,7 @@
 <meta property="og:url" content="https://anya-and-lolo.github.io/redeem.html" />
 <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
 
+<meta name="theme-color" content="#f4184c">
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@Anya_and_Lolo" />
 <meta name="twitter:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
@@ -237,10 +238,7 @@
   }
 
   /* Add extra space ONLY under Unlocks + Activity */
-  h2.sectionTitle:nth-of-type(2),
-  h2.sectionTitle:nth-of-type(3){
-    margin-bottom: 22px;
-  }
+  .sectionTitle--spaced { margin-bottom: 22px; }
 
   .sectionTitle::after{
     content:"";
@@ -924,10 +922,10 @@
 </div>
 
     <div id="infoPop" class="infoPop" aria-hidden="true">
-      <div class="infoPopInner" role="dialog" aria-modal="false">
+      <div class="infoPopInner" role="dialog" aria-modal="true" tabindex="-1">
         <div class="infoPopTitle">Patreon credits info</div>
         <div id="infoPopBody" class="infoPopBody">
-          Your current Patreon status: —<br>
+          Your current Patreon status: <strong>unknown</strong><br>
           If the payment hasn’t processed yet, or the patron is declined/cancelled, your credits may not yet appear.
         </div>
         <button id="infoClose" class="infoClose" type="button">Close</button>
@@ -940,12 +938,12 @@
   <div class="sectionHead"><h2 class="sectionTitle">Rewards Store</h2></div>
   <div id="store" class="storeGrid"></div>
 
-  <div class="sectionHead"><h2 class="sectionTitle">Your Unlocks</h2></div>
+  <div class="sectionHead"><h2 class="sectionTitle sectionTitle--spaced">Your Unlocks</h2></div>
   <div id="unlocks" class="muted">Redeem something to see it here.</div>
 </div>
 
 <div class="card">
-  <div class="sectionHead"><h2 class="sectionTitle">Account activity</h2></div>
+  <div class="sectionHead"><h2 class="sectionTitle sectionTitle--spaced">Account activity</h2></div>
   <div id="activity" class="muted">
     Connect Patreon to see recent activity on your account.
   </div>
@@ -1032,13 +1030,18 @@ document.getElementById("connect").onclick = () => {
   location.href = API + "/auth/patreon/start";
 };
 
-
 /* STORAGE KEYS */
 const SUPPORT_ID_KEY = "support_id_v1";
 const LAST_CREDITS_KEY = "last_credits_raw_cents_v1";
 const LAST_ACTIVITY_SEEN_KEY = "last_activity_seen_v1";
 
-
+/* Make the info popup a real modal for accessibility */
+ function openInfo(){
+  infoPop?.classList.add("show");
+  infoPop?.setAttribute("aria-hidden","false");
+  infoPop?.querySelector(".infoPopInner")?.focus();
+}
+  
 /* URL / SESSION HELPERS */
 function apiUrl(path, session) {
   const u = new URL(API + path);
@@ -1420,7 +1423,7 @@ async function loadMe() {
       CURRENT_CREDITS_CENTS = 0;
       LAST_ME = null;
 
-      if (creditsValue) creditsValue.textContent = "not connected";
+      if (creditsValue) creditsValue.textContent = "N/A";
       showConnectUI();
       setPill("not connected");
 
@@ -1751,13 +1754,16 @@ function addUnlock(title, rawKeyOrUrl) {
   const isUrl = isProbablyUrl(rawKeyOrUrl);
   const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
 
+  const safeTitle = escapeHtml(title || "");
+  const safeKey = escapeHtml(rawKeyOrUrl || "(missing key)");
+
   const wrap = document.createElement("div");
   wrap.className = "card subcard";
   wrap.innerHTML = `
-    <strong>${title}</strong>
+    <strong>${safeTitle}</strong>
     <div class="keybox" style="margin-top:8px">
       <div>${keyLabel}</div>
-      <div><code class="key">${rawKeyOrUrl || "(missing key)"}</code></div>
+      <div><code class="key">${safeKey}</code></div>
       <div style="margin-top:8px" class="row">
         <button class="copy">Copy My Key</button>
       </div>
@@ -1846,7 +1852,7 @@ async function redeem(itemId, buttonEl) {
   try {
     buttonEl.disabled = true;
     buttonEl.textContent = "Redeeming…";
-    showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
+    showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "info");
 
     const r = await apiFetch("/redeem", s, {
       method: "POST",
@@ -1884,7 +1890,6 @@ const infoBtn = document.getElementById("infoBtn");
 const infoPop = document.getElementById("infoPop");
 const infoClose = document.getElementById("infoClose");
 
-function openInfo(){ infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false"); }
 function closeInfo(){ infoPop?.classList.remove("show"); infoPop?.setAttribute("aria-hidden","true"); }
 
 infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
@@ -2073,3 +2078,4 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
