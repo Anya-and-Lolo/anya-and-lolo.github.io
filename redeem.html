@@ -2004,47 +2004,52 @@ async function tick() {
     const r = await apiFetch("/me", session);
     const me = await r.json();
 
-    if (!r.ok || !me?.loggedIn) {
-      stopCreditsPolling();
-      return;
-    }
+    if (!r.ok) return;                // transient error: keep polling
+    if (!me?.loggedIn) { stopCreditsPolling(); return; }
 
     const now = Number(me?.credits_raw_cents ?? 0);
     if (!Number.isFinite(now)) return;
 
-    // Periodic activity refresh even if credits don't change
+    const creditsChanged = (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS);
+
+    // Decide if we should refresh activity this tick
+    let shouldRefreshActivity = false;
+
+    // periodic refresh (~15s)
     ACTIVITY_TICK = (ACTIVITY_TICK + 1) % 3;
-    if (ACTIVITY_TICK === 0) {
-      loadActivity().catch(() => {}); // <-- this is where the toast happens (maybeToastNewActivity)
+    if (ACTIVITY_TICK === 0) shouldRefreshActivity = true;
+
+    // if credits changed, refresh activity + panels
+    if (creditsChanged) {
+      applyCreditsNow(now);
+      loadUnlocks().catch(() => {});
+      loadStore().catch(() => {});
+      shouldRefreshActivity = true; // ensure activity refresh happens (but only once)
     }
 
-    // If credits changed, update the UI + refresh panels
-    if (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS) {
-      applyCreditsNow(now);           // updates number + (optionally) store enable/disable
-      loadUnlocks().catch(() => {});  // new unlocks after redeem / admin grant
-      loadActivity().catch(() => {}); // will toast once if new activity exists
-      loadStore().catch(() => {});    // optional but nice
+    if (shouldRefreshActivity) {
+      loadActivity().catch(() => {});
     }
 
     LAST_CREDITS_CENTS = now;
-  } catch (e) {
+  } catch {
     // silent
   }
 }
 
 function startCreditsPolling(ms = POLL_MS) {
   if (POLL_TIMER) return;
-  if (!getSession()) return; // don't poll if not connected
-  
+  if (!getSession()) return;
+
   POLL_TIMER = setInterval(tick, ms);
-  tick(); // run once immediately
+  tick();
 }
 
 function stopCreditsPolling() {
   if (POLL_TIMER) clearInterval(POLL_TIMER);
   POLL_TIMER = null;
 }
-
+  
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) stopCreditsPolling();
   else startCreditsPolling(POLL_MS);
