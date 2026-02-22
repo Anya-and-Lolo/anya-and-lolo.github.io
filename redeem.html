@@ -1000,6 +1000,9 @@ let LAST_ACTIVITY = null;
 // Owned items cache for store UI
 let OWNED_ITEM_IDS = new Set();
 
+// Don't play confetti at start
+let ALLOW_CONFETTI = false;
+  
 // Session from URL
 const sessionFromUrl = params.get("session");
 if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
@@ -1082,6 +1085,35 @@ function fmtPrettyWhen(iso){
   }
 }
 
+let CONFETTI_LOADING = null;
+
+function ensureConfettiLoaded(){
+  if (typeof window.confetti === "function") return Promise.resolve();
+  if (CONFETTI_LOADING) return CONFETTI_LOADING;
+
+  CONFETTI_LOADING = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js";
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+
+  return CONFETTI_LOADING;
+}
+
+async function maybeConfetti(kind){
+  if (!ALLOW_CONFETTI) return;
+  await ensureConfettiLoaded();
+  if (typeof window.confetti !== "function") return;
+
+  const base = { particleCount: 90, spread: 70, origin: { y: 0.55 } };
+  window.confetti(kind === "unlock"
+    ? { ...base, particleCount: 130, spread: 90 }
+    : base
+  );
+}
+  
 /* TOASTS  */
 function closeToast(animated = true){
   const wrap = document.getElementById("toastWrap");
@@ -1115,14 +1147,6 @@ function closeToast(animated = true){
     wrap.classList.remove("show");
     wrap.innerHTML = "";
   }, 200);
-}
-
-function maybeConfetti(kind){
-  if (typeof window.confetti !== "function") return;
-
-  const base = { particleCount: 90, spread: 70, origin: { y: 0.55 } };
-  if (kind === "unlock") window.confetti({ ...base, particleCount: 130, spread: 90 });
-  else if (kind === "credits") window.confetti(base);
 }
 
 function toast(message, variant = "blue", ms = 4200, opts = {}){
@@ -1328,6 +1352,7 @@ async function loadMe() {
   const infoPopBody = document.getElementById("infoPopBody");
 
   if (!s) {
+    ALLOW_CONFETTI = true; // not logged in (new users)
     LAST_ME = null;
     CURRENT_CREDITS_CENTS = 0;
 
@@ -1349,6 +1374,7 @@ async function loadMe() {
     LAST_ME = me;
 
     if (!me.loggedIn) {
+      ALLOW_CONFETTI = true; // not logged in (new users)
       CURRENT_CREDITS_CENTS = 0;
       LAST_ME = null;
 
@@ -1364,6 +1390,9 @@ async function loadMe() {
       return null;
     }
 
+    // ✅ logged in users: disable confetti
+    ALLOW_CONFETTI = false;
+    
     if (DEBUG === "anya") {
       if (creditsValue) creditsValue.textContent = "unlimited";
       showConnectedUI();
@@ -1913,7 +1942,7 @@ function applyCreditsNow(nowCents) {
   loadStore().catch(()=>{});
 }
 
-const POLL_MS = 15000; // 15 sec
+const POLL_MS = 5000; // check every 5 sec
 
 let LAST_CREDITS_CENTS = null;
 let POLL_TIMER = null;
@@ -1990,13 +2019,8 @@ document.addEventListener("visibilitychange", () => {
 })();
 </script>
 
-  <script src="https://app.embed.im/confetti.js" defer></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
 
 </body>
 </html>
-
-
-
-
-
