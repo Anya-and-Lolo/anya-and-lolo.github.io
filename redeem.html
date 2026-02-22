@@ -545,7 +545,8 @@
   }
   .toast {
     min-width: 280px;
-    min-width: 500px;
+    width: min(500px, 92vw);   /* max 500px, but shrinks on mobile */
+    max-width: 500px;          /* extra safety */
     padding: 20px 28px;
     border-radius: 16px;
     font-size: 20px;
@@ -1980,5 +1981,6 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
