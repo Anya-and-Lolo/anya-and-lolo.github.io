@@ -1006,6 +1006,10 @@ if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
 // Redeem lock per item
 const redeeming = new Set();
 
+// TOAST CONTROLLER (centered overlay, click/Esc to close, supports confetti triggers)
+let TOAST_TIMER = null;
+let TOAST_EL = null;
+  
 // Images
 const ITEM_IMAGES = {
   fishing_system: "https://anya-and-lolo.github.io/images/fishing_system_image.jpg",
@@ -1082,9 +1086,45 @@ function fmtPrettyWhen(iso){
 }
 
 /* TOASTS  */
-function toast(message, variant = "blue", ms = 4200){
+function closeToast() {
   const wrap = document.getElementById("toastWrap");
   if (!wrap) return;
+
+  if (TOAST_TIMER) clearTimeout(TOAST_TIMER);
+  TOAST_TIMER = null;
+
+  if (TOAST_EL) {
+    TOAST_EL.style.opacity = "0";
+    TOAST_EL.style.transform = "scale(0.96)";
+    setTimeout(() => TOAST_EL?.remove(), 200);
+    TOAST_EL = null;
+  }
+
+  wrap.classList.remove("show");
+}
+
+function maybeConfetti(kind) {
+  // kind: "credits" | "unlock"
+  // Uses https://app.embed.im/confetti.js (window.confetti)
+  if (typeof window.confetti !== "function") return;
+
+  // small, quick burst (not insane)
+  const base = { particleCount: 90, spread: 70, origin: { y: 0.55 } };
+
+  if (kind === "unlock") {
+    window.confetti({ ...base, particleCount: 130, spread: 90 });
+  } else if (kind === "credits") {
+    window.confetti(base);
+  }
+}
+
+function toast(message, variant = "blue", ms = 4200, opts = {}) {
+  // opts: { confetti: "credits"|"unlock"|null }
+  const wrap = document.getElementById("toastWrap");
+  if (!wrap) return;
+
+  // Close previous toast if one is already showing
+  closeToast();
 
   wrap.classList.add("show");
 
@@ -1093,17 +1133,21 @@ function toast(message, variant = "blue", ms = 4200){
   el.innerHTML = `<strong>${escapeHtml(message)}</strong>`;
 
   wrap.appendChild(el);
+  TOAST_EL = el;
 
-  setTimeout(() => {
-    el.style.opacity = "0";
-    el.style.transform = "scale(0.96)";
-    setTimeout(() => {
-      el.remove();
-      wrap.classList.remove("show"); // hide overlay when done
-    }, 200);
-  }, ms);
+  if (opts?.confetti) maybeConfetti(opts.confetti);
+
+  TOAST_TIMER = setTimeout(() => closeToast(), ms);
 }
 
+// Close on click anywhere (overlay or toast)
+document.getElementById("toastWrap")?.addEventListener("click", closeToast);
+
+// Close on ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeToast();
+});
+  
 function maybeToastCreditsChange(newCents){
   const prev = Number(localStorage.getItem(LAST_CREDITS_KEY) || "0");
   localStorage.setItem(LAST_CREDITS_KEY, String(newCents));
@@ -1892,6 +1936,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
