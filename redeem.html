@@ -532,32 +532,35 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(0, 0, 0, 0.45); /* dark overlay */
+    backdrop-filter: blur(3px);      /* soft blur (modern browsers) */
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.18s ease;
     z-index: 9999;
   }
-  .toast {
+  .toastWrap.show {
+    opacity: 1;
     pointer-events: auto;
-    min-width: 260px;
+  }
+  .toast {
+    min-width: 280px;
     max-width: 90vw;
-    padding: 18px 26px;
-    border-radius: 14px;
+    padding: 20px 28px;
+    border-radius: 16px;
     font-size: 16px;
     font-weight: 600;
     text-align: center;
-  
     color: white;
-    background: #1f2937; /* solid dark */
-  
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-  
-    opacity: 1;               /* no transparency */
-    transform: scale(0.92);
+    background: rgba(31, 41, 55, 0.9); /* 90% opacity */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+    transform: scale(0.94);
     animation: toastPop 0.18s ease-out forwards;
   }
   .toast strong{ font-weight: 1000; }
-  .toast.mint { background: #16a34a; }
-  .toast.blue { background: #2563eb; }
-  .toast.red  { background: #dc2626; }
+  .toast.mint  { background: rgba(22, 163, 74, 0.9); }
+  .toast.blue  { background: rgba(37, 99, 235, 0.9); }
+  .toast.red   { background: rgba(220, 38, 38, 0.9); }
 
   @keyframes toastPop {
     to {
@@ -1082,6 +1085,8 @@ function toast(message, variant = "blue", ms = 4200){
   const wrap = document.getElementById("toastWrap");
   if (!wrap) return;
 
+  wrap.classList.add("show");
+
   const el = document.createElement("div");
   el.className = `toast ${variant || "blue"}`;
   el.innerHTML = `<strong>${escapeHtml(message)}</strong>`;
@@ -1090,8 +1095,11 @@ function toast(message, variant = "blue", ms = 4200){
 
   setTimeout(() => {
     el.style.opacity = "0";
-    el.style.transform = "translateY(4px)";
-    setTimeout(() => el.remove(), 250);
+    el.style.transform = "scale(0.96)";
+    setTimeout(() => {
+      el.remove();
+      wrap.classList.remove("show"); // hide overlay when done
+    }, 200);
   }, ms);
 }
 
@@ -1882,6 +1890,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
