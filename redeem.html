@@ -548,11 +548,11 @@
     max-width: 90vw;
     padding: 20px 28px;
     border-radius: 16px;
-    font-size: 16px;
+    font-size: 22px;
     font-weight: 600;
     text-align: center;
     color: white;
-    background: rgba(31, 41, 55, 0.6); /* 60% opacity */
+    background: rgba(31, 41, 55, 0.5); /* 50% opacity */
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
     transform: scale(0.94);
     transition: opacity 0.2s ease, transform 0.2s ease;
@@ -1181,10 +1181,10 @@ function maybeToastNewActivity(items){
       const delta = Number(it.delta_cents || 0);
 
       if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint", 4000, { confetti: "credits" });
-      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint", 4000, { confetti: "credits" });
-      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue", 4000, { confetti: "unlock" });
-      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint", 4000, { confetti: "unlock" });
-      else if (delta > 0) toast("✨ Credits added!", "mint");
+      else if (src === "refund" && delta > 0) toast("✅ Refund successful! Your credits have been returned.", "mint", 4000, { confetti: "credits" });
+      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful. Check Your Unlocks!", "blue", 4000, { confetti: "unlock" });
+      else if (src === "entitlement") toast("🎁 New item added. Check Your Unlocks!", "mint", 4000, { confetti: "unlock" });
+      else if (delta > 0) toast("🎉 Bonus credits added! See Your Account Activity for details.", "mint");
     }
   }
 
@@ -1945,6 +1945,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
