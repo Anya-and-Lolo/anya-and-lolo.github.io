@@ -1006,10 +1006,6 @@ if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
 
 // Redeem lock per item
 const redeeming = new Set();
-
-// TOAST CONTROLLER (centered overlay, click/Esc to close, supports confetti triggers)
-let TOAST_TIMER = null;
-let TOAST_EL = null;
   
 // Images
 const ITEM_IMAGES = {
@@ -1902,51 +1898,69 @@ window.addEventListener("unhandledrejection", (e) => {
 
 
 /* POLLING BLOCK */
-const POLL_MS = 10000; // 10 sec
+function applyCreditsNow(nowCents) {
+  nowCents = Math.max(0, Math.floor(Number(nowCents || 0)));
+
+  // update globals
+  CURRENT_CREDITS_CENTS = nowCents;
+
+  // update the visible number instantly
+  const creditsValue = document.getElementById("creditsValue");
+  if (creditsValue) creditsValue.textContent = String(nowCents);
+
+  // refresh store buttons/prices availability
+  // (this is what users feel most: Redeem enabling/disabling)
+  loadStore().catch(()=>{});
+}
+
+const POLL_MS = 15000; // 15 sec
 
 let LAST_CREDITS_CENTS = null;
 let POLL_TIMER = null;
-
+  
 function startCreditsPolling(ms = POLL_MS) {
   if (POLL_TIMER) return;
   if (!getSession()) return; // don't poll if not connected
 
-  async function tick() {
-    try {
-      if (document.hidden) return;
-
-      // If session disappeared, stop polling
-      if (!getSession()) {
-        stopCreditsPolling();
-        return;
-      }
-
-      const r = await apiFetch("/me", getSession());
-      const me = await r.json();
-
-      // If no longer logged in, stop polling
-      if (!r.ok || !me?.loggedIn) {
-        stopCreditsPolling();
-        return;
-      }
-
-      const now = Number(me?.credits_raw_cents ?? 0);
-      if (!Number.isFinite(now)) return;
-
-      if (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS) {
-        const diff = now - LAST_CREDITS_CENTS;
-          if (diff > 0) {
-            toast(`💰 Yay! +${diff} credits added!`, "mint", 4200, { confetti: "credits" });
-          } else if (diff < 0) {
-            toast(`ℹ️ ${Math.abs(diff)} credits changed`, "blue", 4200);
-          }
-      }
-
-      LAST_CREDITS_CENTS = now;
-    } catch (e) {
-      // silent
+async function tick() {
+  try {
+    if (document.hidden) return;
+    if (!getSession()) {
+      stopCreditsPolling();
+      return;
     }
+
+    const r = await apiFetch("/me", getSession());
+    const me = await r.json();
+
+    if (!r.ok || !me?.loggedIn) {
+      stopCreditsPolling();
+      return;
+    }
+
+    const now = Number(me?.credits_raw_cents ?? 0);
+    if (!Number.isFinite(now)) return;
+
+    if (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS) {
+      const diff = now - LAST_CREDITS_CENTS;
+
+      // ✅ update UI instantly
+      applyCreditsNow(now);
+
+      // ✅ toast
+      if (diff > 0)
+        toast(`💰 +${diff} credits added!`, "mint", 4200, { confetti: "credits" });
+      else if (diff < 0)
+        toast(`ℹ️ ${Math.abs(diff)} credits used`, "blue");
+    }
+
+    // ✅ ALWAYS update baseline after handling change
+    LAST_CREDITS_CENTS = now;
+
+  } catch (e) {
+    // silent
   }
+}
 
   POLL_TIMER = setInterval(tick, ms);
   tick(); // run once immediately
@@ -1981,6 +1995,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
