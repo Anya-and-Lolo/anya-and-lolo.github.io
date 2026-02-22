@@ -955,78 +955,155 @@
   </main>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+/* BOOTSTRAP / GLOBALS */
+document.getElementById("year").textContent = new Date().getFullYear();
 
-  const API = "https://patreon-redeem-api.lady-anya.workers.dev";
-  let CURRENT_CREDITS_CENTS = 0; // integer cents
+const API = "https://patreon-redeem-api.lady-anya.workers.dev";
+const params = new URLSearchParams(location.search);
+const DEBUG = params.get("debug"); // "anya" or null
 
-  // --- Support ID (stable per device/browser) ---
-  const SUPPORT_ID_KEY = "support_id_v1";
-  
-  function makeSupportId(){
-    // Example: "AL-8F3K-1Q9D"
-    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no confusing O/0/I/1
-    const part = (len) => Array.from({length: len}, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
-    return `AL-${part(4)}-${part(4)}`;
+let CURRENT_CREDITS_CENTS = 0; // integer cents
+
+// --- Support bundle state (safe diagnostics)
+let LAST_ME = null;
+let LAST_ENTITLEMENTS = null;
+let LAST_ACTIVITY = null;
+
+// Owned items cache for store UI
+let OWNED_ITEM_IDS = new Set();
+
+// Session from URL
+const sessionFromUrl = params.get("session");
+if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
+
+// Redeem lock per item
+const redeeming = new Set();
+
+// Images
+const ITEM_IMAGES = {
+  fishing_system: "https://anya-and-lolo.github.io/images/fishing_system_image.jpg",
+  visual_novel_system: "https://anya-and-lolo.github.io/images/VN_system_image.jpg",
+  shooting_system: "https://anya-and-lolo.github.io/images/shooting_system_image.jpg",
+};
+
+// Hook connect button (connect + reconnect use same flow)
+document.getElementById("connect").onclick = () => {
+  location.href = API + "/auth/patreon/start";
+};
+
+
+/* STORAGE KEYS */
+const SUPPORT_ID_KEY = "support_id_v1";
+const LAST_CREDITS_KEY = "last_credits_raw_cents_v1";
+const LAST_ACTIVITY_SEEN_KEY = "last_activity_seen_v1";
+
+
+/* URL / SESSION HELPERS */
+function apiUrl(path, session) {
+  const u = new URL(API + path);
+  if (session) u.searchParams.set("session", session);
+  if (DEBUG) u.searchParams.set("debug", DEBUG);
+  return u.toString();
+}
+
+function getSession() {
+  return localStorage.getItem("session");
+}
+
+
+/* SUPPORT ID (stable per device/browser) */
+function makeSupportId(){
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no confusing O/0/I/1
+  const part = (len) => Array.from({length: len}, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
+  return `AL-${part(4)}-${part(4)}`;
+}
+
+function getSupportId(){
+  let id = localStorage.getItem(SUPPORT_ID_KEY);
+  if (!id) {
+    id = makeSupportId();
+    localStorage.setItem(SUPPORT_ID_KEY, id);
   }
-  
-  function getSupportId(){
-    let id = localStorage.getItem(SUPPORT_ID_KEY);
-    if (!id) {
-      id = makeSupportId();
-      localStorage.setItem(SUPPORT_ID_KEY, id);
+  return id;
+}
+
+
+/* SAFE TEXT / FORMATTERS */
+function escapeHtml(str){
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function isProbablyUrl(s) {
+  return typeof s === "string" && /^https?:\/\//i.test(s.trim());
+}
+
+function fmtPrettyWhen(iso){
+  try{
+    const d = new Date(String(iso));
+    if (!Number.isFinite(d.getTime())) return "(unknown time)";
+    const dayMonth = new Intl.DateTimeFormat("en-AU", { day:"numeric", month:"long" }).format(d);
+    const time = new Intl.DateTimeFormat("en-AU", { hour:"2-digit", minute:"2-digit" }).format(d).toLowerCase();
+    return `${dayMonth} ${time}`;
+  } catch {
+    return "(unknown time)";
+  }
+}
+
+
+/* TOASTS (uses your existing HTML container)
+   NOTE: your original code references toast() but it wasn't
+   included in the snippet you pasted. If toast() exists in
+   your full file already, keep it there. If not, add one. */
+function maybeToastCreditsChange(newCents){
+  const prev = Number(localStorage.getItem(LAST_CREDITS_KEY) || "0");
+  localStorage.setItem(LAST_CREDITS_KEY, String(newCents));
+
+  const diff = newCents - prev;
+  if (diff > 0) toast(`🎉 ${diff} new credits added!`, "mint");
+  if (diff < 0) toast(`✅ ${Math.abs(diff)} credits used/refunded.`, "blue");
+}
+
+function maybeToastNewActivity(items){
+  if (!Array.isArray(items) || items.length === 0) return;
+
+  const lastSeen = localStorage.getItem(LAST_ACTIVITY_SEEN_KEY) || "";
+  const newest = items[0]?.created_at || "";
+  if (!newest) return;
+
+  if (lastSeen && newest !== lastSeen){
+    for (const it of items){
+      if (it.created_at === lastSeen) break;
+
+      const src = String(it.source || "");
+      const delta = Number(it.delta_cents || 0);
+
+      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint");
+      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint");
+      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue");
+      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint");
+      else if (delta > 0) toast("✨ Credits added!", "mint");
     }
-    return id;
   }
 
-  // --- Support bundle state (safe diagnostics) ---
-  let LAST_ME = null;
-  let LAST_ENTITLEMENTS = null;
+  localStorage.setItem(LAST_ACTIVITY_SEEN_KEY, newest);
+}
 
-  let OWNED_ITEM_IDS = new Set();
 
-  const params = new URLSearchParams(location.search);
-  const DEBUG = params.get("debug"); // "anya" or null
+/* API FETCH WRAPPER */
+async function apiFetch(path, session, opts = {}) {
+  const headers = new Headers(opts.headers || {});
+  headers.set("x-support-id", getSupportId());
+  headers.set("x-page", location.pathname);
+  return fetch(apiUrl(path, session), { ...opts, headers });
+}
 
-  function apiUrl(path, session) {
-    const u = new URL(API + path);
-    if (session) u.searchParams.set("session", session);
-    if (DEBUG) u.searchParams.set("debug", DEBUG);
-    return u.toString();
-  }
 
-  const ITEM_IMAGES = {
-    fishing_system: "https://anya-and-lolo.github.io/images/fishing_system_image.jpg",
-    visual_novel_system: "https://anya-and-lolo.github.io/images/VN_system_image.jpg",
-    shooting_system: "https://anya-and-lolo.github.io/images/shooting_system_image.jpg",
-  };
-
-  document.getElementById("connect").onclick = () => {
-    // Both connect + reconnect go through the same OAuth start.
-    // "Reconnect" is just a clearer label for users.
-    location.href = API + "/auth/patreon/start";
-  };
-
-  const sessionFromUrl = params.get("session");
-  if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
-
-  function getSession() {
-    return localStorage.getItem("session");
-  }
-
-  function escapeHtml(str){
-    return String(str ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
- 
-  function isProbablyUrl(s) {
-    return typeof s === "string" && /^https?:\/\//i.test(s.trim());
-  }
-
+/* UI: PILL + CONNECT BUTTON STATES */
 function setPill(status) {
   const pill = document.getElementById("patreonPill");
   if (!pill) return;
@@ -1054,7 +1131,6 @@ function setPill(status) {
     label = "Connected";
   }
   else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
-    /* ✅ your desired look */
     cls = "pill--green";
     label = "Connected • No active pledges";
   }
@@ -1104,7 +1180,6 @@ function showConnectedUI(){
     btn.style.display = "";
     btn.disabled = false;
 
-    // Shorter text on mobile
     if (window.innerWidth <= 600){
       btn.textContent = "Re-connect";
     } else {
@@ -1118,29 +1193,42 @@ function showConnectedUI(){
   if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
 }
 
-  const LAST_CREDITS_KEY = "last_credits_raw_cents_v1";
-  
-  function maybeToastCreditsChange(newCents){
-    const prev = Number(localStorage.getItem(LAST_CREDITS_KEY) || "0");
-    localStorage.setItem(LAST_CREDITS_KEY, String(newCents));
-  
-    const diff = newCents - prev;
-    if (diff > 0) toast(`🎉 ${diff} new credits added!`, "mint");
-    if (diff < 0) toast(`✅ ${Math.abs(diff)} credits used/refunded.`, "blue");
+
+/* LOADERS: /me, /activity, /store, /entitlements */
+async function loadMe() {
+  const s = getSession();
+  const creditsValue = document.getElementById("creditsValue");
+  const infoPopBody = document.getElementById("infoPopBody");
+
+  if (!s) {
+    LAST_ME = null;
+    CURRENT_CREDITS_CENTS = 0;
+
+    if (creditsValue) creditsValue.textContent = "N/A";
+    showConnectUI();
+    setPill("not connected");
+
+    if (infoPopBody) {
+      infoPopBody.innerHTML =
+        `Patreon status: <strong>not connected</strong><br>` +
+        `Connect your Patreon to see your credits.`;
+    }
+    return null;
   }
 
-  async function loadMe() {
-    const s = getSession();
-    const creditsValue = document.getElementById("creditsValue");
-    const infoPopBody = document.getElementById("infoPopBody");
+  try {
+    const r = await apiFetch("/me", s);
+    const me = await r.json();
+    LAST_ME = me;
 
-    if (!s) {
-      LAST_ME = null;
+    if (!me.loggedIn) {
       CURRENT_CREDITS_CENTS = 0;
-      
-      if (creditsValue) creditsValue.textContent = "N/A";
+      LAST_ME = null;
+
+      if (creditsValue) creditsValue.textContent = "not connected";
       showConnectUI();
       setPill("not connected");
+
       if (infoPopBody) {
         infoPopBody.innerHTML =
           `Patreon status: <strong>not connected</strong><br>` +
@@ -1149,244 +1237,57 @@ function showConnectedUI(){
       return null;
     }
 
-    try {
-      const r = await apiFetch("/me", s);
-      const me = await r.json();
-      LAST_ME = me;
-
-      if (!me.loggedIn) {
-        CURRENT_CREDITS_CENTS = 0;
-        LAST_ME = null;
-        if (creditsValue) creditsValue.textContent = "not connected";
-        showConnectUI();
-        setPill("not connected");
-        if (infoPopBody) {
-          infoPopBody.innerHTML =
-          `Patreon status: <strong>not connected</strong><br>` +
-          `Connect your Patreon to see your credits.`;
-        }
-        return null;
-      }
-
-      // Creator debug mode if you want it:
-      if (DEBUG === "anya") {
-        if (creditsValue) creditsValue.textContent = "unlimited";
-        showConnectedUI();
-        setPill("connected");
-        if (infoPopBody) { infoPopBody.innerHTML = `Your current Patreon status: <strong>connected</strong><br>` + `Creator mode: unlimited.`; }
-        return me;
-      }
-
-      const cents = Number.isFinite(Number(me.credits_raw_cents)) ? Number(me.credits_raw_cents) : 0;
-      CURRENT_CREDITS_CENTS = Math.max(0, Math.floor(cents));
-      maybeToastCreditsChange(CURRENT_CREDITS_CENTS);
-
-      if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
-      
-      const prettyStatus = (me.patreon_status ?? "connected").toString();
-      setPill(prettyStatus);
-      
-      const statusLower = prettyStatus.toLowerCase();
-      if (statusLower.includes("reconnect") || statusLower.includes("reconnect_required")) {
-        showConnectUI();
-      } else {
-        showConnectedUI();
-      }
+    if (DEBUG === "anya") {
+      if (creditsValue) creditsValue.textContent = "unlimited";
+      showConnectedUI();
+      setPill("connected");
 
       if (infoPopBody) {
         infoPopBody.innerHTML =
-          `Your current Patreon status: <strong>${prettyStatus}</strong><br>` +
-          `Credits shown are based on your lifetime support for this campaign.`;
+          `Your current Patreon status: <strong>connected</strong><br>` +
+          `Creator mode: unlimited.`;
       }
-
       return me;
-    } catch (e) {
-      LAST_ME = null;
-      CURRENT_CREDITS_CENTS = 0;
-      if (creditsValue) creditsValue.textContent = "error";
+    }
+
+    const cents = Number.isFinite(Number(me.credits_raw_cents)) ? Number(me.credits_raw_cents) : 0;
+    CURRENT_CREDITS_CENTS = Math.max(0, Math.floor(cents));
+    maybeToastCreditsChange(CURRENT_CREDITS_CENTS);
+
+    if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
+
+    const prettyStatus = (me.patreon_status ?? "connected").toString();
+    setPill(prettyStatus);
+
+    const statusLower = prettyStatus.toLowerCase();
+    if (statusLower.includes("reconnect") || statusLower.includes("reconnect_required")) {
       showConnectUI();
-      setPill("error");
-      if (infoPopBody) { infoPopBody.innerHTML = `Your current Patreon status: <strong>error</strong><br>` + `Couldn’t load your Patreon info.`;}
-      return null;
+    } else {
+      showConnectedUI();
     }
-  } 
 
-  const redeeming = new Set();
-
-  const LAST_ACTIVITY_SEEN_KEY = "last_activity_seen_v1";
-
-function maybeToastNewActivity(items){
-  if (!Array.isArray(items) || items.length === 0) return;
-
-  const lastSeen = localStorage.getItem(LAST_ACTIVITY_SEEN_KEY) || "";
-  const newest = items[0]?.created_at || "";
-  if (!newest) return;
-
-  // only toast if we have seen something before
-  if (lastSeen && newest !== lastSeen){
-    // show toasts for any items newer than lastSeen (usually just 1)
-    for (const it of items){
-      if (it.created_at === lastSeen) break;
-
-      const src = String(it.source || "");
-      const delta = Number(it.delta_cents || 0);
-
-      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint");
-      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint");
-      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue");
-      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint");
-      else if (delta > 0) toast("✨ Credits added!", "mint");
+    if (infoPopBody) {
+      infoPopBody.innerHTML =
+        `Your current Patreon status: <strong>${prettyStatus}</strong><br>` +
+        `Credits shown are based on your lifetime support for this campaign.`;
     }
+
+    return me;
+  } catch (e) {
+    LAST_ME = null;
+    CURRENT_CREDITS_CENTS = 0;
+
+    if (creditsValue) creditsValue.textContent = "error";
+    showConnectUI();
+    setPill("error");
+
+    if (infoPopBody) {
+      infoPopBody.innerHTML =
+        `Your current Patreon status: <strong>error</strong><br>` +
+        `Couldn’t load your Patreon info.`;
+    }
+    return null;
   }
-
-  localStorage.setItem(LAST_ACTIVITY_SEEN_KEY, newest);
-}
-
-  
-  async function apiFetch(path, session, opts = {}) {
-    const headers = new Headers(opts.headers || {});
-    headers.set("x-support-id", getSupportId());
-    headers.set("x-page", location.pathname);
-    return fetch(apiUrl(path, session), { ...opts, headers });
-  }
-
-let LAST_ACTIVITY = null;
-
-function fmtPrettyWhen(iso){
-  try{
-    const d = new Date(String(iso));
-    if (!Number.isFinite(d.getTime())) return "(unknown time)";
-    const dayMonth = new Intl.DateTimeFormat("en-AU", { day:"numeric", month:"long" }).format(d);
-    const time = new Intl.DateTimeFormat("en-AU", { hour:"2-digit", minute:"2-digit" }).format(d).toLowerCase();
-    return `${dayMonth} ${time}`;
-  } catch {
-    return "(unknown time)";
-  }
-}
-
-function friendlyActivityText(x){
-  const src  = String(x?.source || "").toLowerCase();
-  const note = String(x?.public_note || x?.note || "").trim();
-  const delta = Number(x?.delta_cents || 0);
-
-  // Start with raw note, clean common junk
-  let cleanNote = note
-    .replace(/^•\s*/, "")
-    .replace(/\s*\(target(?:_store)?=\s*\d+\)\s*/gi, " ")
-    .replace(/^\((.*)\)$/s, "$1")
-    .trim();
-
-  // Entitlement grants (delta 0)
-  if (src === "entitlement" || cleanNote.toLowerCase().startsWith("granted entitlement:")) {
-    const item = cleanNote.replace(/^granted entitlement:\s*/i, "").trim();
-    return {
-      title: item ? `Unlocked: ${item}` : "Unlocked a reward",
-      detail: cleanNote.toLowerCase().startsWith("granted entitlement:") ? "" : `Reason: ${cleanNote}`
-    };
-  }
-  
-  // If your backend uses admin_set/admin_adjust/admin_grant, prettify it
-  if (src.startsWith("admin")) {
-    cleanNote = cleanNote
-      .replace(/^admin_set\s*/i, "Admin set ")
-      .replace(/^admin_adjust\s*/i, "Admin adjusted ")
-      .replace(/^admin_grant\s*/i, "Admin granted ")
-      .trim();
-  }
-
-  if (src === "redeem") {
-    const clean = cleanNote.replace(/^redeemed\s*/i, "").trim();
-    return { title: clean ? `You redeemed ${clean}` : "You redeemed a reward", detail: "" };
-  }
-
-  if (delta > 0 && src.startsWith("admin")) {
-    return {
-      title: "Yay, bonus credits added! 🎉",
-      detail: cleanNote ? `Reason: ${cleanNote}` : ""
-    };
-  }
-
-  if (delta < 0 && src.startsWith("admin")) {
-    return {
-      title: "Credit adjustment by Anya",
-      detail: cleanNote ? `Reason: ${cleanNote}` : ""
-    };
-  }
-
-  if (src === "patreon_charge") return { title: "Patreon payment processed, your credits arrived 💖", detail: "" };
-  if (src === "refund")        return { title: "Credits refunded", detail: "" };
-
-  return { title: cleanNote || "Account update", detail: "" };
-}
-
-function renderActivity(list){
-  const box = document.getElementById("activity");
-  if (!box) return;
-
-  if (!Array.isArray(list) || list.length === 0){
-    box.classList.add("muted");
-    box.textContent = "No recent activity yet.";
-    return;
-  }
-
-  box.classList.remove("muted");
-
-  box.innerHTML = `<div class="activityList">${
-
-list.map(x => {
-  const delta = Number(x?.delta_cents || 0);
-  const source = String(x?.source || "").toLowerCase();
-
-  let amount = "";
-  let pillCls = "pill--gray";
-  let icon = "💰";
-
-  if (source === "entitlement") {
-    amount = "Unlock";
-    pillCls = "pill--blue";
-    icon = "🔑";
-  } 
-  else if (delta > 0) {
-    amount = `+${Math.abs(Math.trunc(delta))}`;
-    pillCls = "pill--green";
-    icon = "💰";
-  } 
-  else if (delta < 0) {
-    amount = `−${Math.abs(Math.trunc(delta))}`;
-    pillCls = "pill--red";
-    icon = "💰";
-  } 
-  else {
-    amount = "—";
-    pillCls = "pill--gray";
-    icon = "💰";
-  }
-
-  const when = fmtPrettyWhen(x?.created_at);
-  const { title, detail } = friendlyActivityText(x);
-
-  return `
-    <div class="activityItem">
-      <div class="activityRow">
-        <div class="activityPillWrap">
-          <span class="pill activityPill ${pillCls}">
-            <span class="pillDot"></span>
-            ${escapeHtml(amount)} 
-            <span style="opacity:.75;">${icon}</span>
-          </span>
-        </div>
-
-        <span class="activityText">
-          <strong>${escapeHtml(title)}</strong>
-          ${detail ? `<span class="activityReason">${escapeHtml(detail)}</span>` : ""}
-        </span>
-
-        <span class="activityTime">${escapeHtml(when)}</span>
-      </div>
-    </div>
-  `;
-}).join("")
-  }</div>`;
 }
 
 async function loadActivity(){
@@ -1425,148 +1326,267 @@ async function loadActivity(){
     }
   }
 }
-  
-  async function loadStore() {
-    const el = document.getElementById("store");
-    if (!el) return;
 
-    try {
-      const r = await apiFetch("/store", null);
-      const data = await r.json();
+async function loadStore() {
+  const el = document.getElementById("store");
+  if (!el) return;
 
-      el.innerHTML = "";
-      const items = data.items || [];
+  try {
+    const r = await apiFetch("/store", null);
+    const data = await r.json();
 
-      if (items.length === 0) {
-        el.innerHTML = `<div class="muted">No rewards available yet.</div>`;
-        return;
-      }
+    el.innerHTML = "";
+    const items = data.items || [];
 
-      items.forEach(item => {
-        const costCreditsLabel = String(Math.floor(Number(item.cost_cents || 0)));
-        const remaining = item.remaining ?? 0;
-        const img = ITEM_IMAGES[item.id] || "";
-        const isOwned = OWNED_ITEM_IDS.has(item.id);
+    if (items.length === 0) {
+      el.innerHTML = `<div class="muted">No rewards available yet.</div>`;
+      return;
+    }
 
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
+    items.forEach(item => {
+      const costCreditsLabel = String(Math.floor(Number(item.cost_cents || 0)));
+      const remaining = item.remaining ?? 0;
+      const img = ITEM_IMAGES[item.id] || "";
+      const isOwned = OWNED_ITEM_IDS.has(item.id);
+
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `
+        ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
 
         <div class="storeMeta">
           <div class="storeTitle">${item.name}</div>
           <div class="storeInfo">
-            ${costCreditsLabel} credits 
+            ${costCreditsLabel} credits
             ${isOwned ? "• System Owned ✅" : `• ${remaining} keys left`}
           </div>
         </div>
 
-          <button
-            class="storeButton"
-            ${(isOwned || remaining <= 0) ? "disabled" : ""}
-            data-id="${item.id}"
-            data-name="${item.name}"
-            data-cost-cents="${item.cost_cents}">
-            ${isOwned ? "Redeemed" : "Redeem"}
-          </button>
+        <button
+          class="storeButton"
+          ${(isOwned || remaining <= 0) ? "disabled" : ""}
+          data-id="${item.id}"
+          data-name="${item.name}"
+          data-cost-cents="${item.cost_cents}">
+          ${isOwned ? "Redeemed" : "Redeem"}
+        </button>
 
-          <div class="storeMsg storeMsg--info show">
-            ${(item.payload && item.payload.instructions)
-              ? item.payload.instructions
-              : "Redeem to receive a unique itch.io key."}
-          </div>
-        `;
-
-        const btn = div.querySelector("button");
-        if (!isOwned && remaining > 0) {
-          btn.onclick = () => redeem(item.id, btn);
-        }
-
-        el.appendChild(div);
-      });
-    } catch (e) {
-      el.innerHTML = `<div class="muted">Store failed to load. Check console for errors.</div>`;
-      console.error("loadStore failed", e);
-    }
-  }
-
-  async function loadUnlocks() {
-    const s = getSession();
-    const box = document.getElementById("unlocks");
-
-    OWNED_ITEM_IDS = new Set();
-
-    if (!s) {
-      LAST_ENTITLEMENTS = null;
-      if (box) { box.classList.add("muted"); box.textContent = "Connect Patreon to see your unlocks."; }
-      return;
-    }
-
-    const r = await apiFetch("/entitlements", s);
-    const data = await r.json();
-    LAST_ENTITLEMENTS = data;
-
-    if (!r.ok) {
-      if (box) { box.classList.add("muted"); box.textContent = data.error || "Could not load unlocks."; }
-      return;
-    }
-
-    if (!data.items || data.items.length === 0) {
-      if (box) { box.classList.add("muted"); box.textContent = "Redeem something to see it here."; }
-      return;
-    }
-
-    data.items.forEach(ent => { if (ent?.item_id) OWNED_ITEM_IDS.add(ent.item_id); });
-
-    box.classList.remove("muted");
-    box.innerHTML = "";
-
-    data.items.forEach(ent => {
-      const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
-      const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
-      addUnlock(title, raw);
-    });
-  }
-
-  function addUnlock(title, rawKeyOrUrl) {
-    const box = document.getElementById("unlocks");
-    if (!box) return;
-    if (box.classList.contains("muted")) box.classList.remove("muted");
-
-    const isUrl = isProbablyUrl(rawKeyOrUrl);
-    const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
-
-    const wrap = document.createElement("div");
-    wrap.className = "card subcard";
-    wrap.innerHTML = `
-      <strong>${title}</strong>
-      <div class="keybox" style="margin-top:8px">
-        <div>${keyLabel}</div>
-        <div><code class="key">${rawKeyOrUrl || "(missing key)"}</code></div>
-        <div style="margin-top:8px" class="row">
-          <button class="copy">Copy My Key</button>
+        <div class="storeMsg storeMsg--info show">
+          ${(item.payload && item.payload.instructions)
+            ? item.payload.instructions
+            : "Redeem to receive a unique itch.io key."}
         </div>
-        <div class="muted" style="margin-top:8px">
-          Thank you for supporting 💃 Anya & Lolo 🦜 Please keep your key safe.
-        </div>
-      </div>
-    `;
+      `;
 
-    wrap.querySelector(".copy").onclick = async () => {
-      await navigator.clipboard.writeText(rawKeyOrUrl || "");
-      let msg = wrap.querySelector(".copiedMsg");
-      if (!msg) {
-        msg = document.createElement("div");
-        msg.className = "muted copiedMsg";
-        msg.style.marginTop = "8px";
-        wrap.querySelector(".keybox")?.appendChild(msg);
+      const btn = div.querySelector("button");
+      if (!isOwned && remaining > 0) {
+        btn.onclick = () => redeem(item.id, btn);
       }
-      msg.textContent = "💛 Copied!";
-    };
 
-    box.prepend(wrap);
+      el.appendChild(div);
+    });
+  } catch (e) {
+    el.innerHTML = `<div class="muted">Store failed to load. Check console for errors.</div>`;
+    console.error("loadStore failed", e);
+  }
+}
+
+async function loadUnlocks() {
+  const s = getSession();
+  const box = document.getElementById("unlocks");
+
+  OWNED_ITEM_IDS = new Set();
+
+  if (!s) {
+    LAST_ENTITLEMENTS = null;
+    if (box) { box.classList.add("muted"); box.textContent = "Connect Patreon to see your unlocks."; }
+    return;
   }
 
+  const r = await apiFetch("/entitlements", s);
+  const data = await r.json();
+  LAST_ENTITLEMENTS = data;
+
+  if (!r.ok) {
+    if (box) { box.classList.add("muted"); box.textContent = data.error || "Could not load unlocks."; }
+    return;
+  }
+
+  if (!data.items || data.items.length === 0) {
+    if (box) { box.classList.add("muted"); box.textContent = "Redeem something to see it here."; }
+    return;
+  }
+
+  data.items.forEach(ent => { if (ent?.item_id) OWNED_ITEM_IDS.add(ent.item_id); });
+
+  box.classList.remove("muted");
+  box.innerHTML = "";
+
+  data.items.forEach(ent => {
+    const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
+    const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
+    addUnlock(title, raw);
+  });
+}
+
+
+/* RENDER: ACTIVITY + UNLOCKS */
+function friendlyActivityText(x){
+  const src  = String(x?.source || "").toLowerCase();
+  const note = String(x?.public_note || x?.note || "").trim();
+  const delta = Number(x?.delta_cents || 0);
+
+  let cleanNote = note
+    .replace(/^•\s*/, "")
+    .replace(/\s*\(target(?:_store)?=\s*\d+\)\s*/gi, " ")
+    .replace(/^\((.*)\)$/s, "$1")
+    .trim();
+
+  if (src === "entitlement" || cleanNote.toLowerCase().startsWith("granted entitlement:")) {
+    const item = cleanNote.replace(/^granted entitlement:\s*/i, "").trim();
+    return {
+      title: item ? `Unlocked: ${item}` : "Unlocked a reward",
+      detail: cleanNote.toLowerCase().startsWith("granted entitlement:") ? "" : `Reason: ${cleanNote}`
+    };
+  }
+
+  if (src.startsWith("admin")) {
+    cleanNote = cleanNote
+      .replace(/^admin_set\s*/i, "Admin set ")
+      .replace(/^admin_adjust\s*/i, "Admin adjusted ")
+      .replace(/^admin_grant\s*/i, "Admin granted ")
+      .trim();
+  }
+
+  if (src === "redeem") {
+    const clean = cleanNote.replace(/^redeemed\s*/i, "").trim();
+    return { title: clean ? `You redeemed ${clean}` : "You redeemed a reward", detail: "" };
+  }
+
+  if (delta > 0 && src.startsWith("admin")) {
+    return { title: "Yay, bonus credits added! 🎉", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
+  }
+
+  if (delta < 0 && src.startsWith("admin")) {
+    return { title: "Credit adjustment by Anya", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
+  }
+
+  if (src === "patreon_charge") return { title: "Patreon payment processed, your credits arrived 💖", detail: "" };
+  if (src === "refund")        return { title: "Credits refunded", detail: "" };
+
+  return { title: cleanNote || "Account update", detail: "" };
+}
+
+function renderActivity(list){
+  const box = document.getElementById("activity");
+  if (!box) return;
+
+  if (!Array.isArray(list) || list.length === 0){
+    box.classList.add("muted");
+    box.textContent = "No recent activity yet.";
+    return;
+  }
+
+  box.classList.remove("muted");
+
+  box.innerHTML = `<div class="activityList">${
+    list.map(x => {
+      const delta = Number(x?.delta_cents || 0);
+      const source = String(x?.source || "").toLowerCase();
+
+      let amount = "";
+      let pillCls = "pill--gray";
+      let icon = "💰";
+
+      if (source === "entitlement") {
+        amount = "Unlock";
+        pillCls = "pill--blue";
+        icon = "🔑";
+      }
+      else if (delta > 0) {
+        amount = `+${Math.abs(Math.trunc(delta))}`;
+        pillCls = "pill--green";
+        icon = "💰";
+      }
+      else if (delta < 0) {
+        amount = `−${Math.abs(Math.trunc(delta))}`;
+        pillCls = "pill--red";
+        icon = "💰";
+      }
+      else {
+        amount = "—";
+        pillCls = "pill--gray";
+        icon = "💰";
+      }
+
+      const when = fmtPrettyWhen(x?.created_at);
+      const { title, detail } = friendlyActivityText(x);
+
+      return `
+        <div class="activityItem">
+          <div class="activityRow">
+            <div class="activityPillWrap">
+              <span class="pill activityPill ${pillCls}">
+                <span class="pillDot"></span>
+                ${escapeHtml(amount)}
+                <span style="opacity:.75;">${icon}</span>
+              </span>
+            </div>
+
+            <span class="activityText">
+              <strong>${escapeHtml(title)}</strong>
+              ${detail ? `<span class="activityReason">${escapeHtml(detail)}</span>` : ""}
+            </span>
+
+            <span class="activityTime">${escapeHtml(when)}</span>
+          </div>
+        </div>
+      `;
+    }).join("")
+  }</div>`;
+}
+
+function addUnlock(title, rawKeyOrUrl) {
+  const box = document.getElementById("unlocks");
+  if (!box) return;
+  if (box.classList.contains("muted")) box.classList.remove("muted");
+
+  const isUrl = isProbablyUrl(rawKeyOrUrl);
+  const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
+
+  const wrap = document.createElement("div");
+  wrap.className = "card subcard";
+  wrap.innerHTML = `
+    <strong>${title}</strong>
+    <div class="keybox" style="margin-top:8px">
+      <div>${keyLabel}</div>
+      <div><code class="key">${rawKeyOrUrl || "(missing key)"}</code></div>
+      <div style="margin-top:8px" class="row">
+        <button class="copy">Copy My Key</button>
+      </div>
+      <div class="muted" style="margin-top:8px">
+        Thank you for supporting 💃 Anya & Lolo 🦜 Please keep your key safe.
+      </div>
+    </div>
+  `;
+
+  wrap.querySelector(".copy").onclick = async () => {
+    await navigator.clipboard.writeText(rawKeyOrUrl || "");
+    let msg = wrap.querySelector(".copiedMsg");
+    if (!msg) {
+      msg = document.createElement("div");
+      msg.className = "muted copiedMsg";
+      msg.style.marginTop = "8px";
+      wrap.querySelector(".keybox")?.appendChild(msg);
+    }
+    msg.textContent = "💛 Copied!";
+  };
+
+  box.prepend(wrap);
+}
+
+
+/* STORE MESSAGE HELPERS */
 function showStoreMessage(buttonEl, msg, type = "info") {
   if (!buttonEl) return;
 
@@ -1598,7 +1618,9 @@ function showStoreMessage(buttonEl, msg, type = "info") {
     }, 3000);
   }
 }
-  
+
+
+/* ACTIONS: REDEEM */
 async function redeem(itemId, buttonEl) {
   const s = getSession();
 
@@ -1657,32 +1679,33 @@ async function redeem(itemId, buttonEl) {
   }
 }
 
-  // Info popup handlers
-  const infoBtn = document.getElementById("infoBtn");
-  const infoPop = document.getElementById("infoPop");
-  const infoClose = document.getElementById("infoClose");
 
-  function openInfo(){ infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false");}
-  function closeInfo(){ infoPop?.classList.remove("show"); infoPop?.setAttribute("aria-hidden","true"); }
+/* INFO POPUP HANDLERS */
+const infoBtn = document.getElementById("infoBtn");
+const infoPop = document.getElementById("infoPop");
+const infoClose = document.getElementById("infoClose");
 
-  infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
-  infoClose?.addEventListener("click", closeInfo);
-  infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
+function openInfo(){ infoPop?.classList.add("show"); infoPop?.setAttribute("aria-hidden","false"); }
+function closeInfo(){ infoPop?.classList.remove("show"); infoPop?.setAttribute("aria-hidden","true"); }
 
+infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
+infoClose?.addEventListener("click", closeInfo);
+infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
+
+
+/* SUPPORT INFO COPY (REDACTED) */
 function redactKey(s){
   const t = String(s || "");
   if (!t) return "";
-  // Keep only last 6 chars so you can correlate, but not leak the full key
   return t.length <= 6 ? t : ("***" + t.slice(-6));
 }
 
-// ✅ Click Handler for Copy Support Info in the PopUp
 document.getElementById("copySupport")?.addEventListener("click", async () => {
   const sessionPresent = !!getSession();
   const supportId = getSupportId();
 
-  // Pull user_id + patreon_user_id from /support (because /me doesn't include them)
+  // Pull user_id + patreon_user_id from /support
   let support = { user_id: null, patreon_user_id: null };
   try {
     const s = getSession();
@@ -1695,7 +1718,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
       }
     }
   } catch (e) {
-    // ignore — still copy whatever we have
+    // ignore
   }
 
   const entItems = Array.isArray(LAST_ENTITLEMENTS?.items) ? LAST_ENTITLEMENTS.items : [];
@@ -1714,16 +1737,13 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
     time: new Date().toISOString(),
     session_present: sessionPresent,
 
-    // ✅ now useful for admin search
-    user_id: support.user_id,                 // e.g. "patreon_12345"
-    patreon_user_id: support.patreon_user_id, // e.g. "12345"
+    user_id: support.user_id,
+    patreon_user_id: support.patreon_user_id,
 
-    // From /me (if connected)
     loggedIn: LAST_ME?.loggedIn ?? null,
     patreon_status: LAST_ME?.patreon_status ?? null,
     credits_raw_cents: LAST_ME?.credits_raw_cents ?? null,
 
-    // From /entitlements
     entitlements_count: safeEnt.length,
     entitlements: safeEnt,
 
@@ -1740,20 +1760,23 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
   if (msg) msg.textContent = "Copied! Paste this to Anya 💛";
 });
 
+
+/* GLOBAL ERROR LOGS */
 window.addEventListener("error", (e) => {
   console.error("Global error:", e.error || e.message);
 });
 window.addEventListener("unhandledrejection", (e) => {
   console.error("Unhandled promise rejection:", e.reason);
 });
-  
-  (async () => {
+
+
+/* STARTUP */
+(async () => {
   try { await loadMe(); } catch(e){ console.error("loadMe failed", e); }
   try { await loadUnlocks(); } catch(e){ console.error("loadUnlocks failed", e); }
-  try { await loadActivity(); } catch(e){ console.error("loadActivity failed", e); } // for user to see updates on account like credit spent etc
+  try { await loadActivity(); } catch(e){ console.error("loadActivity failed", e); }
   try { await loadStore(); } catch(e){ console.error("loadStore failed", e); }
 })();
-
 </script>
 
   <script src="https://app.embed.im/confetti.js" defer></script>
@@ -1761,4 +1784,5 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
