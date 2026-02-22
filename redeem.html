@@ -532,8 +532,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.45); /* dark overlay */
-    backdrop-filter: blur(3px);      /* soft blur (modern browsers) */
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.18s ease;
@@ -552,9 +552,10 @@
     font-weight: 600;
     text-align: center;
     color: white;
-    background: rgba(31, 41, 55, 0.9); /* 90% opacity */
+    background: rgba(31, 41, 55, 0.6); /* 60% opacity */
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
     transform: scale(0.94);
+    transition: opacity 0.2s ease, transform 0.2s ease;
     animation: toastPop 0.18s ease-out forwards;
   }
   .toast strong{ font-weight: 1000; }
@@ -1126,10 +1127,10 @@ function maybeToastNewActivity(items){
       const src = String(it.source || "");
       const delta = Number(it.delta_cents || 0);
 
-      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint");
-      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint");
-      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue");
-      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint");
+      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint", 4200, { confetti: "unlock" });
+      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint", 4200, { confetti: "unlock" });
+      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue", 4200, { confetti: "unlock" });
+      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint", 4200, { confetti: "unlock" });
       else if (delta > 0) toast("✨ Credits added!", "mint");
     }
   }
@@ -1708,6 +1709,7 @@ async function redeem(itemId, buttonEl) {
     }
 
     showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Check “Your Unlocks”.`, "success");
+    toast(`🎉 ${itemName} unlocked! Check “Your Unlocks”.`, "mint", 4200, { confetti: "unlock" });
 
     await loadMe();
     await loadUnlocks();
@@ -1847,7 +1849,7 @@ function startCreditsPolling(ms = POLL_MS) {
 
       if (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS) {
         const diff = now - LAST_CREDITS_CENTS;
-        if (diff > 0) toast(`💰 Yay! +${diff} credits added!`, "mint");
+        if (diff > 0) toast(`💰 Yay! +${diff} credits added!`, "mint", 4200, { confetti: "credits" });
         else if (diff < 0) toast(`ℹ️ ${Math.abs(diff)} credits used`, "blue");
       }
 
@@ -1890,6 +1892,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
