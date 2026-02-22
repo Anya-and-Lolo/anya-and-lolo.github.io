@@ -69,6 +69,7 @@
       height: auto;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      scrollbar-gutter: stable;
     }
 
     body{
@@ -153,8 +154,14 @@
       justify-content: space-between;
       gap: 12px;
       padding: 12px 16px;
-      max-width: 1100px;
-      margin: 0 auto;
+    }
+
+    /* Add this so header aligns with .wrap exactly */
+    @media (min-width: 0px){
+      .topbarInner{
+        padding-left: 16px;
+        padding-right: 16px;
+      }
     }
 
     .brand{
@@ -1296,6 +1303,7 @@
   </script>
 </body>
 </html>
+
 
 
 
