@@ -1172,16 +1172,16 @@ function toastForActivity(it){
   const delta = Number(it?.delta_cents || 0);
 
   if (src === "patreon_charge" && delta > 0) {
-    return { msg: "💖 Patreon support received, thank you! New credits unlocked.", variant: "mint", confetti: true };
+    return { msg: "💖 Patreon support received, thank you! New credits unlocked.", variant: "blue", confetti: true };
   }
   if (src === "refund" && delta > 0) {
-    return { msg: "✅ Refund successful! Your credits have been returned.", variant: "mint", confetti: true };
+    return { msg: "✅ You've got a refund! Your credits returned successfully.", variant: "mint", confetti: true };
   }
   if (src === "redeem") {
-    return { msg: "🎟️ Redeem successful! Please check 'Your Unlocks'.", variant: "mint", confetti: true };
+    return { msg: "🎟️ Redeem successful! Please check 'Your Unlocks'.", variant: "blue", confetti: true };
   }
   if (src === "entitlement") {
-    return { msg: "🎁 New item added! CPlease check 'Your Unlocks'.", variant: "mint", confetti: true };
+    return { msg: "🎁 New item added! Please check 'Your Unlocks'.", variant: "mint", confetti: true };
   }
   if (delta > 0) {
     return { msg: "🎉 Bonus credits added! See Account Activity for more details.", variant: "mint", confetti: true };
@@ -1980,4 +1980,5 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
