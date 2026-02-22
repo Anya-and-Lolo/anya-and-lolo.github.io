@@ -1035,12 +1035,25 @@ const SUPPORT_ID_KEY = "support_id_v1";
 const LAST_CREDITS_KEY = "last_credits_raw_cents_v1";
 const LAST_ACTIVITY_SEEN_KEY = "last_activity_seen_v1";
 
-/* Make the info popup a real modal for accessibility */
- function openInfo(){
+/* INFO POPUP HANDLERS */
+const infoBtn = document.getElementById("infoBtn");
+const infoPop = document.getElementById("infoPop");
+const infoClose = document.getElementById("infoClose");
+
+function openInfo(){
   infoPop?.classList.add("show");
   infoPop?.setAttribute("aria-hidden","false");
   infoPop?.querySelector(".infoPopInner")?.focus();
 }
+function closeInfo(){
+  infoPop?.classList.remove("show");
+  infoPop?.setAttribute("aria-hidden","true");
+}
+
+infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
+infoClose?.addEventListener("click", closeInfo);
+infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
   
 /* URL / SESSION HELPERS */
 function apiUrl(path, session) {
@@ -1884,20 +1897,6 @@ async function redeem(itemId, buttonEl) {
   }
 }
 
-
-/* INFO POPUP HANDLERS */
-const infoBtn = document.getElementById("infoBtn");
-const infoPop = document.getElementById("infoPop");
-const infoClose = document.getElementById("infoClose");
-
-function closeInfo(){ infoPop?.classList.remove("show"); infoPop?.setAttribute("aria-hidden","true"); }
-
-infoBtn?.addEventListener("click", () => infoPop?.classList.contains("show") ? closeInfo() : openInfo());
-infoClose?.addEventListener("click", closeInfo);
-infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
-
-
 /* SUPPORT INFO COPY (REDACTED) */
 function redactKey(s){
   const t = String(s || "");
@@ -2078,4 +2077,5 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
