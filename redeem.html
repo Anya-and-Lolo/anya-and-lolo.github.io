@@ -1,38 +1,38 @@
-<!doctype html> 
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Patreon Rewards & Key Redeem | Anya & Lolo</title>
-<meta name="description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
-<link rel="canonical" href="https://anya-and-lolo.github.io/redeem.html" />
+  <title>Patreon Rewards & Key Redeem | Anya & Lolo</title>
+  <meta name="description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
+  <link rel="canonical" href="https://anya-and-lolo.github.io/redeem.html" />
 
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Anya & Lolo" />
-<meta property="og:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
-<meta property="og:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
-<meta property="og:url" content="https://anya-and-lolo.github.io/redeem.html" />
-<meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Anya & Lolo" />
+  <meta property="og:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
+  <meta property="og:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
+  <meta property="og:url" content="https://anya-and-lolo.github.io/redeem.html" />
+  <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:site" content="@Anya_and_Lolo" />
-<meta name="twitter:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
-<meta name="twitter:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
-<meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Anya_and_Lolo" />
+  <meta name="twitter:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
+  <meta name="twitter:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
+  <meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Patreon Rewards & Key Redeem",
-  "url": "https://anya-and-lolo.github.io/redeem.html",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "Anya & Lolo",
-    "url": "https://anya-and-lolo.github.io/"
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Patreon Rewards & Key Redeem",
+    "url": "https://anya-and-lolo.github.io/redeem.html",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Anya & Lolo",
+      "url": "https://anya-and-lolo.github.io/"
+    }
   }
-}
-</script>
+  </script>
 
   <style>
     :root{
@@ -47,6 +47,10 @@
 
       --radius: 16px;
       --shadow: 0 10px 28px rgba(0,0,0,.10);
+
+      /* Scrollbar like index.html */
+      --scrollTrack: #226cbb;
+      --scrollThumb: #56a7fe;
     }
 
     *{ box-sizing: border-box; }
@@ -66,37 +70,43 @@
       line-height: 1.6;
     }
 
+    /* Scrollbar styling (same vibe as index.html) */
+    html{
+      scrollbar-color: var(--scrollThumb) var(--scrollTrack);
+      scrollbar-width: thin;
+    }
+    ::-webkit-scrollbar{ width: 12px; height: 12px; }
+    ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
+    ::-webkit-scrollbar-thumb{
+      background: var(--scrollThumb);
+      border-radius: 999px;
+      border: 3px solid var(--scrollTrack);
+    }
+    ::-webkit-scrollbar-corner{ background: var(--scrollTrack); }
+
     body::before{
       content:"";
       position: fixed;
       inset: 0;
       z-index: -2;
       opacity: 1;
-      /* helps Safari/Chrome on some GPUs */
       transform: translateZ(0);
       will-change: background-position;
-    
+
       background:
         radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
         radial-gradient(circle, rgba(86,167,254,0.12) 2px, transparent 3.5px);
-    
+
       background-size: 42px 42px, 42px 42px;
       background-position: 0 0, 21px 21px;
       background-repeat: repeat, repeat;
-    
+
       animation: dotsFloat 22s linear infinite;
-      /* IMPORTANT: remove transform animation entirely */
     }
-    
+
     @keyframes dotsFloat{
-      from{
-        background-position: 0 0, 21px 21px;
-      }
-      to{
-        /* multiples of 42px = seamless loop */
-        background-position: -168px -84px, -147px -63px; 
-        /* because 21-168=-147 and 21-84=-63 */
-      }
+      from{ background-position: 0 0, 21px 21px; }
+      to{ background-position: -168px -84px, -147px -63px; }
     }
 
     a{ color: inherit; text-decoration: none; }
@@ -108,19 +118,15 @@
       padding: 16px;
     }
 
+    /* same transitions feel */
     button, .navlink, a{
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
     }
-
     button:active, .navlink:active{
       transform: translateY(1px) scale(0.99);
     }
 
-    .btnPrimary:hover{
-      box-shadow: 0 14px 30px rgba(244,24,76,.20);
-      transform: translateY(-1px);
-    }
-
+    /* pop helper (kept) */
     a.pop{ animation: pop .28s ease; }
     @keyframes pop{
       0%{ transform: scale(1); }
@@ -128,6 +134,7 @@
       100%{ transform: scale(1); }
     }
 
+    /* --- TOP BAR --- */
     .topbar{
       position: sticky;
       top: 0;
@@ -136,7 +143,6 @@
       background: rgba(255,255,255,0.72);
       border-bottom: 1px solid var(--border);
     }
-
     .topbarInner{
       display:flex;
       align-items:center;
@@ -146,62 +152,12 @@
       max-width: 1100px;
       margin: 0 auto;
     }
-
     .brand{
       display:flex;
       align-items:center;
       gap: 10px;
       white-space: nowrap;
     }
-
-    .sectionHead{
-      text-align: center;
-    }
-
-    .sectionTitle{
-      position: relative;
-      display: block;
-      width: fit-content;
-      margin: 6px auto 16px;   /* change 10px for smaller bottom margin */
-      font-size: 28px;
-      font-weight: 780;
-      letter-spacing: -0.3px;
-    }
-
-    /* Add extra space ONLY under Unlocks + Activity */
-    h2.sectionTitle:nth-of-type(2),
-    h2.sectionTitle:nth-of-type(3){
-      margin-bottom: 22px;
-    }
-
-    .sectionTitle::after{
-      content:"";
-      position: absolute;
-      left: 0;              /* keep this */
-      bottom: -3px;         /* change to -3 to make it closer to text */
-      width: 100%;          /* full width of the text */
-      height: 5px;
-      border-radius: 6px;
-    
-      background: linear-gradient(
-        90deg,
-        #ff2d6f 0%,
-        var(--brand) 35%,
-        #9fdf28 70%,
-        #ff2d6f 100%
-      );
-    
-      background-size: 200% 100%;
-      animation: titleShimmer 3s linear infinite;
-    
-      box-shadow: 0 4px 12px rgba(244,24,76,0.35); /* subtle glow */
-    }
-
-    @keyframes titleShimmer{
-      0%{ background-position: 0% 50%; }
-      100%{ background-position: 200% 50%; }
-    }
-    
     .badge{
       font-size: 14px;
       padding: 7px 12px;
@@ -218,7 +174,6 @@
       gap: 10px;
       justify-content: flex-end;
     }
-
     .navlink{
       display:inline-flex;
       align-items:center;
@@ -227,22 +182,15 @@
       font-weight: 900;
       font-size: 15px;
       color: rgba(27,27,27,0.88);
-      text-decoration: none;
       border: 1px solid transparent;
       background: transparent;
-      transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+      text-decoration: none;
     }
-
     .navlink:hover{
       text-decoration: none;
       background: rgba(0,0,0,0.06);
       transform: translateY(-1px);
     }
-
-    .navlink:active{
-      transform: translateY(0px) scale(0.99);
-    }
-
     .topbar .navlink[aria-current="page"]{
       background: var(--brand2);
       color: var(--brand);
@@ -255,7 +203,6 @@
         align-items: stretch;
         gap: 10px;
       }
-
       nav{
         justify-content: flex-start;
         overflow-x: auto;
@@ -289,56 +236,61 @@
         );
       }
 
-      .price{
-        font-size: 16px;  
-        font-weight: 1000; 
-        color: rgba(27,27,27,0.88);
-      }
-
-      .badge{
-        font-size: 13px;
-        padding: 6px 10px;
-      }
+      .badge{ font-size: 13px; padding: 6px 10px; }
     }
 
+    /* --- Headline area: same hero vibe as index without changing text --- */
     h1{
       margin: 14px 0 6px;
       font-size: 34px;
       letter-spacing: -0.5px;
       line-height: 1.15;
+      font-weight: 780;
     }
     .sub{
       margin: 0 0 16px;
       color: var(--muted);
       font-size: 16px;
+      line-height: 1.65;
     }
 
+    /* --- Buttons: match index “btn” feel --- */
     button{
-      padding: 10px 12px;
-      border-radius: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
       border: 1px solid var(--border);
       cursor:pointer;
-      background:#fff;
+      background: rgba(255,255,255,0.95);
       font-weight: 900;
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
     }
-    button:disabled{ opacity: .6; cursor: not-allowed; }
+    button:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.07);
+    }
+    button:disabled{ opacity: .6; cursor: not-allowed; transform:none; box-shadow: 0 10px 22px rgba(0,0,0,.06); }
 
     .btnPrimary{
       background: var(--brand);
       color: #fff;
       border-color: rgba(244,24,76,0.35);
     }
+    .btnPrimary:hover{
+      box-shadow: 0 14px 30px rgba(244,24,76,.20);
+    }
 
+    /* --- Cards: match index translucency + hover lift --- */
     .card{
-      background: rgba(255,255,255,0.95);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: var(--radius);
       padding: 14px;
       margin: 12px 0;
       box-shadow: 0 10px 28px rgba(0,0,0,.06);
       transition: box-shadow .15s ease, transform .15s ease;
+      will-change: transform;
+      transform: translateZ(0);
     }
-    
     .card:hover{
       box-shadow: 0 14px 28px rgba(0,0,0,.07);
       transform: translateY(-1px);
@@ -349,7 +301,6 @@
       box-shadow: 0 8px 18px rgba(0,0,0,.04);
       padding: 12px;
     }
-
     .subcard:hover{
       box-shadow: 0 14px 28px rgba(0,0,0,.06);
       transform: translateY(-1px);
@@ -357,7 +308,7 @@
 
     .row{
       display:flex;
-      gap: 12px;
+      gap: 16px;
       align-items:center;
       justify-content:space-between;
       flex-wrap:wrap;
@@ -373,12 +324,43 @@
       border:1px dashed rgba(20,20,20,0.18);
     }
 
+    /* --- Section titles (kept) --- */
+    .sectionHead{ text-align: center; }
+    .sectionTitle{
+      position: relative;
+      display: block;
+      width: fit-content;
+      margin: 6px auto 16px;
+      font-size: 28px;
+      font-weight: 780;
+      letter-spacing: -0.3px;
+    }
+    h2.sectionTitle:nth-of-type(2),
+    h2.sectionTitle:nth-of-type(3){ margin-bottom: 22px; }
+    .sectionTitle::after{
+      content:"";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 5px;
+      border-radius: 6px;
+      background: linear-gradient(90deg,#ff2d6f 0%,var(--brand) 35%,#9fdf28 70%,#ff2d6f 100%);
+      background-size: 200% 100%;
+      animation: titleShimmer 3s linear infinite;
+      box-shadow: 0 4px 12px rgba(244,24,76,0.35);
+    }
+    @keyframes titleShimmer{
+      0%{ background-position: 0% 50%; }
+      100%{ background-position: 200% 50%; }
+    }
+
+    /* Store */
     .storeGrid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 12px;
     }
-
     .storeImg{
       width: 100%;
       height: 240px;
@@ -387,45 +369,14 @@
       border-radius: 14px;
       border: 1px solid rgba(20,20,20,0.08);
     }
+    .storeButton{ margin-top: 10px; width: 100%; }
+    .storeMeta{ margin-top: 12px; text-align: center; }
+    .storeTitle{ font-weight: 1000; font-size: 18px; margin-bottom: 4px; }
+    .storeInfo{ font-size: 16px; opacity: .75; font-weight: 700; }
 
-    .storeButton{
-      margin-top: 10px;
-      width: 100%;
-    }
-
-    .storeMeta{
-      margin-top: 12px;
-      text-align: center;
-    }
-    
-    .storeTitle{
-      font-weight: 1000;
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-    
-    .storeInfo{
-      font-size: 16px;
-      opacity: .75;
-      font-weight: 700;
-    }
-
-    footer{
-      margin-top: 26px;
-      padding: 18px 0 34px;
-      color: rgba(27,27,27,0.72);
-      font-size: 14px;
-    }
-
-    .creditsLine{
-      font-size: 14px;
-      color: rgba(27,27,27,0.80);
-      font-weight: 800;
-    }
-    .creditsLine strong{
-      font-size: 16px;
-      font-weight: 1000;
-    }
+    /* Credits UI (kept) */
+    .creditsLine{ font-size: 14px; color: rgba(27,27,27,0.80); font-weight: 800; }
+    .creditsLine strong{ font-size: 16px; font-weight: 1000; }
 
     .creditsBox{
       display:flex;
@@ -433,7 +384,6 @@
       align-items:center;
       gap: 4px;
     }
-    
     .creditsMain{
       display:flex;
       align-items:center;
@@ -442,95 +392,27 @@
       font-weight: 1000;
       letter-spacing: -0.5px;
     }
-    
-    .creditsIcon{
-      font-size: 22px;
-    }
-    
-    .creditsAmount{
-      font-size: 30px;
-      font-weight: 1000;
-    }
-    
-    .creditsLabel{
-      font-size: 16px;
-      font-weight: 800;
-      opacity: .75;
-    }
-    
-    .creditsSub{
-      font-size: 13px;
-      opacity: .6;
-    }
+    .creditsIcon{ font-size: 22px; }
+    .creditsAmount{ font-size: 30px; font-weight: 1000; }
+    .creditsLabel{ font-size: 16px; font-weight: 800; opacity: .75; }
+    .creditsSub{ font-size: 13px; opacity: .6; }
 
-    .connectBlock{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .connectBlock{ display:flex; flex-direction:column; gap:10px; }
 
-    /* Left area */
-    .connectedLine{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-    }
-    
-    .connectedPill{
-      background: rgba(34,197,94,0.10);
-      border-color: rgba(34,197,94,0.22);
-      color: rgba(20,20,20,0.86);
-    }
-    .connectedPill .pillDot{ background:#22c55e; }
-    
-    .patreonSub{
-      font-size: 13px;
-      font-weight: 800;
-      opacity: .65;
-      margin-top: -2px;
-      padding-left: 4px;
-    }
-    
-    /* Make the left row look like a compact “status bar” */
-    .patreonRowLeft{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    
-    /* Credits right aligned on desktop, same as you wanted */
-    .row{
-      display:flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: nowrap; /* keep one row on desktop */
-    }
-    
-    /* Mobile stacking remains tidy */
+    .patreonRowLeft{ display:flex; align-items:center; gap:8px; }
+
+    /* Right align desktop like before */
+    .row{ flex-wrap: nowrap; }
     @media (max-width: 600px){
-      .row{
-        flex-wrap: wrap;
-      }
+      .row{ flex-wrap: wrap; }
       .connectBlock{ width: 100%; }
       .statusBlock{ width: 100%; }
       .creditsBox{ align-items:center; }
     }
-    
-    .patreonRowLeft{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    
-    .patreonRow{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap: 10px;
-      margin-top: 8px;
-    }
 
+    .patreonRow{ display:flex; align-items:center; justify-content:flex-end; gap: 10px; margin-top: 8px; }
+
+    /* Toasts (kept) */
     .toastWrap{
       position: fixed;
       right: 14px;
@@ -553,30 +435,13 @@
     .toast.red{  border-color: rgba(239,68,68,0.30); background: rgba(239,68,68,0.10); }
     .toast.blue{ border-color: rgba(86,167,254,0.30); background: rgba(86,167,254,0.10); }
 
+    /* Activity (kept) */
     .activityList{ display:flex; flex-direction:column; gap:10px; }
+    .activityPillWrap{ width: 130px; flex: 0 0 130px; }
+    .activityPill.pill--green{ background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.22); }
+    .activityPill.pill--red{ background: rgba(239,68,68,0.10); border-color: rgba(239,68,68,0.22); }
+    .activityPill.pill--blue{ background: rgba(86,167,254,0.10); border-color: rgba(86,167,254,0.22); }
 
-    /* Credits pill inside activity row (left column) */
-    .activityPillWrap{
-      width: 130px;     
-      flex: 0 0 130px;
-    }
-    
-    /* Optional: slightly tinted backgrounds per type */
-    .activityPill.pill--green{
-      background: rgba(34,197,94,0.10);
-      border-color: rgba(34,197,94,0.22);
-    }
-    
-    .activityPill.pill--red{
-      background: rgba(239,68,68,0.10);
-      border-color: rgba(239,68,68,0.22);
-    }
-    
-    .activityPill.pill--blue{
-      background: rgba(86,167,254,0.10);
-      border-color: rgba(86,167,254,0.22);
-    }
-    
     .activityItem{
       background:#fff;
       border:1px solid rgba(20,20,20,0.10);
@@ -585,31 +450,20 @@
       box-shadow: 0 10px 28px rgba(0,0,0,.04);
       transition: box-shadow .15s ease, transform .15s ease;
     }
-    
-    .activityItem:hover{
-      box-shadow: 0 14px 28px rgba(0,0,0,.06);
-      transform: translateY(-1px);
-    }
-    
-    /* Perfect alignment: fixed left column + flexible right column */
+    .activityItem:hover{ box-shadow: 0 14px 28px rgba(0,0,0,.06); transform: translateY(-1px); }
+
     .activityRow{
       display:flex;
       align-items:center;
       gap: 30px;
       flex-wrap: nowrap;
     }
-    
-    /* Right column */
-    .activityText{ min-width: 0; } /* IMPORTANT: let the right column shrink + wrap nicely */
+    .activityText{ min-width: 0; }
     .activityText strong,
-    .activityReason{
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
+    .activityReason{ overflow-wrap: anywhere; word-break: break-word; }
 
-    /* Left part */
     .activityAmt{
-      width: 130px;           /* fixed column width */
+      width: 130px;
       flex: 0 0 130px;
       font-weight: 1000;
       font-size: 18px;
@@ -622,20 +476,18 @@
     .activityReason{
       display:block;
       margin-top:4px;
-      font-size:15px;          /* 1px smaller */
+      font-size:15px;
       font-style: italic;
       font-family: "Georgia", "Times New Roman", serif;
       opacity:.75;
     }
-
     .activityTime{
       font-size: 13px;
       color: rgba(27,27,27,0.65);
       white-space: nowrap;
-      margin-left: auto;   /* this pushes it to the far right */
+      margin-left: auto;
     }
-    
-    /* --- Mobile: force 2-column layout --- */
+
     @media (max-width: 520px){
       .activityRow{
         display: grid;
@@ -647,25 +499,12 @@
         row-gap: 6px;
         align-items: center;
       }
-    
-      .activityPillWrap{
-        width: 120px;
-        flex: none;            /* stop flex sizing */
-        grid-area: pill;
-      }
-    
-      .activityText{
-        grid-area: text;
-        white-space: normal;   /* allow 2nd/3rd line on the right */
-      }
-    
-      .activityTime{
-        grid-area: time;
-        margin-left: 0;        /* remove the flex push */
-        justify-self: start;   /* align under text */
-      }
+      .activityPillWrap{ width: 120px; flex: none; grid-area: pill; }
+      .activityText{ grid-area: text; white-space: normal; }
+      .activityTime{ grid-area: time; margin-left: 0; justify-self: start; }
     }
 
+    /* Pills (kept) */
     .pill{
       display:inline-flex;
       align-items:center;
@@ -678,15 +517,9 @@
       font-size: 13px;
       color: #333;
     }
-    
     .pillDot{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      display:inline-block;
-      flex: 0 0 10px;     /* never shrink */
+      width: 10px; height: 10px; border-radius: 999px; display:inline-block; flex: 0 0 10px;
     }
-    
     .pill--blue .pillDot{ background:#56a7fe; }
     .pill--green .pillDot{ background:#22c55e; }
     .pill--amber .pillDot{ background:#f59e0b; }
@@ -695,14 +528,15 @@
 
     .activityPill{
       width: 100%;
-      font-size: 17px; 
+      font-size: 17px;
       font-weight: 1000;
       padding: 6px 11px;
-      justify-content: center; /* center text inside pill */
+      justify-content: center;
       border-color: rgba(20,20,20,0.10);
       background: rgba(255,255,255,0.95);
     }
 
+    /* Info button (kept) */
     .infoBtn{
       width: 28px;
       height: 28px;
@@ -713,12 +547,13 @@
       cursor: pointer;
       display:inline-flex;
       align-items:center;
-      justify-content: flex-start; /* instead of center */
-      padding-left: 12px;          /* give the dot breathing room */
+      justify-content: flex-start;
+      padding-left: 12px;
       gap: 8px;
       overflow: visible;
+      box-shadow: none;
     }
-    .infoBtn:hover{ background: rgba(0,0,0,0.06); }
+    .infoBtn:hover{ background: rgba(0,0,0,0.06); transform: translateY(-1px); }
 
     .infoPop{
       position: fixed;
@@ -731,7 +566,6 @@
       background: rgba(0,0,0,0.18);
     }
     .infoPop.show{ display:flex; }
-
     .infoPopInner{
       width: min(520px, 100%);
       background: #fff;
@@ -742,7 +576,6 @@
     }
     .infoPopTitle{ font-weight: 1000; margin-bottom: 8px; }
     .infoPopBody{ font-size: 14px; color: #333; line-height: 1.5; }
-
     .infoClose{
       margin-top: 12px;
       padding: 10px 12px;
@@ -753,61 +586,19 @@
       cursor: pointer;
     }
 
+    /* Footer (kept, aligned like index) */
+    footer{
+      margin-top: 26px;
+      padding: 18px 0 34px;
+      color: rgba(27,27,27,0.72);
+      font-size: 14px;
+    }
     .hangout{
       text-align: center;
       margin: 18px 0 14px;
       font-size: 15px;
       color: rgba(27,27,27,0.78);
     }
-
-    /* Desktop: keep it on the right */
-    .statusBlock{
-      text-align: right;
-    }
-    
-    /* Mobile: stack nicely under the button */
-
-    @media (max-width: 600px){
-      .row{
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-      }
-    
-      .connectBlock{
-        align-items: center;
-      }
-    
-      .statusBlock{
-        text-align:center;
-      }
-    }
-    
-    .storeMsg{
-      margin-top: 8px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(20,20,20,0.12);
-      background: rgba(255,255,255,0.9);
-      font-size: 13px;
-      color: rgba(27,27,27,0.86);
-      display: none;
-    }
-    .storeMsg.show{ display: block; }
-
-    .storeMsg--success{
-      border-color: rgba(34,197,94,0.30);
-      background: rgba(34,197,94,0.10);
-    }
-    .storeMsg--error{
-      border-color: rgba(239,68,68,0.30);
-      background: rgba(239,68,68,0.10);
-    }
-    .storeMsg--info{
-      border-color: rgba(86,167,254,0.30);
-      background: rgba(86,167,254,0.10);
-    }
-
     .footerInner{
       border-top: 1px solid var(--border);
       padding-top: 14px;
@@ -816,7 +607,6 @@
       gap: 12px;
       align-items:center;
     }
-
     .socialText{
       display:flex;
       flex-wrap:wrap;
@@ -825,33 +615,25 @@
       align-items:center;
       font-weight: 900;
     }
-
     .socialText a{
       padding: 2px 6px;
       border-radius: 10px;
       text-decoration: none;
     }
-    .socialText a:hover{
-      background: rgba(0,0,0,0.06);
-      text-decoration: none;
-    }
-
+    .socialText a:hover{ background: rgba(0,0,0,0.06); text-decoration: none; }
     .sepDot{
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       background: var(--brand);
       border-radius: 50%;
       display: inline-block;
       margin: 0 10px;
     }
-
     .footerRight{
       display:flex;
       gap: 10px;
       justify-content: flex-end;
       flex-wrap: wrap;
     }
-
     .sep{
       color: rgba(20,20,20,0.35);
       font-weight: 800;
@@ -867,47 +649,54 @@
       .socialText{ justify-content: center !important; }
     }
 
-    /* ==== Mobile polish: ==== */
+    /* Your mobile polish (kept) */
     @media (max-width: 600px){
-    
-      /* Keep the card content centered */
-      .connectBlock{
-        width: 100%;
-        align-items: center;
-      }
-    
+      .connectBlock{ width: 100%; align-items: center; }
       #connect{
-        width: 95% !important;            
-        max-width: 360px;                
-        min-width: 260px;                
-        padding: 14px 16px;             
-        font-size: 18px;                
+        width: 95% !important;
+        max-width: 360px;
+        min-width: 260px;
+        padding: 14px 16px;
+        font-size: 18px;
         border-radius: 14px;
         box-shadow: 0 12px 26px rgba(244,24,76,.20);
       }
-    
-      .patreonRowLeft{
-        justify-content: center;
-        gap: 10px;
-        margin-top: 6px;
-      }
-    
-      /* Bigger pill text */
-      #patreonPill{
-        font-size: 15px;                 
-        padding: 8px 12px;               
-        font-weight: 1000;
-      }
-    
-      /* Slightly bigger (i) button */
-      .infoBtn{
-        width: 32px;
-        height: 32px;
-        font-size: 15px;
-        padding-left: 13px;
-      }
+      .patreonRowLeft{ justify-content: center; gap: 10px; margin-top: 6px; }
+      #patreonPill{ font-size: 15px; padding: 8px 12px; font-weight: 1000; }
+      .infoBtn{ width: 32px; height: 32px; font-size: 15px; padding-left: 13px; }
+
+      /* keep your desktop alignment rules from fighting mobile */
+      .row{ flex-direction: column; align-items: center; gap: 16px; }
+      .statusBlock{ text-align:center; }
     }
 
+    .storeMsg{
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(20,20,20,0.12);
+      background: rgba(255,255,255,0.9);
+      font-size: 13px;
+      color: rgba(27,27,27,0.86);
+      display: none;
+    }
+    .storeMsg.show{ display: block; }
+    .storeMsg--success{ border-color: rgba(34,197,94,0.30); background: rgba(34,197,94,0.10); }
+    .storeMsg--error{ border-color: rgba(239,68,68,0.30); background: rgba(239,68,68,0.10); }
+    .storeMsg--info{ border-color: rgba(86,167,254,0.30); background: rgba(86,167,254,0.10); }
+
+    /* Reveal animation like index.html */
+    .preReveal{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .reveal{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Allow page scroll even if a sparkle/canvas overlay exists */
     canvas,
     #sparkles,
     .sparkles,
@@ -942,35 +731,35 @@
       Credits are earned from successful paid Patreon pledges.
     </p>
 
-<div class="card" style="margin: 10px 0 14px;">
-  <div class="row">
+    <div class="card" style="margin: 10px 0 14px;">
+      <div class="row">
 
-    <!-- LEFT COLUMN -->
-    <div class="connectBlock">
-      <button id="connect" class="btnPrimary">Connect Patreon</button>
+        <!-- LEFT COLUMN -->
+        <div class="connectBlock">
+          <button id="connect" class="btnPrimary">Connect Patreon</button>
 
-      <div class="patreonRowLeft">
-        <span id="patreonPill" class="pill pill--gray">
-          <span class="pillDot"></span> Patreon: not connected
-        </span>
-        <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
-      </div>
-    </div>
-
-    <!-- RIGHT COLUMN -->
-    <div class="statusBlock">
-      <div class="creditsBox">
-        <div class="creditsMain">
-          <span class="creditsIcon">💰</span>
-          <span id="creditsValue" class="creditsAmount">0</span>
-          <span class="creditsLabel">Credits</span>
+          <div class="patreonRowLeft">
+            <span id="patreonPill" class="pill pill--gray">
+              <span class="pillDot"></span> Patreon: not connected
+            </span>
+            <button id="infoBtn" class="infoBtn" type="button" aria-label="Patreon credits info">i</button>
+          </div>
         </div>
-        <div class="creditsSub">1¢ = 1 credit</div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="statusBlock">
+          <div class="creditsBox">
+            <div class="creditsMain">
+              <span class="creditsIcon">💰</span>
+              <span id="creditsValue" class="creditsAmount">0</span>
+              <span class="creditsLabel">Credits</span>
+            </div>
+            <div class="creditsSub">1¢ = 1 credit</div>
+          </div>
+        </div>
+
       </div>
     </div>
-
-  </div>
-</div>
 
     <div id="infoPop" class="infoPop" aria-hidden="true">
       <div class="infoPopInner" role="dialog" aria-modal="false">
@@ -985,78 +774,92 @@
       </div>
     </div>
 
-<div class="card">
-  <div class="sectionHead"><h2 class="sectionTitle">Rewards Store</h2></div>
-  <div id="store" class="storeGrid"></div>
+    <div class="card">
+      <div class="sectionHead"><h2 class="sectionTitle">Rewards Store</h2></div>
+      <div id="store" class="storeGrid"></div>
 
-  <div class="sectionHead"><h2 class="sectionTitle">Your Unlocks</h2></div>
-  <div id="unlocks" class="muted">Redeem something to see it here.</div>
-</div>
-
-<div class="card">
-  <div class="sectionHead"><h2 class="sectionTitle">Account activity</h2></div>
-  <div id="activity" class="muted">
-    Connect Patreon to see recent activity on your account.
-  </div>
-
-  <footer style="margin-top: 18px;">
-    <div class="hangout">
-      Want to hang out? Join the
-      <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">Discord</a>
-      or follow us on your favourite platform below 💛
+      <div class="sectionHead"><h2 class="sectionTitle">Your Unlocks</h2></div>
+      <div id="unlocks" class="muted">Redeem something to see it here.</div>
     </div>
 
-    <div class="footerInner">
-      <div>© <span id="year"></span> Anya &amp; Lolo</div>
-
-      <div class="socialText" aria-label="Social links">
-        <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
-        <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
-        <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
-
-        <span class="sepDot"></span>
-
-        <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
-        <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
-        <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
-
-        <span class="sepDot"></span>
-
-        <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
-        <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
-
-        <span class="sepDot"></span>
-
-        <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
-        <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+    <div class="card">
+      <div class="sectionHead"><h2 class="sectionTitle">Account activity</h2></div>
+      <div id="activity" class="muted">
+        Connect Patreon to see recent activity on your account.
       </div>
 
-      <div class="footerRight">
-        <a href="./terms.html">Terms</a>
-        <span class="sep">|</span>
-        <a href="./privacy.html">Privacy</a>
-      </div>
+      <footer style="margin-top: 18px;">
+        <div class="hangout">
+          Want to hang out? Join the
+          <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">Discord</a>
+          or follow us on your favourite platform below 💛
+        </div>
+
+        <div class="footerInner">
+          <div>© <span id="year"></span> Anya &amp; Lolo</div>
+
+          <div class="socialText" aria-label="Social links">
+            <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+            <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+            <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+            <span class="sepDot"></span>
+
+            <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+            <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+            <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+
+            <span class="sepDot"></span>
+
+            <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+            <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+            <span class="sepDot"></span>
+
+            <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+            <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+          </div>
+
+          <div class="footerRight">
+            <a href="./terms.html">Terms</a>
+            <span class="sep">|</span>
+            <a href="./privacy.html">Privacy</a>
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
-</div>
   </main>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
 
+    /* Reveal animation like index.html (safe, no logic changes) */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("reveal"); });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".card").forEach(c => {
+      c.classList.add("preReveal");
+      io.observe(c);
+    });
+
+    /* Your existing JS continues below (UNCHANGED) */
+  </script>
+
+  <script>
+  /* ======= YOUR ORIGINAL SCRIPT (UNCHANGED) ======= */
   const API = "https://patreon-redeem-api.lady-anya.workers.dev";
   let CURRENT_CREDITS_CENTS = 0; // integer cents
 
   // --- Support ID (stable per device/browser) ---
   const SUPPORT_ID_KEY = "support_id_v1";
-  
+
   function makeSupportId(){
-    // Example: "AL-8F3K-1Q9D"
-    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no confusing O/0/I/1
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     const part = (len) => Array.from({length: len}, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
     return `AL-${part(4)}-${part(4)}`;
   }
-  
+
   function getSupportId(){
     let id = localStorage.getItem(SUPPORT_ID_KEY);
     if (!id) {
@@ -1089,8 +892,6 @@
   };
 
   document.getElementById("connect").onclick = () => {
-    // Both connect + reconnect go through the same OAuth start.
-    // "Reconnect" is just a clearer label for users.
     location.href = API + "/auth/patreon/start";
   };
 
@@ -1109,108 +910,106 @@
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
   }
- 
+
   function isProbablyUrl(s) {
     return typeof s === "string" && /^https?:\/\//i.test(s.trim());
   }
 
-function setPill(status) {
-  const pill = document.getElementById("patreonPill");
-  if (!pill) return;
+  function setPill(status) {
+    const pill = document.getElementById("patreonPill");
+    if (!pill) return;
 
-  const raw = (status ?? "").toString();
-  const s = raw.toLowerCase();
+    const raw = (status ?? "").toString();
+    const s = raw.toLowerCase();
 
-  let cls = "pill--gray";
-  let label = "not connected";
+    let cls = "pill--gray";
+    let label = "not connected";
 
-  if (!raw || s.includes("not connected")) {
-    cls = "pill--gray";
-    label = "not connected";
-  }
-  else if (s.includes("reconnect_required") || s.includes("reconnect")) {
-    cls = "pill--amber";
-    label = "Reconnect required";
-  }
-  else if (s.includes("declined")) {
-    cls = "pill--red";
-    label = "Payment declined";
-  }
-  else if (s.includes("active")) {
-    cls = "pill--green";
-    label = "Connected";
-  }
-  else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
-    /* ✅ your desired look */
-    cls = "pill--green";
-    label = "Connected • No active pledges";
-  }
-  else if (s.includes("paused") || s.includes("pending")) {
-    cls = "pill--amber";
-    label = "Connected • Membership pending";
-  }
-  else if (s.includes("error")) {
-    cls = "pill--red";
-    label = "Error loading status";
-  }
-  else {
-    cls = "pill--amber";
-    label = "Status unknown";
-  }
-
-  pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray","pill--blue");
-  pill.classList.add(cls);
-
-  pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
-}
-
-function showConnectUI(){
-  const btn = document.getElementById("connect");
-
-  if (btn){
-    btn.style.display = "";
-    btn.disabled = false;
-
-    if (window.innerWidth <= 600){
-      btn.textContent = "Connect";
-    } else {
-      btn.textContent = "Connect Patreon";
+    if (!raw || s.includes("not connected")) {
+      cls = "pill--gray";
+      label = "not connected";
+    }
+    else if (s.includes("reconnect_required") || s.includes("reconnect")) {
+      cls = "pill--amber";
+      label = "Reconnect required";
+    }
+    else if (s.includes("declined")) {
+      cls = "pill--red";
+      label = "Payment declined";
+    }
+    else if (s.includes("active")) {
+      cls = "pill--green";
+      label = "Connected";
+    }
+    else if (s.includes("not a patron") || s.includes("not pledged") || s.includes("no pledge")) {
+      cls = "pill--green";
+      label = "Connected • No active pledges";
+    }
+    else if (s.includes("paused") || s.includes("pending")) {
+      cls = "pill--amber";
+      label = "Connected • Membership pending";
+    }
+    else if (s.includes("error")) {
+      cls = "pill--red";
+      label = "Error loading status";
+    }
+    else {
+      cls = "pill--amber";
+      label = "Status unknown";
     }
 
-    btn.dataset.mode = "connect";
+    pill.classList.remove("pill--green","pill--amber","pill--red","pill--gray","pill--blue");
+    pill.classList.add(cls);
+
+    pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
   }
 
-  const creditsSub = document.querySelector(".creditsSub");
-  if (creditsSub) creditsSub.textContent = "Connect Patreon";
-}
+  function showConnectUI(){
+    const btn = document.getElementById("connect");
 
-function showConnectedUI(){
-  const btn = document.getElementById("connect");
+    if (btn){
+      btn.style.display = "";
+      btn.disabled = false;
 
-  if (btn){
-    btn.style.display = "";
-    btn.disabled = false;
+      if (window.innerWidth <= 600){
+        btn.textContent = "Connect";
+      } else {
+        btn.textContent = "Connect Patreon";
+      }
 
-    // Shorter text on mobile
-    if (window.innerWidth <= 600){
-      btn.textContent = "Re-connect";
-    } else {
-      btn.textContent = "Re-connect Patreon";
+      btn.dataset.mode = "connect";
     }
 
-    btn.dataset.mode = "reconnect";
+    const creditsSub = document.querySelector(".creditsSub");
+    if (creditsSub) creditsSub.textContent = "Connect Patreon";
   }
 
-  const creditsSub = document.querySelector(".creditsSub");
-  if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
-}
+  function showConnectedUI(){
+    const btn = document.getElementById("connect");
+
+    if (btn){
+      btn.style.display = "";
+      btn.disabled = false;
+
+      if (window.innerWidth <= 600){
+        btn.textContent = "Re-connect";
+      } else {
+        btn.textContent = "Re-connect Patreon";
+      }
+
+      btn.dataset.mode = "reconnect";
+    }
+
+    const creditsSub = document.querySelector(".creditsSub");
+    if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
+  }
 
   const LAST_CREDITS_KEY = "last_credits_raw_cents_v1";
-  
+
   function maybeToastCreditsChange(newCents){
     const prev = Number(localStorage.getItem(LAST_CREDITS_KEY) || "0");
     localStorage.setItem(LAST_CREDITS_KEY, String(newCents));
-  
+
     const diff = newCents - prev;
     if (diff > 0) toast(`🎉 ${diff} new credits added!`, "mint");
     if (diff < 0) toast(`✅ ${Math.abs(diff)} credits used/refunded.`, "blue");
@@ -1224,7 +1023,7 @@ function showConnectedUI(){
     if (!s) {
       LAST_ME = null;
       CURRENT_CREDITS_CENTS = 0;
-      
+
       if (creditsValue) creditsValue.textContent = "N/A";
       showConnectUI();
       setPill("not connected");
@@ -1255,7 +1054,6 @@ function showConnectedUI(){
         return null;
       }
 
-      // Creator debug mode if you want it:
       if (DEBUG === "anya") {
         if (creditsValue) creditsValue.textContent = "unlimited";
         showConnectedUI();
@@ -1269,10 +1067,10 @@ function showConnectedUI(){
       maybeToastCreditsChange(CURRENT_CREDITS_CENTS);
 
       if (creditsValue) creditsValue.textContent = String(CURRENT_CREDITS_CENTS);
-      
+
       const prettyStatus = (me.patreon_status ?? "connected").toString();
       setPill(prettyStatus);
-      
+
       const statusLower = prettyStatus.toLowerCase();
       if (statusLower.includes("reconnect") || statusLower.includes("reconnect_required")) {
         showConnectUI();
@@ -1296,40 +1094,37 @@ function showConnectedUI(){
       if (infoPopBody) { infoPopBody.innerHTML = `Your current Patreon status: <strong>error</strong><br>` + `Couldn’t load your Patreon info.`;}
       return null;
     }
-  } 
+  }
 
   const redeeming = new Set();
 
   const LAST_ACTIVITY_SEEN_KEY = "last_activity_seen_v1";
 
-function maybeToastNewActivity(items){
-  if (!Array.isArray(items) || items.length === 0) return;
+  function maybeToastNewActivity(items){
+    if (!Array.isArray(items) || items.length === 0) return;
 
-  const lastSeen = localStorage.getItem(LAST_ACTIVITY_SEEN_KEY) || "";
-  const newest = items[0]?.created_at || "";
-  if (!newest) return;
+    const lastSeen = localStorage.getItem(LAST_ACTIVITY_SEEN_KEY) || "";
+    const newest = items[0]?.created_at || "";
+    if (!newest) return;
 
-  // only toast if we have seen something before
-  if (lastSeen && newest !== lastSeen){
-    // show toasts for any items newer than lastSeen (usually just 1)
-    for (const it of items){
-      if (it.created_at === lastSeen) break;
+    if (lastSeen && newest !== lastSeen){
+      for (const it of items){
+        if (it.created_at === lastSeen) break;
 
-      const src = String(it.source || "");
-      const delta = Number(it.delta_cents || 0);
+        const src = String(it.source || "");
+        const delta = Number(it.delta_cents || 0);
 
-      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint");
-      else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint");
-      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue");
-      else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint");
-      else if (delta > 0) toast("✨ Credits added!", "mint");
+        if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint");
+        else if (src === "refund" && delta > 0) toast("✅ Refund was successful, and your credits returned!", "mint");
+        else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful, please check Your Unlocks!", "blue");
+        else if (src === "entitlement") toast("🎁 New item added, please check Your Unlocks!", "mint");
+        else if (delta > 0) toast("✨ Credits added!", "mint");
+      }
     }
+
+    localStorage.setItem(LAST_ACTIVITY_SEEN_KEY, newest);
   }
 
-  localStorage.setItem(LAST_ACTIVITY_SEEN_KEY, newest);
-}
-
-  
   async function apiFetch(path, session, opts = {}) {
     const headers = new Headers(opts.headers || {});
     headers.set("x-support-id", getSupportId());
@@ -1337,182 +1132,172 @@ function maybeToastNewActivity(items){
     return fetch(apiUrl(path, session), { ...opts, headers });
   }
 
-let LAST_ACTIVITY = null;
+  let LAST_ACTIVITY = null;
 
-function fmtPrettyWhen(iso){
-  try{
-    const d = new Date(String(iso));
-    if (!Number.isFinite(d.getTime())) return "(unknown time)";
-    const dayMonth = new Intl.DateTimeFormat("en-AU", { day:"numeric", month:"long" }).format(d);
-    const time = new Intl.DateTimeFormat("en-AU", { hour:"2-digit", minute:"2-digit" }).format(d).toLowerCase();
-    return `${dayMonth} ${time}`;
-  } catch {
-    return "(unknown time)";
-  }
-}
-
-function friendlyActivityText(x){
-  const src  = String(x?.source || "").toLowerCase();
-  const note = String(x?.public_note || x?.note || "").trim();
-  const delta = Number(x?.delta_cents || 0);
-
-  // Start with raw note, clean common junk
-  let cleanNote = note
-    .replace(/^•\s*/, "")
-    .replace(/\s*\(target(?:_store)?=\s*\d+\)\s*/gi, " ")
-    .replace(/^\((.*)\)$/s, "$1")
-    .trim();
-
-  // Entitlement grants (delta 0)
-  if (src === "entitlement" || cleanNote.toLowerCase().startsWith("granted entitlement:")) {
-    const item = cleanNote.replace(/^granted entitlement:\s*/i, "").trim();
-    return {
-      title: item ? `Unlocked: ${item}` : "Unlocked a reward",
-      detail: cleanNote.toLowerCase().startsWith("granted entitlement:") ? "" : `Reason: ${cleanNote}`
-    };
-  }
-  
-  // If your backend uses admin_set/admin_adjust/admin_grant, prettify it
-  if (src.startsWith("admin")) {
-    cleanNote = cleanNote
-      .replace(/^admin_set\s*/i, "Admin set ")
-      .replace(/^admin_adjust\s*/i, "Admin adjusted ")
-      .replace(/^admin_grant\s*/i, "Admin granted ")
-      .trim();
-  }
-
-  if (src === "redeem") {
-    const clean = cleanNote.replace(/^redeemed\s*/i, "").trim();
-    return { title: clean ? `You redeemed ${clean}` : "You redeemed a reward", detail: "" };
-  }
-
-  if (delta > 0 && src.startsWith("admin")) {
-    return {
-      title: "Yay, bonus credits added! 🎉",
-      detail: cleanNote ? `Reason: ${cleanNote}` : ""
-    };
-  }
-
-  if (delta < 0 && src.startsWith("admin")) {
-    return {
-      title: "Credit adjustment by Anya",
-      detail: cleanNote ? `Reason: ${cleanNote}` : ""
-    };
-  }
-
-  if (src === "patreon_charge") return { title: "Patreon payment processed, your credits arrived 💖", detail: "" };
-  if (src === "refund")        return { title: "Credits refunded", detail: "" };
-
-  return { title: cleanNote || "Account update", detail: "" };
-}
-
-function renderActivity(list){
-  const box = document.getElementById("activity");
-  if (!box) return;
-
-  if (!Array.isArray(list) || list.length === 0){
-    box.classList.add("muted");
-    box.textContent = "No recent activity yet.";
-    return;
-  }
-
-  box.classList.remove("muted");
-
-  box.innerHTML = `<div class="activityList">${
-
-list.map(x => {
-  const delta = Number(x?.delta_cents || 0);
-  const source = String(x?.source || "").toLowerCase();
-
-  let amount = "";
-  let pillCls = "pill--gray";
-  let icon = "💰";
-
-  if (source === "entitlement") {
-    amount = "Unlock";
-    pillCls = "pill--blue";
-    icon = "🔑";
-  } 
-  else if (delta > 0) {
-    amount = `+${Math.abs(Math.trunc(delta))}`;
-    pillCls = "pill--green";
-    icon = "💰";
-  } 
-  else if (delta < 0) {
-    amount = `−${Math.abs(Math.trunc(delta))}`;
-    pillCls = "pill--red";
-    icon = "💰";
-  } 
-  else {
-    amount = "—";
-    pillCls = "pill--gray";
-    icon = "💰";
-  }
-
-  const when = fmtPrettyWhen(x?.created_at);
-  const { title, detail } = friendlyActivityText(x);
-
-  return `
-    <div class="activityItem">
-      <div class="activityRow">
-        <div class="activityPillWrap">
-          <span class="pill activityPill ${pillCls}">
-            <span class="pillDot"></span>
-            ${escapeHtml(amount)} 
-            <span style="opacity:.75;">${icon}</span>
-          </span>
-        </div>
-
-        <span class="activityText">
-          <strong>${escapeHtml(title)}</strong>
-          ${detail ? `<span class="activityReason">${escapeHtml(detail)}</span>` : ""}
-        </span>
-
-        <span class="activityTime">${escapeHtml(when)}</span>
-      </div>
-    </div>
-  `;
-}).join("")
-  }</div>`;
-}
-
-async function loadActivity(){
-  const s = getSession();
-  const box = document.getElementById("activity");
-
-  if (!s){
-    if (box){
-      box.classList.add("muted");
-      box.textContent = "Connect Patreon to see recent activity on your account.";
+  function fmtPrettyWhen(iso){
+    try{
+      const d = new Date(String(iso));
+      if (!Number.isFinite(d.getTime())) return "(unknown time)";
+      const dayMonth = new Intl.DateTimeFormat("en-AU", { day:"numeric", month:"long" }).format(d);
+      const time = new Intl.DateTimeFormat("en-AU", { hour:"2-digit", minute:"2-digit" }).format(d).toLowerCase();
+      return `${dayMonth} ${time}`;
+    } catch {
+      return "(unknown time)";
     }
-    return;
   }
 
-  try{
-    const r = await apiFetch("/activity", s);
-    let data = null;
-    try { data = await r.json(); } catch { data = { error: "Invalid JSON from /activity" }; }
-    LAST_ACTIVITY = data;
+  function friendlyActivityText(x){
+    const src  = String(x?.source || "").toLowerCase();
+    const note = String(x?.public_note || x?.note || "").trim();
+    const delta = Number(x?.delta_cents || 0);
 
-    if (!r.ok){
+    let cleanNote = note
+      .replace(/^•\s*/, "")
+      .replace(/\s*\(target(?:_store)?=\s*\d+\)\s*/gi, " ")
+      .replace(/^\((.*)\)$/s, "$1")
+      .trim();
+
+    if (src === "entitlement" || cleanNote.toLowerCase().startsWith("granted entitlement:")) {
+      const item = cleanNote.replace(/^granted entitlement:\s*/i, "").trim();
+      return {
+        title: item ? `Unlocked: ${item}` : "Unlocked a reward",
+        detail: cleanNote.toLowerCase().startsWith("granted entitlement:") ? "" : `Reason: ${cleanNote}`
+      };
+    }
+
+    if (src.startsWith("admin")) {
+      cleanNote = cleanNote
+        .replace(/^admin_set\s*/i, "Admin set ")
+        .replace(/^admin_adjust\s*/i, "Admin adjusted ")
+        .replace(/^admin_grant\s*/i, "Admin granted ")
+        .trim();
+    }
+
+    if (src === "redeem") {
+      const clean = cleanNote.replace(/^redeemed\s*/i, "").trim();
+      return { title: clean ? `You redeemed ${clean}` : "You redeemed a reward", detail: "" };
+    }
+
+    if (delta > 0 && src.startsWith("admin")) {
+      return { title: "Yay, bonus credits added! 🎉", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
+    }
+
+    if (delta < 0 && src.startsWith("admin")) {
+      return { title: "Credit adjustment by Anya", detail: cleanNote ? `Reason: ${cleanNote}` : "" };
+    }
+
+    if (src === "patreon_charge") return { title: "Patreon payment processed, your credits arrived 💖", detail: "" };
+    if (src === "refund")        return { title: "Credits refunded", detail: "" };
+
+    return { title: cleanNote || "Account update", detail: "" };
+  }
+
+  function renderActivity(list){
+    const box = document.getElementById("activity");
+    if (!box) return;
+
+    if (!Array.isArray(list) || list.length === 0){
+      box.classList.add("muted");
+      box.textContent = "No recent activity yet.";
+      return;
+    }
+
+    box.classList.remove("muted");
+
+    box.innerHTML = `<div class="activityList">${
+      list.map(x => {
+        const delta = Number(x?.delta_cents || 0);
+        const source = String(x?.source || "").toLowerCase();
+
+        let amount = "";
+        let pillCls = "pill--gray";
+        let icon = "💰";
+
+        if (source === "entitlement") {
+          amount = "Unlock";
+          pillCls = "pill--blue";
+          icon = "🔑";
+        }
+        else if (delta > 0) {
+          amount = `+${Math.abs(Math.trunc(delta))}`;
+          pillCls = "pill--green";
+          icon = "💰";
+        }
+        else if (delta < 0) {
+          amount = `−${Math.abs(Math.trunc(delta))}`;
+          pillCls = "pill--red";
+          icon = "💰";
+        }
+        else {
+          amount = "—";
+          pillCls = "pill--gray";
+          icon = "💰";
+        }
+
+        const when = fmtPrettyWhen(x?.created_at);
+        const { title, detail } = friendlyActivityText(x);
+
+        return `
+          <div class="activityItem">
+            <div class="activityRow">
+              <div class="activityPillWrap">
+                <span class="pill activityPill ${pillCls}">
+                  <span class="pillDot"></span>
+                  ${escapeHtml(amount)}
+                  <span style="opacity:.75;">${icon}</span>
+                </span>
+              </div>
+
+              <span class="activityText">
+                <strong>${escapeHtml(title)}</strong>
+                ${detail ? `<span class="activityReason">${escapeHtml(detail)}</span>` : ""}
+              </span>
+
+              <span class="activityTime">${escapeHtml(when)}</span>
+            </div>
+          </div>
+        `;
+      }).join("")
+    }</div>`;
+  }
+
+  async function loadActivity(){
+    const s = getSession();
+    const box = document.getElementById("activity");
+
+    if (!s){
       if (box){
         box.classList.add("muted");
-        box.textContent = data?.error || "Could not load activity.";
+        box.textContent = "Connect Patreon to see recent activity on your account.";
       }
       return;
     }
 
-    const items = Array.isArray(data?.items) ? data.items : [];
-    renderActivity(items);
-    maybeToastNewActivity(items);
-  } catch (e){
-    if (box){
-      box.classList.add("muted");
-      box.textContent = "Network error loading activity.";
+    try{
+      const r = await apiFetch("/activity", s);
+      let data = null;
+      try { data = await r.json(); } catch { data = { error: "Invalid JSON from /activity" }; }
+      LAST_ACTIVITY = data;
+
+      if (!r.ok){
+        if (box){
+          box.classList.add("muted");
+          box.textContent = data?.error || "Could not load activity.";
+        }
+        return;
+      }
+
+      const items = Array.isArray(data?.items) ? data.items : [];
+      renderActivity(items);
+      maybeToastNewActivity(items);
+    } catch (e){
+      if (box){
+        box.classList.add("muted");
+        box.textContent = "Network error loading activity.";
+      }
     }
   }
-}
-  
+
   async function loadStore() {
     const el = document.getElementById("store");
     if (!el) return;
@@ -1540,13 +1325,13 @@ async function loadActivity(){
         div.innerHTML = `
           ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
 
-        <div class="storeMeta">
-          <div class="storeTitle">${item.name}</div>
-          <div class="storeInfo">
-            ${costCreditsLabel} credits 
-            ${isOwned ? "• System Owned ✅" : `• ${remaining} keys left`}
+          <div class="storeMeta">
+            <div class="storeTitle">${item.name}</div>
+            <div class="storeInfo">
+              ${costCreditsLabel} credits
+              ${isOwned ? "• System Owned ✅" : `• ${remaining} keys left`}
+            </div>
           </div>
-        </div>
 
           <button
             class="storeButton"
@@ -1654,97 +1439,92 @@ async function loadActivity(){
     box.prepend(wrap);
   }
 
-function showStoreMessage(buttonEl, msg, type = "info") {
-  if (!buttonEl) return;
+  function showStoreMessage(buttonEl, msg, type = "info") {
+    if (!buttonEl) return;
 
-  const card = buttonEl.closest(".card");
-  if (!card) return;
+    const card = buttonEl.closest(".card");
+    if (!card) return;
 
-  const box = card.querySelector(".storeMsg");
-  if (!box) return;
+    const box = card.querySelector(".storeMsg");
+    if (!box) return;
 
-  const defaultMsg = box.dataset.defaultMsg || box.textContent;
-  if (!box.dataset.defaultMsg) box.dataset.defaultMsg = defaultMsg;
+    const defaultMsg = box.dataset.defaultMsg || box.textContent;
+    if (!box.dataset.defaultMsg) box.dataset.defaultMsg = defaultMsg;
 
-  clearTimeout(box._resetTimer);
+    clearTimeout(box._resetTimer);
 
-  box.classList.remove("storeMsg--success","storeMsg--error","storeMsg--info","show");
-  box.classList.add("show");
+    box.classList.remove("storeMsg--success","storeMsg--error","storeMsg--info","show");
+    box.classList.add("show");
 
-  if (type === "success") box.classList.add("storeMsg--success");
-  else if (type === "error") box.classList.add("storeMsg--error");
-  else box.classList.add("storeMsg--info");
+    if (type === "success") box.classList.add("storeMsg--success");
+    else if (type === "error") box.classList.add("storeMsg--error");
+    else box.classList.add("storeMsg--info");
 
-  box.textContent = msg;
+    box.textContent = msg;
 
-  if (type === "error" || type === "success") {
-    box._resetTimer = setTimeout(() => {
-      box.classList.remove("storeMsg--success","storeMsg--error");
-      box.classList.add("storeMsg--info");
-      box.textContent = box.dataset.defaultMsg || defaultMsg;
-    }, 3000);
-  }
-}
-  
-async function redeem(itemId, buttonEl) {
-  const s = getSession();
-
-  if (!s) {
-    showStoreMessage(buttonEl, "Please connect your Patreon account first.", "error");
-    return;
+    if (type === "error" || type === "success") {
+      box._resetTimer = setTimeout(() => {
+        box.classList.remove("storeMsg--success","storeMsg--error");
+        box.classList.add("storeMsg--info");
+        box.textContent = box.dataset.defaultMsg || defaultMsg;
+      }, 3000);
+    }
   }
 
-  const itemName = buttonEl?.dataset?.name || itemId;
-  const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
+  async function redeem(itemId, buttonEl) {
+    const s = getSession();
 
-  if (CURRENT_CREDITS_CENTS < costCents) {
-    showStoreMessage(
-      buttonEl,
-      `Not enough credits for ${itemName}. You need ${costCents} credits.`,
-      "error"
-    );
-    return;
-  }
-
-  if (redeeming.has(itemId)) return;
-  redeeming.add(itemId);
-
-  const originalText = buttonEl?.textContent || "Redeem";
-
-  try {
-    buttonEl.disabled = true;
-    buttonEl.textContent = "Redeeming…";
-    showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
-
-    const r = await apiFetch("/redeem", s, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ itemId })
-    });
-
-    const out = await r.json();
-
-    if (!r.ok) {
-      showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
+    if (!s) {
+      showStoreMessage(buttonEl, "Please connect your Patreon account first.", "error");
       return;
     }
 
-    showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Check “Your Unlocks”.`, "success");
+    const itemName = buttonEl?.dataset?.name || itemId;
+    const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
 
-    await loadMe();
-    await loadUnlocks();
-    await loadStore();
-  } catch (e) {
-    console.error(e);
-    showStoreMessage(buttonEl, "Network error. Please try again.", "error");
-  } finally {
-    redeeming.delete(itemId);
-    buttonEl.disabled = false;
-    buttonEl.textContent = originalText;
+    if (CURRENT_CREDITS_CENTS < costCents) {
+      showStoreMessage(buttonEl, `Not enough credits for ${itemName}. You need ${costCents} credits.`, "error");
+      return;
+    }
+
+    if (redeeming.has(itemId)) return;
+    redeeming.add(itemId);
+
+    const originalText = buttonEl?.textContent || "Redeem";
+
+    try {
+      buttonEl.disabled = true;
+      buttonEl.textContent = "Redeeming…";
+      showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "success");
+
+      const r = await apiFetch("/redeem", s, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ itemId })
+      });
+
+      const out = await r.json();
+
+      if (!r.ok) {
+        showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
+        return;
+      }
+
+      showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Check “Your Unlocks”.`, "success");
+
+      await loadMe();
+      await loadUnlocks();
+      await loadStore();
+    } catch (e) {
+      console.error(e);
+      showStoreMessage(buttonEl, "Network error. Please try again.", "error");
+    } finally {
+      redeeming.delete(itemId);
+      buttonEl.disabled = false;
+      buttonEl.textContent = originalText;
+    }
   }
-}
 
-  // Info popup handlers
   const infoBtn = document.getElementById("infoBtn");
   const infoPop = document.getElementById("infoPop");
   const infoClose = document.getElementById("infoClose");
@@ -1757,140 +1537,76 @@ async function redeem(itemId, buttonEl) {
   infoPop?.addEventListener("click", (e) => { if (e.target === infoPop) closeInfo(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInfo(); });
 
-function redactKey(s){
-  const t = String(s || "");
-  if (!t) return "";
-  // Keep only last 6 chars so you can correlate, but not leak the full key
-  return t.length <= 6 ? t : ("***" + t.slice(-6));
-}
-
-// ✅ Click Handler for Copy Support Info in the PopUp
-document.getElementById("copySupport")?.addEventListener("click", async () => {
-  const sessionPresent = !!getSession();
-  const supportId = getSupportId();
-
-  // Pull user_id + patreon_user_id from /support (because /me doesn't include them)
-  let support = { user_id: null, patreon_user_id: null };
-  try {
-    const s = getSession();
-    if (s) {
-      const r = await apiFetch("/support", s);
-      const data = await r.json();
-      if (r.ok && data?.loggedIn && data?.support) {
-        support.user_id = data.support.user_id ?? null;
-        support.patreon_user_id = data.support.patreon_user_id ?? null;
-      }
-    }
-  } catch (e) {
-    // ignore — still copy whatever we have
+  function redactKey(s){
+    const t = String(s || "");
+    if (!t) return "";
+    return t.length <= 6 ? t : ("***" + t.slice(-6));
   }
 
-  const entItems = Array.isArray(LAST_ENTITLEMENTS?.items) ? LAST_ENTITLEMENTS.items : [];
-  const safeEnt = entItems.map(e => ({
-    entitlement_id: e?.id ?? null,
-    item_id: e?.item_id ?? null,
-    title: e?.payload?.title ?? null,
-    claimed_at: e?.payload?.claimed_at ?? null,
-    itch_key_code_last6: redactKey(e?.payload?.itch_key_code),
-    itch_key_url_present: !!e?.payload?.itch_key_url
-  }));
+  document.getElementById("copySupport")?.addEventListener("click", async () => {
+    const sessionPresent = !!getSession();
+    const supportId = getSupportId();
 
-  const safe = {
-    app: "Anya & Lolo Patreon Rewards",
-    page: location.href.split("?")[0],
-    time: new Date().toISOString(),
-    session_present: sessionPresent,
+    let support = { user_id: null, patreon_user_id: null };
+    try {
+      const s = getSession();
+      if (s) {
+        const r = await apiFetch("/support", s);
+        const data = await r.json();
+        if (r.ok && data?.loggedIn && data?.support) {
+          support.user_id = data.support.user_id ?? null;
+          support.patreon_user_id = data.support.patreon_user_id ?? null;
+        }
+      }
+    } catch (e) {}
 
-    // ✅ now useful for admin search
-    user_id: support.user_id,                 // e.g. "patreon_12345"
-    patreon_user_id: support.patreon_user_id, // e.g. "12345"
+    const entItems = Array.isArray(LAST_ENTITLEMENTS?.items) ? LAST_ENTITLEMENTS.items : [];
+    const safeEnt = entItems.map(e => ({
+      entitlement_id: e?.id ?? null,
+      item_id: e?.item_id ?? null,
+      title: e?.payload?.title ?? null,
+      claimed_at: e?.payload?.claimed_at ?? null,
+      itch_key_code_last6: redactKey(e?.payload?.itch_key_code),
+      itch_key_url_present: !!e?.payload?.itch_key_url
+    }));
 
-    // From /me (if connected)
-    loggedIn: LAST_ME?.loggedIn ?? null,
-    patreon_status: LAST_ME?.patreon_status ?? null,
-    credits_raw_cents: LAST_ME?.credits_raw_cents ?? null,
+    const safe = {
+      app: "Anya & Lolo Patreon Rewards",
+      page: location.href.split("?")[0],
+      time: new Date().toISOString(),
+      session_present: sessionPresent,
+      user_id: support.user_id,
+      patreon_user_id: support.patreon_user_id,
+      loggedIn: LAST_ME?.loggedIn ?? null,
+      patreon_status: LAST_ME?.patreon_status ?? null,
+      credits_raw_cents: LAST_ME?.credits_raw_cents ?? null,
+      entitlements_count: safeEnt.length,
+      entitlements: safeEnt,
+      ua: navigator.userAgent
+    };
 
-    // From /entitlements
-    entitlements_count: safeEnt.length,
-    entitlements: safeEnt,
+    const text =
+      `SUPPORT INFO (paste to Anya)\nSupport ID: ${supportId}\n` +
+      JSON.stringify(safe, null, 2);
 
-    ua: navigator.userAgent
-  };
+    await navigator.clipboard.writeText(text);
 
-  const text =
-    `SUPPORT INFO (paste to Anya)\nSupport ID: ${supportId}\n` +
-    JSON.stringify(safe, null, 2);
+    const msg = document.getElementById("supportCopied");
+    if (msg) msg.textContent = "Copied! Paste this to Anya 💛";
+  });
 
-  await navigator.clipboard.writeText(text);
+  window.addEventListener("error", (e) => { console.error("Global error:", e.error || e.message); });
+  window.addEventListener("unhandledrejection", (e) => { console.error("Unhandled promise rejection:", e.reason); });
 
-  const msg = document.getElementById("supportCopied");
-  if (msg) msg.textContent = "Copied! Paste this to Anya 💛";
-});
-
-window.addEventListener("error", (e) => {
-  console.error("Global error:", e.error || e.message);
-});
-window.addEventListener("unhandledrejection", (e) => {
-  console.error("Unhandled promise rejection:", e.reason);
-});
-  
   (async () => {
-  try { await loadMe(); } catch(e){ console.error("loadMe failed", e); }
-  try { await loadUnlocks(); } catch(e){ console.error("loadUnlocks failed", e); }
-  try { await loadActivity(); } catch(e){ console.error("loadActivity failed", e); } // for user to see updates on account like credit spent etc
-  try { await loadStore(); } catch(e){ console.error("loadStore failed", e); }
-})();
-
-</script>
+    try { await loadMe(); } catch(e){ console.error("loadMe failed", e); }
+    try { await loadUnlocks(); } catch(e){ console.error("loadUnlocks failed", e); }
+    try { await loadActivity(); } catch(e){ console.error("loadActivity failed", e); }
+    try { await loadStore(); } catch(e){ console.error("loadStore failed", e); }
+  })();
+  </script>
 
   <script src="https://app.embed.im/confetti.js" defer></script>
   <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
