@@ -539,7 +539,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(3px);
     opacity: 0;
     pointer-events: none;
@@ -1138,7 +1138,8 @@ async function playWelcomeConfetti(times = 3) {
       particleCount: 120,
       spread: 90,
       origin: { y: 0.7 },
-      startVelocity: 45
+      startVelocity: 45,
+      zIndex: 100000
     });
     await new Promise(r => setTimeout(r, 450)); // gap between bursts
   }
@@ -2077,6 +2078,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
