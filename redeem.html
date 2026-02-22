@@ -1156,14 +1156,39 @@ document.getElementById("toastWrap")?.addEventListener("click", () => closeToast
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeToast(true);
 });
-  
-function maybeToastCreditsChange(newCents){
-  const prev = Number(localStorage.getItem(LAST_CREDITS_KEY) || "0");
-  localStorage.setItem(LAST_CREDITS_KEY, String(newCents));
 
-  const diff = newCents - prev;
-  if (diff > 0) toast(`🎉 ${diff} new credits added!`, "mint");
-  if (diff < 0) toast(`✅ ${Math.abs(diff)} credits used/refunded.`, "blue");
+function isPositiveActivity(it){
+  const src = String(it?.source || "").toLowerCase();
+  const delta = Number(it?.delta_cents || 0);
+
+  if (src === "redeem") return true;          // positive to user
+  if (src === "entitlement") return true;     // positive
+  if (delta > 0) return true;                // credits added/refunded/etc
+  return false;
+}
+
+function toastForActivity(it){
+  const src = String(it?.source || "").toLowerCase();
+  const delta = Number(it?.delta_cents || 0);
+
+  if (src === "patreon_charge" && delta > 0) {
+    return { msg: "💖 Patreon support received, thank you! New credits unlocked.", variant: "mint", confetti: true };
+  }
+  if (src === "refund" && delta > 0) {
+    return { msg: "✅ Refund successful! Your credits have been returned.", variant: "mint", confetti: true };
+  }
+  if (src === "redeem") {
+    return { msg: "🎟️ Redeem successful! Please check 'Your Unlocks'.", variant: "mint", confetti: true };
+  }
+  if (src === "entitlement") {
+    return { msg: "🎁 New item added! CPlease check 'Your Unlocks'.", variant: "mint", confetti: true };
+  }
+  if (delta > 0) {
+    return { msg: "🎉 Bonus credits added! See Account Activity for more details.", variant: "mint", confetti: true };
+  }
+
+  // non-positive / informational
+  return { msg: "ℹ️ Account updated. See Account Activity for more details.", variant: "blue", confetti: false };
 }
 
 function maybeToastNewActivity(items){
@@ -1173,18 +1198,25 @@ function maybeToastNewActivity(items){
   const newest = items[0]?.created_at || "";
   if (!newest) return;
 
-  if (lastSeen && newest !== lastSeen){
+  // First ever visit: don’t spam, just set baseline.
+  if (!lastSeen) {
+    localStorage.setItem(LAST_ACTIVITY_SEEN_KEY, newest);
+    return;
+  }
+
+  // If there is new activity since last seen, show ONE toast for the newest unseen item.
+  if (newest !== lastSeen) {
+    const unseen = [];
     for (const it of items){
-      if (it.created_at === lastSeen) break;
+      if (it?.created_at === lastSeen) break;
+      unseen.push(it);
+    }
 
-      const src = String(it.source || "");
-      const delta = Number(it.delta_cents || 0);
-
-      if (src === "patreon_charge" && delta > 0) toast("💖 Patreon support received, thank you! New credits unlocked.", "mint", 4000, { confetti: "credits" });
-      else if (src === "refund" && delta > 0) toast("✅ Refund successful! Your credits have been returned.", "mint", 4000, { confetti: "credits" });
-      else if (src === "redeem" && delta < 0) toast("🎟️ Redeem successful. Check Your Unlocks!", "blue", 4000, { confetti: "unlock" });
-      else if (src === "entitlement") toast("🎁 New item added. Check Your Unlocks!", "mint", 4000, { confetti: "unlock" });
-      else if (delta > 0) toast("🎉 Bonus credits added! See Your Account Activity for details.", "mint");
+    const pick = unseen.find(isPositiveActivity) || unseen[0];
+    if (pick) {
+      const t = toastForActivity(pick);
+      toast(t.msg, t.variant, 4200, { confetti: t.confetti ? "credits" : null }); 
+      // ^ we use "credits" as generic "good news" burst
     }
   }
 
@@ -1902,8 +1934,11 @@ function startCreditsPolling(ms = POLL_MS) {
 
       if (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS) {
         const diff = now - LAST_CREDITS_CENTS;
-        if (diff > 0) toast(`💰 Yay! +${diff} credits added!`, "mint", 4200, { confetti: "credits" });
-        else if (diff < 0) toast(`ℹ️ ${Math.abs(diff)} credits used`, "blue");
+          if (diff > 0) {
+            toast(`💰 Yay! +${diff} credits added!`, "mint", 4200, { confetti: "credits" });
+          } else if (diff < 0) {
+            toast(`ℹ️ ${Math.abs(diff)} credits changed`, "blue", 4200);
+          }
       }
 
       LAST_CREDITS_CENTS = now;
@@ -1945,15 +1980,3 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
