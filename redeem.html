@@ -829,6 +829,15 @@
     pointer-events: none !important;
     touch-action: none !important;
   }
+
+  /* Center + enlarge empty-state messages (Unlocks + Activity) */
+  #unlocks.muted,
+  #activity.muted{
+    text-align: center;
+    font-size: 15px;      /* same feel as “Want to hang out?” */
+    color: rgba(27,27,27,0.78);
+    margin-top: 6px;
+  }
 </style>
 </head>
 
@@ -1784,5 +1793,6 @@ window.addEventListener("unhandledrejection", (e) => {
 
 </body>
 </html>
+
 
 
