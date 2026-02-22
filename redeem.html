@@ -1392,7 +1392,7 @@ async function loadMe() {
   // play welcome confetti (once per browser)
   if (!sessionStorage.getItem("welcome_confetti_v1")) {
     sessionStorage.setItem("welcome_confetti_v1", "1");
-    playWelcomeConfetti(3);
+    playWelcomeConfetti(3).catch(()=>{});
   }
     
     LAST_ME = null;
@@ -1866,6 +1866,7 @@ async function redeem(itemId, buttonEl) {
 
     await loadMe();
     await loadUnlocks();
+    await loadActivity();
     await loadStore();
   } catch (e) {
     console.error(e);
@@ -1988,20 +1989,19 @@ const POLL_MS = 5000; // check every 5 sec
 
 let LAST_CREDITS_CENTS = null;
 let POLL_TIMER = null;
+let ACTIVITY_TICK = 0;
   
-function startCreditsPolling(ms = POLL_MS) {
-  if (POLL_TIMER) return;
-  if (!getSession()) return; // don't poll if not connected
-
 async function tick() {
   try {
     if (document.hidden) return;
-    if (!getSession()) {
+
+    const session = getSession();
+    if (!session) {
       stopCreditsPolling();
       return;
     }
 
-    const r = await apiFetch("/me", getSession());
+    const r = await apiFetch("/me", session);
     const me = await r.json();
 
     if (!r.ok || !me?.loggedIn) {
@@ -2012,30 +2012,33 @@ async function tick() {
     const now = Number(me?.credits_raw_cents ?? 0);
     if (!Number.isFinite(now)) return;
 
-    if (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS) {
-      const diff = now - LAST_CREDITS_CENTS;
-
-      // ✅ update UI instantly
-      applyCreditsNow(now);
-
-      // ✅ toast
-      if (diff > 0)
-        toast(`💰 +${diff} credits added!`, "mint", 4200, { confetti: "credits" });
-      else if (diff < 0)
-        toast(`ℹ️ ${Math.abs(diff)} credits used`, "blue");
+    // Periodic activity refresh even if credits don't change
+    ACTIVITY_TICK = (ACTIVITY_TICK + 1) % 3;
+    if (ACTIVITY_TICK === 0) {
+      loadActivity().catch(() => {}); // <-- this is where the toast happens (maybeToastNewActivity)
     }
 
-    // ✅ ALWAYS update baseline after handling change
-    LAST_CREDITS_CENTS = now;
+    // If credits changed, update the UI + refresh panels
+    if (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS) {
+      applyCreditsNow(now);           // updates number + (optionally) store enable/disable
+      loadUnlocks().catch(() => {});  // new unlocks after redeem / admin grant
+      loadActivity().catch(() => {}); // will toast once if new activity exists
+      loadStore().catch(() => {});    // optional but nice
+    }
 
+    LAST_CREDITS_CENTS = now;
   } catch (e) {
     // silent
   }
 }
 
+function startCreditsPolling(ms = POLL_MS) {
+  if (POLL_TIMER) return;
+  if (!getSession()) return; // don't poll if not connected
+  
   POLL_TIMER = setInterval(tick, ms);
   tick(); // run once immediately
-} // ✅ END of startCreditsPolling
+}
 
 function stopCreditsPolling() {
   if (POLL_TIMER) clearInterval(POLL_TIMER);
@@ -2065,6 +2068,3 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
-
-
-
