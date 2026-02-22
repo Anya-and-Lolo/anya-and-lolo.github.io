@@ -114,6 +114,15 @@
     box-shadow: 0 14px 30px rgba(244,24,76,.20);
     transform: translateY(-1px);
   }
+  .btnGreen{
+    background: #22c55e;
+    color: #fff;
+    border-color: rgba(34,197,94,0.35);
+  }
+  .btnGreen:hover{
+    box-shadow: 0 14px 30px rgba(34,197,94,.22);
+    transform: translateY(-1px);
+  }
 
   a.pop{ animation: pop .28s ease; }
   @keyframes pop{
@@ -563,12 +572,13 @@
   .toast.mint  { background: rgba(22, 163, 74, 0.9); }
   .toast.blue  { background: rgba(37, 99, 235, 0.9); }
   .toast.red   { background: rgba(220, 38, 38, 0.9); }
-
   @keyframes toastPop {
     to {
       transform: scale(1);
     }
   }
+  canvas.confetti-canvas { z-index: 100000 !important; position: fixed !important; }  /* brings confetti in front of dark overlay */
+  
   /* ACTIVITY FEED */
   .activityList{ display:flex; flex-direction:column; gap:10px; }
 
@@ -1102,6 +1112,22 @@ function ensureConfettiLoaded(){
   return CONFETTI_LOADING;
 }
 
+async function playWelcomeConfetti(times = 3) {
+  await ensureConfettiLoaded();
+  if (typeof window.confetti !== "function") return;
+
+  for (let i = 0; i < times; i++) {
+    // little variation each burst
+    window.confetti({
+      particleCount: 120,
+      spread: 90,
+      origin: { y: 0.7 },
+      startVelocity: 45
+    });
+    await new Promise(r => setTimeout(r, 450)); // gap between bursts
+  }
+}
+  
 async function maybeConfetti(kind){
   if (!ALLOW_CONFETTI) return;
   await ensureConfettiLoaded();
@@ -1312,6 +1338,9 @@ function showConnectUI(){
   const btn = document.getElementById("connect");
 
   if (btn){
+    btn.classList.add("btnPrimary");
+    btn.classList.remove("btnGreen");
+
     btn.style.display = "";
     btn.disabled = false;
 
@@ -1327,18 +1356,21 @@ function showConnectUI(){
   const creditsSub = document.querySelector(".creditsSub");
   if (creditsSub) creditsSub.textContent = "Connect Patreon";
 }
-
+  
 function showConnectedUI(){
   const btn = document.getElementById("connect");
 
   if (btn){
+    btn.classList.add("btnGreen");
+    btn.classList.remove("btnPrimary");
+
     btn.style.display = "";
     btn.disabled = false;
 
     if (window.innerWidth <= 600){
       btn.textContent = "Re-connect";
     } else {
-      btn.textContent = "Re-connect Patreon";
+      btn.textContent = "Issues? Re-connect";
     }
 
     btn.dataset.mode = "reconnect";
@@ -1348,7 +1380,6 @@ function showConnectedUI(){
   if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
 }
 
-
 /* LOADERS: /me, /activity, /store, /entitlements */
 async function loadMe() {
   const s = getSession();
@@ -1357,6 +1388,13 @@ async function loadMe() {
 
   if (!s) {
     ALLOW_CONFETTI = true; // not logged in (new users)
+
+  // play welcome confetti (once per browser)
+  if (!sessionStorage.getItem("welcome_confetti_v1")) {
+    sessionStorage.setItem("welcome_confetti_v1", "1");
+    playWelcomeConfetti(3);
+  }
+    
     LAST_ME = null;
     CURRENT_CREDITS_CENTS = 0;
 
@@ -2023,10 +2061,10 @@ document.addEventListener("visibilitychange", () => {
 })();
 </script>
 
-  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
 
 </body>
 </html>
+
 
 
