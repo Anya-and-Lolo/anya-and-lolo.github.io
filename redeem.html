@@ -281,8 +281,9 @@
       color: #fff;
       border-color: rgba(244,24,76,0.35);
     }
-    .btnPrimary:hover{
-      box-shadow: 0 14px 30px rgba(244,24,76,.20);
+    /* Remove shadow from Connect button */
+    #connect:hover{
+      box-shadow: none !important;
     }
 
     /* --- Cards: index translucency + hover lift --- */
@@ -301,7 +302,13 @@
       box-shadow: 0 14px 28px rgba(0,0,0,.07);
       transform: translateY(-1px);
     }
-
+    /* Only remove shadow from first card (connect section) */
+    .wrap > .card:first-of-type{
+      box-shadow: none;
+    }
+    .wrap > .card:first-of-type:hover{
+      box-shadow: none;
+    }
     .subcard{
       margin: 10px 0 0;
       box-shadow: 0 8px 18px rgba(0,0,0,.04);
@@ -1634,6 +1641,7 @@
   <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>
+
 
 
 
