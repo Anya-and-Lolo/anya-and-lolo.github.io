@@ -705,6 +705,12 @@
       pointer-events: none !important;
       touch-action: none !important;
     }
+
+    /* Fix blurry text on store cards (GPU transform issue) */
+    #store .card:hover{
+      transform: none;                 /* stop GPU raster blur */
+      box-shadow: 0 14px 28px rgba(0,0,0,.07); /* keep the hover feel */
+    }
   </style>
 </head>
 
@@ -1610,3 +1616,4 @@
   <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>
+
