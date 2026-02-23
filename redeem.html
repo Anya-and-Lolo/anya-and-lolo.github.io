@@ -1560,8 +1560,13 @@ async function loadStore() {
     }
 
     items.forEach(item => {
-      const costCreditsLabel = String(Math.floor(Number(item.cost_cents || 0)));
+      const priceCents = Number(item.final_cents ?? item.cost_cents ?? 0);
+      const costCreditsLabel = String(Math.floor(priceCents));
       const remaining = item.remaining ?? 0;
+      const discountText =
+        item?.discount?.percent
+          ? `• ${item.discount.percent}% off`
+          : (item?.discount_label ? `• ${item.discount_label}` : "");
       const img = ITEM_IMAGES[item.id] || "";
       const isOwned = OWNED_ITEM_IDS.has(item.id);
 
@@ -1574,6 +1579,7 @@ async function loadStore() {
           <div class="storeTitle">${item.name}</div>
           <div class="storeInfo">
             ${costCreditsLabel} credits
+            ${discountText ? ` ${discountText}` : ""}
             ${isOwned ? "• System Owned ✅" : `• ${remaining} keys left`}
           </div>
         </div>
@@ -1583,7 +1589,7 @@ async function loadStore() {
           ${(isOwned || remaining <= 0) ? "disabled" : ""}
           data-id="${item.id}"
           data-name="${item.name}"
-          data-cost-cents="${item.cost_cents}">
+          data-cost-cents="${priceCents}">
           ${isOwned ? "Redeemed" : "Redeem"}
         </button>
 
@@ -1849,16 +1855,6 @@ async function redeem(itemId, buttonEl) {
   }
 
   const itemName = buttonEl?.dataset?.name || itemId;
-  const costCents = Number(buttonEl?.dataset?.costCents ?? 0);
-
-  if (CURRENT_CREDITS_CENTS < costCents) {
-    showStoreMessage(
-      buttonEl,
-      `Not enough credits for ${itemName}. You need ${costCents} credits.`,
-      "error"
-    );
-    return;
-  }
 
   if (redeeming.has(itemId)) return;
   redeeming.add(itemId);
@@ -1879,7 +1875,17 @@ async function redeem(itemId, buttonEl) {
     const out = await r.json();
 
     if (!r.ok) {
-      showStoreMessage(buttonEl, out.error || "Redeem failed. Please try again.", "error");
+      // nicer “not enough credits” message when backend provides available_cents
+      if (out?.error === "Not enough credits") {
+        const have = Number(out?.available_cents ?? 0);
+        showStoreMessage(
+          buttonEl,
+          `Not enough credits for ${itemName}. You have ${have} credits.`,
+          "error"
+        );
+      } else {
+        showStoreMessage(buttonEl, out?.error || "Redeem failed. Please try again.", "error");
+      }
       return;
     }
 
@@ -2080,6 +2086,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
