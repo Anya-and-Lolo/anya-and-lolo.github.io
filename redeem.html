@@ -1555,7 +1555,13 @@ async function loadStore() {
     items.forEach(item => {
       const priceCents = Number(item.final_cents ?? item.cost_cents ?? 0);
       const costCreditsLabel = String(Math.floor(priceCents));
-      const remaining = item.remaining ?? 0;
+      const fulfillment = String(item.fulfillment || "itch_key"); // itch_key | link | bundle
+      const isKeyed = (fulfillment === "itch_key");
+      
+      const remaining = Number.isFinite(Number(item.remaining)) ? Number(item.remaining) : null;
+      
+      // ONLY itch_key items can be sold out by remaining
+      const soldOut = isKeyed && (remaining != null) && (remaining <= 0);
       const discountText =
         item?.discount?.percent
           ? `• ${item.discount.percent}% off`
@@ -1566,20 +1572,20 @@ async function loadStore() {
       const div = document.createElement("div");
       div.className = "card";
       div.innerHTML = `
-        ${img ? `<img class="storeImg" src="${img}" alt="${item.name}">` : ""}
+        ${img ? `<img class="storeImg" src="${escapeHtml(img)}" alt="${item.name}">` : ""}
 
         <div class="storeMeta">
           <div class="storeTitle">${item.name}</div>
           <div class="storeInfo">
             ${costCreditsLabel} credits
             ${discountText ? ` ${discountText}` : ""}
-            ${isOwned ? "• System Owned ✅" : `• ${remaining} keys left`}
+            ${isOwned ? "• System Owned ✅" : (isKeyed ? `• ${(remaining ?? 0)} keys left` : "• Instant unlock")}
           </div>
         </div>
 
         <button
           class="storeButton"
-          ${(isOwned || remaining <= 0) ? "disabled" : ""}
+          ${(isOwned || soldOut) ? "disabled" : ""}
           data-id="${item.id}"
           data-name="${item.name}"
           data-cost-cents="${priceCents}">
@@ -1639,8 +1645,7 @@ async function loadUnlocks() {
 
   data.items.forEach(ent => {
     const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
-    const raw = (ent.payload && (ent.payload.itch_key_url || ent.payload.itch_key || ent.payload.url)) || "";
-    addUnlock(title, raw);
+    addUnlock(title, ent.payload || {});
   });
 }
 
@@ -1761,35 +1766,110 @@ function renderActivity(list){
   }</div>`;
 }
 
-function addUnlock(title, rawKeyOrUrl) {
+function addUnlock(title, payload) {
   const box = document.getElementById("unlocks");
   if (!box) return;
   if (box.classList.contains("muted")) box.classList.remove("muted");
 
-  const isUrl = isProbablyUrl(rawKeyOrUrl);
-  const keyLabel = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
-
   const safeTitle = escapeHtml(title || "");
-  const safeKey = escapeHtml(rawKeyOrUrl || "(missing key)");
+
+  // 1) BUNDLE: payload.items = [{label, url OR itch_key_url OR itch_key_code}, ...]
+  if (Array.isArray(payload?.items) && payload.items.length) {
+    const rows = payload.items.map((it) => {
+      const label = escapeHtml(it?.label || "Item");
+      const val = String(it?.url || it?.itch_key_url || it?.itch_key_code || it?.itch_key || "");
+      const safeVal = escapeHtml(val);
+      const isUrl = isProbablyUrl(val);
+
+      return `
+        <div style="margin-top:10px">
+          <div style="font-weight:900">${label}</div>
+          <div>
+            ${isUrl
+              ? `<a href="${safeVal}" target="_blank" rel="noopener"><code>${safeVal}</code></a>`
+              : `<code class="key">${safeVal || "(missing)"}</code>`}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const wrap = document.createElement("div");
+    wrap.className = "card subcard";
+    wrap.innerHTML = `
+      <strong>${safeTitle}</strong>
+      <div class="keybox" style="margin-top:8px">
+        <div><strong>Your bundle:</strong></div>
+        ${rows}
+        <div class="muted" style="margin-top:10px">Thank you for supporting 💛</div>
+      </div>
+    `;
+    box.prepend(wrap);
+    return;
+  }
+
+  // 2) LINK: payload.url
+  if (payload?.url) {
+    const url = String(payload.url || "");
+    const safeUrl = escapeHtml(url);
+
+    const wrap = document.createElement("div");
+    wrap.className = "card subcard";
+    wrap.innerHTML = `
+      <strong>${safeTitle}</strong>
+      <div class="keybox" style="margin-top:8px">
+        <div>Your link:</div>
+        <div><a href="${safeUrl}" target="_blank" rel="noopener"><code>${safeUrl}</code></a></div>
+        <div style="margin-top:8px" class="row">
+          <button class="copy">Copy Link</button>
+        </div>
+        <div class="muted" style="margin-top:8px">Thank you for supporting 💛</div>
+      </div>
+    `;
+
+    wrap.querySelector(".copy").onclick = async () => {
+      await navigator.clipboard.writeText(url || "");
+      let msg = wrap.querySelector(".copiedMsg");
+      if (!msg) {
+        msg = document.createElement("div");
+        msg.className = "muted copiedMsg";
+        msg.style.marginTop = "8px";
+        wrap.querySelector(".keybox")?.appendChild(msg);
+      }
+      msg.textContent = "💛 Copied!";
+    };
+
+    box.prepend(wrap);
+    return;
+  }
+
+  // 3) DEFAULT: ITCH KEY
+  const raw = String(payload?.itch_key_url || payload?.itch_key_code || payload?.itch_key || "");
+  const isUrl = isProbablyUrl(raw);
+  const label = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
+
+  const safeKey = escapeHtml(raw || "(missing key)");
 
   const wrap = document.createElement("div");
   wrap.className = "card subcard";
   wrap.innerHTML = `
     <strong>${safeTitle}</strong>
     <div class="keybox" style="margin-top:8px">
-      <div>${keyLabel}</div>
-      <div><code class="key">${safeKey}</code></div>
+      <div>${label}</div>
+      <div>${isUrl
+        ? `<a href="${safeKey}" target="_blank" rel="noopener"><code class="key">${safeKey}</code></a>`
+        : `<code class="key">${safeKey}</code>`}
+      </div>
       <div style="margin-top:8px" class="row">
-        <button class="copy">Copy My Key</button>
+        <button class="copy">Copy</button>
       </div>
       <div class="muted" style="margin-top:8px">
-        Thank you for supporting 💃 Anya & Lolo 🦜 Please keep your key safe.
+        Thank you for supporting 💃 Anya & Lolo 🦜 Please keep it safe.
       </div>
     </div>
   `;
 
   wrap.querySelector(".copy").onclick = async () => {
-    await navigator.clipboard.writeText(rawKeyOrUrl || "");
+    await navigator.clipboard.writeText(raw || "");
     let msg = wrap.querySelector(".copiedMsg");
     if (!msg) {
       msg = document.createElement("div");
@@ -2079,6 +2159,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
