@@ -1019,13 +1019,6 @@ if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
 
 // Redeem lock per item
 const redeeming = new Set();
-  
-// Images
-const ITEM_IMAGES = {
-  fishing_system: "https://anya-and-lolo.github.io/images/fishing_system_image.jpg",
-  visual_novel_system: "https://anya-and-lolo.github.io/images/VN_system_image.jpg",
-  shooting_system: "https://anya-and-lolo.github.io/images/shooting_system_image.jpg",
-};
 
 // Hook connect button (connect + reconnect use same flow)
 document.getElementById("connect").onclick = () => {
@@ -1567,7 +1560,7 @@ async function loadStore() {
         item?.discount?.percent
           ? `• ${item.discount.percent}% off`
           : (item?.discount_label ? `• ${item.discount_label}` : "");
-      const img = ITEM_IMAGES[item.id] || "";
+      const img = (item.image_url || "").trim();
       const isOwned = OWNED_ITEM_IDS.has(item.id);
 
       const div = document.createElement("div");
@@ -2086,6 +2079,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
