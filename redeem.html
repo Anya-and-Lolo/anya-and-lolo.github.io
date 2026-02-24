@@ -1541,7 +1541,7 @@ async function loadStore() {
   if (!el) return;
 
   try {
-    const r = await apiFetch(`/store?t=${Date.now()}`, null, { cache: "no-store" });
+    const r = await apiFetch("/store", null);
     const data = await r.json();
 
     el.innerHTML = "";
@@ -2182,6 +2182,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
