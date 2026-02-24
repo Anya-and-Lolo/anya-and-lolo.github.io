@@ -497,8 +497,54 @@
     font-size: 16px;
     opacity: .75;
     font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.25;
   }
 
+  .storeInfoTop{
+    font-size: 15px;
+    font-weight: 900;
+    opacity: .90;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .storeInfoBottom{
+    font-size: 16px;
+    opacity: .75;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .storeDot{
+    opacity: .40;
+    font-weight: 900;
+  }
+  
+  .saleLabel{
+    font-weight: 1000;
+  }
+  
+  .salePercent{
+    color: var(--brand);
+    font-weight: 1000;
+  }
+  
+  /* optional: tighten thousands spacing a bit */
+  .priceNum{
+    letter-spacing: -0.3px;
+    font-variant-numeric: tabular-nums;
+  }
+  
   .storeMsg{
     margin-top: 8px;
     padding: 10px 12px;
@@ -1567,9 +1613,17 @@ async function loadStore() {
       const baseLabel = String(Math.floor(baseCents));
       const finalLabel = String(Math.floor(finalCents));
 
-      const discountText =
-        percent ? `• ${percent}% off` :
-        (item?.discount_label ? `• ${item.discount_label}` : "");
+      const discountLabel = String(
+        item?.discount?.label ?? item?.discount_label ?? item?.label ?? ""
+      ).trim();
+      
+      const topBits = [];
+      if (discountLabel) topBits.push(`<span class="saleLabel">${escapeHtml(discountLabel)}</span>`);
+      if (percent) topBits.push(`<span class="salePercent">${escapeHtml(percent)}% off</span>`);
+      
+      const topLineHtml = topBits.length
+        ? topBits.join(`<span class="storeDot">•</span>`)
+        : ""; // no discount shown if none
 
       const fulfillment = String(item?.fulfillment || "itch_key"); // itch_key | link | bundle
       const isKeyed = (fulfillment === "itch_key");
@@ -1588,16 +1642,20 @@ async function loadStore() {
         <div class="storeMeta">
           <div class="storeTitle">${escapeHtml(item?.name || "Untitled")}</div>
 
-          <div class="storeInfo">
-            ${
-              isDiscounted
-                ? `<span style="opacity:.55; text-decoration:line-through; margin-right:6px;">${baseLabel}</span>
-                   <strong>${finalLabel}</strong> credits`
-                : `${finalLabel} credits`
-            }
-            ${discountText ? ` ${discountText}` : ""}
-            ${isOwned ? "• System Owned ✅" : (isKeyed ? `• ${(remaining ?? 0)} keys left` : "• Instant unlock")}
-          </div>
+            <div class="storeInfo">
+              ${topLineHtml ? `<div class="storeInfoTop">${topLineHtml}</div>` : ""}
+            
+              <div class="storeInfoBottom">
+                ${
+                  isDiscounted
+                    ? `<span style="opacity:.55; text-decoration:line-through;">${baseLabel}</span>
+                       <strong class="priceNum">${finalLabel}</strong> credits`
+                    : `<strong class="priceNum">${finalLabel}</strong> credits`
+                }
+                <span class="storeDot">•</span>
+                ${isOwned ? "System Owned ✅" : (isKeyed ? `${(remaining ?? 0)} keys left` : "Instant unlock")}
+              </div>
+            </div>
         </div>
 
         <button
@@ -2177,6 +2235,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
