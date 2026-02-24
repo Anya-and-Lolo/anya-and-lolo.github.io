@@ -1436,6 +1436,47 @@ function showConnectedUI(){
   if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
 }
 
+function toMs(x){
+  if (x == null || x === "") return 0;
+  if (typeof x === "number") return x < 2_000_000_000 ? x * 1000 : x;
+  const t = Date.parse(String(x));
+  return Number.isFinite(t) ? t : 0;
+}
+
+// Sort order of store items
+// 1) active first
+// 2) cheaper first OR alphabetical OR newest
+// 3) tie-breaker by id so it NEVER “randomizes”
+function sortShopItemsStable(items){
+  return (items || []).slice().sort((a,b) => {
+    const aActive = Number(a?.active ?? 1) === 1 ? 0 : 1;
+    const bActive = Number(b?.active ?? 1) === 1 ? 0 : 1;
+    if (aActive !== bActive) return aActive - bActive; // active first
+
+    // --- Choose ONE primary sort (uncomment what you prefer) ---
+
+    // A) Alphabetical by title/name
+    const an = String(a?.name ?? a?.title ?? "").toLowerCase();
+    const bn = String(b?.name ?? b?.title ?? "").toLowerCase();
+    if (an !== bn) return an.localeCompare(bn);
+
+    // B) Cheapest first (instead of alphabetical)
+    // const ap = Number(a?.cost_cents ?? 0);
+    // const bp = Number(b?.cost_cents ?? 0);
+    // if (bp !== ap) return ap - bp;
+
+    // C) Newest first (if you have created_at/updated_at)
+    // const at = Math.max(toMs(a?.updated_at), toMs(a?.created_at));
+    // const bt = Math.max(toMs(b?.updated_at), toMs(b?.created_at));
+    // if (bt !== at) return bt - at;
+
+    // Tie-breaker (ALWAYS keep this)
+    const ai = String(a?.id ?? "");
+    const bi = String(b?.id ?? "");
+    return ai.localeCompare(bi);
+  });
+}
+  
 /* LOADERS: /me, /activity, /store, /entitlements */
 async function loadMe() {
   const s = getSession();
@@ -1580,6 +1621,42 @@ async function loadActivity(){
   }
 }
 
+function sortShopItemsStable(items){
+  // Choose your “always stable” sort key order:
+  // 1) active items first (optional)
+  // 2) discounted items first (optional)
+  // 3) then by name (or price), then by id as final tie-breaker
+
+  return [...items].sort((a,b) => {
+    const aName = String(a?.name || "").toLowerCase();
+    const bName = String(b?.name || "").toLowerCase();
+
+    const aId = String(a?.id || "");
+    const bId = String(b?.id || "");
+
+    const aBase = Number(a?.cost_cents ?? 0);
+    const bBase = Number(b?.cost_cents ?? 0);
+    const aFinal = Number(a?.final_cents ?? aBase);
+    const bFinal = Number(b?.final_cents ?? bBase);
+
+    const aDiscounted = Number.isFinite(aFinal) && Number.isFinite(aBase) && aFinal < aBase;
+    const bDiscounted = Number.isFinite(bFinal) && Number.isFinite(bBase) && bFinal < bBase;
+
+    // Discounted first (comment this block out if you don't want this behavior)
+    // if (aDiscounted !== bDiscounted) return aDiscounted ? -1 : 1;
+
+    // Then alphabetically by name
+    if (aName < bName) return -1;
+    if (aName > bName) return 1;
+
+    // Final tie-breaker: id (so it never “randomly” swaps)
+    if (aId < bId) return -1;
+    if (aId > bId) return 1;
+
+    return 0;
+  });
+}
+  
 async function loadStore() {
   const el = document.getElementById("store");
   if (!el) return;
@@ -1589,7 +1666,8 @@ async function loadStore() {
     const data = await r.json();
 
     el.innerHTML = "";
-    const items = Array.isArray(data?.items) ? data.items : [];
+    const itemsRaw = Array.isArray(data?.items) ? data.items : [];
+    const items = sortShopItemsStable(itemsRaw);
 
     if (items.length === 0) {
       el.innerHTML = `<div class="muted">No rewards available yet.</div>`;
@@ -2233,6 +2311,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
