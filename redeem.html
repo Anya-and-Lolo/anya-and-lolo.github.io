@@ -1541,7 +1541,7 @@ async function loadStore() {
   if (!el) return;
 
   try {
-    const r = await apiFetch("/store", null);
+    const r = await apiFetch(`/store?t=${Date.now()}`, null, { cache: "no-store" });
     const data = await r.json();
 
     el.innerHTML = "";
@@ -1553,8 +1553,25 @@ async function loadStore() {
     }
 
     items.forEach(item => {
-      const priceCents = Number(item.final_cents ?? item.cost_cents ?? 0);
-      const costCreditsLabel = String(Math.floor(priceCents));
+      const baseCents = Number(item.cost_cents ?? 0);
+      const finalCents = Number(item.final_cents ?? baseCents);
+      
+      // Accept discount percent from multiple possible API shapes
+      const percent =
+        Number(item?.discount?.percent ?? item?.discount_percent ?? item?.percent_off ?? 0) || 0;
+      
+      const isDiscounted =
+        Number.isFinite(baseCents) &&
+        Number.isFinite(finalCents) &&
+        finalCents < baseCents;
+      
+      const baseLabel = String(Math.floor(baseCents));
+      const finalLabel = String(Math.floor(finalCents));
+      
+      const discountText =
+        percent ? `• ${percent}% off` :
+        (item?.discount_label ? `• ${item.discount_label}` : "");
+      
       const fulfillment = String(item.fulfillment || "itch_key"); // itch_key | link | bundle
       const isKeyed = (fulfillment === "itch_key");
       
@@ -1576,11 +1593,16 @@ async function loadStore() {
 
         <div class="storeMeta">
           <div class="storeTitle">${item.name}</div>
-          <div class="storeInfo">
-            ${costCreditsLabel} credits
-            ${discountText ? ` ${discountText}` : ""}
-            ${isOwned ? "• System Owned ✅" : (isKeyed ? `• ${(remaining ?? 0)} keys left` : "• Instant unlock")}
-          </div>
+            <div class="storeInfo">
+              ${
+                isDiscounted
+                  ? `<span style="opacity:.55; text-decoration:line-through; margin-right:6px;">${baseLabel}</span>
+                     <strong>${finalLabel}</strong> credits`
+                  : `${finalLabel} credits`
+              }
+              ${discountText ? ` ${discountText}` : ""}
+              ${isOwned ? "• System Owned ✅" : (isKeyed ? `• ${(remaining ?? 0)} keys left` : "• Instant unlock")}
+            </div>
         </div>
 
         <button
@@ -2160,6 +2182,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
