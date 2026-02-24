@@ -1541,11 +1541,11 @@ async function loadStore() {
   if (!el) return;
 
   try {
-    const r = await apiFetch("/store", null);
+    const r = await apiFetch(`/store?t=${Date.now()}`, null, { cache: "no-store" });
     const data = await r.json();
 
     el.innerHTML = "";
-    const items = data.items || [];
+    const items = Array.isArray(data?.items) ? data.items : [];
 
     if (items.length === 0) {
       el.innerHTML = `<div class="muted">No rewards available yet.</div>`;
@@ -1553,82 +1553,77 @@ async function loadStore() {
     }
 
     items.forEach(item => {
-      const baseCents = Number(item.cost_cents ?? 0);
-      const finalCents = Number(item.final_cents ?? baseCents);
-      
-      // Accept discount percent from multiple possible API shapes
+      const baseCents = Number(item?.cost_cents ?? 0);
+      const finalCents = Number(item?.final_cents ?? baseCents);
+
       const percent =
         Number(item?.discount?.percent ?? item?.discount_percent ?? item?.percent_off ?? 0) || 0;
-      
+
       const isDiscounted =
         Number.isFinite(baseCents) &&
         Number.isFinite(finalCents) &&
         finalCents < baseCents;
-      
+
       const baseLabel = String(Math.floor(baseCents));
       const finalLabel = String(Math.floor(finalCents));
-      
+
       const discountText =
         percent ? `• ${percent}% off` :
         (item?.discount_label ? `• ${item.discount_label}` : "");
-      
-      const fulfillment = String(item.fulfillment || "itch_key"); // itch_key | link | bundle
+
+      const fulfillment = String(item?.fulfillment || "itch_key"); // itch_key | link | bundle
       const isKeyed = (fulfillment === "itch_key");
-      
-      const remaining = Number.isFinite(Number(item.remaining)) ? Number(item.remaining) : null;
-      
-      // ONLY itch_key items can be sold out by remaining
+
+      const remaining = Number.isFinite(Number(item?.remaining)) ? Number(item.remaining) : null;
       const soldOut = isKeyed && (remaining != null) && (remaining <= 0);
-      const discountText =
-        item?.discount?.percent
-          ? `• ${item.discount.percent}% off`
-          : (item?.discount_label ? `• ${item.discount_label}` : "");
-      const img = (item.image_url || "").trim();
-      const isOwned = OWNED_ITEM_IDS.has(item.id);
+
+      const img = String(item?.image_url || "").trim();
+      const isOwned = OWNED_ITEM_IDS.has(item?.id);
 
       const div = document.createElement("div");
       div.className = "card";
       div.innerHTML = `
-        ${img ? `<img class="storeImg" src="${escapeHtml(img)}" alt="${item.name}">` : ""}
+        ${img ? `<img class="storeImg" src="${escapeHtml(img)}" alt="${escapeHtml(item?.name || "")}">` : ""}
 
         <div class="storeMeta">
-          <div class="storeTitle">${item.name}</div>
-            <div class="storeInfo">
-              ${
-                isDiscounted
-                  ? `<span style="opacity:.55; text-decoration:line-through; margin-right:6px;">${baseLabel}</span>
-                     <strong>${finalLabel}</strong> credits`
-                  : `${finalLabel} credits`
-              }
-              ${discountText ? ` ${discountText}` : ""}
-              ${isOwned ? "• System Owned ✅" : (isKeyed ? `• ${(remaining ?? 0)} keys left` : "• Instant unlock")}
-            </div>
+          <div class="storeTitle">${escapeHtml(item?.name || "Untitled")}</div>
+
+          <div class="storeInfo">
+            ${
+              isDiscounted
+                ? `<span style="opacity:.55; text-decoration:line-through; margin-right:6px;">${baseLabel}</span>
+                   <strong>${finalLabel}</strong> credits`
+                : `${finalLabel} credits`
+            }
+            ${discountText ? ` ${discountText}` : ""}
+            ${isOwned ? "• System Owned ✅" : (isKeyed ? `• ${(remaining ?? 0)} keys left` : "• Instant unlock")}
+          </div>
         </div>
 
         <button
           class="storeButton"
           ${(isOwned || soldOut) ? "disabled" : ""}
-          data-id="${item.id}"
-          data-name="${item.name}"
-          data-cost-cents="${priceCents}">
-          ${isOwned ? "Redeemed" : "Redeem"}
+          data-id="${escapeHtml(item?.id || "")}"
+          data-name="${escapeHtml(item?.name || "")}"
+          data-cost-cents="${Math.floor(finalCents)}">
+          ${isOwned ? "Redeemed" : (soldOut ? "Sold Out" : "Redeem")}
         </button>
 
         <div class="storeMsg storeMsg--info show">
-          ${(item.payload && item.payload.instructions)
-            ? item.payload.instructions
-            : "Redeem to receive a unique itch.io key."}
+          ${(item?.payload?.instructions)
+            ? escapeHtml(item.payload.instructions)
+            : (isKeyed ? "Redeem to receive a unique itch.io key." : "Redeem to unlock instantly.")}
         </div>
       `;
 
       const btn = div.querySelector("button");
-      // Attach handler for anything that isn't owned and isn't sold out
-      if (!isOwned && !soldOut) {
+      if (btn && !isOwned && !soldOut) {
         btn.onclick = () => redeem(item.id, btn);
       }
 
       el.appendChild(div);
     });
+
   } catch (e) {
     el.innerHTML = `<div class="muted">Store failed to load. Check console for errors.</div>`;
     console.error("loadStore failed", e);
@@ -2182,6 +2177,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
