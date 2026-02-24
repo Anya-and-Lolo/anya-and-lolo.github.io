@@ -1600,7 +1600,8 @@ async function loadStore() {
       `;
 
       const btn = div.querySelector("button");
-      if (!isOwned && remaining > 0) {
+      // Attach handler for anything that isn't owned and isn't sold out
+      if (!isOwned && !soldOut) {
         btn.onclick = () => redeem(item.id, btn);
       }
 
@@ -2159,6 +2160,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
