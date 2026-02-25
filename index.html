@@ -307,14 +307,48 @@
       will-change: opacity, transform;
     }
     
-    .heroRotateInner.is-out{
-      opacity: 0;
-      transform: translateY(-8px);
+    /* Choose ONE motion effect by class on #heroRotateText */
+    
+    /* (A) Fade + slight lift 
+    .fx-fade{ transition: opacity .45s ease, transform .45s ease; }
+    .fx-fade.is-out{ opacity:0; transform: translateY(-8px); }
+    .fx-fade.is-in { opacity:1; transform: translateY(0); }*/
+    
+    /* (B) Slide left */
+    .fx-slide-left{ transition: opacity .45s ease, transform .45s ease; }
+    .fx-slide-left.is-out{ opacity:0; transform: translateX(-18px); }
+    .fx-slide-left.is-in { opacity:1; transform: translateX(0); }
+    
+    /* (C) Slide up
+    .fx-slide-up{ transition: opacity .45s ease, transform .45s ease; }
+    .fx-slide-up.is-out{ opacity:0; transform: translateY(14px); }
+    .fx-slide-up.is-in { opacity:1; transform: translateY(0); }*/
+    
+    /* Optional: shimmer on change */
+    .heroShimmer{
+      background: linear-gradient(90deg, currentColor 0%, rgba(244,24,76,0.9) 45%, currentColor 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 850ms linear 1;
+    }
+    @keyframes shimmer{ from{ background-position:0% 50%; } to{ background-position:200% 50%; } }
+    
+    /* Optional: soft glow pulse on change */
+    .heroGlow{
+      animation: glow 650ms ease 1;
+    }
+    @keyframes glow{
+      0%  { filter: drop-shadow(0 0 0 rgba(244,24,76,0)); text-shadow:none; }
+      35% { filter: drop-shadow(0 10px 16px rgba(244,24,76,.18));
+            text-shadow: 0 0 18px rgba(244,24,76,.25); }
+      100%{ filter: none; text-shadow:none; }
     }
     
-    .heroRotateInner.is-in{
-      opacity: 1;
-      transform: translateY(0);
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .heroRotateInner{ transition:none !important; animation:none !important; }
     }
     
     .subtitle{
@@ -1040,7 +1074,7 @@
         <h1 class="heroH1">
           RPG Maker
           <span class="heroRotate">
-            <span class="heroRotateInner" id="heroRotateText">
+            <span class="heroRotateInner fx-fade" id="heroRotateText"> <-- fx-fade / fx-slide-left / fx-slide-up-->
               Tutorials for Indie Game Developers
             </span>
           </span>
@@ -1251,41 +1285,62 @@
       io.observe(c);
     });
 
-    // HERO TITLE ROTATOR
-    (() => {
-      const el = document.getElementById("heroRotateText");
-      if (!el) return;
-    
-      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReduced) return;
-    
-      const phrases = [
-        "Tutorials for Indie Game Developers",
-        "Beginner Tutorials for Indie Devs",
-        "MZ & MV Tutorials for Beginners"
-      ];
-    
-      let index = 0;
-    
-      function rotate() {
-        el.classList.add("is-out");
-    
-        setTimeout(() => {
-          index = (index + 1) % phrases.length;
-          el.textContent = phrases[index];
-    
-          el.classList.remove("is-out");
-          el.classList.add("is-in");
-    
-          setTimeout(() => {
-            el.classList.remove("is-in");
-          }, 450);
-    
-        }, 450);
-      }
-    
-      setInterval(rotate, 2500);
-    })();
+// HERO TITLE ROTATOR (motion + optional shimmer/glow)
+(() => {
+  const el = document.getElementById("heroRotateText");
+  if (!el) return;
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) return;
+
+  // SEO-friendly phrases (natural, keyword-rich, not spammy)
+  const phrases = [
+    "Tutorials for Indie Game Developers",
+    "Beginner Tutorials for Indie Devs",
+    "MZ & MV Tutorials for Beginners",
+    "Step-by-Step Game Dev Tutorials",
+    "XP & VX Ace Tips and Guides",
+    "How to Make a Game in RPG Maker"
+  ];
+
+  // Turn these on/off
+  const USE_SHIMMER = true; // set false to disable
+  const USE_GLOW    = true; // set false to disable
+
+  let index = 0;
+  const OUT_MS = 450;
+  const INTERVAL_MS = 2500;
+
+  function pulseEffects(){
+    if (USE_SHIMMER){
+      el.classList.remove("heroShimmer");
+      void el.offsetWidth; // restart animation
+      el.classList.add("heroShimmer");
+    }
+    if (USE_GLOW){
+      el.classList.remove("heroGlow");
+      void el.offsetWidth;
+      el.classList.add("heroGlow");
+    }
+  }
+
+  function rotate() {
+    el.classList.add("is-out");
+
+    setTimeout(() => {
+      index = (index + 1) % phrases.length;
+      el.textContent = phrases[index];
+
+      el.classList.remove("is-out");
+      el.classList.add("is-in");
+      pulseEffects();
+
+      setTimeout(() => el.classList.remove("is-in"), OUT_MS);
+    }, OUT_MS);
+  }
+
+  setInterval(rotate, INTERVAL_MS);
+})();
     
     // News iframe loader
     const frame = document.getElementById("newsFrame");
@@ -1512,6 +1567,7 @@
   </script>
 </body>
 </html>
+
 
 
 
