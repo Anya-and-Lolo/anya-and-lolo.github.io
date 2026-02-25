@@ -928,10 +928,13 @@
     }
     
     /* FLOAT HINT */
-    .floatHint{
-      animation: floatHint 2.4s ease-in-out infinite;
-      will-change: transform, box-shadow;
-    }
+    /* Only animate when allowed */
+    .floatHint{ animation: none; }
+    .featuredTrack{ animation: none !important; } /* if ever switch to css anim */
+    body::before{ animation-play-state: paused; }
+    
+    .is-animating.floatHint{ animation: floatHint 2.4s ease-in-out infinite; }
+    body.is-animating::before{ animation-play-state: running; }
     
     @keyframes floatHint{
       0%, 100% { 
@@ -939,7 +942,7 @@
         box-shadow: 0 10px 22px rgba(0,0,0,.06);
       }
       50% { 
-        transform: translateY(-6px);
+        transform: translateY(-5px);
         box-shadow: 0 18px 32px rgba(0,0,0,.12);
       }
     }
@@ -1277,6 +1280,55 @@
     // Year
     document.getElementById("year").textContent = new Date().getFullYear();
 
+  // PRO MOVE: pause animations when not visible (in viewport or tab hidden)
+  (() => {
+    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (prefersReduced) return;
+  
+    const body = document.body;
+  
+    // Elements we want to animate only when visible
+    const targets = [
+      document.querySelector(".floatHint"),
+      document.querySelector(".featuredMarquee"),
+      document.getElementById("patreonBtn"),
+    ].filter(Boolean);
+  
+    // Helper: set anim state on elements
+    const setAnimating = (el, on) => {
+      el.classList.toggle("is-animating", !!on);
+    };
+  
+    // Track visibility per element
+    const vis = new Map();
+  
+    const updateGlobal = () => {
+      // Animate background only when tab visible (simple win)
+      body.classList.toggle("is-animating", !document.hidden);
+    };
+  
+    // Pause all when tab hidden
+    document.addEventListener("visibilitychange", () => {
+      updateGlobal();
+      const tabOn = !document.hidden;
+      for (const el of targets) {
+        setAnimating(el, tabOn && (vis.get(el) === true));
+      }
+    });
+  
+    updateGlobal();
+  
+    const io = new IntersectionObserver((entries) => {
+      const tabOn = !document.hidden;
+      for (const e of entries) {
+        vis.set(e.target, e.isIntersecting);
+        setAnimating(e.target, tabOn && e.isIntersecting);
+      }
+    }, { threshold: 0.15 });
+  
+    targets.forEach(el => io.observe(el));
+  })();
+    
     // Pop animation on itch links
     document.querySelectorAll('a[href*="itch.io"]').forEach(el => {
       el.addEventListener("click", () => {
@@ -1458,7 +1510,8 @@
       function scheduleNext(){
         const delay = rand(500, 1000);
         setTimeout(() => {
-          if (!document.hidden) explode();
+          const ok = !document.hidden && btn.classList.contains("is-animating");
+          if (ok) explode();
           scheduleNext();
         }, delay);
       }
@@ -1489,15 +1542,18 @@
       function tick(now){
         const dt = (now - last) / 1000;
         last = now;
-
-        if (!paused){
+      
+        const canRun = !paused && !document.hidden && marquee.classList.contains("is-animating");
+      
+        if (canRun){
           marquee.scrollLeft += speed * dt;
-
+      
           const half = track.scrollWidth / 2;
           if (marquee.scrollLeft >= half){
             marquee.scrollLeft -= half;
           }
         }
+      
         requestAnimationFrame(tick);
       }
 
@@ -1584,6 +1640,7 @@
   </script>
 </body>
 </html>
+
 
 
 
