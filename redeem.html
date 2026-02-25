@@ -51,6 +51,13 @@
     --shadow: 0 10px 28px rgba(0,0,0,.10);
   }
 
+  /* keyboard focus ring */
+    :focus-visible{
+      outline: 3px solid rgba(244,24,76,0.35);
+      outline-offset: 3px;
+      border-radius: 12px;
+    }
+  
   /* BASE / RESET */
   *{ box-sizing: border-box; }
 
@@ -411,6 +418,8 @@
   .pill--gray  .pillDot{ background:#9ca3af; }
 
   /* INFO BUTTON + POPUP */
+  body.modalOpen{ overflow: hidden; }
+  
   .infoBtn{
     width: 28px;
     height: 28px;
@@ -942,7 +951,7 @@
 
     <!-- LEFT COLUMN -->
     <div class="connectBlock">
-      <button id="connect" class="btnPrimary">Connect Patreon</button>
+      <button id="connect" type="button" class="btnPrimary">Connect Patreon</button>
 
       <div class="patreonRowLeft">
         <span id="patreonPill" class="pill pill--gray">
@@ -1080,11 +1089,13 @@ const infoPop = document.getElementById("infoPop");
 const infoClose = document.getElementById("infoClose");
 
 function openInfo(){
+  document.body.classList.add("modalOpen");
   infoPop?.classList.add("show");
   infoPop?.setAttribute("aria-hidden","false");
   infoPop?.querySelector(".infoPopInner")?.focus();
 }
 function closeInfo(){
+  document.body.classList.remove("modalOpen");
   infoPop?.classList.remove("show");
   infoPop?.setAttribute("aria-hidden","true");
 }
@@ -1390,6 +1401,22 @@ function setPill(status) {
   pill.innerHTML = `<span class="pillDot"></span> Patreon: ${label}`;
 }
 
+function refreshConnectButtonLabel(){
+  const btn = document.getElementById("connect");
+  if (!btn) return;
+
+  const mode = btn.dataset.mode || "connect"; // connect | reconnect
+  const mobile = window.innerWidth <= 600;
+
+  if (mode === "reconnect"){
+    btn.textContent = mobile ? "Re-connect" : "Issues? Re-connect";
+  } else {
+    btn.textContent = mobile ? "Connect" : "Connect Patreon";
+  }
+}
+
+window.addEventListener("resize", () => refreshConnectButtonLabel());
+  
 function showConnectUI(){
   const btn = document.getElementById("connect");
 
@@ -1441,40 +1468,6 @@ function toMs(x){
   if (typeof x === "number") return x < 2_000_000_000 ? x * 1000 : x;
   const t = Date.parse(String(x));
   return Number.isFinite(t) ? t : 0;
-}
-
-// Sort order of store items
-// 1) active first
-// 2) cheaper first OR alphabetical OR newest
-// 3) tie-breaker by id so it NEVER “randomizes”
-function sortShopItemsStable(items){
-  return (items || []).slice().sort((a,b) => {
-    const aActive = Number(a?.active ?? 1) === 1 ? 0 : 1;
-    const bActive = Number(b?.active ?? 1) === 1 ? 0 : 1;
-    if (aActive !== bActive) return aActive - bActive; // active first
-
-    // --- Choose ONE primary sort (uncomment what you prefer) ---
-
-    // A) Alphabetical by title/name
-    const an = String(a?.name ?? a?.title ?? "").toLowerCase();
-    const bn = String(b?.name ?? b?.title ?? "").toLowerCase();
-    if (an !== bn) return an.localeCompare(bn);
-
-    // B) Cheapest first (instead of alphabetical)
-    // const ap = Number(a?.cost_cents ?? 0);
-    // const bp = Number(b?.cost_cents ?? 0);
-    // if (bp !== ap) return ap - bp;
-
-    // C) Newest first (if you have created_at/updated_at)
-    // const at = Math.max(toMs(a?.updated_at), toMs(a?.created_at));
-    // const bt = Math.max(toMs(b?.updated_at), toMs(b?.created_at));
-    // if (bt !== at) return bt - at;
-
-    // Tie-breaker (ALWAYS keep this)
-    const ai = String(a?.id ?? "");
-    const bi = String(b?.id ?? "");
-    return ai.localeCompare(bi);
-  });
 }
   
 /* LOADERS: /me, /activity, /store, /entitlements */
@@ -1622,7 +1615,7 @@ async function loadActivity(){
 }
 
 function sortShopItemsStable(items){
-  // Choose your “always stable” sort key order:
+  // Choose sort key order:
   // 1) active items first (optional)
   // 2) discounted items first (optional)
   // 3) then by name (or price), then by id as final tie-breaker
@@ -2311,6 +2304,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
