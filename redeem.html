@@ -512,6 +512,7 @@
   }
 
   .storeInfoTop{
+    min-height: 22px; /* keeps height consistent */
     font-size: 18px;
     font-weight: 900;
     display: flex;
@@ -1693,13 +1694,18 @@ async function loadStore() {
         item?.discount?.label ?? item?.discount_label ?? item?.label ?? ""
       ).trim();
       
-      const topBits = [];
-      if (discountLabel) topBits.push(`<span class="saleLabel">${escapeHtml(discountLabel)}</span>`);
-      if (percent) topBits.push(`<span class="salePercent">${escapeHtml(percent)}% off</span>`);
+      const isOnSale = percent > 0;
       
-      const topLineHtml = topBits.length
-        ? topBits.join(`<span class="storeDot">•</span>`)
-        : ""; // no discount shown if none
+      let topLineHtml;
+      
+      if (isOnSale) {
+        const bits = [];
+        if (discountLabel) bits.push(`<span class="saleLabel">${escapeHtml(discountLabel)}</span>`);
+        bits.push(`<span class="salePercent">${escapeHtml(percent)}% off</span>`);
+        topLineHtml = bits.join(`<span class="storeDot">•</span>`);
+      } else {
+        topLineHtml = `<span style="opacity:.65; font-weight:800;">Unlock Forever</span>`;
+      }
 
       const fulfillment = String(item?.fulfillment || "itch_key"); // itch_key | link | bundle
       const isKeyed = (fulfillment === "itch_key");
@@ -1719,7 +1725,7 @@ async function loadStore() {
           <div class="storeTitle">${escapeHtml(item?.name || "Untitled")}</div>
 
             <div class="storeInfo">
-              ${topLineHtml ? `<div class="storeInfoTop">${topLineHtml}</div>` : ""}
+              <div class="storeInfoTop">${topLineHtml}</div>
             
               <div class="storeInfoBottom">
                 ${
@@ -1731,7 +1737,6 @@ async function loadStore() {
                 <span class="storeDot">•</span>
                 ${
                   isOwned ? "System Owned ✅"
-                  : cantAfford ? `Need ${costCents} (you have ${CURRENT_CREDITS_CENTS})`
                   : (isKeyed ? `${(remaining ?? 0)} keys left` : "Instant unlock")
                 }
               </div>
@@ -2311,6 +2316,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
