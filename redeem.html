@@ -539,7 +539,7 @@
   
   .saleLabel{
     color: var(--brand);
-    font-weight: 1000;
+    font-weight: 800;
   }
   
   .salePercent{
@@ -1704,7 +1704,7 @@ async function loadStore() {
         bits.push(`<span class="salePercent">${escapeHtml(percent)}% off</span>`);
         topLineHtml = bits.join(`<span class="storeDot">•</span>`);
       } else {
-        topLineHtml = `<span style="opacity:.65; font-weight:800;">Unlock Forever</span>`;
+        topLineHtml = `<span style="opacity:.65; font-weight:800;">Unlock Forever!</span>`;
       }
 
       const fulfillment = String(item?.fulfillment || "itch_key"); // itch_key | link | bundle
@@ -2316,6 +2316,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
