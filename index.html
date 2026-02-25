@@ -303,22 +303,22 @@
     
     .heroRotateInner{
       display: inline-block;
-      color: var(--muted); /* --brand solid red | --text body text */
+      color: var(--text); /* --brand solid red | --text body text | --muted greyish */
       transition: opacity .45s ease, transform .45s ease;
       will-change: opacity, transform;
     }
     
     /* Choose ONE motion effect by class on #heroRotateText */
     
-    /* (A) Fade + slight lift */
+    /* (A) Fade + slight lift
     .fx-fade{ transition: opacity .45s ease, transform .45s ease; }
     .fx-fade.is-out{ opacity:0; transform: translateY(-8px); }
-    .fx-fade.is-in { opacity:1; transform: translateY(0); }
+    .fx-fade.is-in { opacity:1; transform: translateY(0); } */
     
-    /* (B) Slide left
+    /* (B) Slide left */
     .fx-slide-left{ transition: opacity .45s ease, transform .45s ease; }
     .fx-slide-left.is-out{ opacity:0; transform: translateX(-18px); }
-    .fx-slide-left.is-in { opacity:1; transform: translateX(0); } */
+    .fx-slide-left.is-in { opacity:1; transform: translateX(0); }
     
     /* (C) Slide up
     .fx-slide-up{ transition: opacity .45s ease, transform .45s ease; }
@@ -1053,7 +1053,7 @@
         <h1 class="heroH1">
           RPG Maker
           <span class="heroRotate">
-            <span class="heroRotateInner fx-fade" id="heroRotateText"> <!-- fx-fade / fx-slide-left / fx-slide-up -->
+            <span class="heroRotateInner fx-slide-left" id="heroRotateText"> <!-- fx-fade / fx-slide-left / fx-slide-up -->
               Tutorials for Indie Game Developers
             </span>
           </span>
@@ -1546,6 +1546,7 @@
   </script>
 </body>
 </html>
+
 
 
 
