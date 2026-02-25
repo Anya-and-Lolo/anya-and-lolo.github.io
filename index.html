@@ -307,7 +307,11 @@
       transition: opacity .45s ease, transform .45s ease;
       will-change: opacity, transform;
     }
-    
+
+    /* optional: micro blur while swapping */
+    .heroRotateInner.is-out{ filter: blur(1.2px); }
+    .heroRotateInner.is-in { filter: blur(0px); }
+        
     /* Choose ONE motion effect by class on #heroRotateText */
     
     /* (A) Fade + slight lift
@@ -1568,6 +1572,7 @@
   </script>
 </body>
 </html>
+
 
 
 
