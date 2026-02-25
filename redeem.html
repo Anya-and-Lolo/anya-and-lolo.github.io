@@ -538,19 +538,36 @@
   }
 
   .saleBadge{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: .4px;
+    letter-spacing: .6px;
+    color: #fff;
+    background: rgba(244,24,76,0.92);
+    box-shadow: 0 10px 18px rgba(244,24,76,0.18);
+    border: 1px solid rgba(255,255,255,0.22);
+    transform: translateZ(0);
+    animation: salePulse 1.2s ease-in-out infinite;
+  }
+  
+  @keyframes salePulse{
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50%      { transform: scale(1.06); filter: brightness(1.12); }
   }
   
   .saleLabel{
     color: var(--brand);
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: .4px;
   }
   
   .salePercent{
     color: var(--brand);
-    font-weight: 700;
+    font-weight: 800;
   }
   
   /* optional: tighten thousands spacing a bit */
@@ -1700,12 +1717,13 @@ async function loadStore() {
         item?.discount?.label ?? item?.discount_label ?? item?.label ?? ""
       ).trim();
       
-      const isOnSale = percent > 0;
+      const isOnSale = isDiscounted;
       
       let topLineHtml;
       
       if (isOnSale) {
         const bits = [];
+        bits.push(`<span class="saleBadge">SALE</span>`);
         if (discountLabel) bits.push(`<span class="saleLabel">${escapeHtml(discountLabel)}</span>`);
         bits.push(`<span class="salePercent">${escapeHtml(percent)}% off</span>`);
         topLineHtml = bits.join(`<span class="storeDot">•</span>`);
@@ -2322,6 +2340,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
