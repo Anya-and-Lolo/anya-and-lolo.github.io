@@ -271,6 +271,7 @@
       letter-spacing: -0.3px;
       line-height: 1.2;
       text-align: center;
+      gap: 6px; /* tighter spacing between “RPG Maker” and the rotating text */
     }
 
     .heroH1::after{
@@ -293,6 +294,29 @@
       100%{ background-position: 200% 50%; }
     }
 
+    /* HERO TEXT ROTATOR */
+    .heroRotate{
+      display: inline-block;
+      position: relative;
+      min-width: 340px; /* prevents layout jumping */
+    }
+    
+    .heroRotateInner{
+      display: inline-block;
+      transition: opacity .45s ease, transform .45s ease;
+      will-change: opacity, transform;
+    }
+    
+    .heroRotateInner.is-out{
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    
+    .heroRotateInner.is-in{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
     .subtitle{
       margin: 0 0 14px 0;
       color: var(--muted);
@@ -1013,7 +1037,14 @@
 
       <!-- CARD 2: Welcome + News -->
       <div class="card" style="margin-top:14px;">
-        <h1 class="heroH1">Free RPG Maker Tutorials for Indie Game Developers</h1>
+        <h1 class="heroH1">
+          RPG Maker
+          <span class="heroRotate">
+            <span class="heroRotateInner" id="heroRotateText">
+              Tutorials for Indie Game Developers
+            </span>
+          </span>
+        </h1>
 
         <div class="heroGrid">
           <!-- LEFT -->
@@ -1061,7 +1092,7 @@
           </div>
 
           <!-- RIGHT -->
-          <div class="newsBottom" style="margin-top:40px;">
+          <div class="newsBottom" style="margin-top:30px;">
             <div class="cardFlush" style="border:1px solid rgba(20,20,20,0.10); border-radius:16px;">
               <div class="embedWrap" aria-label="NewsBlog embed">
                 <div id="newsPlaceholder" class="newsPlaceholder" aria-live="polite">
@@ -1220,6 +1251,42 @@
       io.observe(c);
     });
 
+    // HERO TITLE ROTATOR
+    (() => {
+      const el = document.getElementById("heroRotateText");
+      if (!el) return;
+    
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) return;
+    
+      const phrases = [
+        "Tutorials for Indie Game Developers",
+        "Beginner Tutorials for Indie Devs",
+        "MZ & MV Tutorials for Beginners"
+      ];
+    
+      let index = 0;
+    
+      function rotate() {
+        el.classList.add("is-out");
+    
+        setTimeout(() => {
+          index = (index + 1) % phrases.length;
+          el.textContent = phrases[index];
+    
+          el.classList.remove("is-out");
+          el.classList.add("is-in");
+    
+          setTimeout(() => {
+            el.classList.remove("is-in");
+          }, 450);
+    
+        }, 450);
+      }
+    
+      setInterval(rotate, 2500);
+    })();
+    
     // News iframe loader
     const frame = document.getElementById("newsFrame");
     const placeholder = document.getElementById("newsPlaceholder");
@@ -1445,6 +1512,7 @@
   </script>
 </body>
 </html>
+
 
 
 
