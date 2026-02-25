@@ -1414,8 +1414,8 @@ function refreshConnectButtonLabel(){
     btn.textContent = mobile ? "Connect" : "Connect Patreon";
   }
 }
-
-window.addEventListener("resize", () => refreshConnectButtonLabel());
+  
+window.addEventListener("resize", refreshConnectButtonLabel);
   
 function showConnectUI(){
   const btn = document.getElementById("connect");
@@ -1438,6 +1438,8 @@ function showConnectUI(){
 
   const creditsSub = document.querySelector(".creditsSub");
   if (creditsSub) creditsSub.textContent = "Connect Patreon";
+
+  refreshConnectButtonLabel();
 }
   
 function showConnectedUI(){
@@ -1461,6 +1463,8 @@ function showConnectedUI(){
 
   const creditsSub = document.querySelector(".creditsSub");
   if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
+
+  refreshConnectButtonLabel();
 }
 
 function toMs(x){
@@ -1670,6 +1674,9 @@ async function loadStore() {
     items.forEach(item => {
       const baseCents = Number(item?.cost_cents ?? 0);
       const finalCents = Number(item?.final_cents ?? baseCents);
+      // Disable “Redeem” if not enough credits
+      const costCents = Math.floor(finalCents);
+      const cantAfford = (Number.isFinite(CURRENT_CREDITS_CENTS) && CURRENT_CREDITS_CENTS < costCents);
 
       const percent =
         Number(item?.discount?.percent ?? item?.discount_percent ?? item?.percent_off ?? 0) || 0;
@@ -1722,18 +1729,22 @@ async function loadStore() {
                     : `<strong class="priceNum">${finalLabel}</strong> credits`
                 }
                 <span class="storeDot">•</span>
-                ${isOwned ? "System Owned ✅" : (isKeyed ? `${(remaining ?? 0)} keys left` : "Instant unlock")}
+                ${
+                  isOwned ? "System Owned ✅"
+                  : cantAfford ? `Need ${costCents} (you have ${CURRENT_CREDITS_CENTS})`
+                  : (isKeyed ? `${(remaining ?? 0)} keys left` : "Instant unlock")
+                }
               </div>
             </div>
         </div>
 
         <button
           class="storeButton"
-          ${(isOwned || soldOut) ? "disabled" : ""}
+          ${(isOwned || soldOut || cantAfford) ? "disabled" : ""}
           data-id="${escapeHtml(item?.id || "")}"
           data-name="${escapeHtml(item?.name || "")}"
-          data-cost-cents="${Math.floor(finalCents)}">
-          ${isOwned ? "Redeemed" : (soldOut ? "Sold Out" : "Redeem")}
+          data-cost-cents="${costCents}">
+          ${isOwned ? "Redeemed" : (soldOut ? "Sold Out" : (cantAfford ? "Not enough credits" : "Redeem"))}
         </button>
 
         <div class="storeMsg storeMsg--info show">
@@ -1744,7 +1755,7 @@ async function loadStore() {
       `;
 
       const btn = div.querySelector("button");
-      if (btn && !isOwned && !soldOut) {
+      if (btn && !isOwned && !soldOut && !cantAfford) {
         btn.onclick = () => redeem(item.id, btn);
       }
 
@@ -2210,10 +2221,6 @@ function applyCreditsNow(nowCents) {
   // update the visible number instantly
   const creditsValue = document.getElementById("creditsValue");
   if (creditsValue) creditsValue.textContent = String(nowCents);
-
-  // refresh store buttons/prices availability
-  // (this is what users feel most: Redeem enabling/disabling)
-  loadStore().catch(()=>{});
 }
 
 const POLL_MS = 5000; // check every 5 sec
@@ -2304,6 +2311,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
