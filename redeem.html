@@ -1830,7 +1830,7 @@ async function loadUnlocks() {
 
   data.items.forEach(ent => {
     const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
-    addUnlock(title, ent.payload || {});
+    addUnlock(item.payload.title, item.payload);
   });
 }
 
@@ -1951,81 +1951,95 @@ function renderActivity(list){
   }</div>`;
 }
 
-function addUnlock(title, payload) {
+function addUnlock(title, payload = {}) {
   const box = document.getElementById("unlocks");
   if (!box) return;
   if (box.classList.contains("muted")) box.classList.remove("muted");
 
-  const safeTitle = escapeHtml(title || "");
+  const p = payload || {};
 
-  // 1) BUNDLE: payload.items = [{label, url OR itch_key_url OR itch_key_code}, ...]
-  if (Array.isArray(payload?.items) && payload.items.length) {
-    const rows = payload.items.map((it) => {
-      const label = escapeHtml(it?.label || "Item");
-      const val = String(it?.url || it?.itch_key_url || it?.itch_key_code || it?.itch_key || "");
-      const safeVal = escapeHtml(val);
-      const isUrl = isProbablyUrl(val);
+  const safeTitle = escapeHtml(title || p.title || "");
+  const instructions = (p.instructions || "").trim();
 
-      return `
-        <div style="margin-top:10px">
-          <div style="font-weight:900">${label}</div>
-          <div>
-            ${isUrl
-              ? `<a href="${safeVal}" target="_blank" rel="noopener"><code>${safeVal}</code></a>`
-              : `<code class="key">${safeVal || "(missing)"}</code>`}
-          </div>
-        </div>
-      `;
-    }).join("");
+  const linkUrl = (p.link_url || "").trim();
+  const linkText = (p.link_text || "Open").trim();
 
-    const wrap = document.createElement("div");
-    wrap.className = "card subcard";
-    wrap.innerHTML = `
-      <strong>${safeTitle}</strong>
-      <div class="keybox" style="margin-top:8px">
-        <div><strong>Your bundle:</strong></div>
-        ${rows}
-        <div class="muted" style="margin-top:10px">Thank you for supporting 💛</div>
-      </div>
+  const keyCode = (p.itch_key_code || "").trim();
+  const keyUrl  = (p.itch_key_url || "").trim();
+
+  // Decide what to show
+  let mainLabel = "";
+  let mainHtml = "";
+  let copyValue = "";
+  let copyLabel = "Copy";
+
+  if (linkUrl) {
+    mainLabel = "Your link:";
+    mainHtml = `
+      <a class="smallBtn" href="${escapeHtml(linkUrl)}" target="_blank" rel="noopener noreferrer">
+        ${escapeHtml(linkText)}
+      </a>
+      <div style="margin-top:8px"><code class="key">${escapeHtml(linkUrl)}</code></div>
     `;
-    box.prepend(wrap);
-    return;
+    copyValue = linkUrl;
+    copyLabel = "Copy Link";
+  } else if (keyUrl) {
+    mainLabel = "Your itch.io key link:";
+    mainHtml = `<div><code class="key">${escapeHtml(keyUrl)}</code></div>`;
+    copyValue = keyUrl;
+    copyLabel = "Copy Link";
+  } else if (keyCode) {
+    mainLabel = "Your itch.io key code:";
+    mainHtml = `<div><code class="key">${escapeHtml(keyCode)}</code></div>`;
+    copyValue = keyCode;
+    copyLabel = "Copy Key";
+  } else {
+    mainLabel = "Unlock info:";
+    mainHtml = `<div><code class="key">(missing link / key)</code></div>`;
+    copyValue = "";
+    copyLabel = "Copy";
   }
 
-  // 2) LINK: payload.url
-  if (payload?.url) {
-    const url = String(payload.url || "");
-    const safeUrl = escapeHtml(url);
+  const wrap = document.createElement("div");
+  wrap.className = "card subcard";
+  wrap.innerHTML = `
+    <strong>${safeTitle}</strong>
 
-    const wrap = document.createElement("div");
-    wrap.className = "card subcard";
-    wrap.innerHTML = `
-      <strong>${safeTitle}</strong>
-      <div class="keybox" style="margin-top:8px">
-        <div>Your link:</div>
-        <div><a href="${safeUrl}" target="_blank" rel="noopener"><code>${safeUrl}</code></a></div>
-        <div style="margin-top:8px" class="row">
-          <button class="copy">Copy Link</button>
-        </div>
-        <div class="muted" style="margin-top:8px">Thank you for supporting 💛</div>
+    <div class="keybox" style="margin-top:8px">
+      <div>${escapeHtml(mainLabel)}</div>
+      ${mainHtml}
+
+      <div style="margin-top:8px" class="row">
+        <button class="copy" ${copyValue ? "" : "disabled"}>${escapeHtml(copyLabel)}</button>
       </div>
-    `;
 
-    wrap.querySelector(".copy").onclick = async () => {
-      await navigator.clipboard.writeText(url || "");
-      let msg = wrap.querySelector(".copiedMsg");
-      if (!msg) {
-        msg = document.createElement("div");
-        msg.className = "muted copiedMsg";
-        msg.style.marginTop = "8px";
-        wrap.querySelector(".keybox")?.appendChild(msg);
-      }
-      msg.textContent = "💛 Copied!";
-    };
+      ${instructions ? `
+        <div class="muted" style="margin-top:8px">
+          ${escapeHtml(instructions)}
+        </div>
+      ` : `
+        <div class="muted" style="margin-top:8px">
+          Thank you for supporting 💃 Anya & Lolo 🦜
+        </div>
+      `}
+    </div>
+  `;
 
-    box.prepend(wrap);
-    return;
-  }
+  wrap.querySelector(".copy").onclick = async () => {
+    if (!copyValue) return;
+    await navigator.clipboard.writeText(copyValue);
+    let msg = wrap.querySelector(".copiedMsg");
+    if (!msg) {
+      msg = document.createElement("div");
+      msg.className = "muted copiedMsg";
+      msg.style.marginTop = "8px";
+      wrap.querySelector(".keybox")?.appendChild(msg);
+    }
+    msg.textContent = "💛 Copied!";
+  };
+
+  box.prepend(wrap);
+}
 
   // 3) DEFAULT: ITCH KEY
   const raw = String(payload?.itch_key_url || payload?.itch_key_code || payload?.itch_key || "");
@@ -2340,6 +2354,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
