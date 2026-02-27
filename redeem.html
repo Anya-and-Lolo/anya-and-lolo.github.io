@@ -1829,8 +1829,8 @@ async function loadUnlocks() {
   box.innerHTML = "";
 
   data.items.forEach(ent => {
-    const title = (ent.payload && ent.payload.title) ? ent.payload.title : ent.item_id;
-    addUnlock(item.payload.title, item.payload);
+    const title = ent?.payload?.title ? ent.payload.title : ent.item_id;
+    addUnlock(title, ent.payload || {});
   });
 }
 
@@ -1961,7 +1961,7 @@ function addUnlock(title, payload = {}) {
   const safeTitle = escapeHtml(title || p.title || "");
   const instructions = (p.instructions || "").trim();
 
-  const linkUrl = (p.link_url || "").trim();
+  const linkUrl = (p.link_url || p.url || "").trim();
   const linkText = (p.link_text || "Open").trim();
 
   const keyCode = (p.itch_key_code || "").trim();
@@ -2040,48 +2040,6 @@ function addUnlock(title, payload = {}) {
 
   box.prepend(wrap);
 }
-
-  // 3) DEFAULT: ITCH KEY
-  const raw = String(payload?.itch_key_url || payload?.itch_key_code || payload?.itch_key || "");
-  const isUrl = isProbablyUrl(raw);
-  const label = isUrl ? "Your itch.io key link:" : "Your itch.io key code:";
-
-  const safeKey = escapeHtml(raw || "(missing key)");
-
-  const wrap = document.createElement("div");
-  wrap.className = "card subcard";
-  wrap.innerHTML = `
-    <strong>${safeTitle}</strong>
-    <div class="keybox" style="margin-top:8px">
-      <div>${label}</div>
-      <div>${isUrl
-        ? `<a href="${safeKey}" target="_blank" rel="noopener"><code class="key">${safeKey}</code></a>`
-        : `<code class="key">${safeKey}</code>`}
-      </div>
-      <div style="margin-top:8px" class="row">
-        <button class="copy">Copy</button>
-      </div>
-      <div class="muted" style="margin-top:8px">
-        Thank you for supporting 💃 Anya & Lolo 🦜 Please keep it safe.
-      </div>
-    </div>
-  `;
-
-  wrap.querySelector(".copy").onclick = async () => {
-    await navigator.clipboard.writeText(raw || "");
-    let msg = wrap.querySelector(".copiedMsg");
-    if (!msg) {
-      msg = document.createElement("div");
-      msg.className = "muted copiedMsg";
-      msg.style.marginTop = "8px";
-      wrap.querySelector(".keybox")?.appendChild(msg);
-    }
-    msg.textContent = "💛 Copied!";
-  };
-
-  box.prepend(wrap);
-}
-
 
 /* STORE MESSAGE HELPERS */
 function showStoreMessage(buttonEl, msg, type = "info") {
@@ -2354,6 +2312,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
