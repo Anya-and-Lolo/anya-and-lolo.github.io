@@ -1976,10 +1976,11 @@ function addUnlock(title, payload = {}) {
   if (linkUrl) {
     mainLabel = "Your link:";
     mainHtml = `
-      <a class="smallBtn" href="${escapeHtml(linkUrl)}" target="_blank" rel="noopener noreferrer">
-        ${escapeHtml(linkText)}
+    <div>
+      <a href="${escapeHtml(linkUrl)}" target="_blank" rel="noopener noreferrer">
+        <code class="key">${escapeHtml(linkUrl)}</code>
       </a>
-      <div style="margin-top:8px"><code class="key">${escapeHtml(linkUrl)}</code></div>
+    </div>
     `;
     copyValue = linkUrl;
     copyLabel = "Copy Link";
@@ -2312,6 +2313,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
