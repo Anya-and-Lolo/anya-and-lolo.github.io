@@ -1967,6 +1967,90 @@ function addUnlock(title, payload = {}) {
   const keyCode = (p.itch_key_code || "").trim();
   const keyUrl  = (p.itch_key_url || "").trim();
 
+  // ====== BUNDLE DISPLAY ======
+  const isBundle =
+    p.fulfillment === "bundle" ||
+    Array.isArray(p.bundle_items) ||
+    Array.isArray(p.extras) ||
+    Array.isArray(p.items); // just in case you ever send the older shape
+
+  if (isBundle) {
+    const bundleTitle = escapeHtml(safeTitle || p.bundle_title || "Bundle");
+
+    const extras = Array.isArray(p.extras) ? p.extras : [];
+    const bundleItems = Array.isArray(p.bundle_items) ? p.bundle_items : [];
+    const granted = Array.isArray(p.bundle_granted) ? p.bundle_granted : [];
+
+    const skippedCount =
+      Number.isFinite(p.bundle_skipped_count)
+        ? Number(p.bundle_skipped_count)
+        : Math.max(0, bundleItems.length - granted.length);
+
+    const extrasHtml = extras.length
+      ? `
+        <div style="margin-top:10px"><strong>Extras:</strong></div>
+        ${extras.map(x => {
+          const label = escapeHtml(String(x?.label || "Extra"));
+          const url = String(x?.url || "").trim();
+          const safeUrl = escapeHtml(url);
+          if (!url) return "";
+          return `
+            <div style="margin-top:8px">
+              <div style="font-weight:800">${label}</div>
+              <div><a href="${safeUrl}" target="_blank" rel="noopener noreferrer"><code class="key">${safeUrl}</code></a></div>
+              <div style="margin-top:6px" class="row">
+                <button class="copyExtra" data-copy="${safeUrl}">Copy Link</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      `
+      : `<div class="muted" style="margin-top:10px">No extra links in this bundle.</div>`;
+
+    const statusLine =
+      granted.length === 0
+        ? `You already own everything in this bundle 💛`
+        : `Granted ${granted.length} item(s). ${skippedCount ? `Skipped ${skippedCount} already owned.` : ""}`;
+
+    const wrap = document.createElement("div");
+    wrap.className = "card subcard";
+    wrap.innerHTML = `
+      <strong>${bundleTitle}</strong>
+
+      <div class="keybox" style="margin-top:8px">
+        <div class="muted">${escapeHtml(statusLine)}</div>
+
+        ${extrasHtml}
+
+        <div class="muted" style="margin-top:10px">
+          ${instructions ? escapeHtml(instructions) : "Thank you for supporting 💃 Anya & Lolo 🦜"}
+        </div>
+      </div>
+    `;
+
+    // Wire up all "Copy Link" buttons inside the card
+    wrap.querySelectorAll(".copyExtra").forEach(btn => {
+      btn.onclick = async () => {
+        const v = btn.getAttribute("data-copy") || "";
+        if (!v) return;
+        await navigator.clipboard.writeText(v);
+
+        let msg = wrap.querySelector(".copiedMsg");
+        if (!msg) {
+          msg = document.createElement("div");
+          msg.className = "muted copiedMsg";
+          msg.style.marginTop = "8px";
+          wrap.querySelector(".keybox")?.appendChild(msg);
+        }
+        msg.textContent = "💛 Copied!";
+      };
+    });
+
+    box.prepend(wrap);
+    return;
+  }
+  // ====== END BUNDLE DISPLAY =====
+  
   // Decide what to show
   let mainLabel = "";
   let mainHtml = "";
@@ -2313,6 +2397,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
