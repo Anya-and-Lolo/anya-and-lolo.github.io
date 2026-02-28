@@ -1644,6 +1644,9 @@
             const title = escapeHtml(v.title || "Untitled");
             const url = safeUrl(v.url, "https://www.youtube.com/@Anya_and_Lolo");
             const thumb = safeUrl(v.thumbnail, "");
+            const thumbHtml = thumb
+              ? `<img class="ytThumb" src="${thumb}" alt="${title}" loading="lazy">`
+              : `<div class="ytThumb" aria-hidden="true"></div>`;
     
             const date = v.published_at
               ? new Intl.DateTimeFormat(undefined, {
@@ -1658,7 +1661,7 @@
             return `
               <a class="ytTile" href="${url}" target="_blank" rel="noopener">
                 <div class="ytThumbWrap">
-                  <img class="ytThumb" src="${thumb}" alt="${title}" loading="lazy">
+                  ${thumbHtml}
                   <div class="ytPlay" aria-hidden="true">
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                   </div>
@@ -1687,6 +1690,7 @@
   </script>
 </body>
 </html>
+
 
 
 
