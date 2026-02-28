@@ -1584,7 +1584,7 @@ async function loadMe() {
     if (infoPopBody) {
       infoPopBody.innerHTML =
         `Your current Patreon status: <strong>${prettyStatus}</strong><br>` +
-        `Credits shown are based on your lifetime support for this campaign. Credits are added automatically after Patreon marks your payment as Paid. Please note, if you just paid, it can take a few minutes (or try reconnecting Patreon).`;
+        `Credits are added automatically after Patreon marks your payment as *Paid*. Please note, if you just paid, it can take a few minutes (or try reconnecting Patreon).`;
     }
 
     return me;
@@ -2397,6 +2397,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
