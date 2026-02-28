@@ -1153,6 +1153,11 @@ function getSession() {
   return localStorage.getItem("session");
 }
 
+async function safeJson(r) {
+  const ct = (r.headers.get("content-type") || "").toLowerCase();
+  if (!ct.includes("application/json")) return null;
+  try { return await r.json(); } catch { return null; }
+}
 
 /* SUPPORT ID (stable per device/browser) */
 function makeSupportId(){
@@ -1549,11 +1554,10 @@ async function loadMe() {
       throw new Error(`/me non-JSON: ${r.status} ${ct}`);
     }
     
-    let me;
-    try {
-      me = await r.json(); // parse ONCE
-    } catch (e) {
-      throw new Error(`/me JSON parse failed: ${r.status}`);
+    const me = await safeJson(r);
+    if (!me) {
+      console.warn("/me returned non-JSON or invalid JSON", r.status);
+      return;
     }
     
     LAST_ME = me;
@@ -1714,7 +1718,14 @@ async function loadStore() {
 
   try {
     const r = await apiFetch(`/store?t=${Date.now()}`, null, { cache: "no-store" });
-    const data = await r.json();
+    const data = await safeJson(r);
+    if (!data) {
+      if (box) {
+        box.classList.add("muted");
+        box.textContent = "Unlocks failed to load (server returned non-JSON).";
+      }
+      return;
+    }
 
     el.innerHTML = "";
     const itemsRaw = Array.isArray(data?.items) ? data.items : [];
@@ -1840,7 +1851,8 @@ async function loadUnlocks() {
   }
 
   const r = await apiFetch("/entitlements", s);
-  const data = await r.json();
+  const data = await safeJson(r);
+  if (!data) return;
   LAST_ENTITLEMENTS = data;
 
   if (!r.ok) {
@@ -2217,7 +2229,7 @@ async function redeem(itemId, buttonEl) {
       body: JSON.stringify({ itemId })
     });
 
-    const out = await r.json();
+    const out = (await safeJson(r)) || {};
 
     if (!r.ok) {
       // nicer “not enough credits” message when backend provides available_cents
@@ -2268,7 +2280,11 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
     const s = getSession();
     if (s) {
       const r = await apiFetch("/support", s);
-      const data = await r.json();
+      const data = await safeJson(r);
+      if (!data) {
+        el.innerHTML = `<div class="muted">Store failed to load (server returned non-JSON).</div>`;
+        return;
+      }
       if (r.ok && data?.loggedIn && data?.support) {
         support.user_id = data.support.user_id ?? null;
         support.patreon_user_id = data.support.patreon_user_id ?? null;
@@ -2362,11 +2378,9 @@ async function tick() {
       return;
     }
 
-    let me;
-    try {
-      me = await r.json(); // parse ONCE
-    } catch (e) {
-      console.warn("/me JSON parse failed", r.status, e);
+    const me = await safeJson(r);
+    if (!me) {
+      console.warn("/me JSON parse failed", r.status);
       return;
     }
 
@@ -2458,33 +2472,3 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
