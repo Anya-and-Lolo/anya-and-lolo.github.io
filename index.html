@@ -1217,22 +1217,27 @@
       </div>
 
       <!-- CARD 3.5: Latest YouTube Videos (auto) -->
-      <div class="card" style="margin-top:14px;">
-        <h2 style="margin:0 0 10px;font-size:22px;letter-spacing:-0.2px;">Latest YouTube Videos</h2>
-        <p class="subtitle" style="margin:0 0 14px;">
-          Fresh uploads from <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">Anya &amp; Lolo</a>
-        </p>
-      
-        <div class="ytGrid" id="ytGrid" aria-live="polite">
-          <div class="subcard">Loading videos…</div>
+      <div class="card">
+        <div class="sectionHead">
+          <h2 class="sectionTitle">Latest YouTube Videos</h2>
+          <div class="muted">Fresh uploads from Anya &amp; Lolo</div>
         </div>
       
-        <!-- Fallback if JS is disabled or the feed fails -->
-        <noscript>
-          <div class="subcard" style="margin-top:12px;">
-            Latest videos: <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo/videos" target="_blank" rel="noopener">Open the channel →</a>
-          </div>
-        </noscript>
+        <div style="margin-top:12px; border-radius:16px; overflow:hidden; border:1px solid rgba(20,20,20,0.10);">
+          <iframe
+            width="100%"
+            height="420"
+            src="https://www.youtube-nocookie.com/embed/videoseries?list=UUw100qHVmc-cB-a9Uj-4zbw"
+            title="Anya & Lolo uploads"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"></iframe>
+        </div>
+      
+        <div class="muted" style="margin-top:10px; text-align:center;">
+          Prefer opening YouTube? <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">Open the channel →</a>
+        </div>
       </div>
       
       <!-- CARD 4: Footer -->
@@ -1282,6 +1287,25 @@
   </main>
 
   <script>
+  function escapeHtml(str){
+    return String(str ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function safeUrl(u){
+    try {
+      const url = new URL(String(u || ""));
+      if (url.protocol !== "https:" && url.protocol !== "http:") return "#";
+      return url.toString();
+    } catch {
+      return "#";
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     // Year
     document.getElementById("year").textContent = new Date().getFullYear();
@@ -1585,70 +1609,85 @@
       marquee.addEventListener("touchmove", resumeDelayed, { passive: true });
     })();
 
-// Latest YouTube videos (from your Worker JSON)
-(async () => {
-  const grid = document.getElementById("ytGrid");
-  if (!grid) return;
-
-  try{
-    // Change to your Worker endpoint (see Worker code below)
-    const res = await fetch("https://patreon-redeem-api.lady-anya.workers.dev/public/youtube/latest?limit=6", {
-      cache: "no-store",
-    });
-
-    if (!res.ok) throw new Error("HTTP " + res.status);
-
-    const data = await res.json();
-    const items = Array.isArray(data?.items) ? data.items : [];
-
-    if (!items.length){
-      grid.innerHTML = `<div class="subcard">No videos found yet.</div>`;
-      return;
-    }
-
-    grid.innerHTML = items.map(v => {
-      const title = escapeHtml(v.title || "Untitled");
-      const url = v.url || "#";
-      const thumb = v.thumbnail || "";
-      const date = v.published_at ? new Date(v.published_at).toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" }) : "";
-      return `
-        <a class="ytTile" href="${url}" target="_blank" rel="noopener">
-          <div class="ytThumbWrap">
-            <img class="ytThumb" src="${thumb}" alt="${title}" loading="lazy">
-            <div class="ytPlay" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
+    // Latest YouTube videos (from Worker JSON)
+    (async () => {
+      const grid = document.getElementById("ytGrid");
+      if (!grid) return;
+    
+      function safeUrl(u, fallback = "#") {
+        try {
+          const url = new URL(String(u || ""));
+          if (url.protocol !== "https:" && url.protocol !== "http:") return fallback;
+          return url.toString();
+        } catch {
+          return fallback;
+        }
+      }
+    
+      try {
+        const res = await fetch(
+          "https://patreon-redeem-api.lady-anya.workers.dev/public/youtube/latest?limit=6",
+          { cache: "no-store" }
+        );
+        if (!res.ok) throw new Error("HTTP " + res.status);
+    
+        const data = await res.json();
+        const items = Array.isArray(data?.items) ? data.items : [];
+    
+        if (!items.length) {
+          grid.innerHTML = `<div class="subcard">No videos found yet.</div>`;
+          return;
+        }
+    
+        grid.innerHTML = items
+          .map((v) => {
+            const title = escapeHtml(v.title || "Untitled");
+            const url = safeUrl(v.url, "https://www.youtube.com/@Anya_and_Lolo");
+            const thumb = safeUrl(v.thumbnail, "");
+    
+            const date = v.published_at
+              ? new Intl.DateTimeFormat(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }).format(new Date(v.published_at))
+              : "";
+    
+            return `
+              <a class="ytTile" href="${url}" target="_blank" rel="noopener">
+                <div class="ytThumbWrap">
+                  <img class="ytThumb" src="${thumb}" alt="${title}" loading="lazy">
+                  <div class="ytPlay" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div class="ytMeta">
+                  <div class="ytTitle">${title}</div>
+                  <div class="ytDate">${escapeHtml(date)}</div>
+                </div>
+              </a>
+            `;
+          })
+          .join("");
+      } catch (err) {
+        console.warn("YouTube gallery failed:", err);
+        grid.innerHTML = `
+          <div class="subcard">
+            Couldn’t load videos right now —
+            <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">
+              open the channel →
+            </a>
           </div>
-          <div class="ytMeta">
-            <div class="ytTitle">${title}</div>
-            <div class="ytDate">${date}</div>
-          </div>
-        </a>
-      `;
-    }).join("");
-
-  }catch(err){
-    console.warn("YouTube gallery failed:", err);
-    grid.innerHTML = `
-      <div class="subcard">
-        Couldn’t load videos right now — <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">open the channel →</a>
-      </div>
-    `;
-  }
-
-  function escapeHtml(s){
-    return String(s)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-})();    
-  });
+        `;
+      }
+    })();
+});
   </script>
 </body>
 </html>
+
 
 
 
