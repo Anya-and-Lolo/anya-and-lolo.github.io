@@ -1076,7 +1076,14 @@ document.getElementById("year").textContent = new Date().getFullYear();
 const API = "https://patreon-redeem-api.lady-anya.workers.dev";
 const params = new URLSearchParams(location.search);
 const DEBUG = params.get("debug"); // "anya" or null
-
+  
+// Poll every 5s for the first 3 minutes after connect/reconnect. 
+// Then slow to 30s, so it's not noisy/rate-limity  
+const FAST_POLL_MS = 5000; // check every 5 sec
+const SLOW_POLL_MS = 30000;
+const FAST_WINDOW_MS = 3 * 60 * 1000; // 3 minutes
+const FAST_UNTIL_KEY = "fast_poll_until_v1";
+  
 let CURRENT_CREDITS_CENTS = 0; // integer cents
 
 // --- Support bundle state (safe diagnostics)
@@ -1094,11 +1101,16 @@ let ALLOW_CONFETTI = false;
 const sessionFromUrl = params.get("session");
 if (sessionFromUrl) localStorage.setItem("session", sessionFromUrl);
 
+if (sessionFromUrl) {
+  localStorage.setItem(FAST_UNTIL_KEY, String(Date.now() + FAST_WINDOW_MS));
+}
+  
 // Redeem lock per item
 const redeeming = new Set();
 
 // Hook connect button (connect + reconnect use same flow)
 document.getElementById("connect").onclick = () => {
+  localStorage.setItem(FAST_UNTIL_KEY, String(Date.now() + FAST_WINDOW_MS));
   location.href = API + "/auth/patreon/start";
 };
 
@@ -1530,8 +1542,26 @@ async function loadMe() {
 
   try {
     const r = await apiFetch("/me", s);
-    const me = await r.json();
+    
+    // If server didn’t return JSON, treat as error (don’t crash)
+    const ct = (r.headers.get("content-type") || "").toLowerCase();
+    if (!ct.includes("application/json")) {
+      throw new Error(`/me non-JSON: ${r.status} ${ct}`);
+    }
+    
+    let me;
+    try {
+      me = await r.json(); // parse ONCE
+    } catch (e) {
+      throw new Error(`/me JSON parse failed: ${r.status}`);
+    }
+    
     LAST_ME = me;
+    
+    // Optional: if /me returns JSON error on non-200, handle it cleanly
+    if (!r.ok) {
+      throw new Error(me?.error || `HTTP ${r.status}`);
+    }
 
     if (!me.loggedIn) {
       ALLOW_CONFETTI = true; // not logged in (new users)
@@ -2308,9 +2338,7 @@ function applyCreditsNow(nowCents) {
   const creditsValue = document.getElementById("creditsValue");
   if (creditsValue) creditsValue.textContent = String(nowCents);
 }
-
-const POLL_MS = 5000; // check every 5 sec
-
+  
 let LAST_CREDITS_CENTS = null;
 let POLL_TIMER = null;
 let ACTIVITY_TICK = 0;
@@ -2326,29 +2354,44 @@ async function tick() {
     }
 
     const r = await apiFetch("/me", session);
-    const me = await r.json();
 
-    if (!r.ok) return;                // transient error: keep polling
-    if (!me?.loggedIn) { stopCreditsPolling(); return; }
+    // If server didn’t return JSON, just try again next tick
+    const ct = (r.headers.get("content-type") || "").toLowerCase();
+    if (!ct.includes("application/json")) {
+      console.warn("/me returned non-JSON", r.status, ct);
+      return;
+    }
+
+    let me;
+    try {
+      me = await r.json(); // parse ONCE
+    } catch (e) {
+      console.warn("/me JSON parse failed", r.status, e);
+      return;
+    }
+
+    if (!r.ok) return; // transient error: keep polling
+    if (!me?.loggedIn) {
+      stopCreditsPolling();
+      return;
+    }
 
     const now = Number(me?.credits_raw_cents ?? 0);
     if (!Number.isFinite(now)) return;
 
     const creditsChanged = (LAST_CREDITS_CENTS !== null && now !== LAST_CREDITS_CENTS);
 
-    // Decide if we should refresh activity this tick
     let shouldRefreshActivity = false;
 
     // periodic refresh (~15s)
     ACTIVITY_TICK = (ACTIVITY_TICK + 1) % 3;
     if (ACTIVITY_TICK === 0) shouldRefreshActivity = true;
 
-    // if credits changed, refresh activity + panels
     if (creditsChanged) {
       applyCreditsNow(now);
       loadUnlocks().catch(() => {});
       loadStore().catch(() => {});
-      shouldRefreshActivity = true; // ensure activity refresh happens (but only once)
+      shouldRefreshActivity = true;
     }
 
     if (shouldRefreshActivity) {
@@ -2356,17 +2399,35 @@ async function tick() {
     }
 
     LAST_CREDITS_CENTS = now;
-  } catch {
-    // silent
+  } catch (e) {
+    // silent (or console.warn if you want)
+    // console.warn("tick failed", e);
   }
 }
 
-function startCreditsPolling(ms = POLL_MS) {
+function getPollMs() {
+  const until = Number(localStorage.getItem(FAST_UNTIL_KEY) || 0);
+  return (Date.now() < until) ? FAST_POLL_MS : SLOW_POLL_MS;
+}
+
+function startCreditsPolling() {
   if (POLL_TIMER) return;
   if (!getSession()) return;
 
-  POLL_TIMER = setInterval(tick, ms);
+  let currentMs = getPollMs();
+  POLL_TIMER = setInterval(tick, currentMs);
   tick();
+
+  // Check once a second whether we should switch from fast→slow
+  const switcher = setInterval(() => {
+    if (!POLL_TIMER) { clearInterval(switcher); return; }
+    const want = getPollMs();
+    if (want !== currentMs) {
+      clearInterval(POLL_TIMER);
+      POLL_TIMER = setInterval(tick, want);
+      currentMs = want;
+    }
+  }, 1000);
 }
 
 function stopCreditsPolling() {
@@ -2376,7 +2437,7 @@ function stopCreditsPolling() {
   
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) stopCreditsPolling();
-  else startCreditsPolling(POLL_MS);
+  else startCreditsPolling();
 });
   
 /* STARTUP */
@@ -2389,7 +2450,7 @@ document.addEventListener("visibilitychange", () => {
   // baseline after first load (prevents a "fake diff" later)
   LAST_CREDITS_CENTS = CURRENT_CREDITS_CENTS;
 
-  startCreditsPolling(POLL_MS);
+  startCreditsPolling();
 })();
 </script>
 
@@ -2397,6 +2458,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
