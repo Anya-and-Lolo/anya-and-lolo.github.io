@@ -181,12 +181,130 @@
       font-weight: 900;
     }
 
-    nav{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      justify-content: flex-end;
-    }
+/* --- Nav layout split (primary + secondary + hamburger) --- */
+.nav{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.navPrimary,
+.navSecondary{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* External link diagonal arrow (desktop) */
+.navlinkExternal::after{
+  content: "↗";
+  font-size: 12px;
+  font-weight: 900;
+  margin-left: 6px;
+  opacity: 0.65;
+  transform: translateY(-1px);
+}
+
+/* Hamburger button */
+.menuBtn{
+  display: none;            /* desktop: hidden */
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(20,20,20,0.12);
+  background: rgba(255,255,255,0.90);
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+  cursor: pointer;
+}
+
+.menuBtn:hover{ transform: translateY(-1px); }
+
+/* Simple hamburger icon */
+.menuIcon{
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+  position: relative;
+  display: block;
+}
+.menuIcon::before,
+.menuIcon::after{
+  content:"";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+}
+.menuIcon::before{ top: -6px; }
+.menuIcon::after { top:  6px; }
+
+/* Dropdown panel (mobile) */
+.menuPanel{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 220px;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(20,20,20,0.12);
+  box-shadow: 0 14px 28px rgba(0,0,0,.10);
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+.menuPanel .navlink{
+  width: 100%;
+  justify-content: flex-start;
+  border-color: rgba(20,20,20,0.10);
+  background: rgba(0,0,0,0.04);
+  margin-top: 8px;
+}
+.menuPanel .navlink:first-child{ margin-top: 0; }
+
+.menuPanel.is-open{ display: block; }
+
+
+/* --- Top bar Mobile rules: only 3 buttons + hamburger --- */
+
+@media (max-width: 600px){
+  /* keep your topbarInner stacking, but stop nav from wrapping everything */
+  .badge{ display: none; }
+  .nav{
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .navSecondary{
+    display: none; /* external links moved into hamburger */
+  }
+  .menuBtn{
+    display: inline-flex; /* show hamburger */
+  }
+  .navPrimary{
+    flex: 1 1 auto;
+    gap: 8px;
+  }
+  .navPrimary .navlink{
+    flex: 1 1 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+/* Tablet-ish widths: hide badge + center nav */
+@media (min-width: 601px) and (max-width: 1024px){
+  .badge{ display: none; }
+  .topbarInner{ justify-content: center; }
+  .nav{ justify-content: center; }
+}
 
     .navlink{
       display:inline-flex;
@@ -1697,6 +1815,7 @@
   </script>
 </body>
 </html>
+
 
 
 
