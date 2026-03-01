@@ -1,0 +1,1805 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Day & Night Cycle | RPG Maker Tutorial | Anya & Lolo</title>
+  <meta name="description" content="Build a Day & Night Cycle + in-game time system in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step variables, time display, screen tints, and optimization tips." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Day & Night Cycle | RPG Maker Tutorial" />
+  <meta property="og:description" content="Build a Day & Night Cycle + in-game time system in RPG Maker. Step-by-step variables, time display, screen tints, and optimization tips." />
+  <meta property="og:url" content="https://anya-and-lolo.github.io/day-night-cycle.html" />
+  <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+  <meta property="og:site_name" content="Anya & Lolo" />
+
+  <meta name="twitter:site" content="@Anya_and_Lolo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Day & Night Cycle | RPG Maker Tutorial" />
+  <meta name="twitter:description" content="Build a Day & Night Cycle + in-game time system in RPG Maker. Step-by-step variables, time display, screen tints, and optimization tips." />
+  <meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+
+  <link rel="canonical" href="https://anya-and-lolo.github.io/day-night-cycle.html" />
+  <link rel="icon" href="./favicon.ico?v=1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico?v=1">
+
+<style>
+  :root{
+    --brand: #f4184c;
+    --brand2: rgba(244, 24, 76, 0.12);
+
+    --bg: #ffffff;
+    --card: rgba(255,255,255,0.88);
+    --border: rgba(20,20,20,0.10);
+    --text: #1b1b1b;
+    --muted: rgba(27,27,27,0.70);
+
+    --radius: 16px;
+    --shadow: 0 10px 28px rgba(0,0,0,.10);
+
+    --scrollTrack: #226cbb;
+    --scrollThumb: #56a7fe;
+  }
+
+  *{ box-sizing: border-box; }
+
+[id]{
+  scroll-margin-top: 120px;
+}
+
+html, body{ height: 100%; }
+  
+  html{
+  scroll-behavior: smooth;
+  }
+
+  body{
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+    a{ color: var(--brand); text-decoration: underline; font-weight: 600; text-underline-offset: 2px;}
+    a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+
+.wrap{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  overflow-x: clip;
+}
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    opacity: 1;
+    transform: translateZ(0);
+    will-change: background-position;
+
+    background:
+      radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
+      radial-gradient(circle, rgba(86,167,254,0.12) 2px, transparent 3.5px);
+
+    background-size: 42px 42px, 42px 42px;
+    background-position: 0 0, 21px 21px;
+    background-repeat: repeat, repeat;
+
+    animation: dotsFloat 22s linear infinite;
+  }
+
+  @keyframes dotsFloat{
+    from{ background-position: 0 0, 21px 21px; }
+    to{ background-position: -168px -84px, -147px -63px; }
+  }
+
+  button, .navlink, a{
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+
+  button:active, .navlink:active{
+    transform: translateY(1px) scale(0.99);
+  }
+
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.72);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topbarInner{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .badge{
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.85);
+    color: var(--muted);
+    font-weight: 900;
+  }
+
+  nav{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .navlink{
+    display:inline-flex;
+    align-items:center;
+    padding: 9px 12px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 15px;
+    color: rgba(27,27,27,0.88);
+    border: 1px solid transparent;
+    background: transparent;
+    text-decoration: none;
+    transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+
+  .navlink:hover{
+    text-decoration: none;
+    background: rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+  }
+
+  .topbar .navlink[aria-current="page"]{
+    background: var(--brand2);
+    color: var(--brand);
+    border-color: rgba(244,24,76,0.25);
+  }
+
+  @media (max-width: 900px){
+    .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center; }
+    nav{ justify-content: flex-start; }
+    .footerInner{ grid-template-columns: 1fr; text-align:center; }
+    .footerRight{ justify-content: center !important; }
+    .socialText{ justify-content: center !important; }
+  }
+
+  @media (max-width: 600px){
+    .topbarInner{
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    nav{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      overflow: visible;
+      padding: 0;
+      scroll-snap-type: none;
+      -webkit-mask-image: none;
+              mask-image: none;
+    }
+
+    .navlink{
+      flex: 1 1 auto;
+      justify-content: center;
+      white-space: nowrap;
+      background: rgba(255,255,255,0.90);
+      border-color: rgba(20,20,20,0.12);
+      scroll-snap-align: none;
+    }
+
+    .badge{
+      font-size: 13px;
+      padding: 6px 10px;
+    }
+  }
+
+  .hero{ padding: 18px 0 8px; }
+
+  .heroH1{
+    position: relative;
+    display: block;
+    width: fit-content;
+    margin: 6px auto 18px;
+    font-size: 34px;
+    font-weight: 780;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .heroH1::after{
+    content:"";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 5px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #ff2d6f 0%, var(--brand) 35%, #9fdf28 70%, #ff2d6f 100%);
+    background-size: 200% 100%;
+    animation: titleShimmer 3s linear infinite;
+    box-shadow: 0 4px 12px rgba(244,24,76,0.35);
+  }
+
+  @keyframes titleShimmer{
+    0%{ background-position: 0% 50%; }
+    100%{ background-position: 200% 50%; }
+  }
+
+  .subtitle{
+    margin: 0 0 14px 0;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
+  .card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.06);
+    transition: box-shadow .15s ease, transform .15s ease;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .card:hover{
+    box-shadow: 0 14px 28px rgba(0,0,0,.07);
+    transform: translateY(-2px);
+  }
+
+  .subcard{
+    background: rgba(255,255,255,0.78);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 10px;
+  }
+
+  .lead{
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: rgba(27,27,27,0.75);
+  }
+
+  #topTags .tagBtn{
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    box-shadow: 0 8px 16px rgba(0,0,0,.04);
+  }
+
+  .tagBtn.is-active{
+    background: var(--brand2);
+    border-color: rgba(244,24,76,0.25);
+    color: var(--brand);
+  }
+
+  .tag{
+    cursor: pointer;
+    background: rgba(255,255,255,0.78);
+  }
+
+  .tagFilter{
+    border: 1px solid rgba(20,20,20,0.10);
+  }
+
+  .tagFilter:hover{
+    background: rgba(0,0,0,0.06);
+  }
+
+  .tagFilter.is-active{
+    background: var(--brand2);
+    border-color: rgba(244,24,76,0.25);
+    color: var(--brand);
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.95);
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    text-decoration:none;
+    font-size: 16px;
+  }
+  .btn:hover{ text-decoration:none; transform: translateY(-1px); }
+
+  .btnPrimary{
+    background: var(--brand);
+    color: #fff;
+    border-color: rgba(244,24,76,0.35);
+  }
+
+  .btnPrimary:hover{
+    box-shadow: 0 14px 30px rgba(244,24,76,.20);
+    transform: translateY(-1px);
+  }
+
+  .linkBrand{
+    color: var(--brand);
+    font-weight: 900;
+  }
+  .linkBrand:hover{
+    text-decoration: none;
+    background: var(--brand2);
+    border-radius: 10px;
+    padding: 2px 6px;
+    margin: -2px -6px;
+  }
+
+  footer{
+    margin-top: 26px;
+    padding: 18px 0 34px;
+    color: rgba(27,27,27,0.72);
+    font-size: 14px;
+  }
+
+  .hangout{
+    text-align: center;
+    margin: 18px 0 14px;
+    font-size: 15px;
+    color: rgba(27,27,27,0.78);
+  }
+
+  .footerInner{
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items:center;
+  }
+
+  .socialText{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 8px;
+    justify-content:center;
+    align-items:center;
+    font-weight: 900;
+  }
+
+  .socialText a{
+    padding: 2px 6px;
+    border-radius: 10px;
+    text-decoration: none;
+  }
+
+  .socialText a:hover{
+    background: rgba(0,0,0,0.06);
+    text-decoration: none;
+  }
+
+  .sepDot{
+    width: 6px;
+    height: 6px;
+    background: var(--brand);
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  .footerRight{
+    display:flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .sep{
+    color: rgba(20,20,20,0.35);
+    font-weight: 800;
+    margin: 0 2px;
+  }
+
+  /* Scrollbar */
+  html{
+    scrollbar-color: var(--scrollThumb) var(--scrollTrack);
+    scrollbar-width: auto;
+  }
+  ::-webkit-scrollbar{ width: 24px; height: 24px; }
+  ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
+  ::-webkit-scrollbar-thumb{
+    background: var(--scrollThumb);
+    border-radius: 999px;
+    border: 6px solid var(--scrollTrack);
+  }
+  ::-webkit-scrollbar-thumb:hover{ filter: brightness(0.95); }
+  ::-webkit-scrollbar-corner{ background: var(--scrollTrack); }
+
+  /* Reveal */
+  .preReveal{
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .reveal{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* --- Tutorials page extras (small additions) --- */
+  .tutorialGrid{
+    display:grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 14px;
+    margin-top: 14px;
+    align-items: start;
+  }
+  @media (max-width: 900px){
+    .tutorialGrid{ grid-template-columns: 1fr; }
+  }
+
+/* Sticky TOC wrapper (NOT the .card) */
+.toc{
+  position: static;
+  top: auto;
+}
+
+/* Make the TOC card itself sticky */
+.tocCard{
+  position: sticky;
+  top: 100px;          /* below your topbar */
+  align-self: start;
+  height: fit-content;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Don't lift the sticky card on hover */
+.tocCard:hover{
+  transform: none !important;
+}
+
+.toc a.is-active{
+  background: var(--brand2);
+  border-color: rgba(244,24,76,0.25);
+}
+
+.toc a.is-active span{
+  color: var(--brand);
+}
+
+/* Make sticky work reliably: remove transform on TOC card only */
+aside.card{
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Prevent .card hover transform from moving the sticky element */
+aside.card:hover{
+  transform: none;
+}
+
+/* tiny progress bar */
+.tocProgress{
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.08);
+  border: 1px solid rgba(20,20,20,0.10);
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.tocProgressFill{
+  height: 100%;
+  width: 0%;
+  background: var(--brand);
+  border-radius: 999px;
+  transition: width .12s linear;
+}
+
+@media (max-width: 900px){
+  .tocCard{ position: static; }
+}
+
+  .toc a{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(20,20,20,0.10);
+
+    /* grey by default */
+    background: rgba(0,0,0,0.06);
+
+    font-weight: 900;
+    text-decoration: none;
+    margin-top: 8px;
+  }
+
+  .toc a:hover{
+    /* white on hover */
+    background: rgba(255,255,255,0.92);
+    text-decoration: none;
+  }
+
+  .toc small{
+    font-weight: 900;
+    color: rgba(27,27,27,0.55);
+  }
+  .toc a:hover small{
+    color: rgba(27,27,27,0.72);
+  }
+
+  .tagRow{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .tag{
+    font-size: 13px;
+    font-weight: 900;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(20,20,20,0.10);
+    background: rgba(255,255,255,0.78);
+    color: rgba(27,27,27,0.78);
+  }
+
+  .step{
+    display:flex;
+    gap: 12px;
+    align-items:flex-start;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(20,20,20,0.10);
+    background: rgba(255,255,255,0.72);
+  }
+  .stepNum{
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    display:grid;
+    place-items:center;
+    font-weight: 700;
+    color: #fff;
+    background: var(--brand);
+    box-shadow: 0 10px 18px rgba(244,24,76,0.18);
+  }
+  .stepTitle{
+    font-size: 20px;
+    letter-spacing: 0;
+    font-weight: 700;
+    margin: 0 0 4px;
+    line-height: 1.25;
+    text-transform: capitalize;
+  }
+  .step p{ margin: 0; color: rgba(27,27,27,0.82); }
+  
+/* ============================= */
+/* CALLOUT SYSTEM */
+/* ============================= */
+
+/* Default = calm documentation blue */
+.callout{
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 14px;
+
+  background: #eef6ff;                 /* soft blue */
+  border: 1px solid rgba(0, 123, 255, 0.25);
+}
+
+/* Success = green */
+.callout.success{
+  background: rgba(46, 184, 92, 0.12);
+  border-color: rgba(46, 184, 92, 0.35);
+}
+
+/* Warning = red */
+.callout.warn{
+  background: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.35);
+}
+.callout.warn strong{
+  color: #b02a37;
+}
+
+/* Callout links: bold + underlined */
+.callout a{
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+/* Hover */
+.callout a:hover{
+  color: var(--brand);
+}
+
+  pre{
+    margin: 12px 0 0;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(20,20,20,0.10);
+	background: #f3f5f7;
+    overflow:auto;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+code{
+  background: #f3f5f7;
+  color: #444;
+  padding: 2px 6px;
+  border-radius: 6px;
+  display: inline;              /* important */
+  white-space: normal;          /* allow wrapping */
+  overflow-wrap: anywhere;      /* break long stuff */
+  word-break: break-word;
+}
+
+/* Prevents any long text from forcing horizontal layout */
+.card, .step, .subcard, p, li, a{
+  overflow-wrap: anywhere;
+}
+
+  .video{
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid rgba(20,20,20,0.10);
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.86);
+    margin-top: 12px;
+  }
+  .video iframe{
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display:block;
+  }
+
+.imageCard{
+  width: 100%;
+  aspect-ratio: 16 / 9; /* remove for flexible height */
+  border: 1px solid rgba(20,20,20,0.10);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.86);
+  margin-top: 12px;
+}
+
+/* STATIC image cards */
+.imageCard:not(.imageCardCrossfade){
+  aspect-ratio: auto;   /* remove the forced 16:9 */
+}
+
+.imageCard:not(.imageCardCrossfade) img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* CROSSFADE image cards */ 
+.imageCardCrossfade{
+  position: relative;
+}
+
+.imageCardCrossfade .frame{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imageCardCrossfade .is-base{
+  opacity: 1;
+}
+
+.imageCardCrossfade .is-top{
+  opacity: 0;
+  transition: opacity .55s ease; /* crossfade speed */
+}
+
+  .miniRow{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .sectionTitle{
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+
+  .muted{ color: rgba(27,27,27,0.62); font-weight: 800; font-size: 14px; }
+  
+/* ============================= */
+/* LIGHTBOX (Preview gallery) */
+/* ============================= */
+
+.lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;                /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lightbox.is-open{ display: flex; }
+
+.lightboxOverlay{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+}
+
+.lightboxPanel{
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 96vw);
+  height: min(78vh, 720px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+}
+
+.lightboxTop{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 900;
+  user-select: none;
+}
+
+.lightboxClose{
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.lightboxClose:hover{
+  background: rgba(255,255,255,0.18);
+}
+
+.lightboxStage{
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  display: grid;
+  place-items: center;
+}
+
+.lightboxImg{
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  pointer-events: none; /* image can’t steal clicks */
+}
+
+/* Lightbox arrows  */
+.lightboxNav{
+  position: absolute;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 22px;
+  font-weight: 900;
+  user-select: none;
+
+  z-index: 10;
+  pointer-events: auto;
+
+  transition: transform .14s ease, background .14s ease, border-color .14s ease, box-shadow .14s ease, opacity .14s ease;
+  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+  opacity: .92;
+
+  /* variable-based transform (hover+active combine) */
+  --lbScale: 1;
+  --lbX: 0px;
+  transform: translateY(-50%) translateX(var(--lbX)) scale(var(--lbScale));
+}
+
+/* hover wiggle */
+.lightboxPrev:hover{ --lbScale: 1.06; --lbX: -3px; }
+.lightboxNext:hover{ --lbScale: 1.06; --lbX:  3px; }
+
+/* click pop (works even while hovered) */
+.lightboxNav:active{ --lbScale: .94; }
+
+.lightboxNav:hover{ 
+  transition: transform .14s ease, background .14s ease, border-color .14s ease, box-shadow .14s ease, opacity .14s ease;
+  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+  opacity: .92;
+  background: rgba(255,255,255,0.20); 
+ }
+
+.lightboxPrev{ left: 12px; }
+.lightboxNext{ right: 12px; }
+
+@keyframes navIn{
+  0%{ transform: translateY(-50%) scale(.85); opacity: 0; }
+  100%{ transform: translateY(-50%) scale(1); opacity: .92; }
+}
+
+.lightbox.is-open .lightboxNav{
+  animation: navIn .18s ease-out both;
+}
+
+/* keyboard focus (nice accessibility glow) */
+.lightboxNav:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(244,24,76,.35), 0 10px 26px rgba(0,0,0,.25);
+}
+
+.lightboxBottom{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lightboxDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.18);
+}
+
+.lightboxDot.is-active{
+  background: #fff;
+  border-color: rgba(255,255,255,0.8);
+}
+
+/* Makes preview images feel clickable */
+#preview-2 .imageCard,
+#preview1-static .imageCard img,
+#preview2-static .imageCard img,
+#preview3-static .imageCard img,
+#preview4-static .imageCard img{
+  cursor: zoom-in;
+}
+
+/* Make sure lightbox arrows always click */
+.lightboxNav{
+  z-index: 5;
+}
+.lightboxImg{
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <div class="brand">
+        <span class="badge">RPG Maker Systems • Mechanics • Game Development</span>
+      </div>
+
+      <nav aria-label="Primary">
+        <a class="navlink" href="./">Home</a>
+        <a class="navlink" href="./redeem.html">Rewards</a>
+        <a class="navlink" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+        <a class="navlink" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+		<a class="navlink" href="./tutorials.html">Tutorials</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="card">
+        <h1 class="heroH1">RPG Maker Day &amp; Night Cycle</h1>
+        <p class="subtitle" style="text-align:center; margin-bottom:0;">
+          Build a real in-game clock + smooth day/night tint (works in any RPG Maker engine) 💛
+        </p>
+
+        <div class="tagRow" style="justify-content:center;">
+          <span class="tag">MZ</span>
+          <span class="tag">MV</span>
+          <span class="tag">XP</span>
+          <span class="tag">VX Ace</span>
+          <span class="tag">2k / 2k3</span>
+          <span class="tag">Beginner</span>
+        </div>
+
+        <div class="miniRow" style="justify-content:center;">
+          <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener">Download the free demo</a>
+          <a class="btn" href="#setup"><span class="linkBrand">Jump to setup →</span></a>
+          <a class="btn" href="#video">Watch video</a>
+        </div>
+      </div>
+
+      <div class="tutorialGrid" style="margin-top:14px;">
+        <!-- LEFT: Content -->
+        <div>
+
+		  <!-- Image -->
+		<div class="card" id="preview1-static" style="margin-bottom:14px;">
+		  <div class="imageCard">
+			<img src="./images/tutorials/RPG_Maker_Day_Night_Cycle_MZ_MV_Game_Time_System_Mechanics_Lite.jpg" alt="Day & Night Cycle Preview">
+		  </div>
+            <div class="callout">
+              <strong>Good news:</strong> This system is designed to work with any version of RPG Maker. If you have MZ/MV, open the demo file and follow along. ➡️ <a href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank">Download here!</a>
+            </div>
+		</div>
+
+
+          <!-- Intro -->
+          <div class="card" id="intro">
+            <h2 class="sectionTitle">Today we’re building</h2>
+			
+			<div class="subcard">
+			  <div class="lead" style="margin-top:8px;">
+              We’re going to set up a fully functional in-game time system, then use it makes your world feel alive ✨
+				You'll also learn how to create a real in-game clock and a clean time display to transition your world from dawn to dusk and beyond.
+			  </div>
+
+			  <div class="muted" style="margin-top:10px;">
+				Seconds → Minutes → Hours → Days • Create Game Time • Screen Tint transitions • Custom HUD
+			  </div>
+			</div>
+									
+			<div class="subcard" style="margin-top:14px;">
+			<h2 class="sectionTitle">What events you’ll create</h2>
+			  <div class="lead" style="margin-top:8px;">
+				You will build exactly <strong>3 events</strong> for this system:
+			  </div>
+
+			  <div class="step" style="margin-top:10px;">
+				<div class="stepNum">1</div>
+				<div>
+				  <div class="stepTitle">Game Time (Main). Parallel</div>
+				  <p>
+					Handles Seconds → Minutes → Hours → Days rollover logic.
+					This is the heart of your clock.
+				  </p>
+				</div>
+			  </div>
+
+			  <div class="step">
+				<div class="stepNum">2</div>
+				<div>
+				  <div class="stepTitle">Day/Night Tint. Parallel</div>
+				  <p>
+					Checks the current Hour and applies the correct screen tint
+					(Night, Sunrise, Day, Sunset, Evening).
+				  </p>
+				</div>
+			  </div>
+
+			  <div class="step">
+				<div class="stepNum">3</div>
+				<div>
+				  <div class="stepTitle">Pre-Set Time. Autorun (One-Time Setup)</div>
+				  <p>
+					Sets the starting time (example: 12:00 PM) and applies the correct tint
+					before gameplay begins. Then disables itself using a Self Switch.
+				  </p>
+				</div>
+			  </div>
+
+			  <div class="callout" style="margin-top:12px;">
+				<strong>Beginner tip:</strong>  
+				If you're learning, build them on a test map first.  
+				Once it works, move them into Common Events for multi-map projects.
+			  </div>
+			</div>
+			
+          </div>
+
+          <!-- Video -->
+          <div class="card" id="video" style="margin-top:14px;">
+            <h2 class="sectionTitle">Video walkthrough</h2>
+            <div class="lead">Prefer a visual walkthrough? Here you go 💛</div>
+
+            <div class="video" aria-label="RPG Maker Day & Night Cycle Tutorial video">
+              <iframe
+                loading="lazy"
+                src="https://www.youtube.com/embed/g_lLFJqsy8g"
+                title="RPG Maker Day & Night Cycle Tutorial (Anya & Lolo)"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin">
+              </iframe>
+            </div>
+
+            <div class="miniRow">
+              <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener">Download the free demo</a>
+              <a class="btn" href="./tutorials.html"><span class="linkBrand">Back to Tutorials →</span></a>
+            </div>
+          </div>
+
+          <!-- MV/MZ vs other engines -->
+          <div class="card" id="before-you-start" style="margin-top:14px;">
+            <h2 class="sectionTitle">Before we start</h2>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">If you have MZ/MV</div>
+                <p>
+                  Open the provided demo file for your engine. The key event commands are placed on the demo map for learning (one Autorun + two Parallel events).
+                  You can move them to Common Events later for multi-map projects.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">If you use a different engine</div>
+                <p>
+                  Create the events manually in your own project. A clean way is placing the setup events in the top-left corner of a map first, then moving them into Common Events once you’re happy.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Setup -->
+          <div class="card" id="setup" style="margin-top:14px;">
+            <h2 class="sectionTitle">Part 1. Create the game time (Seconds, Minutes, Hours)</h2>
+            <div class="lead">Use Variables + Conditional Branches inside a Parallel event to keep time ticking.</div>
+
+            <div class="subcard">
+              <strong>How time will roll over</strong>
+              <div class="lead" style="margin-top:6px;">
+                Seconds reach 60 → +1 Minute, reset Seconds to 0<br>
+                Minutes reach 60 → +1 Hour, reset Minutes to 0<br>
+                Hours reach 24 → +1 Day, reset Hours to 0<br>
+                (Optional) Months reach 12 → +1 Year
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Create a Parallel event: “Game Time (Main)”</div>
+                <p>
+                  Make a new event and set Trigger to <strong>Parallel</strong>. This event will run continuously and update your variables.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">Create variables</div>
+                <p>
+                  Create variables for: <strong>Seconds</strong>, <strong>Minutes</strong>, <strong>Hours</strong>, <strong>Days</strong>, and optionally <strong>Months</strong>, <strong>Years</strong>.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">3</div>
+              <div>
+                <div class="stepTitle">Tick seconds</div>
+                <p>
+                  In your Parallel event, do:
+                </p>
+				<pre><code>Control Variables → Seconds → Add Constant 1</code></pre>
+                <p style="margin-top:10px;">
+                  Now Seconds will increase as the event runs.
+                </p>
+				
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">4</div>
+              <div>
+                <div class="stepTitle">Convert seconds into minutes</div>
+                <p>
+                  Add a Conditional Branch: <code>If Seconds ≥ 60</code> then:
+                  <code>Minutes += 1</code>, and <code>Seconds = 0</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">5</div>
+              <div>
+                <div class="stepTitle">Repeat for hours and days</div>
+                <p>
+                  Do the same rollover logic:
+                  <code>If Minutes ≥ 60</code> then <code>Hours +1</code> and reset Minutes,
+                  then <code>If Hours ≥ 24</code> then <code>Days +1</code> and reset Hours.
+                </p>
+              </div>
+            </div>
+
+            <div class="callout">
+              <strong>Optional challenge:</strong> Add Months/Years if you want seasonal changes or long-term events.
+            </div>
+          </div>
+
+		<!-- Image -->
+		<div class="card" id="preview-2" style="margin-top:14px;">
+		  <h2 class="sectionTitle">Preview</h2>
+		  <div class="lead">Code snippets to help you with Part 1 💛</div>
+			
+			<div class="imageCard imageCardCrossfade">
+			  <img class="frame is-base" id="previewBase" src="./images/tutorials/rpg-maker-day-night-cycle_1.png" alt="Day & Night Cycle preview">
+			  <img class="frame is-top"  id="previewTop"  src="./images/tutorials/rpg-maker-day-night-cycle_2.png" alt="">
+			</div>
+
+		  <div class="miniRow">
+			<a class="btn btnPrimary"
+			   href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+			   target="_blank" rel="noopener">
+			   Download the free demo
+			</a>
+			<a class="btn" href="./tutorials.html">
+			  <span class="linkBrand">Back to Tutorials →</span>
+			</a>
+		  </div>
+		</div>
+
+          <!-- Verify + Display -->
+          <div class="card" id="time-display" style="margin-top:14px;">
+            <h2 class="sectionTitle">Part 2. Time Display (so we can see it working)</h2>
+            <div class="lead">First, we verify the variables update. Then we make a dynamic display that updates in real-time.</div>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Quick test (recommended)</div>
+                <p>
+                  Place a simple object event (like a sign) and show a message using <b>Show Text command</b> that display your variables.
+                </p>
+				
+                <pre><code>\V[1]Seconds | \V[2]Minutes | \V[3]Hours | \V[4]Days | \V[5]Months</code></pre>
+				
+                <p style="margin-top:10px;">
+                  Playtest! Click several times on a signpost. If numbers change, your clock is ticking:
+                </p>
+				
+                <pre><code>25 Seconds | 17 Minutes | 12 Hours | 1 Days | 0 Months</code></pre>
+				
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">Make the display update dynamically</div>
+                <p>
+                  Use a Dynamic Text Picture approach (MV users: TextPicture plugin). Turn it ON in Plugin Manager, then:
+                  add a Plugin Command that defines your text, and use <strong>Show Picture</strong> without selecting an image.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">3</div>
+              <div>
+                <div class="stepTitle">Use variables inside the text</div>
+                <p>
+                  Example: Hours is variable 3, Days is variable 4, then write <code>\V[3]</code> (or <code>\V[003]</code>) to display it.
+                  You can also add colour with <code>\C[]</code>.
+                </p>
+
+                <pre><code>\C[17]HOUR \V[3]:\V[2] MIN | \V[4] DAYS \C[0]</code></pre>
+
+                <div class="callout warn">
+                  <strong>Important:</strong> each picture needs its own unique picture ID, or pictures replace each other.
+                </div>
+              </div>
+            </div>
+          </div>
+
+		<!-- Image -->
+		<div class="card" id="preview3-static" style="margin-top:14px;">
+		  <h2 class="sectionTitle">Preview</h2>
+		  <div class="lead">See how time display works in action 💛</div>
+
+		  <div class="imageCard">
+			<img src="./images/tutorials/rpg-maker-day-night-cycle-time-display.gif" alt="Day & Night Cycle Preview">
+		  </div>
+
+		  <div class="miniRow">
+			<a class="btn btnPrimary"
+			   href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+			   target="_blank" rel="noopener">
+			   Download the free demo
+			</a>
+			<a class="btn" href="./tutorials.html">
+			  <span class="linkBrand">Back to Tutorials →</span>
+			</a>
+		  </div>
+		</div>
+		
+          <!-- Tints -->
+          <div class="card" id="tints" style="margin-top:14px;">
+            <h2 class="sectionTitle">Part 3. Smooth Day/Night Tint (based on Hours)</h2>
+            <div class="lead">Now we make the world “feel alive” by tinting the screen depending on the Hour.</div>
+
+            <div class="subcard">
+              <strong>Your suggested tint schedule</strong>
+              <div class="lead" style="margin-top:6px;">
+                0 → 5  = Deep Night<br>
+                5 → 8  = Sunrise<br>
+                8 → 18 = Daytime<br>
+                18 → 20 = Sunset<br>
+                20 → 24 = Evening
+              </div>
+              <div class="muted" style="margin-top:8px;">This comes directly from your guide’s “Setting Up Day/Night Tints Based on Hours”.</div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Create a Parallel event: “Day/Night Tint”</div>
+                <p>
+                  Make a second Parallel event (or Common Event) that checks <strong>Hours</strong> and applies the correct tint.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">Use conditional branches by hour range</div>
+                <p>
+                  Build branches like: <code>If Hours ≥ 20</code> then <strong>Evening tint</strong>, <code>Else If Hours ≥ 18</code> then <strong>Sunset</strong>, <code>Else If Hours ≥ 8</code> then <strong>Day</strong>, <code>Else If Hours ≥ 5</code> then <strong>Sunrise</strong>, <code>Else →</code> <strong>Deep Night</strong>.
+                </p>
+              </div>
+            </div>
+
+            <div class="callout">
+              <strong>Tip:</strong> Keep tint durations slightly smooth (like 30–60 frames) so transitions don’t feel harsh.
+            </div>
+          </div>
+
+		<!-- Image -->
+		<div class="card" id="preview2-static" style="margin-top:14px;">
+		  <h2 class="sectionTitle">Preview</h2>
+		  <div class="lead">Check out the transitions you've just created 💛</div>
+
+		  <div class="imageCard">
+			<img src="./images/tutorials/rpg-maker-day-night-cycle-screen-tints-transitions.jpg" alt="Day & Night Cycle Preview">
+		  </div>
+
+		  <div class="miniRow">
+			<a class="btn btnPrimary"
+			   href="./rpg-maker-day-night-cycle-screen-tints-transitions.jpg"
+			   target="_blank" rel="noopener">
+			   Download the free demo
+			</a>
+			<a class="btn" href="./tutorials.html">
+			  <span class="linkBrand">Back to Tutorials →</span>
+			</a>
+		  </div>
+		</div>
+
+          <!-- Start at specific time -->
+          <div class="card" id="start-time" style="margin-top:14px;">
+            <h2 class="sectionTitle">Part 4. Start the game at a specific time (like 12pm)</h2>
+            <div class="lead">By default it starts at 00:00. Let’s pre-set the clock and apply the right tint.</div>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Create an Autorun event: “Pre-Set Time”</div>
+                <p>
+                  Set the event trigger to <strong>Autorun</strong>, set Hours/Minutes to what you want (example: 12:00), and apply a Daylight tint so you don’t start with night colours.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">Turn it off with a Self Switch</div>
+                <p>
+                  Add a new page conditioned by Self Switch A, and turn Self Switch A ON at the end, so the Autorun doesn’t freeze the game.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Optimization -->
+          <div class="card" id="optimization" style="margin-top:14px;">
+            <h2 class="sectionTitle">Part 5. Optimization (make it run smooth)</h2>
+            <div class="lead">Parallel events can be heavy if they check too often. Let’s reduce unnecessary work.</div>
+
+            <div class="subcard">
+              <strong>Performance checklist</strong>
+              <div class="lead" style="margin-top:6px;">
+                ✔ Trigger events only when needed<br>
+                ✔ Minimize frame checks<br>
+                ✔ Use Wait commands strategically
+              </div>
+              <div class="muted" style="margin-top:8px;">Straight from your guidebook.</div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Use a Wait command (60 frames = 1 second)</div>
+                <p>
+                  A Wait(60) at the end of your Parallel event prevents the engine from running checks 60 times per second.
+                  It keeps the system smooth without unnecessary processing.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">Same idea for the tint event</div>
+                <p>
+                  Your tint event is also Parallel, without a wait, it can keep reapplying tint constantly.
+                  Add a Wait command to limit checks and avoid draining resources.
+                </p>
+              </div>
+            </div>
+
+            <div class="callout">
+              <strong>Fun fact:</strong> If you skip Wait, time will fly by at lightning speed! You even used that as a mini-game idea in Pro 😅
+            </div>
+          </div>
+
+          <!-- Extras -->
+          <div class="card" id="extras" style="margin-top:14px;">
+            <h2 class="sectionTitle">Free extras! Make events react to time</h2>
+            <div class="lead">Once you have Hours, you can make your game world respond in fun ways.</div>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Time-specific interactions</div>
+                <p>
+                  Use switches/branches to make windows open/close, lanterns light at night, fireflies appear, or shops open between set hours.
+                </p>
+              </div>
+            </div>
+
+            <div class="callout">
+              <strong>Want the upgraded version?</strong> The Pro version adds global time, custom HUD, time-speed control, and smart optimizations. 
+            </div>
+          </div>
+		  
+		  <!-- Image -->
+		<div class="card" id="preview4-static" style="margin-top:14px;">
+		  <h2 class="sectionTitle">Preview</h2>
+		  <div class="lead">Ready to level up your RPG experience? Go Pro for Free! 🎁</div>
+
+		  <div class="imageCard">
+			<img src="./images/tutorials/Day-Night-System-RPG-Maker-MZ-MV-Game-Time-Mechanics.jpg" alt="Day & Night Cycle Preview">
+		  </div>
+
+		  <div class="miniRow">
+			<a class="btn btnPrimary"
+			   href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+			   target="_blank" rel="noopener">
+			   Download the free demo
+			</a>
+			<a class="btn" href="./tutorials.html">
+			  <span class="linkBrand">Back to Tutorials →</span>
+			</a>
+		  </div>
+		</div>		  
+
+        </div>
+
+		<!-- RIGHT: TOC -->
+		<aside class="card tocCard" aria-label="Tutorial table of contents">
+		  <div class="toc" id="toc">
+			<div class="tocTop">
+			  <h2 class="sectionTitle" style="font-size:18px; margin:0;">Quick jumps</h2>
+			  <div class="lead" style="margin-top:4px;">Sections on this page</div>
+
+			  <!-- progress bar -->
+			  <div class="tocProgress" aria-hidden="true">
+				<div class="tocProgressFill" id="tocProgressFill"></div>
+			  </div>
+			</div>
+
+			<a href="#intro"><span>What you’ll learn</span><small>Overview</small></a>
+			<a href="#video"><span>Video tutorial</span><small>YouTube</small></a>
+			<a href="#before-you-start"><span>Before you start</span><small>Which engine?</small></a>
+			<a href="#setup"><span>Game time setup</span><small>Variables</small></a>
+			<a href="#time-display"><span>Time display</span><small>HUD text</small></a>
+			<a href="#tints"><span>Day/Night tint</span><small>Atmosphere</small></a>
+			<a href="#start-time"><span>Start at 12pm</span><small>Autorun</small></a>
+			<a href="#optimization"><span>Optimization</span><small>Wait(60)</small></a>
+			<a href="#extras"><span>Free Extras!</span><small>Time events</small></a>
+		  </div>
+		</aside>
+      </div>
+
+<!-- Lightbox gallery (for preview images only) -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightboxOverlay" data-close="1"></div>
+
+  <div class="lightboxPanel" role="dialog" aria-modal="true" aria-label="Image preview">
+    <div class="lightboxTop">
+      <div id="lightboxLabel">Preview</div>
+      <button class="lightboxClose" type="button" id="lightboxClose" aria-label="Close preview">✕</button>
+    </div>
+
+    <div class="lightboxStage">
+      <button class="lightboxNav lightboxPrev" type="button" id="lightboxPrev" aria-label="Previous image">‹</button>
+      <img class="lightboxImg" id="lightboxImg" alt="">
+      <button class="lightboxNav lightboxNext" type="button" id="lightboxNext" aria-label="Next image">›</button>
+    </div>
+
+    <div class="lightboxBottom" id="lightboxDots" aria-label="Image position indicators"></div>
+  </div>
+</div>
+
+      <!-- Footer card (reuse your same footer block) -->
+      <div class="card" style="margin-top:14px;">
+        <div class="hangout" style="margin-top:0;">
+          Want to hang out? Join the
+          <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
+          or follow us on your favourite platform below 💛
+        </div>
+
+        <footer style="margin-top: 12px; padding: 0;">
+          <div class="footerInner">
+            <div>© <span id="year"></span> Anya &amp; Lolo</div>
+
+            <div class="socialText" aria-label="Social links">
+              <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+              <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+              <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+              <span class="sepDot"></span>
+              <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+              <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+              <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+              <span class="sepDot"></span>
+              <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+              <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+              <span class="sepDot"></span>
+              <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+              <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+            </div>
+
+            <div class="footerRight">
+              <a href="./terms.html">Terms</a>
+              <span class="sep">|</span>
+              <a href="./privacy.html">Privacy</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Year
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Reveal on scroll (skip tocCard so sticky doesn't get weird)
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("reveal"); });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(".card:not(.tocCard)").forEach(card => {
+    card.classList.add("preReveal");
+    revealObserver.observe(card);
+  });
+
+  // =============================
+  // TOC progress bar
+  // =============================
+  const fill = document.getElementById("tocProgressFill");
+
+  function updateProgress(){
+    if (!fill) return;
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    fill.style.width = Math.max(0, Math.min(100, pct)) + "%";
+  }
+
+  // =============================
+  // TOC highlight current section
+  // =============================
+  const tocLinks = Array.from(document.querySelectorAll(".toc a[href^='#']"));
+  const sectionEls = tocLinks
+    .map(a => a.getAttribute("href"))
+    .filter(Boolean)
+    .map(id => document.querySelector(id))
+    .filter(Boolean);
+
+  if (tocLinks.length && sectionEls.length) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visible) return;
+
+      const id = "#" + visible.target.id;
+      tocLinks.forEach(a => a.classList.toggle("is-active", a.getAttribute("href") === id));
+    }, { rootMargin: "-20% 0px -65% 0px", threshold: [0.1,0.2,0.3,0.4,0.5] });
+
+    sectionEls.forEach(sec => sectionObserver.observe(sec));
+  }
+
+// =============================
+// Preview image auto-rotate (crossfade, no jump)
+// =============================
+const base = document.getElementById("previewBase");
+const topImg = document.getElementById("previewTop");
+
+if (base && topImg) {
+  const frames = [
+    "./images/tutorials/rpg-maker-day-night-cycle_1.png",
+    "./images/tutorials/rpg-maker-day-night-cycle_2.png",
+    "./images/tutorials/rpg-maker-day-night-cycle_3.png",
+    "./images/tutorials/rpg-maker-day-night-cycle_4.png"
+  ];
+
+  // Preload
+  frames.forEach(src => { const i = new Image(); i.src = src; });
+
+  const FADE_MS = 550;     // must match CSS transition duration
+  const HOLD_MS = 2000;    // time between changes
+
+  let index = 0;
+  base.src = frames[index];
+
+  // Ensure top starts hidden, with its transition ON
+  topImg.style.opacity = 0;
+
+  function hideTopInstant() {
+    // turn transition off just for the reset (prevents "jump")
+    topImg.style.transition = "none";
+    topImg.style.opacity = 0;
+    // force reflow so browser "commits" the instant change
+    void topImg.offsetHeight;
+    // restore transition for the next fade
+    topImg.style.transition = `opacity ${FADE_MS}ms ease`;
+  }
+
+  // Make sure we start clean
+  hideTopInstant();
+
+  setInterval(() => {
+    const nextIndex = (index + 1) % frames.length;
+    const nextSrc = frames[nextIndex];
+
+    // Put next image on TOP but keep it hidden instantly
+    hideTopInstant();
+    topImg.src = nextSrc;
+
+    // Next frame: fade in the top image over the base
+    requestAnimationFrame(() => {
+      topImg.style.opacity = 1;
+    });
+
+    // After fade completes: commit to base, then hide top instantly
+    setTimeout(() => {
+      base.src = nextSrc;
+      index = nextIndex;
+      hideTopInstant();
+    }, FADE_MS);
+
+  }, HOLD_MS);
+}
+
+// =============================
+// LIGHTBOX for preview images
+// =============================
+const lightbox = document.getElementById("lightbox");
+const lbImg = document.getElementById("lightboxImg");
+const lbClose = document.getElementById("lightboxClose");
+const lbPrev = document.getElementById("lightboxPrev");
+const lbNext = document.getElementById("lightboxNext");
+const lbDots = document.getElementById("lightboxDots");
+const lbLabel = document.getElementById("lightboxLabel");
+
+const hasLightbox =
+  lightbox && lbImg && lbClose && lbPrev && lbNext && lbDots && lbLabel;
+
+if (hasLightbox) {
+  // Click targets
+  const previewFramesClickTarget = document.querySelector("#preview-2 .imageCard"); // crossfade gallery
+  const preview1Img = document.querySelector("#preview1-static .imageCard img");
+  const preview2Img = document.querySelector("#preview2-static .imageCard img");
+  const preview3Img = document.querySelector("#preview3-static .imageCard img");
+  const preview4Img = document.querySelector("#preview4-static .imageCard img");
+
+  // Rotating frames
+  const preview1Frames = [
+    "./images/tutorials/rpg-maker-day-night-cycle_1.png",
+    "./images/tutorials/rpg-maker-day-night-cycle_2.png",
+    "./images/tutorials/rpg-maker-day-night-cycle_3.png",
+    "./images/tutorials/rpg-maker-day-night-cycle_4.png"
+  ];
+
+  // Build items in the exact order you want:
+  // static1 -> frames -> static2 -> static3 -> static4
+  const items = [];
+  const indexByKey = {}; // map "static1", "frames0" etc -> item index
+
+  // Helper to push an <img> element if it exists
+  function pushImg(key, imgEl) {
+    if (!imgEl) return;
+    indexByKey[key] = items.length;
+    items.push({
+      src: imgEl.getAttribute("src"),
+      alt: imgEl.getAttribute("alt") || key
+    });
+  }
+
+  // 1) Static 1
+  pushImg("static1", preview1Img);
+
+  // 2) Frames
+  preview1Frames.forEach((src, i) => {
+    indexByKey["frame" + i] = items.length;
+    items.push({ src, alt: `Day & Night Cycle Frame ${i + 1}` });
+  });
+
+  // 3) Static 2, 4) Static 3, 5) Static 4
+  pushImg("static2", preview2Img);
+  pushImg("static3", preview3Img);
+  pushImg("static4", preview4Img);
+
+  let currentIndex = 0;
+  let lastFocused = null;
+
+  function updateDots() {
+    [...lbDots.children].forEach((dot, i) => {
+      dot.classList.toggle("is-active", i === currentIndex);
+    });
+  }
+
+  function buildDots() {
+    lbDots.innerHTML = "";
+    items.forEach((_, i) => {
+      const dot = document.createElement("div");
+      dot.className = "lightboxDot" + (i === currentIndex ? " is-active" : "");
+      dot.addEventListener("click", () => show(i));
+      lbDots.appendChild(dot);
+    });
+  }
+
+  function show(i) {
+    if (!items.length) return;
+
+    currentIndex = (i + items.length) % items.length;
+    const item = items[currentIndex];
+
+    lbImg.src = item.src;
+    lbImg.alt = item.alt;
+
+	lbImg.addEventListener("error", () => {
+	  // if an image fails to load, skip to next
+	  show(currentIndex + 1);
+	});
+
+    lbLabel.textContent = `Preview ${currentIndex + 1} / ${items.length}`;
+
+    const showNav = items.length > 1;
+    lbPrev.style.display = showNav ? "" : "none";
+    lbNext.style.display = showNav ? "" : "none";
+
+    updateDots();
+  }
+
+  function openLightbox(startIndex) {
+    if (!items.length) return;
+    lastFocused = document.activeElement;
+
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+
+    buildDots();
+    show(startIndex);
+
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+
+    if (lastFocused && typeof lastFocused.focus === "function") {
+      lastFocused.focus();
+    }
+  }
+
+  const next = () => show(currentIndex + 1);
+  const prev = () => show(currentIndex - 1);
+
+  // Click handlers using the real computed indices:
+  if (preview1Img) preview1Img.addEventListener("click", () => openLightbox(indexByKey.static1));
+  if (previewFramesClickTarget) previewFramesClickTarget.addEventListener("click", () => openLightbox(indexByKey.frame0));
+  if (preview2Img) preview2Img.addEventListener("click", () => openLightbox(indexByKey.static2));
+  if (preview3Img) preview3Img.addEventListener("click", () => openLightbox(indexByKey.static3));
+  if (preview4Img) preview4Img.addEventListener("click", () => openLightbox(indexByKey.static4));
+
+  // Buttons + overlay close + keyboard
+  lbClose.addEventListener("click", closeLightbox);
+  lbNext.addEventListener("click", next);
+  lbPrev.addEventListener("click", prev);
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target && e.target.getAttribute && e.target.getAttribute("data-close") === "1") {
+      closeLightbox();
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (!lightbox.classList.contains("is-open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") next();
+    if (e.key === "ArrowLeft") prev();
+  });
+}
+
+  // Init + listeners
+  updateProgress();
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  window.addEventListener("resize", updateProgress);
+});
+</script>
+</body>
+</html>
