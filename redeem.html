@@ -49,6 +49,9 @@
 
     --radius: 16px;
     --shadow: 0 10px 28px rgba(0,0,0,.10);
+
+    --scrollTrack: #226cbb;
+    --scrollThumb: #56a7fe;
   }
 
   /* ACCESSIBILITY */
@@ -62,11 +65,7 @@
   /* BASE / RESET */
   *{ box-sizing: border-box; }
 
-  html, body{
-    height: auto;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+  html, body{ overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
   body{
     margin: 0;
@@ -1063,6 +1062,21 @@
     .footerRight{ justify-content: center !important; }
     .socialText{ justify-content: center !important; }
   }
+
+/* SCROLLBAR */
+html{
+  scrollbar-color: var(--scrollThumb) var(--scrollTrack);
+  scrollbar-width: auto;
+}
+::-webkit-scrollbar{ width: 24px; height: 24px; }
+::-webkit-scrollbar-track{ background: var(--scrollTrack); }
+::-webkit-scrollbar-thumb{
+  background: var(--scrollThumb);
+  border-radius: 999px;
+  border: 6px solid var(--scrollTrack);
+}
+::-webkit-scrollbar-thumb:hover{ filter: brightness(0.95); }
+::-webkit-scrollbar-corner{ background: var(--scrollTrack); }
   
   /* CONNECT BUTTON (ID) */
   #connect{
@@ -2753,6 +2767,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
