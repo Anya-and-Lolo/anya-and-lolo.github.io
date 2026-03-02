@@ -155,7 +155,6 @@ a.pop{ animation: pop .28s ease; }
   justify-content: space-between;
   gap: 12px;
   padding: 12px 16px;
-  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -317,7 +316,7 @@ a.pop{ animation: pop .28s ease; }
 @media (max-width: 600px){
   .badge{ display: none; }
 
-  /* Make nav a 2-column layout: pills + hamburger */
+  /* 2-column layout: pills + hamburger */
   .nav{
     width: 100%;
     display: grid;
@@ -341,11 +340,21 @@ a.pop{ animation: pop .28s ease; }
     flex: 1 1 0;
     justify-content: center;
     white-space: nowrap;
-
+    border-color: rgba(20,20,20,0.12);
+    background: rgba(255,255,255,0.90);
+    box-shadow: 0 10px 22px rgba(0,0,0,.06);
     /* optional: keeps the pills visually consistent on tiny screens */
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+   /* Keep active pill styling on top */
+  .topbar .navlink[aria-current="page"]{
+    background: var(--brand2);
+    color: var(--brand);
+    border-color: rgba(244,24,76,0.25);
+    box-shadow: none;
   }
 
   /* Dropdown position */
@@ -1223,7 +1232,7 @@ canvas,
 
       <!-- CARD 1: Banner -->
       <div class="card cardFlush bannerCard">
-        <img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner">
+        <a href="https://anya-and-lolo.itch.io/" target="_blank"><img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner"></a>
       </div>
 
       <!-- CARD 2: Welcome + News -->
@@ -1852,6 +1861,7 @@ canvas,
   </script>
 </body>
 </html>
+
 
 
 
