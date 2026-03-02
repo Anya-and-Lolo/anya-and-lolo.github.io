@@ -276,7 +276,10 @@
 /* --- Top bar Mobile rules: only 3 buttons + hamburger --- */
 
 @media (max-width: 600px){
-  /* keep your topbarInner stacking, but stop nav from wrapping everything */
+  .menuPanel{
+    right: 0;
+    left: auto;
+  }
   .badge{ display: none; }
   .nav{
     justify-content: space-between;
@@ -302,8 +305,7 @@
 /* Tablet-ish widths: hide badge + center nav */
 @media (min-width: 601px) and (max-width: 1024px){
   .badge{ display: none; }
-  .topbarInner{ justify-content: center; }
-  .nav{ justify-content: center; }
+  .nav{ flex: 1; justify-content: center; }
 }
 
     .navlink{
@@ -331,54 +333,6 @@
       color: var(--brand);
       border-color: rgba(244,24,76,0.25);
     }
-
-  /* MOBILE / RESPONSIVE */
-  @media (max-width: 900px){
-    html, body{ height: auto; }
-    .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center; }
-    nav{ justify-content: flex-start; }
-    .footerInner{ grid-template-columns: 1fr; text-align:center; }
-    .footerRight{ justify-content: center !important; }
-    .socialText{ justify-content: center !important; }
-  }
-    
-  @media (max-width: 600px){
-    .topbarInner{
-      flex-direction: column;
-      align-items: stretch;
-      gap: 10px;
-    }
-  
-    nav{
-      display: flex;
-      flex-wrap: wrap;          /* allows 2+ lines */
-      gap: 8px;
-      justify-content: center;  /* or flex-start */
-      overflow: visible;        /* no horizontal scroll */
-      padding: 0;
-  
-      scroll-snap-type: none;   /* turn off snap */
-      -webkit-mask-image: none; /* turn off fade mask */
-              mask-image: none;
-    }
-  
-    nav::-webkit-scrollbar{ display:none; } /* harmless */
-  
-    .navlink{
-      flex: 1 1 auto;
-      justify-content: center;
-      white-space: nowrap;
-      background: rgba(255,255,255,0.90);
-      border-color: rgba(20,20,20,0.12);
-  
-      scroll-snap-align: none;  
-    }
-  
-    .badge{
-      font-size: 13px;
-      padding: 6px 10px;
-    }
-  }
 
     /* TYPOGRAPHY / SECTION HEADERS */
     .hero{ padding: 18px 0 8px; }
@@ -1157,7 +1111,6 @@
     @media (max-width: 900px){
       html, body{ height: auto; }
       .topbarInner{ flex-direction: column; align-items: center; }
-      .topbar nav{ justify-content: flex-start; }
       .heroGrid{ grid-template-columns: 1fr; }
       .footerInner{ grid-template-columns: 1fr; text-align:center; }
       .footerRight{ justify-content: center !important; }
@@ -1212,9 +1165,9 @@
     		<nav class="nav" aria-label="Primary">
     		  <!-- Always visible (desktop + mobile) -->
     		  <div class="navPrimary">
-    			<a class="navlink" href="./">Home</a>
+    			<a class="navlink" href="./" aria-current="page">Home</a>
     			<a class="navlink" href="./redeem.html">Rewards</a>
-    			<a class="navlink" href="./rpg-maker-tutorials.html" aria-current="page">Tutorials</a>
+    			<a class="navlink" href="./rpg-maker-tutorials.html">Tutorials</a>
     		  </div>
     		  <!-- Desktop-only external links (also appear inside hamburger on mobile) -->
     		  <div class="navSecondary" aria-label="External links">
@@ -1868,6 +1821,7 @@
   </script>
 </body>
 </html>
+
 
 
 
