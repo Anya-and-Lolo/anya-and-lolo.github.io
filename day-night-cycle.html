@@ -1224,7 +1224,7 @@ code{
               <div>
                 <div class="stepTitle">If you have MZ/MV</div>
                 <p>
-                  Open the provided demo file for your engine. The key event commands are placed on the demo map for learning (one Autorun + two Parallel events).
+                  Open the provided demo file for your engine. The key event commands are placed in the top-left corner of the demo map for learning (one Autorun + two Parallel events).
                   You can move them to Common Events later for multi-map projects.
                 </p>
               </div>
@@ -1271,7 +1271,7 @@ code{
               <div>
                 <div class="stepTitle">Create variables</div>
                 <p>
-                  Create variables for: <strong>Seconds</strong>, <strong>Minutes</strong>, <strong>Hours</strong>, <strong>Days</strong>, and optionally <strong>Months</strong>, <strong>Years</strong>.
+                  Go to <code>Control Variables > Single Variable</code>. There we'll create variables for: <strong>Seconds</strong>, <strong>Minutes</strong>, <strong>Hours</strong>, <strong>Days</strong>, and optionally <strong>Months</strong>, <strong>Years</strong>.
                 </p>
               </div>
             </div>
@@ -1285,7 +1285,7 @@ code{
                 </p>
 				<pre><code>Control Variables → Seconds → Add Constant 1</code></pre>
                 <p style="margin-top:10px;">
-                  Now Seconds will increase as the event runs.
+                  Now Seconds will increase by one as the event runs.
                 </p>
 				
               </div>
@@ -1297,7 +1297,7 @@ code{
                 <div class="stepTitle">Convert seconds into minutes</div>
                 <p>
                   Add a Conditional Branch: <code>If Seconds ≥ 60</code> then:
-                  <code>Minutes += 1</code>, and <code>Seconds = 0</code>.
+                  <code>Minutes += 1</code>, and reset Seconds like this: <code>Seconds = 0</code>. Now Minutes will increase every 60 Seconds.
                 </p>
               </div>
             </div>
@@ -1308,14 +1308,14 @@ code{
                 <div class="stepTitle">Repeat for hours and days</div>
                 <p>
                   Do the same rollover logic:
-                  <code>If Minutes ≥ 60</code> then <code>Hours +1</code> and reset Minutes,
-                  then <code>If Hours ≥ 24</code> then <code>Days +1</code> and reset Hours.
+                  <code>If Minutes ≥ 60</code> then <code>Hours +1</code> and reset Minutes.
+                  Then <code>If Hours ≥ 24</code> then <code>Days +1</code>, plus don't forget to reset Hours.
                 </p>
               </div>
             </div>
 
             <div class="callout">
-              <strong>Optional challenge:</strong> Add Months/Years if you want seasonal changes or long-term events.
+              <strong>Optional challenge:</strong> Add Months and Years too, if you want to have seasonal changes or long-term events in your game.
             </div>
           </div>
 
@@ -1370,7 +1370,7 @@ code{
               <div>
                 <div class="stepTitle">Make the display update dynamically</div>
                 <p>
-                  Use a Dynamic Text Picture approach (MV users: TextPicture plugin). Turn it ON in Plugin Manager, then:
+                  Use a Dynamic Text Picture plugin (MV users: DTextPicture.js / MZ: TextPicture.js). Turn it ON in Plugin Manager, then:
                   add a Plugin Command that defines your text, and use <strong>Show Picture</strong> without selecting an image.
                 </p>
               </div>
@@ -1388,7 +1388,7 @@ code{
                 <pre><code>\C[17]HOUR \V[3]:\V[2] MIN | \V[4] DAYS \C[0]</code></pre>
 
                 <div class="callout warn">
-                  <strong>Important:</strong> each picture needs its own unique picture ID, or pictures replace each other.
+                  <strong>Important:</strong> always assign a unique number to each image. Each picture needs its own unique picture ID, or pictures replace each other. 
                 </div>
               </div>
             </div>
@@ -1423,11 +1423,11 @@ code{
             <div class="subcard">
               <strong>Suggested tint schedule</strong>
               <div class="lead" style="margin-top:6px;">
-                0 → 5  = Deep Night<br>
-                5 → 8  = Sunrise<br>
-                8 → 18 = Daytime<br>
-                18 → 20 = Sunset<br>
-                20 → 24 = Evening
+                12am to 5am  = Deep Night (0 → 5)<br>
+                5am to 8am  = Sunrise (5 → 8)<br>
+                8am to 6pm  = Daytime (8 → 18)<br>
+                6pm to 8pm  = Sunset (18 → 20)<br>
+                8pm to 12am = Evening (20 → 24)
               </div>
             </div>
 
@@ -1446,7 +1446,7 @@ code{
               <div>
                 <div class="stepTitle">Use conditional branches by hour range</div>
                 <p>
-                  Build branches like: <code>If Hours ≥ 20</code> then <strong>Evening tint</strong>, <code>Else If Hours ≥ 18</code> then <strong>Sunset</strong>, <code>Else If Hours ≥ 8</code> then <strong>Day</strong>, <code>Else If Hours ≥ 5</code> then <strong>Sunrise</strong>, <code>Else →</code> <strong>Deep Night</strong>.
+                  Build five branches based on military time, where '0' is midnight and '18' is 6pm. Example: <code>If Hours ≥ 20</code> then <strong>Evening tint</strong>, <code>Else If Hours ≥ 18</code> then <strong>Sunset</strong>, <code>Else If Hours ≥ 8</code> then <strong>Day</strong>, <code>Else If Hours ≥ 5</code> then <strong>Sunrise</strong>, <code>Else →</code> <strong>Deep Night</strong>.
                 </p>
               </div>
             </div>
@@ -1480,15 +1480,20 @@ code{
           <!-- Start at specific time -->
           <div class="card" id="start-time" style="margin-top:14px;">
             <h2 class="sectionTitle">Part 4. Start the game at a specific time (like 12pm)</h2>
-            <div class="lead">By default it starts at 00:00. Let’s pre-set the clock and apply the right tint.</div>
+            <div class="lead">By default it starts at midnight. Let’s pre-set the clock and apply the right tint.</div>
 
             <div class="step">
               <div class="stepNum">1</div>
               <div>
                 <div class="stepTitle">Create an Autorun event: “Pre-Set Time”</div>
                 <p>
-                  Set the event trigger to <strong>Autorun</strong>, set Hours/Minutes to what you want (example: 12:00), and apply a Daylight tint so you don’t start with night colours.
+                  Set the event trigger to <strong>Autorun</strong>, set Hours/Minutes to what you want. For example, for noon (which is 12:00pm), set Hours to 12 and Minutes to 0.
                 </p>
+                <pre><code>Control Variables → Hours → Set 12<br>
+				Control Variables → Minutes → Set 0<br>
+				</code></pre>
+				<p style="margin-top:8px;">Apply a Daylight tint so you don’t start with night colours.</p>
+                <pre><code>Tint Screen: (0,0,0,0), 120 frames</code></pre>
               </div>
             </div>
 
@@ -1499,6 +1504,9 @@ code{
                 <p>
                   Add a new page conditioned by Self Switch A, and turn Self Switch A ON at the end, so the Autorun doesn’t freeze the game.
                 </p>
+                <div class="callout warn">
+                  <strong>Important:</strong> always deactivate Autorun event, otherwise it will loop itself forever, and you end up freezing the game. 
+                </div>
               </div>
             </div>
           </div>
@@ -1522,46 +1530,102 @@ code{
               <div>
                 <div class="stepTitle">Use a Wait command (60 frames = 1 second)</div>
                 <p>
-                  A Wait(60) at the end of your Parallel event prevents the engine from running checks 60 times per second.
-                  It keeps the system smooth without unnecessary processing.
+                  Our system now constantly checks if the ‘Seconds’ variable has hit 60:
+				<pre><code>If:Seconds ≥ 60 <-- drains resources and can slow gameplay down!</code></pre>
+				<p style="margin-top:8px;">
+				  Let’s fix that in two steps! First, change the check from 60 to 1 to prevent overloading the system:
                 </p>
+				<pre><code>Conditional Branch → Seconds → Set 1</code></pre>
+				<p style="margin-top:8px;">
+				<strong>Hold up! Won’t this make the game count seconds way too fast?</strong> That's right! If we stop here, the game will think each second equals a full minute. So that’s where a Wait command comes in! 
+				<pre><code>Wait: 60 frames</code></pre>
+				<p style="margin-top:8px;">A simple Wait command at the end of your Parallel event prevents the engine from running checks 60 times per second.
+                It keeps the system smooth without unnecessary processing.
+				</p>
               </div>
             </div>
 
+            <div class="callout success">
+              <strong>Fun fact:</strong> If you skip the Wait command, <i>time in your game will fly by at lightning speed!</i> I found this hilarious and used it in the Pro version to demonstrate the mechanics in action! 😅
+            </div>
+			
             <div class="step">
               <div class="stepNum">2</div>
               <div>
                 <div class="stepTitle">Same idea for the tint event</div>
                 <p>
-                  Your tint event is also Parallel, without a wait, it can keep reapplying tint constantly.
-                  Add a Wait command to limit checks and avoid draining resources.
+                  Your tint event is also Parallel, without a wait command, it can keep reapplying tint constantly (multiple times per second!).
+                  Add a Wait command at the very end of this event to limit checks and avoid draining resources.
                 </p>
               </div>
             </div>
-
+			
             <div class="callout">
-              <strong>Fun fact:</strong> If you skip Wait, time will fly by at lightning speed! You even used that as a mini-game idea in Pro 😅
+              <strong>Good to know:</strong> In the Pro version of the system, I’ll show you how to create a Smart System that makes the screen tint to change only when the hour changes!
             </div>
+
           </div>
 
           <!-- Extras -->
           <div class="card" id="extras" style="margin-top:14px;">
             <h2 class="sectionTitle">Free extras! Make events react to time</h2>
-            <div class="lead">Once you have Hours, you can make your game world respond in fun ways.</div>
-
+            <div class="lead">Did you know? You can make your game world respond in fun ways!</div>
+			
             <div class="step">
               <div class="stepNum">1</div>
               <div>
-                <div class="stepTitle">Time-specific interactions</div>
+                <div class="stepTitle">Make Events React to Time</div>
                 <p>
-                  Use switches/branches to make windows open/close, lanterns light at night, fireflies appear, or shops open between set hours.
+                  Make house windows open/close, lanterns light at night, fireflies appear, or set shops open between set hours.
                 </p>
               </div>
             </div>
-
+			
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">Global Time</div>
+                <p>
+                  Apply time cycles to the world map with ease! Plus, learn how to adjust game time speed (fast-forward effect included as a fun mini-game!)
+                </p>
+              </div>
+            </div>
+			
+            <div class="step">
+              <div class="stepNum">3</div>
+              <div>
+                <div class="stepTitle">AM/PM Format</div>
+                <p>
+                  Set a beautiful custom HUD with 12-hour time display.
+                </p>
+              </div>
+            </div>
+			
+            <div class="step">
+              <div class="stepNum">4</div>
+              <div>
+                <div class="stepTitle">Freeze the clock</div>
+                <p>
+                  Pause Time during dialogue, cutscenes, or emotional moments.
+                </p>
+              </div>
+            </div>
+			
+            <div class="step">
+              <div class="stepNum">5</div>
+              <div>
+                <div class="stepTitle">Boost Performance</div>
+                <p>
+                  Even more smart optimizations and pro tips to keep your game running smoothly.
+                </p>
+              </div>
+            </div>
+			
             <div class="callout">
               <strong>Want the upgraded version?</strong> The Pro version adds global time, custom HUD, time-speed control, and smart optimizations. 
+			  💡 <strong>Expand for FREE!</strong> Simply <a href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank">join the Anya & Lolo Club</a> to get a special link sent straight to your inbox
             </div>
+			
           </div>
 		  
 		  <!-- Image -->
@@ -1570,7 +1634,7 @@ code{
 		  <div class="lead">Ready to level up your RPG experience? Go Pro for Free! 🎁</div>
 
 		  <div class="imageCard">
-			<img src="./images/tutorials/Day-Night-System-RPG-Maker-MZ-MV-Game-Time-Mechanics.jpg" alt="Day & Night Cycle Preview">
+			<a href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank"><img src="./images/tutorials/Day-Night-System-RPG-Maker-MZ-MV-Game-Time-Mechanics.jpg" alt="Day & Night Cycle Preview"></a>
 		  </div>
 
 		  <div class="miniRow">
@@ -1607,7 +1671,7 @@ code{
 			<a href="#time-display"><span>Time display</span><small>HUD text</small></a>
 			<a href="#tints"><span>Day/Night tint</span><small>Atmosphere</small></a>
 			<a href="#start-time"><span>Start at 12pm</span><small>Autorun</small></a>
-			<a href="#optimization"><span>Optimization</span><small>Wait(60)</small></a>
+			<a href="#optimization"><span>Optimization</span><small>Wait command</small></a>
 			<a href="#extras"><span>Free Extras!</span><small>Time events</small></a>
 		  </div>
 		</aside>
