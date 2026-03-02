@@ -1209,14 +1209,28 @@
       <div class="brand">
         <span class="badge">RPG Maker Systems • Mechanics • Game Development</span>
       </div>
-
-      <nav aria-label="Primary">
-        <a class="navlink" href="./" aria-current="page">Home</a>
-        <a class="navlink" href="./redeem.html">Rewards</a>
-        <a class="navlink" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
-        <a class="navlink" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
-        <a class="navlink" href="./rpg-maker-tutorials.html">Tutorials</a>
-      </nav>
+    		<nav class="nav" aria-label="Primary">
+    		  <!-- Always visible (desktop + mobile) -->
+    		  <div class="navPrimary">
+    			<a class="navlink" href="./">Home</a>
+    			<a class="navlink" href="./redeem.html">Rewards</a>
+    			<a class="navlink" href="./rpg-maker-tutorials.html" aria-current="page">Tutorials</a>
+    		  </div>
+    		  <!-- Desktop-only external links (also appear inside hamburger on mobile) -->
+    		  <div class="navSecondary" aria-label="External links">
+    			<a class="navlink navlinkExternal" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+    			<a class="navlink navlinkExternal" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+    		  </div>
+    		  <!-- Mobile hamburger -->
+    		  <button class="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+    			<span class="menuIcon" aria-hidden="true"></span>
+    		  </button>
+    		  <!-- Mobile dropdown -->
+    		  <div class="menuPanel" id="mobileMenu" role="menu" aria-label="More links">
+    			<a class="navlink navlinkExternal" role="menuitem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+    			<a class="navlink navlinkExternal" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+    		  </div>
+    		</nav>
     </div>
   </header>
 
@@ -1854,6 +1868,7 @@
   </script>
 </body>
 </html>
+
 
 
 
