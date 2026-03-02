@@ -1101,7 +1101,7 @@ code{
       <div class="card">
         <h1 class="heroH1">Day &amp; Night Cycle</h1>
         <p class="subtitle" style="text-align:center; margin-bottom:0;">
-          Build a real in-game clock with smooth day/night transitions for any engine 💛
+          Build a real in-game clock with smooth day/night transitions in any engine 💛
         </p>
 
         <div class="tagRow" style="justify-content:center;">
@@ -1132,12 +1132,12 @@ code{
 
           <!-- Intro -->
           <div class="card" id="intro">
-            <h2 class="sectionTitle">Today we’re building</h2>
+            <h2 class="sectionTitle">Let’s build this step by step!</h2>
 			
 			<div class="subcard">
 			  <div class="lead" style="margin-top:8px;">
               We’re going to set up a fully functional time system that adds life and motion to your project ✨
-				You'll also learn how to create a real in-game clock and a neat time display to transition your world from dawn to dusk and beyond.
+				You'll also learn how to create a real in-game clock and a clean time display to transition your world from dawn to dusk and beyond.
 			  </div>
 
 			  <div class="muted" style="margin-top:10px;">
@@ -1154,7 +1154,7 @@ code{
 			  <div class="step" style="margin-top:10px;">
 				<div class="stepNum">1</div>
 				<div>
-				  <div class="stepTitle">Game Time (Main). Parallel</div>
+				  <div class="stepTitle">Parallel event 'Game Time (Main)'</div>
 				  <p>
 					Handles Seconds → Minutes → Hours → Days rollover logic.
 					This is the heart of your clock.
@@ -1165,9 +1165,9 @@ code{
 			  <div class="step">
 				<div class="stepNum">2</div>
 				<div>
-				  <div class="stepTitle">Day/Night Tint. Parallel</div>
+				  <div class="stepTitle">Parallel event 'Day/Night Tint'</div>
 				  <p>
-					Checks the current Hour and applies the correct screen tint
+					Checks the current hour and applies the correct screen tint
 					(Night, Sunrise, Day, Sunset, Evening).
 				  </p>
 				</div>
@@ -1176,7 +1176,7 @@ code{
 			  <div class="step">
 				<div class="stepNum">3</div>
 				<div>
-				  <div class="stepTitle">Pre-Set Time. Autorun</div>
+				  <div class="stepTitle">Autorun event 'Pre-Set Time'</div>
 				  <p>
 					Sets the starting time (example: 12:00 PM) and applies the correct tint
 					before gameplay begins. Then disables itself using a Self Switch.
@@ -1185,9 +1185,9 @@ code{
 			  </div>
 
 			  <div class="callout" style="margin-top:12px;">
-				<strong>Beginner tip:</strong>  
-				If you're learning, build them on a test map first.  
-				Once it works, move them into Common Events for multi-map projects.
+				<strong>Great tip:</strong>  
+				If you're just learning, place them on a map first.  
+				Once it works, you can move them into Common Events for multi-map projects.
 			  </div>
 			</div>
 			
@@ -1243,7 +1243,7 @@ code{
 
           <!-- Setup -->
           <div class="card" id="setup" style="margin-top:14px;">
-            <h2 class="sectionTitle">Part 1. Create the game time (Seconds, Minutes, Hours)</h2>
+            <h2 class="sectionTitle">Part 1. Create the Game Time (Seconds, Minutes, Hours)</h2>
             <div class="lead">Use Variables + Conditional Branches inside a Parallel event to keep time ticking.</div>
 
             <div class="subcard">
@@ -1351,13 +1351,13 @@ code{
               <div>
                 <div class="stepTitle">Quick test (recommended)</div>
                 <p>
-                  Place a simple object event (like a sign) and show a message using <b>Show Text command</b> that display your variables.
+                  Place a simple object event (like a sign) and show a message using <b>Show Text command</b> that displays your variables.
                 </p>
 				
-                <pre><code>\V[1]Seconds | \V[2]Minutes | \V[3]Hours | \V[4]Days | \V[5]Months</code></pre>
+                <pre><code>\V[1] Seconds | \V[2] Minutes | \V[3] Hours | \V[4] Days | \V[5] Months</code></pre>
 				
                 <p style="margin-top:10px;">
-                  Playtest! Click several times on a signpost. If numbers change, your clock is ticking:
+                  Playtest! Click a few times on a signpost. If numbers change, your clock is ticking:
                 </p>
 				
                 <pre><code>25 Seconds | 17 Minutes | 12 Hours | 1 Days | 0 Months</code></pre>
@@ -1423,11 +1423,11 @@ code{
             <div class="subcard">
               <strong>Suggested tint schedule</strong>
               <div class="lead" style="margin-top:6px;">
-                12am to 5am  = Deep Night (0 → 5)<br>
-                5am to 8am  = Sunrise (5 → 8)<br>
-                8am to 6pm  = Daytime (8 → 18)<br>
-                6pm to 8pm  = Sunset (18 → 20)<br>
-                8pm to 12am = Evening (20 → 24)
+                12AM to 5AM  = Deep Night (0 → 5)<br>
+                5AM to 8AM  = Sunrise (5 → 8)<br>
+                8AM to 6PM  = Daytime (8 → 18)<br>
+                6PM to 8PM  = Sunset (18 → 20)<br>
+                8PM to 12AM = Evening (20 → 24)
               </div>
             </div>
 
@@ -1446,7 +1446,7 @@ code{
               <div>
                 <div class="stepTitle">Use conditional branches by hour range</div>
                 <p>
-                  Build five branches based on military time, where '0' is midnight and '18' is 6pm. Example: <code>If Hours ≥ 20</code> then <strong>Evening tint</strong>, <code>Else If Hours ≥ 18</code> then <strong>Sunset</strong>, <code>Else If Hours ≥ 8</code> then <strong>Day</strong>, <code>Else If Hours ≥ 5</code> then <strong>Sunrise</strong>, <code>Else →</code> <strong>Deep Night</strong>.
+                  Build five branches based on military time, where '0' is midnight and '18' is 6PM. Example: <code>If Hours ≥ 20</code> then <strong>Evening tint</strong>, <code>Else If Hours ≥ 18</code> then <strong>Sunset</strong>, <code>Else If Hours ≥ 8</code> then <strong>Day</strong>, <code>Else If Hours ≥ 5</code> then <strong>Sunrise</strong>, <code>Else →</code> <strong>Deep Night</strong>.
                 </p>
               </div>
             </div>
@@ -1537,7 +1537,7 @@ code{
                 </p>
 				<pre><code>Conditional Branch → Seconds → Set 1</code></pre>
 				<p style="margin-top:8px;">
-				<strong>Hold up! Won’t this make the game count seconds way too fast?</strong> That's right! If we stop here, the game will think each second equals a full minute. So that’s where a Wait command comes in! 
+				<strong>Won’t this make the game count seconds way too fast?</strong> That's right! If we stop here, the game will think each second equals a full minute. So that’s where a Wait command comes in! 
 				<pre><code>Wait: 60 frames</code></pre>
 				<p style="margin-top:8px;">A simple Wait command at the end of your Parallel event prevents the engine from running checks 60 times per second.
                 It keeps the system smooth without unnecessary processing.
@@ -1623,7 +1623,7 @@ code{
 			
             <div class="callout">
               <strong>Want the upgraded version?</strong> The Pro version adds global time, custom HUD, time-speed control, and smart optimizations. 
-			  💡 <strong>Expand for FREE!</strong> Simply <a href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank">join the Anya & Lolo Club</a> to get a special link sent straight to your inbox
+			  💡 <strong>Expand for free!</strong> Simply <a href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank">join the Anya & Lolo Club</a> to get a special link sent straight to your inbox
             </div>
 			
           </div>
@@ -1702,7 +1702,7 @@ code{
         <div class="hangout" style="margin-top:0;">
           Want to hang out? Join the
           <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
-          or follow us on your favourite platform below 💛
+          or follow us on your favorite platform below 💛
         </div>
 
         <footer style="margin-top: 12px; padding: 0;">
