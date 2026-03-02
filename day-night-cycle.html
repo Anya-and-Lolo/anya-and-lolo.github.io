@@ -25,10 +25,7 @@
   <link rel="icon" type="image/x-icon" href="./favicon.ico?v=1">
 
 <style>
-
 /* THEME TOKENS */
-
-
 :root{
   --brand: #f4184c;
   --brand2: rgba(244, 24, 76, 0.12);
@@ -46,21 +43,17 @@
   --scrollThumb: #56a7fe;
 }
 
-
-
-/* BASE / RESET */
-
-
+/* BASE / RESETS */
 *{ box-sizing: border-box; }
 
-[id]{ scroll-margin-top: 120px; }
+[id]{
+  scroll-margin-top: 120px;
+}
 
 html, body{ height: 100%; }
 
 html{
   scroll-behavior: smooth;
-  scrollbar-color: var(--scrollThumb) var(--scrollTrack);
-  scrollbar-width: auto;
 }
 
 body{
@@ -72,17 +65,19 @@ body{
   line-height: 1.6;
 }
 
-a{
-  color: var(--brand);
-  text-decoration: underline;
-  font-weight: 600;
-  text-underline-offset: 2px;
-}
-a:hover{
-  text-decoration: underline;
-  text-underline-offset: 4px;
+/* LINKS + INTERACTIONS */
+a{ color: var(--brand); text-decoration: underline; font-weight: 600; text-underline-offset: 2px;}
+a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+
+button, .navlink, a{
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
 
+button:active, .navlink:active{
+  transform: translateY(1px) scale(0.99);
+}
+
+/* LAYOUT WRAPPER */
 .wrap{
   max-width: 1100px;
   margin: 0 auto;
@@ -90,11 +85,7 @@ a:hover{
   overflow-x: clip;
 }
 
-
-
-/* BACKGROUND EFFECT */
-
-
+/* BACKGROUND EFFECTS */
 body::before{
   content:"";
   position: fixed;
@@ -120,24 +111,7 @@ body::before{
   to{ background-position: -168px -84px, -147px -63px; }
 }
 
-
-
-/* GLOBAL INTERACTIONS */
-
-
-button, .navlink, a{
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-}
-
-button:active, .navlink:active{
-  transform: translateY(1px) scale(0.99);
-}
-
-
-
-/* TOP BAR / NAVIGATION */
-
-
+/* TOP BAR / HEADER */
 .topbar{
   position: sticky;
   top: 0;
@@ -172,8 +146,8 @@ button:active, .navlink:active{
   font-weight: 900;
 }
 
-/* NAV LAYOUT */
-
+/* NAV (DESKTOP + SHARED) */
+/* --- Nav layout split (primary + secondary + hamburger) --- */
 .nav{
   position: relative;
   display: flex;
@@ -189,6 +163,17 @@ button:active, .navlink:active{
   gap: 10px;
 }
 
+/* External link diagonal arrow (desktop) */
+.navlinkExternal::after{
+  content: "↗";
+  font-size: 12px;
+  font-weight: 900;
+  margin-left: 6px;
+  opacity: 0.65;
+  transform: translateY(-1px);
+}
+
+/* NAV LINK */
 .navlink{
   display:inline-flex;
   align-items:center;
@@ -215,11 +200,150 @@ button:active, .navlink:active{
   border-color: rgba(244,24,76,0.25);
 }
 
+/* HAMBURGER + MOBILE MENU */
+/* Hamburger button */
+.menuBtn{
+  display: none;            /* desktop: hidden */
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(20,20,20,0.12);
+  background: rgba(255,255,255,0.90);
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+  cursor: pointer;
+}
 
+.menuBtn:hover{ transform: translateY(-1px); }
+
+/* Simple hamburger icon */
+.menuIcon{
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+  position: relative;
+  display: block;
+}
+.menuIcon::before,
+.menuIcon::after{
+  content:"";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+}
+.menuIcon::before{ top: -6px; }
+.menuIcon::after { top:  6px; }
+
+/* Dropdown panel (mobile) */
+.menuPanel{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 220px;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(20,20,20,0.12);
+  box-shadow: 0 14px 28px rgba(0,0,0,.10);
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+.menuPanel .navlink{
+  width: 100%;
+  justify-content: flex-start;
+  border-color: rgba(20,20,20,0.10);
+  background: rgba(0,0,0,0.04);
+  margin-top: 8px;
+}
+.menuPanel .navlink:first-child{ margin-top: 0; }
+
+.menuPanel.is-open{ display: block; }
+
+/* RESPONSIVE: TOP BAR */
+@media (max-width: 900px){
+  .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center; }
+  nav{ justify-content: flex-start; }
+  .footerInner{ grid-template-columns: 1fr; text-align:center; }
+  .footerRight{ justify-content: center !important; }
+  .socialText{ justify-content: center !important; }
+}
+
+/* --- Top bar Mobile rules: only 3 buttons + hamburger --- */
+@media (max-width: 600px){
+  .menuPanel{
+    right: 0;
+    left: auto;
+  }
+  .badge{ display: none; }
+  .nav{
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .navSecondary{
+    display: none; /* external links moved into hamburger */
+  }
+  .menuBtn{
+    display: inline-flex; /* show hamburger */
+  }
+  .navPrimary{
+    flex: 1 1 auto;
+    gap: 8px;
+  }
+  .navPrimary .navlink{
+    flex: 1 1 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+/* Tablet-ish widths: hide badge + center nav */
+@media (min-width: 601px) and (max-width: 1024px){
+  .badge{ display: none; }
+  .nav{ flex: 1; justify-content: center; }
+}
+
+@media (max-width: 600px){
+  .topbarInner{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  nav{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+
+  .navlink{
+    flex: 1 1 auto;
+    justify-content: center;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.90);
+    border-color: rgba(20,20,20,0.12);
+    scroll-snap-align: none;
+  }
+
+  .badge{
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
 
 /* HERO */
-
-
 .hero{ padding: 18px 0 8px; }
 
 .heroH1{
@@ -260,11 +384,7 @@ button:active, .navlink:active{
   line-height: 1.3;
 }
 
-
-
-/* CARDS / CONTENT BLOCKS */
-
-
+/* CARDS / SURFACES */
 .card{
   background: var(--card);
   border: 1px solid var(--border);
@@ -289,6 +409,7 @@ button:active, .navlink:active{
   margin-top: 10px;
 }
 
+/* TYPOGRAPHY HELPERS */
 .lead{
   font-size: 18px;
   font-weight: 700;
@@ -296,11 +417,15 @@ button:active, .navlink:active{
   color: rgba(27,27,27,0.75);
 }
 
+.sectionTitle{
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
 
+.muted{ color: rgba(27,27,27,0.62); font-weight: 800; font-size: 14px; }
 
-/* BUTTONS */
-
-
+/* BUTTONS / LINKS */
 .btn{
   display:inline-flex;
   align-items:center;
@@ -322,15 +447,56 @@ button:active, .navlink:active{
   color: #fff;
   border-color: rgba(244,24,76,0.35);
 }
+
 .btnPrimary:hover{
   box-shadow: 0 14px 30px rgba(244,24,76,.20);
   transform: translateY(-1px);
 }
 
+.linkBrand{
+  color: var(--brand);
+  font-weight: 900;
+}
+.linkBrand:hover{
+  text-decoration: none;
+  background: var(--brand2);
+  border-radius: 10px;
+  padding: 2px 6px;
+  margin: -2px -6px;
+}
 
+/* TAGS / FILTERS */
+#topTags .tagBtn{
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.04);
+}
 
-/* TAGS */
+.tagBtn.is-active{
+  background: var(--brand2);
+  border-color: rgba(244,24,76,0.25);
+  color: var(--brand);
+}
 
+.tag{
+  cursor: pointer;
+  background: rgba(255,255,255,0.78);
+}
+
+.tagFilter{
+  border: 1px solid rgba(20,20,20,0.10);
+}
+
+.tagFilter:hover{
+  background: rgba(0,0,0,0.06);
+}
+
+.tagFilter.is-active{
+  background: var(--brand2);
+  border-color: rgba(244,24,76,0.25);
+  color: var(--brand);
+}
 
 .tagRow{
   display:flex;
@@ -338,7 +504,6 @@ button:active, .navlink:active{
   gap: 8px;
   margin-top: 10px;
 }
-
 .tag{
   font-size: 13px;
   font-weight: 900;
@@ -349,11 +514,206 @@ button:active, .navlink:active{
   color: rgba(27,27,27,0.78);
 }
 
+/* FOOTER */
+footer{
+  margin-top: 26px;
+  padding: 18px 0 34px;
+  color: rgba(27,27,27,0.72);
+  font-size: 14px;
+}
 
+.hangout{
+  text-align: center;
+  margin: 18px 0 14px;
+  font-size: 15px;
+  color: rgba(27,27,27,0.78);
+}
 
-/* STEP BLOCK */
+.footerInner{
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items:center;
+}
 
+.socialText{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  justify-content:center;
+  align-items:center;
+  font-weight: 900;
+}
 
+.socialText a{
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.socialText a:hover{
+  background: rgba(0,0,0,0.06);
+  text-decoration: none;
+}
+
+.sepDot{
+  width: 6px;
+  height: 6px;
+  background: var(--brand);
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.footerRight{
+  display:flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.sep{
+  color: rgba(20,20,20,0.35);
+  font-weight: 800;
+  margin: 0 2px;
+}
+
+/* SCROLLBAR */
+html{
+  scrollbar-color: var(--scrollThumb) var(--scrollTrack);
+  scrollbar-width: auto;
+}
+::-webkit-scrollbar{ width: 24px; height: 24px; }
+::-webkit-scrollbar-track{ background: var(--scrollTrack); }
+::-webkit-scrollbar-thumb{
+  background: var(--scrollThumb);
+  border-radius: 999px;
+  border: 6px solid var(--scrollTrack);
+}
+::-webkit-scrollbar-thumb:hover{ filter: brightness(0.95); }
+::-webkit-scrollbar-corner{ background: var(--scrollTrack); }
+
+/* REVEAL ANIMATION */
+.preReveal{
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.reveal{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* TUTORIALS PAGE LAYOUT */
+.tutorialGrid{
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 14px;
+  margin-top: 14px;
+  align-items: start;
+}
+@media (max-width: 900px){
+  .tutorialGrid{ grid-template-columns: 1fr; }
+}
+
+/* TOC (STICKY) */
+/* Sticky TOC wrapper (NOT the .card) */
+.toc{
+  position: static;
+  top: auto;
+}
+
+/* Make the TOC card itself sticky */
+.tocCard{
+  position: sticky;
+  top: 100px;          /* below your topbar */
+  align-self: start;
+  height: fit-content;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Don't lift the sticky card on hover */
+.tocCard:hover{
+  transform: none !important;
+}
+
+.toc a.is-active{
+  background: var(--brand2);
+  border-color: rgba(244,24,76,0.25);
+}
+
+.toc a.is-active span{
+  color: var(--brand);
+}
+
+/* Make sticky work reliably: remove transform on TOC card only */
+aside.card{
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Prevent .card hover transform from moving the sticky element */
+aside.card:hover{
+  transform: none;
+}
+
+/* tiny progress bar */
+.tocProgress{
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.08);
+  border: 1px solid rgba(20,20,20,0.10);
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.tocProgressFill{
+  height: 100%;
+  width: 0%;
+  background: var(--brand);
+  border-radius: 999px;
+  transition: width .12s linear;
+}
+
+@media (max-width: 900px){
+  .tocCard{ position: static; }
+}
+
+.toc a{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(20,20,20,0.10);
+
+  /* grey by default */
+  background: rgba(0,0,0,0.06);
+
+  font-weight: 900;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.toc a:hover{
+  /* white on hover */
+  background: rgba(255,255,255,0.92);
+  text-decoration: none;
+}
+
+.toc small{
+  font-weight: 900;
+  color: rgba(27,27,27,0.55);
+}
+.toc a:hover small{
+  color: rgba(27,27,27,0.72);
+}
+
+/* STEPS */
 .step{
   display:flex;
   gap: 12px;
@@ -364,8 +724,8 @@ button:active, .navlink:active{
   border: 1px solid rgba(20,20,20,0.10);
   background: rgba(255,255,255,0.72);
 }
-
 .stepNum{
+  flex: 0 0 auto;
   width: 34px;
   height: 34px;
   border-radius: 12px;
@@ -376,25 +736,23 @@ button:active, .navlink:active{
   background: var(--brand);
   box-shadow: 0 10px 18px rgba(244,24,76,0.18);
 }
-
 .stepTitle{
   font-size: 20px;
+  letter-spacing: 0;
   font-weight: 700;
   margin: 0 0 4px;
   line-height: 1.25;
   text-transform: capitalize;
 }
-
-
+.step p{ margin: 0; color: rgba(27,27,27,0.82); }
 
 /* CALLOUT SYSTEM */
-
-
 .callout{
   margin-top: 12px;
   padding: 12px;
   border-radius: 14px;
-  background: #eef6ff;
+
+  background: #eef6ff;                 /* soft blue */
   border: 1px solid rgba(0, 123, 255, 0.25);
 }
 
@@ -407,16 +765,22 @@ button:active, .navlink:active{
   background: rgba(220, 53, 69, 0.12);
   border-color: rgba(220, 53, 69, 0.35);
 }
-
 .callout.warn strong{
   color: #b02a37;
 }
 
+.callout a{
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
 
+.callout a:hover{
+  color: var(--brand);
+}
 
 /* CODE BLOCKS */
-
-
 pre{
   margin: 12px 0 0;
   padding: 12px;
@@ -433,16 +797,18 @@ code{
   color: #444;
   padding: 2px 6px;
   border-radius: 6px;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  display: inline;              /* important */
+  white-space: normal;          /* allow wrapping */
+  overflow-wrap: anywhere;      /* break long stuff */
   word-break: break-word;
 }
 
+/* Prevents any long text from forcing horizontal layout */
+.card, .step, .subcard, p, li, a{
+  overflow-wrap: anywhere;
+}
 
-
-/* MEDIA */
-
-
+/* VIDEO */
 .video{
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -452,9 +818,17 @@ code{
   background: rgba(255,255,255,0.86);
   margin-top: 12px;
 }
+.video iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display:block;
+}
 
+/* IMAGES (CARDS + CROSSFADE) */
 .imageCard{
   width: 100%;
+  aspect-ratio: 16 / 9; /* remove for flexible height */
   border: 1px solid rgba(20,20,20,0.10);
   border-radius: 16px;
   overflow: hidden;
@@ -462,16 +836,54 @@ code{
   margin-top: 12px;
 }
 
+/* STATIC image cards */
+.imageCard:not(.imageCardCrossfade){
+  aspect-ratio: auto;   /* remove the forced 16:9 */
+}
 
+.imageCard:not(.imageCardCrossfade) img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
-/* LIGHTBOX */
+/* CROSSFADE image cards */ 
+.imageCardCrossfade{
+  position: relative;
+}
 
+.imageCardCrossfade .frame{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
+.imageCardCrossfade .is-base{
+  opacity: 1;
+}
+
+.imageCardCrossfade .is-top{
+  opacity: 0;
+  transition: opacity .55s ease; /* crossfade speed */
+}
+
+/* MISC LAYOUT */
+.miniRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* LIGHTBOX (PREVIEW GALLERY) */
 .lightbox{
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: none;
+  display: none;                /* hidden by default */
   align-items: center;
   justify-content: center;
   padding: 20px;
@@ -479,22 +891,165 @@ code{
 
 .lightbox.is-open{ display: flex; }
 
-/* (lightbox internals unchanged, just grouped here) */
-
-
-
-/* SCROLLBAR */
-
-
-::-webkit-scrollbar{ width: 24px; height: 24px; }
-::-webkit-scrollbar-track{ background: var(--scrollTrack); }
-::-webkit-scrollbar-thumb{
-  background: var(--scrollThumb);
-  border-radius: 999px;
-  border: 6px solid var(--scrollTrack);
+.lightboxOverlay{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
 }
-::-webkit-scrollbar-thumb:hover{ filter: brightness(0.95); }
-::-webkit-scrollbar-corner{ background: var(--scrollTrack); }
+
+.lightboxPanel{
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 96vw);
+  height: min(78vh, 720px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+}
+
+.lightboxTop{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 900;
+  user-select: none;
+}
+
+.lightboxClose{
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.lightboxClose:hover{
+  background: rgba(255,255,255,0.18);
+}
+
+.lightboxStage{
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  display: grid;
+  place-items: center;
+}
+
+.lightboxImg{
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  pointer-events: none; /* image can’t steal clicks */
+}
+
+/* Lightbox arrows  */
+.lightboxNav{
+  position: absolute;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 22px;
+  font-weight: 900;
+  user-select: none;
+
+  z-index: 10;
+  pointer-events: auto;
+
+  transition: transform .14s ease, background .14s ease, border-color .14s ease, box-shadow .14s ease, opacity .14s ease;
+  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+  opacity: .92;
+
+  /* variable-based transform (hover+active combine) */
+  --lbScale: 1;
+  --lbX: 0px;
+  transform: translateY(-50%) translateX(var(--lbX)) scale(var(--lbScale));
+}
+
+/* hover wiggle */
+.lightboxPrev:hover{ --lbScale: 1.06; --lbX: -3px; }
+.lightboxNext:hover{ --lbScale: 1.06; --lbX:  3px; }
+
+/* click pop (works even while hovered) */
+.lightboxNav:active{ --lbScale: .94; }
+
+.lightboxNav:hover{ 
+  transition: transform .14s ease, background .14s ease, border-color .14s ease, box-shadow .14s ease, opacity .14s ease;
+  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+  opacity: .92;
+  background: rgba(255,255,255,0.20); 
+ }
+
+.lightboxPrev{ left: 12px; }
+.lightboxNext{ right: 12px; }
+
+@keyframes navIn{
+  0%{ transform: translateY(-50%) scale(.85); opacity: 0; }
+  100%{ transform: translateY(-50%) scale(1); opacity: .92; }
+}
+
+.lightbox.is-open .lightboxNav{
+  animation: navIn .18s ease-out both;
+}
+
+/* keyboard focus (nice accessibility glow) */
+.lightboxNav:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(244,24,76,.35), 0 10px 26px rgba(0,0,0,.25);
+}
+
+.lightboxBottom{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lightboxDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.18);
+}
+
+.lightboxDot.is-active{
+  background: #fff;
+  border-color: rgba(255,255,255,0.8);
+}
+
+/* Makes preview images feel clickable */
+#preview-2 .imageCard,
+#preview1-static .imageCard img,
+#preview2-static .imageCard img,
+#preview3-static .imageCard img,
+#preview4-static .imageCard img{
+  cursor: zoom-in;
+}
+
+/* Make sure lightbox arrows always click */
+.lightboxNav{
+  z-index: 5;
+}
+.lightboxImg{
+  pointer-events: none;
+}
 </style>
 </head>
 
