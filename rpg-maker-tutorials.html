@@ -144,12 +144,131 @@ html, body{ height: 100%; }
       font-weight: 900;
     }
 
-    nav{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      justify-content: flex-end;
-    }
+/* --- Nav layout split (primary + secondary + hamburger) --- */
+.nav{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.navPrimary,
+.navSecondary{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* External link diagonal arrow (desktop) */
+.navlinkExternal::after{
+  content: "↗";
+  font-size: 12px;
+  font-weight: 900;
+  margin-left: 6px;
+  opacity: 0.65;
+  transform: translateY(-1px);
+}
+
+/* Hamburger button */
+.menuBtn{
+  display: none;            /* desktop: hidden */
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(20,20,20,0.12);
+  background: rgba(255,255,255,0.90);
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+  cursor: pointer;
+}
+
+.menuBtn:hover{ transform: translateY(-1px); }
+
+/* Simple hamburger icon */
+.menuIcon{
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+  position: relative;
+  display: block;
+}
+.menuIcon::before,
+.menuIcon::after{
+  content:"";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+}
+.menuIcon::before{ top: -6px; }
+.menuIcon::after { top:  6px; }
+
+/* Dropdown panel (mobile) */
+.menuPanel{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 220px;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(20,20,20,0.12);
+  box-shadow: 0 14px 28px rgba(0,0,0,.10);
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+.menuPanel .navlink{
+  width: 100%;
+  justify-content: flex-start;
+  border-color: rgba(20,20,20,0.10);
+  background: rgba(0,0,0,0.04);
+  margin-top: 8px;
+}
+.menuPanel .navlink:first-child{ margin-top: 0; }
+
+.menuPanel.is-open{ display: block; }
+
+/* --- Top bar Mobile rules: only 3 buttons + hamburger --- */
+
+@media (max-width: 600px){
+  .menuPanel{
+    right: 0;
+    left: auto;
+  }
+  .badge{ display: none; }
+  .nav{
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .navSecondary{
+    display: none; /* external links moved into hamburger */
+  }
+  .menuBtn{
+    display: inline-flex; /* show hamburger */
+  }
+  .navPrimary{
+    flex: 1 1 auto;
+    gap: 8px;
+  }
+  .navPrimary .navlink{
+    flex: 1 1 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+/* Tablet-ish widths: hide badge + center nav */
+@media (min-width: 601px) and (max-width: 1024px){
+  .badge{ display: none; }
+  .nav{ flex: 1; justify-content: center; }
+}
 
     .navlink{
       display:inline-flex;
@@ -670,14 +789,28 @@ html, body{ height: 100%; }
       <div class="brand">
         <span class="badge">RPG Maker Systems • Mechanics • Game Development</span>
       </div>
-
-      <nav aria-label="Primary">
-        <a class="navlink" href="./">Home</a>
-        <a class="navlink" href="./redeem.html">Rewards</a>
-        <a class="navlink" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
-        <a class="navlink" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
-		<a class="navlink" href="./rpg-maker-tutorials.html" aria-current="page">Tutorials</a>
-      </nav>
+		<nav class="nav" aria-label="Primary">
+		  <!-- Always visible (desktop + mobile) -->
+		  <div class="navPrimary">
+			<a class="navlink" href="./">Home</a>
+			<a class="navlink" href="./redeem.html">Rewards</a>
+			<a class="navlink" href="./rpg-maker-tutorials.html" aria-current="page">Tutorials</a>
+		  </div>
+		  <!-- Desktop-only external links (also appear inside hamburger on mobile) -->
+		  <div class="navSecondary" aria-label="External links">
+			<a class="navlink navlinkExternal" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+			<a class="navlink navlinkExternal" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+		  </div>
+		  <!-- Mobile hamburger -->
+		  <button class="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+			<span class="menuIcon" aria-hidden="true"></span>
+		  </button>
+		  <!-- Mobile dropdown -->
+		  <div class="menuPanel" id="mobileMenu" role="menu" aria-label="More links">
+			<a class="navlink navlinkExternal" role="menuitem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+			<a class="navlink navlinkExternal" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+		  </div>
+		</nav>
     </div>
   </header>
 
@@ -1011,8 +1144,46 @@ html, body{ height: 100%; }
   reset();
 })();
 	  
+// Mobile hamburger menu toggle
+(() => {
+  const btn = document.querySelector(".menuBtn");
+  const panel = document.querySelector("#mobileMenu");
+  if (!btn || !panel) return;
+
+  function closeMenu(){
+    panel.classList.remove("is-open");
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleMenu(){
+    const isOpen = panel.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", String(isOpen));
+  }
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  // Click outside closes
+  document.addEventListener("click", (e) => {
+    if (!panel.classList.contains("is-open")) return;
+    if (panel.contains(e.target) || btn.contains(e.target)) return;
+    closeMenu();
+  });
+
+  // Esc closes
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Clicking a link closes
+  panel.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", closeMenu);
+  });
+})(); 
+	  
     });
   </script>
 </body>
-
 </html>
