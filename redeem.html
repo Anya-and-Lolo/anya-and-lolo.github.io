@@ -419,6 +419,15 @@
 
   .sectionHead{ text-align: center; }
 
+  .sectionHead--left{
+    text-align: left;
+  }
+
+  .sectionHead--left .sub{
+    margin: 10px 0 0;       /* remove auto-centering */
+    max-width: 760px;       /* keep your readable width */
+  }
+  
   .sectionTitle{
     position: relative;
     display: block;
@@ -1223,8 +1232,8 @@ html{
 <main class="wrap">
 <div class="card" style="margin: 10px 0 14px;">
 
-<div class="sectionHead">
-  <h1 class="sectionTitle">Patreon Rewards</h1>
+<div class="sectionHead sectionHead--left">
+  <h1 class="heroH1">Patreon Rewards</h1>
       <p class="sub" style="margin: 10px auto 0; max-width: 760px;">
       Connect your Patreon to view your credits and redeem itch.io keys.
       Credits are earned from successful paid Patreon pledges.
@@ -2769,6 +2778,7 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
 
 
 
