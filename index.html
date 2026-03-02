@@ -1734,6 +1734,45 @@
       marquee.addEventListener("touchmove", resumeDelayed, { passive: true });
     })();
 
+// Mobile hamburger menu toggle
+(() => {
+  const btn = document.querySelector(".menuBtn");
+  const panel = document.querySelector("#mobileMenu");
+  if (!btn || !panel) return;
+
+  function closeMenu(){
+    panel.classList.remove("is-open");
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleMenu(){
+    const isOpen = panel.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", String(isOpen));
+  }
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  // Click outside closes
+  document.addEventListener("click", (e) => {
+    if (!panel.classList.contains("is-open")) return;
+    if (panel.contains(e.target) || btn.contains(e.target)) return;
+    closeMenu();
+  });
+
+  // Esc closes
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Clicking a link closes
+  panel.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", closeMenu);
+  });
+})();
+    
     // Latest YouTube videos (from Worker JSON)
     (async () => {
       const grid = document.getElementById("ytGrid");
@@ -1815,6 +1854,7 @@
   </script>
 </body>
 </html>
+
 
 
 
