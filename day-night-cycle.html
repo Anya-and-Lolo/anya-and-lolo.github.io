@@ -69,6 +69,8 @@ body{
 a{ color: var(--brand); text-decoration: underline; font-weight: 600; text-underline-offset: 2px;}
 a:hover{ text-decoration: underline; text-underline-offset: 4px; }
 
+h2{ line-height: 28px; padding-bottom:10px;} 
+
 button, .navlink, a{
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
@@ -411,8 +413,7 @@ body::before{
 
 /* TYPOGRAPHY HELPERS */
 .lead{
-  font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.35;
   color: rgba(27,27,27,0.75);
 }
@@ -781,9 +782,10 @@ aside.card:hover{
 }
 
 /* CODE BLOCKS */
+
 pre{
   margin: 12px 0 0;
-  padding: 12px;
+  padding: 12px 20px;
   border-radius: 14px;
   border: 1px solid rgba(20,20,20,0.10);
   background: #f3f5f7;
@@ -795,7 +797,6 @@ pre{
 code{
   background: #f3f5f7;
   color: #444;
-  padding: 2px 6px;
   border-radius: 6px;
   display: inline;              /* important */
   white-space: normal;          /* allow wrapping */
@@ -1087,7 +1088,7 @@ code{
   <main class="wrap">
     <section class="hero">
       <div class="card">
-        <h1 class="heroH1">RPG Maker Day &amp; Night Cycle</h1>
+        <h1 class="heroH1">Day &amp; Night Cycle</h1>
         <p class="subtitle" style="text-align:center; margin-bottom:0;">
           Build a real in-game clock + smooth day/night tint (works in any RPG Maker engine) 💛
         </p>
@@ -1102,9 +1103,8 @@ code{
         </div>
 
         <div class="miniRow" style="justify-content:center;">
-          <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener">Download the free demo</a>
-          <a class="btn" href="#setup"><span class="linkBrand">Jump to setup →</span></a>
-          <a class="btn" href="#video">Watch video</a>
+          <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener">Download demo</a>
+          <a class="btn" href="./rpg-maker-tutorials.html"><span class="linkBrand">Back to Tutorials →</span></a>
         </div>
       </div>
 
@@ -1129,19 +1129,19 @@ code{
 			
 			<div class="subcard">
 			  <div class="lead" style="margin-top:8px;">
-              We’re going to set up a fully functional in-game time system, then use it makes your world feel alive ✨
-				You'll also learn how to create a real in-game clock and a clean time display to transition your world from dawn to dusk and beyond.
+              We’re going to set up a fully functional time system that adds life and motion to your project ✨
+				You'll also learn how to create a real in-game clock and a neat time display to transition your world from dawn to dusk and beyond.
 			  </div>
 
 			  <div class="muted" style="margin-top:10px;">
-				Seconds → Minutes → Hours → Days • Create Game Time • Screen Tint transitions • Custom HUD
+				Seconds → Minutes → Hours → Days • Game Time Logic • Screen‑tint Transitions • Custom HUD
 			  </div>
 			</div>
 									
 			<div class="subcard" style="margin-top:14px;">
 			<h2 class="sectionTitle">What events you’ll create</h2>
 			  <div class="lead" style="margin-top:8px;">
-				You will build exactly <strong>3 events</strong> for this system:
+				We will build exactly <strong>3 events</strong> for this system:
 			  </div>
 
 			  <div class="step" style="margin-top:10px;">
@@ -1242,9 +1242,9 @@ code{
             <div class="subcard">
               <strong>How time will roll over</strong>
               <div class="lead" style="margin-top:6px;">
-                Seconds reach 60 → +1 Minute, reset Seconds to 0<br>
-                Minutes reach 60 → +1 Hour, reset Minutes to 0<br>
-                Hours reach 24 → +1 Day, reset Hours to 0<br>
+                60 Seconds → +1 Minute, reset Seconds to 0<br>
+                60 Minutes → +1 Hour, reset Minutes to 0<br>
+                24 Hours → +1 Day, reset Hours to 0<br>
                 (Optional) Months reach 12 → +1 Year
               </div>
             </div>
