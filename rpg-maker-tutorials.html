@@ -69,8 +69,15 @@ body{
 }
 
 /* LINKS + INTERACTIONS */
-a{ color: var(--brand); text-decoration: underline; font-weight: 600; text-underline-offset: 2px;}
+a{ color: inherit; text-decoration: none; }
 a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+
+/* Keep brand links branded */
+.linkBrand{
+  color: var(--brand);
+  font-weight: 900;
+  text-decoration: none;
+}
 
 button, .navlink, a{
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
@@ -581,6 +588,13 @@ footer{
   margin: 0 2px;
 }
 
+/* RESPONSIVE FOOTER */
+@media (max-width: 900px){
+  .footerInner{ grid-template-columns: 1fr; text-align:center; }
+  .footerRight{ justify-content: center !important; }
+  .socialText{ justify-content: center !important; }
+}
+  
 /* SCROLLBAR */
 html{
   scrollbar-color: var(--scrollThumb) var(--scrollTrack);
