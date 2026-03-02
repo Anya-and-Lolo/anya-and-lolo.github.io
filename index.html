@@ -315,38 +315,44 @@ a.pop{ animation: pop .28s ease; }
 
 /* --- Top bar Mobile rules: only 3 buttons + hamburger --- */
 @media (max-width: 600px){
-  .menuPanel{
-    right: 0;
-    left: auto;
-  }
   .badge{ display: none; }
-  .nav{ gap: 8px; }
-  .topbar nav.nav{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    overflow: visible;
-    padding: 0;
 
-    scroll-snap-type: none;
-    -webkit-mask-image: none;
-            mask-image: none;
-  }
-  .navSecondary{
-    display: none; /* external links moved into hamburger */
-  }
-  .menuBtn{
-    display: inline-flex; /* show hamburger */
-  }
-  .navPrimary{
-    flex: 1 1 auto;
+  /* Make nav a 2-column layout: pills + hamburger */
+  .nav{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
     gap: 8px;
   }
+
+  .navSecondary{ display: none; } /* external links moved into hamburger */
+  .menuBtn{ display: inline-flex; }
+
+  /* Pills row: never wrap, always equal width */
+  .navPrimary{
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+    min-width: 0; /* important for grid */
+  }
+
   .navPrimary .navlink{
     flex: 1 1 0;
     justify-content: center;
     white-space: nowrap;
+
+    /* optional: keeps the pills visually consistent on tiny screens */
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Dropdown position */
+  .menuPanel{
+    right: 0;
+    left: auto;
+    top: calc(100% + 10px);
   }
 }
 
@@ -1846,6 +1852,7 @@ canvas,
   </script>
 </body>
 </html>
+
 
 
 
