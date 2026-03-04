@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>RPG Maker Tutorials | Anya & Lolo</title>
+  <meta name="description" content="Step-by-step RPG Maker tutorials by Anya & Lolo (MZ, MV, XP, VX Ace, 2k, 2k3). Beginner-friendly guides, systems, and cozy dev tips." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="RPG Maker Tutorials | Anya & Lolo" />
+  <meta property="og:description" content="Step-by-step RPG Maker tutorials by Anya & Lolo (MZ, MV, XP, VX Ace, 2k, 2k3)." />
+  <meta property="og:url" content="https://anya-and-lolo.github.io/tutorials.html" />
+  <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+  <meta property="og:site_name" content="Anya & Lolo" />
+
+  <!-- Twitter -->
+  <meta name="twitter:site" content="@Anya_and_Lolo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="RPG Maker Tutorials | Anya & Lolo" />
+  <meta name="twitter:description" content="Step-by-step RPG Maker tutorials by Anya & Lolo (MZ, MV, XP, VX Ace, 2k, 2k3)." />
+  <meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+
+  <link rel="canonical" href="https://anya-and-lolo.github.io/tutorials.html" />
+  <link rel="icon" href="./favicon.ico?v=1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico?v=1">
+
+  <!-- Styles: copied to match your index.html theme -->
+  <style>
+/* THEME TOKENS */
+:root{
+  --brand: #f4184c;
+  --brand2: rgba(244, 24, 76, 0.12);
+
+  --bg: #ffffff;
+  --card: rgba(255,255,255,0.88);
+  --border: rgba(20,20,20,0.10);
+  --text: #1b1b1b;
+  --muted: rgba(27,27,27,0.70);
+
+  --radius: 16px;
+  --shadow: 0 10px 28px rgba(0,0,0,.10);
+
+  --scrollTrack: #226cbb;
+  --scrollThumb: #56a7fe;
+}
+
+/* BASE / RESETS */
+*{ box-sizing: border-box; }
+
+[id]{
+  scroll-margin-top: 120px;
+}
+
+html, body{ height: 100%; }
+
+html{
+  scroll-behavior: smooth;
+}
+
+body{
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* LINKS + INTERACTIONS */
+a{ color: inherit; text-decoration: none; }
+a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+
+/* Keep brand links branded */
+.linkBrand{
+  color: var(--brand);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+button, .navlink, a{
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+button:active, .navlink:active{
+  transform: translateY(1px) scale(0.99);
+}
+
+h2{ line-height: 28px; padding-bottom:10px;}
+
+
+/* LAYOUT WRAPPER */
+.wrap{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  overflow-x: clip; /* safe place to clip */
+}
+
+/* BACKGROUND EFFECTS */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  opacity: 1;
+  transform: translateZ(0);
+  will-change: background-position;
+
+  background:
+    radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
+    radial-gradient(circle, rgba(86,167,254,0.12) 2px, transparent 3.5px);
+
+  background-size: 42px 42px, 42px 42px;
+  background-position: 0 0, 21px 21px;
+  background-repeat: repeat, repeat;
+
+  animation: dotsFloat 22s linear infinite;
+}
+
+@keyframes dotsFloat{
+  from{ background-position: 0 0, 21px 21px; }
+  to{ background-position: -168px -84px, -147px -63px; }
+}
+
+/* TOP BAR / HEADER */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.72);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbarInner{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.badge{
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  color: var(--muted);
+  font-weight: 900;
+}
+
+/* NAV (DESKTOP + SHARED) */
+/* --- Nav layout split (primary + secondary + hamburger) --- */
+.nav{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.navPrimary,
+.navSecondary{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* External link diagonal arrow (desktop) */
+.navlinkExternal::after{
+  content: "↗";
+  font-size: 12px;
+  font-weight: 900;
+  margin-left: 6px;
+  opacity: 0.65;
+  transform: translateY(-1px);
+}
+
+/* Hamburger button */
+.menuBtn{
+  display: none;            /* desktop: hidden */
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(20,20,20,0.12);
+  background: rgba(255,255,255,0.90);
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+  cursor: pointer;
+}
+
+.menuBtn:hover{ transform: translateY(-1px); }
+
+/* Simple hamburger icon */
+.menuIcon{
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+  position: relative;
+  display: block;
+}
+.menuIcon::before,
+.menuIcon::after{
+  content:"";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: rgba(27,27,27,0.80);
+  border-radius: 999px;
+}
+.menuIcon::before{ top: -6px; }
+.menuIcon::after { top:  6px; }
+
+/* Dropdown panel (mobile) */
+.menuPanel{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 220px;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(20,20,20,0.12);
+  box-shadow: 0 14px 28px rgba(0,0,0,.10);
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+.menuPanel .navlink{
+  width: 100%;
+  justify-content: flex-start;
+  border-color: rgba(20,20,20,0.10);
+  background: rgba(0,0,0,0.04);
+  margin-top: 8px;
+}
+.menuPanel .navlink:first-child{ margin-top: 0; }
+
+.menuPanel.is-open{ display: block; }
+
+/* NAV LINK */
+.navlink{
+  display:inline-flex;
+  align-items:center;
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 15px;
+  color: rgba(27,27,27,0.88);
+  border: 1px solid transparent;
+  background: transparent;
+  text-decoration: none;
+  transition: transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+.navlink:hover{
+  text-decoration: none;
+  background: rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+.topbar .navlink[aria-current="page"]{
+  background: var(--brand2);
+  color: var(--brand);
+  border-color: rgba(244,24,76,0.25);
+}
+
+/* RESPONSIVE: TOP BAR / NAV */
+@media (max-width: 600px){
+  .menuPanel{
+    right: 0;
+    left: auto;
+  }
+  .badge{ display: none; }
+  .nav{
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .navSecondary{
+    display: none; /* external links moved into hamburger */
+  }
+  .menuBtn{
+    display: inline-flex; /* show hamburger */
+  }
+  .navPrimary{
+    flex: 1 1 auto;
+    gap: 8px;
+  }
+  .navPrimary .navlink{
+    flex: 1 1 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+/* Tablet-ish widths: hide badge + center nav */
+@media (min-width: 601px) and (max-width: 1024px){
+  .badge{ display: none; }
+  .nav{ flex: 1; justify-content: center; }
+}
+
+@media (max-width: 900px){
+  .topbarInner{ align-items: flex-start; flex-direction: column; align-items: center; }
+  nav{ justify-content: flex-start; }
+  .footerInner{ grid-template-columns: 1fr; text-align:center; }
+  .footerRight{ justify-content: center !important; }
+  .socialText{ justify-content: center !important; }
+}
+
+@media (max-width: 600px){
+  .topbarInner{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  nav{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+
+  .navlink{
+    flex: 1 1 auto;
+    justify-content: center;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.90);
+    border-color: rgba(20,20,20,0.12);
+    scroll-snap-align: none;
+  }
+
+  .badge{
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+/* HERO */
+.hero{ padding: 18px 0 8px; }
+
+.heroH1{
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin: 6px auto 18px;
+  font-size: 34px;
+  font-weight: 780;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.heroH1::after{
+  content:"";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 5px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ff2d6f 0%, var(--brand) 35%, #9fdf28 70%, #ff2d6f 100%);
+  background-size: 200% 100%;
+  animation: titleShimmer 3s linear infinite;
+  box-shadow: 0 4px 12px rgba(244,24,76,0.35);
+}
+
+@keyframes titleShimmer{
+  0%{ background-position: 0% 50%; }
+  100%{ background-position: 200% 50%; }
+}
+
+.subtitle{
+  margin: 0 0 14px 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+/* CARDS / CONTENT SURFACES */
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  transition: box-shadow .15s ease, transform .15s ease;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.card:hover{
+  box-shadow: 0 14px 28px rgba(0,0,0,.07);
+  transform: translateY(-2px);
+}
+
+.subcard{
+  background: rgba(255,255,255,0.78);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 10px;
+}
+
+.lead{
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: rgba(27,27,27,0.75);
+}
+
+/* TAGS / FILTERS */
+#topTags .tagBtn{
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.04);
+}
+
+.tagBtn.is-active{
+  background: var(--brand2);
+  border-color: rgba(244,24,76,0.25);
+  color: var(--brand);
+}
+
+.tag{
+  cursor: pointer;
+  background: rgba(255,255,255,0.78);
+}
+
+.tagFilter{
+  border: 1px solid rgba(20,20,20,0.10);
+}
+
+.tagFilter:hover{
+  background: rgba(0,0,0,0.06);
+}
+
+.tagFilter.is-active{
+  background: var(--brand2);
+  border-color: rgba(244,24,76,0.25);
+  color: var(--brand);
+}
+
+/* Compact "Quick Tags" buttons in the right column */
+#tagFilters .tagBtn{
+  padding: 7px 8px;     
+  font-size: 12.5px;       
+  border-radius: 12px; 
+  letter-spacing:-0.3px;  
+  box-shadow: 0 8px 16px rgba(0,0,0,.04); /* keep the vibe */
+  gap: 8px;
+}
+
+/* BUTTONS / LINKS */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.95);
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+  text-decoration:none;
+  font-size: 16px;
+}
+.btn:hover{ text-decoration:none; transform: translateY(-1px); }
+
+.btnPrimary{
+  background: var(--brand);
+  color: #fff;
+  border-color: rgba(244,24,76,0.35);
+}
+
+.btnPrimary:hover{
+  box-shadow: 0 14px 30px rgba(244,24,76,.20);
+  transform: translateY(-1px);
+}
+
+.linkBrand{
+  color: var(--brand);
+  font-weight: 900;
+}
+.linkBrand:hover{
+  text-decoration: none;
+  background: var(--brand2);
+  border-radius: 10px;
+  padding: 2px 6px;
+  margin: -2px -6px;
+}
+
+/* IMAGES */
+.imageCard{
+  width: 100%;
+  aspect-ratio: 16 / 9; /* remove for flexible height */
+  border: 1px solid rgba(20,20,20,0.10);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.86);
+  margin-top: 12px;
+}
+
+/* STATIC image cards */
+.imageCard:not(.imageCardCrossfade){
+  aspect-ratio: auto;   /* remove the forced 16:9 */
+}
+
+.imageCard:not(.imageCardCrossfade) img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* FOOTER */
+footer{
+  margin-top: 26px;
+  padding: 18px 0 34px;
+  color: rgba(27,27,27,0.72);
+  font-size: 14px;
+}
+
+.hangout{
+  text-align: center;
+  margin: 18px 0 14px;
+  font-size: 15px;
+  color: rgba(27,27,27,0.78);
+}
+
+.footerInner{
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items:center;
+}
+
+.socialText{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  justify-content:center;
+  align-items:center;
+  font-weight: 900;
+}
+
+.socialText a{
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.socialText a:hover{
+  background: rgba(0,0,0,0.06);
+  text-decoration: none;
+}
+
+.sepDot{
+  width: 6px;
+  height: 6px;
+  background: var(--brand);
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.footerRight{
+  display:flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.sep{
+  color: rgba(20,20,20,0.35);
+  font-weight: 800;
+  margin: 0 2px;
+}
+
+/* RESPONSIVE FOOTER */
+@media (max-width: 900px){
+  .footerInner{ grid-template-columns: 1fr; text-align:center; }
+  .footerRight{ justify-content: center !important; }
+  .socialText{ justify-content: center !important; }
+}
+  
+/* SCROLLBAR */
+html{
+  scrollbar-color: var(--scrollThumb) var(--scrollTrack);
+  scrollbar-width: auto;
+}
+::-webkit-scrollbar{ width: 24px; height: 24px; }
+::-webkit-scrollbar-track{ background: var(--scrollTrack); }
+::-webkit-scrollbar-thumb{
+  background: var(--scrollThumb);
+  border-radius: 999px;
+  border: 6px solid var(--scrollTrack);
+}
+::-webkit-scrollbar-thumb:hover{ filter: brightness(0.95); }
+::-webkit-scrollbar-corner{ background: var(--scrollTrack); }
+
+/* REVEAL */
+.preReveal{
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.reveal{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* TUTORIALS PAGE LAYOUT */
+.tutorialGrid{
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 14px;
+  margin-top: 14px;
+  align-items: start;
+}
+@media (max-width: 900px){
+  .tutorialGrid{ grid-template-columns: 1fr; }
+}
+
+/* TOC */
+.toc{
+  position: sticky;
+  top: 100px; /* slightly below navbar */
+  align-self: start; /* prevents stretch */
+}
+
+@media (max-width: 900px){
+  .tocCard{ position: static; }
+}
+
+.toc a{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(20,20,20,0.10);
+
+  /* grey by default */
+  background: rgba(0,0,0,0.06);
+
+  font-weight: 900;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.toc a:hover{
+  /* white on hover */
+  background: rgba(255,255,255,0.92);
+  text-decoration: none;
+}
+
+.toc small{
+  font-weight: 900;
+  color: rgba(27,27,27,0.55);
+}
+
+.toc a:hover small{
+  color: rgba(27,27,27,0.72);
+}
+
+/* TAGS (ROW) */
+.tagRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.tag{
+  font-size: 13px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(20,20,20,0.10);
+  background: rgba(255,255,255,0.78);
+  color: rgba(27,27,27,0.78);
+}
+
+/* STEPS */
+.step{
+  display:flex;
+  gap: 12px;
+  align-items:flex-start;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(20,20,20,0.10);
+  background: rgba(255,255,255,0.72);
+}
+.stepNum{
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  font-weight: 700;
+  color: #fff;
+  background: var(--brand);
+  box-shadow: 0 10px 18px rgba(244,24,76,0.18);
+}
+.stepTitle{
+  font-size: 20px;
+  letter-spacing: 0;
+  font-weight: 700;
+  margin: 0 0 4px;
+  line-height: 1.25;
+  text-transform: capitalize;
+}
+.step p{ margin: 0; color: rgba(27,27,27,0.82); }
+
+/* CALLOUT SYSTEM */
+/* Default = calm documentation blue */
+.callout{
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 14px;
+
+  background: #eef6ff;                 /* soft blue */
+  border: 1px solid rgba(0, 123, 255, 0.25);
+}
+
+/* Success = green */
+.callout.success{
+  background: rgba(46, 184, 92, 0.12);
+  border-color: rgba(46, 184, 92, 0.35);
+}
+
+.callout.success strong{
+  color: #1f7a3f;
+}
+
+/* Warning = red */
+.callout.warn{
+  background: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.35);
+}
+.callout.warn strong{
+  color: #b02a37;
+}
+
+/* Callout links: bold + underlined */
+.callout a{
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+/* Hover */
+.callout a:hover{
+  color: var(--brand);
+}
+
+/* CODE / PRE */
+pre{
+  margin: 12px 0 0;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(20,20,20,0.10);
+  background: rgba(255,255,255,0.86);
+  overflow:auto;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+/* VIDEO */
+.video{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgba(20,20,20,0.10);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.86);
+  margin-top: 12px;
+}
+.video iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display:block;
+}
+
+/* MISC */
+.miniRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.sectionTitle{
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.muted{ color: rgba(27,27,27,0.62); font-weight: 800; font-size: 14px; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <div class="brand">
+        <span class="badge">RPG Maker Systems • Mechanics • Game Development</span>
+      </div>
+		<nav class="nav" aria-label="Primary">
+		  <!-- Always visible (desktop + mobile) -->
+		  <div class="navPrimary">
+			<a class="navlink" href="./">Home</a>
+			<a class="navlink" href="./redeem.html">Rewards</a>
+			<a class="navlink" href="./rpg-maker-tutorials.html" aria-current="page">Tutorials</a>
+		  </div>
+		  <!-- Desktop-only external links (also appear inside hamburger on mobile) -->
+		  <div class="navSecondary" aria-label="External links">
+			<a class="navlink navlinkExternal" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+			<a class="navlink navlinkExternal" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+		  </div>
+		  <!-- Mobile hamburger -->
+		  <button class="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+			<span class="menuIcon" aria-hidden="true"></span>
+		  </button>
+		  <!-- Mobile dropdown -->
+		  <div class="menuPanel" id="mobileMenu" role="menu" aria-label="More links">
+			<a class="navlink navlinkExternal" role="menuitem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+			<a class="navlink navlinkExternal" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+		  </div>
+		</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="card">
+        <h1 class="heroH1">RPG Maker Tutorials</h1>
+        <p class="subtitle" style="text-align:center; margin-bottom:0;">
+          Cozy, beginner-friendly RPG Maker guides you can follow step by step 💛
+        </p>
+
+		<div class="tagRow" id="topTags" style="justify-content:center;">
+		  <button class="btn tagBtn" type="button" data-tag="mz">MZ</button>
+		  <button class="btn tagBtn" type="button" data-tag="mv">MV</button>
+		  <button class="btn tagBtn" type="button" data-tag="xp">XP</button>
+		  <button class="btn tagBtn" type="button" data-tag="rm2k">2000</button>
+		  <button class="btn tagBtn" type="button" data-tag="beginner">Beginner</button>
+		  <button class="btn tagBtn" type="button" data-tag="intermediate">Intermediate</button>
+		  <button class="btn tagBtn" type="button" data-tag="advanced">Advanced</button>
+		</div>
+
+        <div class="miniRow" style="justify-content:center;">
+          <a class="btn btnPrimary" href="#start-here">Start Here</a>
+          <a class="btn" href="#common-mistakes"><span class="linkBrand">Common Mistakes →</span></a>
+        </div>
+      </div>
+
+      <div class="tutorialGrid">
+        <!-- LEFT: Content -->
+        <div>
+          <!-- Start Here -->
+          <div class="card tutorialCard" id="start-here" data-tags="mz mv xp vx vxace rm2k rm2k3 beginner">
+            <h2 class="sectionTitle">Start Here</h2>
+            <div class="lead">If you’re new, check these three things first:</div>
+
+			<a href="#day-night" style="text-decoration:none;">
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Tutorial: Day & Night Cycle (Beginner)</div>
+                <p>
+                  Learn how to build a dynamic day and night cycle and in-game time system in RPG Maker! This easy tutorial works with any version of RPG Maker, perfect for MZ, MV, XP, VX Ace, VX, 2000, and 2003!		  
+                </p>
+              </div>
+            </div>
+			</a>
+
+			<a href="#common-mistakes" style="text-decoration:none;">
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">Common Mistakes</div>
+                <p>
+                  These bite almost everyone at least once. Common mistakes cheat sheet for you (so you don’t suffer)
+                </p>
+              </div>
+            </div>
+			</a>
+
+			<a href="https://www.youtube.com/@Anya_and_Lolo" style="text-decoration:none;" target="_blank">
+            <div class="step">
+              <div class="stepNum">3</div>
+              <div>
+                <div class="stepTitle">Watch on YouTube!</div>
+                <p>
+                  Some tutorials were made as YouTube videos, check out my channel for more tutorials!
+                </p>
+              </div>
+            </div>
+			</a>
+
+            <div class="callout">
+              <strong>Got a tutorial request?</strong> Just tell me what you’re after, and I’ll format it into a clean page like this (plus do a video when I have a chance!)
+            </div>
+          </div>
+
+          <!--  Tutorial: Day & Night -->
+		<div class="card tutorialCard" data-tags="mz mv xp vx vxace rm2k rm2k3 beginner" id="day-night" style="margin-top:14px;">
+		  <h2 class="sectionTitle">Tutorial: Day & Night Cycle (Beginner)</h2>
+		  <div class="lead">Create a day & night system and game time in RPG Maker. 💛</div>
+
+		  <div class="imageCard">
+			<a href="./day-night-cycle.html"><img src="./images/rpg-maker-day-night-cycle-time-display.gif" alt="Day & Night Cycle Preview"></a>
+		  </div>
+
+            <div class="miniRow">
+              <a class="btn btnPrimary" href="./day-night-cycle.html">Read Full Tutorial</a>
+              <a class="btn" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener">
+                <span class="linkBrand">Download Day/Night System →</span>
+              </a>
+            </div>
+		</div>
+		  
+          <!-- Common Mistakes -->
+		  <div class="card tutorialCard" data-tags="mz mv xp vx vxace rm2k rm2k3 beginner" id="common-mistakes" style="margin-top:14px;">
+            <h2 class="sectionTitle">Common Mistakes (So You Don’t Suffer)</h2>
+            <div class="lead">These bite almost everyone at least once.</div>
+
+            <div class="step">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Parallel events doing too much</div>
+                <p>
+                  If something is Parallel, it should be tiny and gated (switch, timer, “only when changed” checks).
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">No backups or test projects</div>
+                <p>
+                  Always sandbox first! Testing in your main game is how you get “mystery bugs” that take days to resolve.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="stepNum">3</div>
+              <div>
+                <div class="stepTitle">Hard-coding everything</div>
+                <p>
+                  Put repeatable logic into common events. Your future self will thank you!
+                </p>
+              </div>
+            </div>
+
+            <div class="miniRow">
+              <a class="btn" href="#" target="_blank" rel="noopener">
+                <span class="linkBrand">This article is coming soon!</span>
+              </a>
+            </div>
+			
+          </div>
+		  
+			<div class="card" id="emptyState" style="display:none;">
+			  <h2 class="sectionTitle">No tutorials match those filters (yet!)</h2>
+			  <div class="lead">Try removing one tag, or click “All Engines”.</div>
+			</div>
+		  
+        </div>
+
+        <!-- RIGHT: TOC -->
+        <aside class="card toc" aria-label="Tutorial table of contents">
+          <h2 class="sectionTitle" style="font-size:18px;">Quick jumps</h2>
+          <div class="lead">Find the sections on this page</div>
+
+          <a href="#start-here">
+            <span>Start Here</span>
+            <small>Basics</small>
+          </a>
+
+          <a href="#day-night">
+            <span>Day & Night Cycle</span>
+            <small>Beginner</small>
+          </a>
+
+          <a href="#common-mistakes">
+            <span>Common Mistakes</span>
+            <small>Oops!</small>
+          </a>
+
+          <div class="subcard" style="margin-top:12px;">
+            <strong>Quick Tags</strong>
+			<div id="filterStatus" class="muted" style="text-align:left;margin-top:10px;"></div>
+			<div class="miniRow" id="tagFilters" style="margin-top:10px;">
+			<button class="btn tagBtn is-active" type="button" data-tag="all">All Engines</button>
+			<button class="btn tagBtn" type="button" data-tag="mz">RPG Maker MZ</button>
+			<button class="btn tagBtn" type="button" data-tag="mv">RPG Maker MV</button>
+			<button class="btn tagBtn" type="button" data-tag="xp">RPG Maker XP</button>
+			<button class="btn tagBtn" type="button" data-tag="vxace">RPG Maker VX Ace</button>
+			<button class="btn tagBtn" type="button" data-tag="vx">RPG Maker VX</button>
+			<button class="btn tagBtn" type="button" data-tag="rm2k">RPG Maker 2000</button>
+			<button class="btn tagBtn" type="button" data-tag="rm2k3">RPG Maker 2003</button> 
+			</div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Footer card (same vibe as index) -->
+      <div class="card" style="margin-top:14px;">
+        <div class="hangout" style="margin-top:0;">
+          Want to hang out? Join the
+          <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
+          or follow us on your favorite platform below 💛
+        </div>
+
+        <footer style="margin-top: 12px; padding: 0;">
+          <div class="footerInner">
+            <div>© <span id="year"></span> Anya &amp; Lolo</div>
+
+            <div class="socialText" aria-label="Social links">
+              <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+              <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+              <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+
+              <span class="sepDot"></span>
+
+              <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+              <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+              <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+
+              <span class="sepDot"></span>
+
+              <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+              <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+
+              <span class="sepDot"></span>
+
+              <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+              <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+            </div>
+
+            <div class="footerRight">
+              <a href="./terms.html">Terms</a>
+              <span class="sep">|</span>
+              <a href="./privacy.html">Privacy</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Card reveal on scroll (same behavior)
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add("reveal");
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll(".card:not(.tocCard)").forEach(c => {
+        c.classList.add("preReveal");
+        io.observe(c);
+      });
+	  	
+// MULTI-SELECT TAG FILTERS (sidebar + top tags)
+(() => {
+  const buttons = Array.from(document.querySelectorAll(".tagBtn[data-tag]"));
+  const cards   = Array.from(document.querySelectorAll(".tutorialCard"));
+
+  const MATCH_ALL = false;
+  const selected = new Set();
+
+  function normalizeTag(t){
+    return String(t || "").trim().toLowerCase();
+  }
+
+  function getCardTags(card){
+    return String(card.getAttribute("data-tags") || "")
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
+  }
+
+  function setAllActiveUI(on){
+    buttons.forEach(b => {
+      if (normalizeTag(b.dataset.tag) === "all") {
+        b.classList.toggle("is-active", !!on);
+      }
+    });
+  }
+
+  function syncActiveUI(){
+    buttons.forEach(btn => {
+      const tag = normalizeTag(btn.dataset.tag);
+      if (tag === "all") return;
+      btn.classList.toggle("is-active", selected.has(tag));
+    });
+
+    setAllActiveUI(selected.size === 0);
+  }
+
+  function applyFilter(){
+    const status = document.getElementById("filterStatus");
+    if (status){
+      status.textContent = selected.size
+        ? `${selected.size} filter${selected.size>1?"s":""} selected`
+        : `Showing all tutorials`;
+    }
+
+    if (selected.size === 0){
+      cards.forEach(c => (c.style.display = ""));
+    } else {
+      cards.forEach(card => {
+        const tags = getCardTags(card);
+
+        const show = MATCH_ALL
+          ? Array.from(selected).every(t => tags.includes(t))
+          : Array.from(selected).some(t => tags.includes(t));
+
+        card.style.display = show ? "" : "none";
+      });
+    }
+
+    // ✅ empty state (must be INSIDE applyFilter)
+    const visible = cards.filter(c => c.style.display !== "none").length;
+    const emptyState = document.getElementById("emptyState");
+    if (emptyState) emptyState.style.display = visible ? "none" : "";
+  }
+
+  function reset(){
+    selected.clear();
+    syncActiveUI();
+    applyFilter();
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tag = normalizeTag(btn.dataset.tag);
+
+      if (tag === "all"){
+        reset();
+        return;
+      }
+
+      if (selected.has(tag)) selected.delete(tag);
+      else selected.add(tag);
+
+      syncActiveUI();
+      applyFilter();
+
+      // ✅ scroll AFTER applying filter
+      document.querySelector(".tutorialGrid")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  reset();
+})();
+	  
+// Mobile hamburger menu toggle
+(() => {
+  const btn = document.querySelector(".menuBtn");
+  const panel = document.querySelector("#mobileMenu");
+  if (!btn || !panel) return;
+
+  function closeMenu(){
+    panel.classList.remove("is-open");
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleMenu(){
+    const isOpen = panel.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", String(isOpen));
+  }
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  // Click outside closes
+  document.addEventListener("click", (e) => {
+    if (!panel.classList.contains("is-open")) return;
+    if (panel.contains(e.target) || btn.contains(e.target)) return;
+    closeMenu();
+  });
+
+  // Esc closes
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Clicking a link closes
+  panel.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", closeMenu);
+  });
+})(); 
+	  
+    });
+  </script>
+</body>
+</html>
