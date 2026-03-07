@@ -526,6 +526,18 @@ code:where(:not(:empty)){
   pointer-events: none; /* let clicks go through to the base image */
 }
 
+.stepBody{
+  margin-top: 6px;
+}
+
+.stepBody p{
+  margin: 0;
+}
+
+.stepBody pre{
+  margin: 8px 0;
+}
+
 /* TOC (STICKY) */
 /* Make the TOC card itself sticky */
 .tocCard{
