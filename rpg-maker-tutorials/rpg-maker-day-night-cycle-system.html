@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RPG Maker Day &amp; Night Cycle Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3) | Anya &amp; Lolo</title>
+    <meta name="description" content="Build a Day &amp; Night Cycle and in-game time system in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step variables, time display, screen tints, and optimization tips." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="RPG Maker Day &amp; Night Cycle Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3) | Anya &amp; Lolo" />
+    <meta property="og:description" content="Build a Day &amp; Night Cycle and in-game time system in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step variables, time display, screen tints, and optimization tips." />
+    <meta property="og:url" content="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-day-night-cycle-system.html" />
+    <meta property="og:image" content="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-system-banner.jpg" />
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Anya &amp; Lolo" />
+    <meta name="twitter:site" content="@Anya_and_Lolo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RPG Maker Day &amp; Night Cycle Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3) | Anya &amp; Lolo" />
+    <meta name="twitter:description" content="Build a Day &amp; Night Cycle and in-game time system in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step variables, time display, screen tints, and optimization tips." />
+    <meta name="twitter:image" content="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-system-banner.jpg" />
+    <link rel="canonical" href="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-day-night-cycle-system.html" />
+    <link rel="icon" href="../favicon.ico?v=1" sizes="any">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico?v=1">
+    <link rel="stylesheet" href="https://anya-and-lolo.github.io/rpg-maker-tutorials/tutorial.css">
+    <script src="https://anya-and-lolo.github.io/rpg-maker-tutorials/tutorial.js" defer></script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "RPG Maker Day & Night Cycle Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3)",
+  "headline": "RPG Maker Day & Night Cycle Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3)",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-system-banner.jpg"
+  },
+  "description": "Build a Day & Night Cycle and in-game time system in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step variables, time display, screen tints, and optimization tips.",
+  "inLanguage": "en",
+  "datePublished": "2026-03-08",
+  "dateModified": "2026-03-08",
+  "author": {
+    "@type": "Person",
+    "name": "Anya"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Anya & Lolo",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://anya-and-lolo.github.io/icon.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-day-night-cycle-system.html"
+  },
+  "totalTime": "PT50M"
+}
+</script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbarInner">
+        <div class="brand">
+          <span class="badge">RPG Maker Systems • Mechanics • Game Development</span>
+        </div>
+        <nav class="nav" aria-label="Primary">
+          <div class="navPrimary">
+            <a class="navlink" href="../">Home</a>
+            <a class="navlink" href="../redeem.html">Rewards</a>
+            <a class="navlink" href="./index.html" aria-current="page">Tutorials</a>
+          </div>
+          <div class="navSecondary" aria-label="External links">
+            <a class="navlink navlinkExternal" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+            <a class="navlink navlinkExternal" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+          </div>
+          <button class="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+            <span class="menuIcon" aria-hidden="true"></span>
+          </button>
+          <div class="menuPanel" id="mobileMenu" role="menu" aria-label="More links">
+            <a class="navlink navlinkExternal" role="menuitem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Smart Systems</a>
+            <a class="navlink navlinkExternal" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">Our Blog</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+
+        <div class="card">
+          <h1 class="heroH1">
+            <span class="heroH1Main">RPG Maker Day &amp; Night Cycle</span>
+            <span class="heroH1Sub">Step-by-Step Tutorial</span>
+          </h1>
+          <p class="subtitle">Learn how to build a day and night cycle system in RPG Maker using variables, events, and screen tint overlays. 💛</p>
+          <div class="tagRow">
+            <span class="tag">All RPG Maker Engines</span><span class="tag">Beginner Tutorial</span><span class="tag">~50 min</span>
+          </div>
+
+          <div class="miniRow center">
+            <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener">Download demo</a>
+            <a class="btn" href="./index.html">Back to Tutorials →</a>
+          </div>
+        </div>
+        <div class="tutorialGrid">
+          <div>
+
+            <div class="card" id="preview1-static" style="margin-bottom:14px">
+
+              <div class="imageCard">
+                <img data-lb="1"
+                src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-system-banner.jpg"
+                alt="RPG Maker Day &amp; Night Cycle system banner with compatibility badges for multiple RPG Maker versions.">
+              </div>
+
+              <div class="callout info">
+                <strong>Good news:</strong>
+                This system is designed to work with any version of RPG Maker. If you have MZ/MV, open the demo file and follow along.
+                <a class="linkBrand"
+                href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+                target="_blank" rel="noopener" style="margin-left:1px">
+                Download here!
+              </a>
+            </div>
+          </div>
+
+          <div class="card" id="intro" style="margin-top:14px">
+            <div class="subcard">
+              <h2 class="sectionTitle">Let’s build this step by step!</h2>
+              <div class="lead" style="margin-top:8px">We’re going to set up a fully functional time system that adds life and motion to your project ✨ You&#039;ll also learn how to create a real in-game clock and a clean time display to transition your world from dawn to dusk and beyond.</div>
+              <div class="muted" style="margin-top:10px">Seconds → Minutes → Hours → Days • Game Time Logic • Screen‑tint Transitions • Custom HUD</div>
+            </div>
+            <div class="subcard">
+              <h2 class="sectionTitle">What events you’ll create</h2>
+              <div class="lead" style="margin-top:8px">We will build exactly 3 events for this system (one-time setup):</div>
+
+              <div class="step" style="margin-top:10px">
+                <div class="stepNum">1</div>
+                <div>
+                  <div class="stepTitle">Parallel event &#039;Game Time (Main)&#039;</div>
+                  <div class="stepBody">Handles Seconds → Minutes → Hours → Days rollover logic. This is the heart of your clock.</div>
+                </div>
+              </div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">2</div>
+                <div>
+                  <div class="stepTitle">Parallel event &#039;Day/Night Tint&#039;</div>
+                  <div class="stepBody">Checks the current hour and applies the correct screen tint (Night, Sunrise, Day, Sunset, Evening).</div>
+                </div>
+              </div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">3</div>
+                <div>
+                  <div class="stepTitle">Autorun event &#039;Pre-Set Time&#039;</div>
+                  <div class="stepBody">Sets the starting time (example: 12:00 PM) and applies the correct tint before gameplay begins. Then disables itself using a Self Switch.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout success">
+              <strong>Great tip:</strong> If you&#039;re just testing, you can place your events on a map first. Once everything works as intended, you can always move them into Common Events for multi-map projects.
+              </div>
+            </div>
+
+            <div class="card" id="video" style="margin-top:14px">
+              <h2 class="sectionTitle">Video walkthrough</h2>
+              <div class="lead" style="margin-top:6px">Prefer a visual walkthrough? Here you go 💛</div>
+
+              <div class="video">
+                <iframe
+                loading="lazy"
+                src="https://www.youtube.com/embed/g_lLFJqsy8g"
+                title="RPG Maker Day &amp; Night Cycle video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              </div>
+
+              <div class="miniRow"><a class="btn btnPrimary"
+                href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+                target="_blank" rel="noopener">Download demo</a><a class="btn" href="./index.html">Back to Tutorials →</a></div>
+              </div>
+
+              <div class="card" id="prepare" style="margin-top:14px">
+                <h2 class="sectionTitle">Before you start</h2>
+
+                <div class="step" style="margin-top:10px">
+                  <div class="stepNum">1</div>
+                  <div>
+                    <div class="stepTitle">If you have MZ/MV</div>
+                    <div class="stepBody">Open the provided demo file for your engine. The key event commands are placed in the top-left corner of the demo map for learning (one Autorun + two Parallel events). You can move them to Common Events later for multi-map projects.</div>
+                  </div>
+                </div>
+
+                <div class="step" style="margin-top:12px">
+                  <div class="stepNum">2</div>
+                  <div>
+                    <div class="stepTitle">If you use a different engine</div>
+                    <div class="stepBody">Create the events manually in your own project. A clean way is placing the setup events in the top-left corner of a map first, then moving them into Common Events once you’re happy.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" id="setup" style="margin-top:14px">
+                <h2 class="sectionTitle">Part 1. Create the Game Time (Seconds, Minutes, Hours)</h2>
+                <div class="lead" style="margin-top:8px">Use Variables + Conditional Branches inside a Parallel event to keep time ticking.</div>
+                <div class="subcard">
+                  <strong>How time will roll over</strong>
+                  <div class="lead" style="margin-top:6px">60 Seconds: +1 Minute, reset Seconds to 0<br>60 Minutes: +1 Hour, reset Minutes to 0<br>24 Hours: +1 Day, reset Hours to 0<br>(Optional) 12 Months: +1 Year</div>
+                </div>
+
+                <div class="step">
+                  <div class="stepNum">1</div>
+                  <div>
+                    <div class="stepTitle">Create a Parallel event: “Game Time (Main)”</div>
+                    <div class="stepBody">Make a new event and set Trigger to <strong>Parallel</strong>. This event will run continuously and update your variables.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="stepNum">2</div>
+                  <div>
+                    <div class="stepTitle">Create variables</div>
+                    <div class="stepBody">Go to <code>Control Variables &gt; Single Variable</code>. There we&#039;ll create variables for: <strong>Seconds, Minutes, Hours, Days,</strong> and optionally <strong>Months, Years.</strong></div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="stepNum">3</div>
+                  <div>
+                    <div class="stepTitle">Tick seconds</div>
+                    <div class="stepBody">In your Parallel event, do: <pre style="margin-bottom:8px">Control Variables → Seconds → Add Constant 1</pre> Now Seconds will increase by one as the event runs.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="stepNum">4</div>
+                  <div>
+                    <div class="stepTitle">Convert seconds into minutes</div>
+                    <div class="stepBody">Add a Conditional Branch: <code>If Seconds ≥ 60</code> then: <code>Minutes += 1</code>, and reset Seconds like this: <code>Seconds = 0</code>. Now Minutes will increase every 60 Seconds.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="stepNum">5</div>
+                  <div>
+                    <div class="stepTitle">Repeat for hours and days</div>
+                    <div class="stepBody">Do the same rollover logic: <code>If Minutes ≥ 60</code> then <code>Hours +1</code> and reset Minutes. Then <code>If Hours ≥ 24</code> then <code>Days +1</code>, and reset Hours to zero.</div>
+                  </div>
+                </div>
+
+                <div class="callout info">
+                  <strong>Optional challenge:</strong> Add Months and Years too, if you want to have seasonal changes or long-term events in your game.
+                  </div>
+                </div>
+
+                <div class="card" id="codesnippets1" style="margin-top:14px">
+                  <h2 class="sectionTitle">Snippet Guide</h2>
+                  <div class="lead" style="margin-top:6px">Code snippets to help you with Part 1 💛</div>
+
+                  <div class="imageCard imageCardCrossfade" style="position:relative" data-crossfade="x11" data-hold="2000" data-fade="550">
+                  <img class="frame is-base" data-lb="1" data-gallery="x11" data-index="0" src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_1.png" alt="RPG Maker variables tracking seconds, minutes, hours, and days">
+                  <img class="frame is-top" src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-variable-increment.png" alt="RPG Maker event command configuring variable Seconds to increment by 1 each tick.">
+                  <div style="position:absolute; right:12px; bottom:12px; padding:8px 12px; border-radius:999px; background:rgba(0,0,0,0.65); color:#fff; font-size:13px; font-weight:900; backdrop-filter: blur(6px); pointer-events:none; z-index:2">
+                    4 images
+                  </div>
+                  <script type="application/json" data-frames="x11">
+                    ["https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_1.png",
+                    "https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-variable-increment.png",
+                    "https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-parallel-event-1-setup_1.png",
+                    "https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-parallel-event-1-setup_2.png"]
+                  </script>
+                  <script type="application/json" data-galleryjson="x11">
+                    [{"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_1.png","alt":"RPG Maker variables tracking seconds, minutes, hours, and days"},
+                    {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-variable-increment.png","alt":"RPG Maker event command configuring variable Seconds to increment by 1 each tick."},
+                    {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-parallel-event-1-setup_1.png","alt":"RPG Maker parallel event setup for game time rollover logic"},
+                    {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-parallel-event-1-setup_2.png","alt":"RPG Maker parallel event setup for game time rollover logic"}]
+                  </script>
+                </div>
+
+                <div class="miniRow"><a class="btn btnPrimary"
+                  href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+                  target="_blank" rel="noopener">Download demo</a><a class="btn" href="./index.html">Back to Tutorials →</a></div>
+                </div>
+
+                <div class="card" id="timedisplay" style="margin-top:14px">
+                  <h2 class="sectionTitle">Part 2. Time Display (so we can see it working)</h2>
+                  <div class="lead" style="margin-top:8px">First, we verify the variables update. Then we make a dynamic display that updates in real-time.</div>
+
+                  <div class="step">
+                    <div class="stepNum">1</div>
+                    <div>
+                      <div class="stepTitle">Quick test (recommended)</div>
+                      <div class="stepBody">Place a simple object event (like a sign) and show a message using Show Text command that displays your variables. <pre style="margin-bottom:8px">\V[1] Seconds | \V[2] Minutes | \V[3] Hours | \V[4] Days | \V[5] Months</pre> Playtest! Click a few times on a signpost. If numbers change, your clock is ticking: <pre style="margin-bottom:8px">25 Seconds | 17 Minutes | 12 Hours | 1 Days | 0 Months</pre></div>
+                    </div>
+                  </div>
+
+                  <div class="step">
+                    <div class="stepNum">2</div>
+                    <div>
+                      <div class="stepTitle">Make the display update dynamically</div>
+                      <div class="stepBody">Use a Dynamic Text Picture plugin (MV users: DTextPicture.js / MZ: TextPicture.js). Turn it ON in Plugin Manager, then: add a Plugin Command that defines your text, and use <strong>Show Picture</strong> without selecting an image.</div>
+                    </div>
+                  </div>
+
+                  <div class="step">
+                    <div class="stepNum">3</div>
+                    <div>
+                      <div class="stepTitle">Use variables inside the text</div>
+                      <div class="stepBody">Example: Hours is variable 3, Days is variable 4, then write <code>\V[3]</code> (or <code>\V[003]</code> to display it. You can also add color with <code>\C[].</code></div>
+                    </div>
+                  </div>
+
+                  <div class="callout warn">
+                    <strong>Important:</strong> Make sure to assign a unique number to each image. Each picture needs its own picture ID, or they’ll overwrite one another.
+                    </div>
+                  </div>
+
+                  <div class="card" id="hudpreview" style="margin-top:14px">
+                    <h2 class="sectionTitle">Snippet Guide</h2>
+                    <div class="lead" style="margin-top:6px">Click on the image below to see code snippets for Part 2 💛</div>
+
+                    <div class="imageCard" style="position:relative">
+                      <img
+                      data-lb="1"
+                      data-gallery="g16"
+                      data-index="0"
+                      src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-time-display.gif"
+                      alt="RPG Maker day and night cycle showing in-game time display with hour, minute, and day counter."
+                      >
+                      <div style="position:absolute; right:12px; bottom:12px; padding:8px 12px; border-radius:999px; background:rgba(0,0,0,0.65); color:#fff; font-size:13px; font-weight:900; backdrop-filter: blur(6px); pointer-events:none">
+                        3 images
+                      </div>
+                    </div>
+                    <script type="application/json" data-galleryjson="g16">
+                      [{"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-time-display.gif","alt":"RPG Maker day and night cycle showing in-game time display with hour, minute, and day counter."},
+                      {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-seconds-minutes-hours-days-setup.png","alt":"RPG Maker time display setup using dynamic text picture plugin"},
+                      {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-days-months-setup.png","alt":"RPG Maker time display setup using dynamic text picture plugin"}]
+                    </script>
+
+                    <div class="miniRow"><a class="btn btnPrimary"
+                      href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+                      target="_blank" rel="noopener">Download demo</a><a class="btn" href="./index.html">Back to Tutorials →</a></div>
+                    </div>
+
+                    <div class="card" id="transitions" style="margin-top:14px">
+                      <h2 class="sectionTitle">Part 3. Smooth Day/Night Tint (based on Hours)</h2>
+                      <div class="lead" style="margin-top:8px">Now we make the world “feel alive” by tinting the screen depending on the Hour.</div>
+                      <div class="subcard">
+                        <strong>Suggested tint schedule</strong>
+                        <div class="lead" style="margin-top:6px">12AM to 5AM = Deep Night (0 → 5)<br>5AM to 8AM = Sunrise (5 → 8)<br>8AM to 6PM = Daytime (8 → 18)<br>6PM to 8PM = Sunset (18 → 20)<br>8PM to 12AM = Evening (20 → 24)</div>
+                      </div>
+                      <h2 class="sectionTitle">Steps (2)</h2>
+
+                      <div class="step">
+                        <div class="stepNum">1</div>
+                        <div>
+                          <div class="stepTitle">Create a Parallel event: “Day/Night Tint”</div>
+                          <div class="stepBody">Make a second Parallel event (or Common Event) that checks Hours and applies the correct tint.</div>
+                        </div>
+                      </div>
+
+                      <div class="step">
+                        <div class="stepNum">2</div>
+                        <div>
+                          <div class="stepTitle">Use conditional branches by hour range</div>
+                          <div class="stepBody">Build five branches based on military time, where &#039;0&#039; is midnight and &#039;18&#039; is 6PM. Example: <code>If Hours ≥ 20</code> then <strong>Evening tint</strong>, <code>Else If Hours ≥ 18</code> then <strong>Sunset</strong>, <code>Else If Hours ≥ 8</code> then <strong>Day</strong>, <code>Else If Hours ≥ 5</code> then <strong>Sunrise</strong>, <code>Else →</code>
+                            <strong>Deep Night</strong>.</div>
+                            </div>
+                          </div>
+
+                          <div class="callout info">
+                            <strong>Pro Tip:</strong> Keep tint durations slightly longer (at least 30–60 frames) so transitions don’t feel harsh.
+                            </div>
+                          </div>
+
+                          <div class="card" id="presets" style="margin-top:14px">
+                            <h2 class="sectionTitle">Part 4. Start the game at a specific time (like 12pm)</h2>
+                            <div class="lead" style="margin-top:8px">By default it starts at midnight. Let’s pre-set the clock and apply the right tint.</div>
+
+                            <div class="step">
+                              <div class="stepNum">1</div>
+                              <div>
+                                <div class="stepTitle">Create an Autorun event: “Pre-Set Time”</div>
+                                <div class="stepBody">Set the event trigger to <strong>Autorun</strong>, set Hours/Minutes to what you want. For example, for noon (which is 12:00pm), set Hours to 12 and Minutes to 0. <br><pre style="margin-bottom:8px">Control Variables → Hours → Set 12<br>Control Variables → Minutes → Set 0</pre>Apply a Daylight tint so you don’t start with night colors.<br><pre style="margin-bottom:8px">Tint Screen: (0,0,0,0), 120 frames</pre></div>
+                              </div>
+                            </div>
+
+                            <div class="step">
+                              <div class="stepNum">2</div>
+                              <div>
+                                <div class="stepTitle">Turn it off with a Self Switch</div>
+                                <div class="stepBody">Add a new page conditioned by Self Switch A, and turn Self Switch A ON at the end, so the Autorun doesn’t freeze the game.</div>
+                              </div>
+                            </div>
+
+                            <div class="callout warn">
+                              <strong>Important:</strong> Make sure to deactivate the Autorun event, otherwise it’ll loop endlessly and freeze the game.
+                              </div>
+                            </div>
+
+                            <div class="card" id="codesnippets2" style="margin-top:14px">
+                              <h2 class="sectionTitle">Snippet Guide</h2>
+                              <div class="lead" style="margin-top:8px">Click on the image below to see code snippets for Part 3 &amp; 4 💛</div>
+
+                              <div class="imageCard" style="position:relative">
+                                <img
+                                data-lb="1"
+                                data-gallery="g26"
+                                data-index="0"
+                                src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-screen-tints-transitions.jpg"
+                                alt="RPG Maker day and night cycle showing screen tint overlays for different time periods."
+                                >
+                                <div style="position:absolute; right:12px; bottom:12px; padding:8px 12px; border-radius:999px; background:rgba(0,0,0,0.65); color:#fff; font-size:13px; font-weight:900; backdrop-filter: blur(6px); pointer-events:none">
+                                  4 images
+                                </div>
+                              </div>
+                              <script type="application/json" data-galleryjson="g26">
+                                [{"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-screen-tints-transitions.jpg","alt":"RPG Maker day and night cycle showing screen tint overlays for different time periods."},
+                                {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_7.png","alt":"RPG Maker time display using dynamic text picture plugin"},
+                                {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_8.png","alt":"RPG Maker event commands for day and night tint transitions"},
+                                {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_pre-set-specific-time-and-tint.png","alt":"RPG Maker event commands to pre-set specific time and tint transitions"}]
+                              </script>
+
+                              <div class="miniRow"><a class="btn btnPrimary"
+                                href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+                                target="_blank" rel="noopener">Download demo</a><a class="btn" href="./index.html">Back to Tutorials →</a></div>
+                              </div>
+
+                              <div class="card" id="optimization" style="margin-top:14px">
+                                <h2 class="sectionTitle">Part 5. Optimization (make it run smooth)</h2>
+                                <div class="lead" style="margin-top:8px">Parallel events can be heavy if they check too often. Let’s reduce unnecessary work.</div>
+                                <div class="subcard">
+                                  <strong>Performance checklist</strong>
+                                  <div class="lead" style="margin-top:6px">✔ Trigger events only when needed<br>✔ Minimize frame checks<br>✔ Use Wait commands strategically</div>
+                                </div>
+
+                                <div class="step">
+                                  <div class="stepNum">1</div>
+                                  <div>
+                                    <div class="stepTitle">Use a Wait command (60 frames = 1 second)</div>
+                                    <div class="stepBody">Our system now constantly checks if the ‘Seconds’ variable has hit 60: <pre style="margin-bottom:8px">If:Seconds ≥ 60 &lt;-- drains resources and can slow gameplay down!</pre>Let’s fix that in two easy steps! First, change the check from 60 to 1 to prevent overloading the system:<pre style="margin-bottom:8px">Conditional Branch → Seconds → Set 1</pre><strong>Won’t this make the game count seconds way too fast?</strong> That&#039;s right! If we stop here, the game will think each second equals a full minute. So that’s where a Wait command comes in!<pre style="margin-bottom:8px">Wait: 60 frames</pre>A simple Wait command at the end of your Parallel event prevents the engine from running checks 60 times per second. It keeps the system smooth without unnecessary processing.</div>
+                                  </div>
+                                </div>
+
+                                <div class="callout success">
+                                  <strong>Fun fact!</strong> If you skip the Wait command, time in your game will fly by at lightning speed! I found this exciting and used it in the Pro version to demonstrate the mechanics in action 😅
+                                  </div>
+
+                                  <div class="step">
+                                    <div class="stepNum">2</div>
+                                    <div>
+                                      <div class="stepTitle">Same idea for the tint event</div>
+                                      <div class="stepBody">Your tint event is also Parallel, without a wait command, it can keep reapplying tint constantly (multiple times per second!). Add a Wait command at the very end of this event to limit checks and avoid draining resources.</div>
+                                    </div>
+                                  </div>
+
+                                  <div class="callout info">
+                                    <strong>Good to know</strong> In the Pro version of the system, I’ll show you how to create a Smart System that makes the screen tint to change only when the hour changes!
+                                    </div>
+                                  </div>
+
+                                  <div class="card" id="codesnippets3" style="margin-top:14px">
+                                    <h2 class="sectionTitle">Snippet Guide</h2>
+                                    <div class="lead" style="margin-top:6px">Click on the image below to see code snippets for Part 5 💛</div>
+
+                                    <div class="imageCard imageCardCrossfade" style="position:relative" data-crossfade="x34" data-hold="2000" data-fade="550">
+                                    <img class="frame is-base" data-lb="1" data-gallery="x34" data-index="0" src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_parallel-event-1-optimizations.png" alt="RPG Maker event commands for parallel event #1 optimizations">
+                                    <img class="frame is-top" src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_parallel-event-2-optimizations.png" alt="RPG Maker event commands for parallel event #2 optimizations">
+                                    <div style="position:absolute; right:12px; bottom:12px; padding:8px 12px; border-radius:999px; background:rgba(0,0,0,0.65); color:#fff; font-size:13px; font-weight:900; backdrop-filter: blur(6px); pointer-events:none; z-index:2">
+                                      2 images
+                                    </div>
+                                    <script type="application/json" data-frames="x34">
+                                      ["https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_parallel-event-1-optimizations.png",
+                                      "https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_parallel-event-2-optimizations.png"]
+                                    </script>
+                                    <script type="application/json" data-galleryjson="x34">
+                                      [{"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_parallel-event-1-optimizations.png","alt":"RPG Maker event commands for parallel event #1 optimizations"},
+                                      {"src":"https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle_parallel-event-2-optimizations.png","alt":"RPG Maker event commands for parallel event #2 optimizations"}]
+                                    </script>
+                                  </div>
+
+                                  <div class="miniRow"><a class="btn btnPrimary"
+                                    href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+                                    target="_blank" rel="noopener">Download demo</a><a class="btn" href="./index.html">Back to Tutorials →</a></div>
+                                  </div>
+
+                                  <div class="card" id="freeextras" style="margin-top:14px">
+                                    <h2 class="sectionTitle">Free extras! Make events react to time</h2>
+                                    <div class="lead" style="margin-top:8px">Did you know? You can make your game world respond in so many fun ways!</div>
+                                    <h2 class="sectionTitle">Steps</h2>
+
+                                    <div class="step">
+                                      <div class="stepNum">1</div>
+                                      <div>
+                                        <div class="stepTitle">Make Events React to Time</div>
+                                        <div class="stepBody">Make house windows open/close, lanterns light at night, fireflies appear, or set shops open between set hours.</div>
+                                      </div>
+                                    </div>
+
+                                    <div class="step">
+                                      <div class="stepNum">2</div>
+                                      <div>
+                                        <div class="stepTitle">Global Time</div>
+                                        <div class="stepBody">Apply time cycles to the world map with ease! Plus, learn how to adjust game time speed (fast-forward effect included as a fun mini-game!)</div>
+                                      </div>
+                                    </div>
+
+                                    <div class="step">
+                                      <div class="stepNum">3</div>
+                                      <div>
+                                        <div class="stepTitle">AM/PM Format</div>
+                                        <div class="stepBody">Set a beautiful custom HUD with 12-hour time display.</div>
+                                      </div>
+                                    </div>
+
+                                    <div class="step">
+                                      <div class="stepNum">4</div>
+                                      <div>
+                                        <div class="stepTitle">Freeze the clock</div>
+                                        <div class="stepBody">Pause Time during dialogue, cutscenes, or emotional moments.</div>
+                                      </div>
+                                    </div>
+
+                                    <div class="step">
+                                      <div class="stepNum">5</div>
+                                      <div>
+                                        <div class="stepTitle">Boost Performance</div>
+                                        <div class="stepBody">Even more smart optimizations and pro tips to keep your game running smoothly.</div>
+                                      </div>
+                                    </div>
+
+                                    <div class="callout info">
+                                      <strong>Want the upgraded version?</strong> The Pro version adds global time, custom HUD, time-speed control, and smart optimizations. <strong>Expand for free!</strong> Simply <a href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener noreferrer"> join the Anya &amp; Lolo Club</a> to get a special link sent straight to your inbox 💌
+                                      </div>
+                                    </div>
+
+                                    <div class="card" id="gopro" style="margin-top:14px">
+                                      <h2 class="sectionTitle">Go Pro for Free! 🎁</h2>
+                                      <div class="lead" style="margin-top:6px">Ready to level up your RPG experience? Click on the image below!</div>
+
+                                      <div class="imageCard"><a href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener"><img data-lb="1" src="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-day-night-cycle-system-pro-banner-free-upgrade.jpg" alt="RPG Maker Day &amp; Night Cycle Pro upgrade banner for free extras and advanced features"></a></div>
+
+                                      <div class="miniRow"><a class="btn btnPrimary"
+                                        href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
+                                        target="_blank" rel="noopener">Download demo</a><a class="btn" href="./index.html">Back to Tutorials →</a></div>
+                                      </div>
+                                    </div>
+                                    <aside class="card tocCard" aria-label="Tutorial table of contents">
+                                      <div class="toc" id="toc">
+                                        <h2 class="sectionTitle" style="font-size:18px; margin:0">Quick jumps</h2>
+                                        <div class="lead" style="margin-top:4px">Sections on this page</div>
+                                        <div class="tocProgress" aria-hidden="true">
+                                          <div class="tocProgressFill" id="tocProgressFill"></div>
+                                        </div>
+                                        <a href="javascript:void(0)"
+                                        data-jump="intro"><span>What You’ll Learn</span><small>Overview</small></a>
+                                      <a href="javascript:void(0)"
+                                      data-jump="video"><span>Video Tutorial</span><small>YouTube</small></a>
+                                    <a href="javascript:void(0)"
+                                    data-jump="prepare"><span>Before You Start</span><small>Which engine?</small></a>
+                                  <a href="javascript:void(0)"
+                                  data-jump="setup"><span>Our Game Time</span><small>Parallel event 1</small></a>
+                                <a href="javascript:void(0)"
+                                data-jump="timedisplay"><span>Time Display</span><small>Custom HUD</small></a>
+                              <a href="javascript:void(0)"
+                              data-jump="transitions"><span>Day/Night Tint</span><small>Parallel event 2</small></a>
+                            <a href="javascript:void(0)"
+                            data-jump="presets"><span>Start at 12PM</span><small>Autorun event</small></a>
+                          <a href="javascript:void(0)"
+                          data-jump="optimization"><span>Optimization</span><small>Wait command</small></a>
+                        <a href="javascript:void(0)"
+                        data-jump="freeextras"><span>Free Extras!</span><small>Time events</small></a>
+                    </div>
+                  </aside>
+                </div>
+                <!-- Lightbox -->
+                <div class="lightbox" id="lightbox" aria-hidden="true">
+                  <div class="lightboxOverlay" data-close="1"></div>
+                  <div class="lightboxPanel" role="dialog" aria-modal="true" aria-label="Image preview">
+                    <div class="lightboxTop">
+                      <div id="lightboxLabel">Preview</div>
+                      <button class="lightboxClose" type="button" id="lightboxClose" aria-label="Close preview">✕</button>
+                    </div>
+                    <div class="lightboxStage">
+                      <button class="lightboxNav lightboxPrev" type="button" id="lightboxPrev" aria-label="Previous image">‹</button>
+                      <img class="lightboxImg" id="lightboxImg" alt="">
+                      <button class="lightboxNav lightboxNext" type="button" id="lightboxNext" aria-label="Next image">›</button>
+                    </div>
+                    <div class="lightboxBottom" id="lightboxDots" aria-label="Image position indicators"></div>
+                  </div>
+                </div>
+                <!-- Footer card -->
+
+                <div class="card" style="margin-top:14px">
+                  <div class="hangout" style="margin-top:0">
+                    Want to hang out? Join the
+                    <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
+                    or follow us on your favorite platform below 💛
+                  </div>
+                  <footer style="margin-top: 12px; padding: 0">
+                    <div class="footerInner">
+                      <div>© <span id="year"></span> Anya &amp; Lolo</div>
+                      <div class="socialText" aria-label="Social links">
+                        <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube</a>
+                        <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">Itch</a>
+                        <a href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener">Patreon</a>
+                        <span class="sepDot"></span>
+                        <a href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener">Insta</a>
+                        <a href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener">TikTok</a>
+                        <a href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener">Facebook</a>
+                        <span class="sepDot"></span>
+                        <a href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener">Bluesky</a>
+                        <a href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener">X</a>
+                        <span class="sepDot"></span>
+                        <a href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener">Pixiv</a>
+                        <a href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener">Booth</a>
+                      </div>
+                      <div class="footerRight">
+                        <a href="../terms.html">Terms</a>
+                        <span class="sep">|</span>
+                        <a href="../privacy.html">Privacy</a>
+                      </div>
+                    </div>
+                  </footer>
+                </div>
+              </section>
+            </main>
+          </body>
+        </html>
