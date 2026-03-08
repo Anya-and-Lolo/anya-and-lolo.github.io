@@ -323,20 +323,6 @@ body::before{
   color: rgba(27,27,27,0.68);
 }
 
-.heroH1::after{
-  content:"";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 100%;
-  height: 5px;
-  border-radius: 6px;
-  background: linear-gradient(90deg, #ff2d6f 0%, var(--brand) 35%, #9fdf28 70%, #ff2d6f 100%);
-  background-size: 200% 100%;
-  animation: titleShimmer 3s linear infinite;
-  box-shadow: 0 4px 12px rgba(244,24,76,0.35);
-}
-
 @keyframes titleShimmer{
   0%{ background-position: 0% 50%; }
   100%{ background-position: 200% 50%; }
@@ -770,5 +756,6 @@ html{
   background: rgba(255,255,255,0.18);
 }
 .lightboxDot.is-active{ background:#fff; border-color: rgba(255,255,255,0.8); }
+
 
 img[data-lb="1"]{ cursor: zoom-in; }
