@@ -284,7 +284,7 @@ body::before{
 
 .heroH1{
   position: relative;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   margin: 6px auto 18px;
@@ -759,3 +759,4 @@ html{
 
 
 img[data-lb="1"]{ cursor: zoom-in; }
+
