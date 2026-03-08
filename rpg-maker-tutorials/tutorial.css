@@ -315,8 +315,8 @@ body::before{
 
 .heroH1Sub{
   display: block;
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 12px;
+  font-size: 16px;
   line-height: 1.2;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -333,7 +333,7 @@ body::before{
   margin: 0 0 14px 0;
   color: var(--muted);
   font-size: 18px;
-  line-height: 1.3;
+  line-height: 1.4;
   text-align:center;
   width:650px;
   margin: 0 auto;
@@ -763,6 +763,7 @@ html{
 
 
 img[data-lb="1"]{ cursor: zoom-in; }
+
 
 
 
