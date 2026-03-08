@@ -284,14 +284,43 @@ body::before{
 
 .heroH1{
   position: relative;
-  display: block;
-  width: fit-content;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
   margin: 6px auto 18px;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.heroH1Main{
+  display: block;
   font-size: 34px;
   font-weight: 780;
   letter-spacing: -0.3px;
+}
+
+.heroH1::after{
+  content:"";
+  display:block;
+  width: 100%;
+  height: 5px;
+  margin-top: 8px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ff2d6f 0%, var(--brand) 35%, #9fdf28 70%, #ff2d6f 100%);
+  background-size: 200% 100%;
+  animation: titleShimmer 3s linear infinite;
+  box-shadow: 0 4px 12px rgba(244,24,76,0.35);
+}
+
+.heroH1Sub{
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
   line-height: 1.2;
-  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(27,27,27,0.68);
 }
 
 .heroH1::after{
