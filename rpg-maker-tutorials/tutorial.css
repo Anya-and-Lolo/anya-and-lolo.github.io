@@ -338,6 +338,8 @@ body::before{
   width:650px;
   margin: 0 auto;
   text-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* TYPOGRAPHY HELPERS */
@@ -763,6 +765,7 @@ html{
 
 
 img[data-lb="1"]{ cursor: zoom-in; }
+
 
 
 
