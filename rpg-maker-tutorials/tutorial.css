@@ -330,16 +330,12 @@ body::before{
 }
 
 .subtitle{
-  margin: 0 0 14px 0;
+  max-width: 620px;
+  margin: 0 auto 14px;
   color: var(--muted);
   font-size: 18px;
   line-height: 1.4;
-  text-align:center;
-  width:650px;
-  margin: 0 auto;
   text-align: center;
-  overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 /* TYPOGRAPHY HELPERS */
@@ -765,6 +761,7 @@ html{
 
 
 img[data-lb="1"]{ cursor: zoom-in; }
+
 
 
 
