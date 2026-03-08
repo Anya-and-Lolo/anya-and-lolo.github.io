@@ -285,7 +285,7 @@ body::before{
 .heroH1{
   position: relative;
   display: flex;
-  max-width: 900px;
+  width: fit-content; /* ← prevents way too long line under title */
   flex-direction: column;
   align-items: center;
   margin: 6px auto 18px;
@@ -760,5 +760,6 @@ html{
 
 
 img[data-lb="1"]{ cursor: zoom-in; }
+
 
 
