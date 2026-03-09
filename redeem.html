@@ -2783,10 +2783,66 @@ document.addEventListener("visibilitychange", () => {
 })();
 </script>
 
+  <script>
+// page scroll tracking
+(function() {
+  const scrollMarks = [25, 50, 75, 100];
+  const triggered = {};
+
+  function trackScrollDepth() {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+
+    const scrollTop = window.scrollY || window.pageYOffset;
+    const percent = Math.round((scrollTop / docHeight) * 100);
+
+    scrollMarks.forEach(function(mark) {
+      if (percent >= mark && !triggered[mark]) {
+        triggered[mark] = true;
+
+        if (typeof gtag === "function") {
+          gtag("event", "scroll_depth", {
+            scroll_percent: mark,
+            page_path: window.location.pathname,
+            page_title: document.title
+          });
+        }
+      }
+    });
+  }
+
+  window.addEventListener("scroll", trackScrollDepth, { passive: true });
+})();
+</script>
+	
+<script>
+// button tracking script
+document.addEventListener("click", function (e) {
+  const link = e.target.closest("a[data-track]");
+  if (!link) return;
+
+  const eventName = link.getAttribute("data-track");
+  const eventLabel = link.getAttribute("data-track-label") || link.textContent.trim() || eventName;
+  const href = link.getAttribute("href") || "";
+  const platform = link.getAttribute("data-platform") || "";
+
+  if (typeof gtag === "function") {
+    gtag("event", eventName, {
+      link_label: eventLabel,
+      link_url: href,
+      platform: platform,
+      page_title: document.title,
+      page_path: window.location.pathname
+    });
+  }
+});
+</script>
+  
   <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
 
 </body>
 </html>
+
 
 
 
