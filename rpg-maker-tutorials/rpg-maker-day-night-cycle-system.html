@@ -639,6 +639,7 @@
               </section>
             </main>
 <script>
+// page scroll tracking
 (function() {
   const scrollMarks = [25, 50, 75, 100];
   const triggered = {};
@@ -670,6 +671,7 @@
 </script>
 
 <script>
+  //heatmap-like page tracking
 document.addEventListener("DOMContentLoaded", function () {
   const sections = [
     { id: "intro", name: "What You Will Learn" },
@@ -730,16 +732,19 @@ document.addEventListener("click", function (e) {
   const eventName = link.getAttribute("data-track");
   const eventLabel = link.getAttribute("data-track-label") || link.textContent.trim() || eventName;
   const href = link.getAttribute("href") || "";
+  const platform = link.getAttribute("data-platform") || "";
 
   if (typeof gtag === "function") {
     gtag("event", eventName, {
       link_label: eventLabel,
       link_url: href,
+      platform: platform,
       page_title: document.title,
       page_path: window.location.pathname
     });
   }
 });
 </script>
+    
           </body>
         </html>
