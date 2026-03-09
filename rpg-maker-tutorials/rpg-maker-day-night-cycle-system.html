@@ -638,5 +638,88 @@
                 </div>
               </section>
             </main>
+<script>
+(function() {
+  const scrollMarks = [25, 50, 75, 100];
+  const triggered = {};
+
+  function trackScrollDepth() {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+
+    const scrollTop = window.scrollY || window.pageYOffset;
+    const percent = Math.round((scrollTop / docHeight) * 100);
+
+    scrollMarks.forEach(function(mark) {
+      if (percent >= mark && !triggered[mark]) {
+        triggered[mark] = true;
+
+        if (typeof gtag === "function") {
+          gtag("event", "scroll_depth", {
+            scroll_percent: mark,
+            page_path: window.location.pathname,
+            page_title: document.title
+          });
+        }
+      }
+    });
+  }
+
+  window.addEventListener("scroll", trackScrollDepth, { passive: true });
+})();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sections = [
+    { id: "intro", name: "What You Will Learn" },
+    { id: "video", name: "Video Tutorial" },
+    { id: "prepare", name: "Before You Start" },
+    { id: "setup", name: "Game Time Setup" },
+    { id: "codesnippets1", name: "Snippet Guide Part 1" },
+    { id: "timedisplay", name: "Time Display" },
+    { id: "hudpreview", name: "Snippet Guide Part 2" },
+    { id: "transitions", name: "Day Night Tint" },
+    { id: "presets", name: "Start at Specific Time" },
+    { id: "codesnippets2", name: "Snippet Guide Parts 3 and 4" },
+    { id: "optimization", name: "Optimization" },
+    { id: "codesnippets3", name: "Snippet Guide Part 5" },
+    { id: "freeextras", name: "Free Extras" },
+    { id: "gopro", name: "Go Pro Banner" }
+  ];
+
+  const seen = new Set();
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      const section = sections.find(s => s.id === entry.target.id);
+      if (!section || seen.has(section.id)) return;
+
+      seen.add(section.id);
+
+      if (typeof gtag === "function") {
+        gtag("event", "tutorial_section_view", {
+          section_name: section.name,
+          section_id: section.id,
+          page_title: document.title,
+          page_path: window.location.pathname
+        });
+      }
+
+      observer.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.5
+  });
+
+  sections.forEach((section) => {
+    const el = document.getElementById(section.id);
+    if (el) observer.observe(el);
+  });
+});
+</script>
+    
           </body>
         </html>
