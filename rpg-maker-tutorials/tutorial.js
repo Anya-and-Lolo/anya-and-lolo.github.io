@@ -452,8 +452,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Year in Footer
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  
   updateProgress();
   window.addEventListener("scroll", updateProgress, { passive: true });
   window.addEventListener("resize", updateProgress);
 });
+
 
