@@ -639,6 +639,10 @@
               </section>
             </main>
 <script>
+let lastTutorialSection = null;
+</script>
+
+<script>
 // page scroll tracking
 (function() {
   const scrollMarks = [25, 50, 75, 100];
@@ -671,7 +675,7 @@
 </script>
 
 <script>
-  //heatmap-like page tracking
+// heatmap-like page tracking
 document.addEventListener("DOMContentLoaded", function () {
   const sections = [
     { id: "intro", name: "What You Will Learn" },
@@ -700,6 +704,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!section || seen.has(section.id)) return;
 
       seen.add(section.id);
+      lastTutorialSection = section.name;
 
       if (typeof gtag === "function") {
         gtag("event", "tutorial_section_view", {
@@ -731,8 +736,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function checkBottomScroll() {
     if (fired) return;
 
-    const scrollTop = window.scrollY || window.pageYOffset;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+
+    const scrollTop = window.scrollY || window.pageYOffset;
     const percent = (scrollTop / docHeight) * 100;
 
     if (percent >= 90) {
@@ -745,12 +752,17 @@ document.addEventListener("DOMContentLoaded", function () {
       else if (path.includes("redeem")) pageType = "redeem";
       else if (path.includes("terms")) pageType = "terms";
       else if (path.includes("privacy")) pageType = "privacy";
-      else if (path === "/" || path.includes("index")) pageType = "homepage";
+      else if (
+        path === "/" ||
+        path === "/index.html" ||
+        path.endsWith("/index.html")
+      ) pageType = "homepage";
 
       if (typeof gtag === "function") {
         gtag("event", "scroll_bottom", {
           page_type: pageType,
-          page_path: window.location.pathname
+          page_path: window.location.pathname,
+          page_title: document.title
         });
       }
     }
@@ -759,7 +771,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", checkBottomScroll, { passive: true });
 })();
 </script>
-    
+
 <script>
 // button tracking script
 document.addEventListener("click", function (e) {
@@ -774,6 +786,7 @@ document.addEventListener("click", function (e) {
   if (typeof gtag === "function") {
     gtag("event", eventName, {
       link_label: eventLabel,
+      tutorial_section: lastTutorialSection,
       link_url: href,
       platform: platform,
       page_title: document.title,
@@ -789,23 +802,31 @@ document.addEventListener("click", function(e) {
   const link = e.target.closest("a[href]");
   if (!link) return;
 
+  if (link.hasAttribute("data-track")) return;
+
   const url = link.href;
+  if (!url) return;
 
   if (!url.startsWith(window.location.origin)) {
-
     let destination = "external";
 
     if (url.includes("itch.io")) destination = "itch";
     else if (url.includes("youtube")) destination = "youtube";
     else if (url.includes("patreon")) destination = "patreon";
     else if (url.includes("discord")) destination = "discord";
-    else if (url.includes("booth")) destination = "booth";
-    else if (url.includes("pixiv")) destination = "pixiv";
+    else if (url.includes("booth.pm")) destination = "booth";
+    else if (url.includes("pixiv.net")) destination = "pixiv";
+    else if (url.includes("instagram.com")) destination = "instagram";
+    else if (url.includes("tiktok.com")) destination = "tiktok";
+    else if (url.includes("facebook.com")) destination = "facebook";
+    else if (url.includes("bsky.app")) destination = "bluesky";
+    else if (url.includes("x.com")) destination = "x";
 
     if (typeof gtag === "function") {
       gtag("event", "outbound_click", {
         destination: destination,
         link_url: url,
+        page_title: document.title,
         page_path: window.location.pathname
       });
     }
