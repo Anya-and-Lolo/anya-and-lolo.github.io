@@ -81,6 +81,9 @@ button:disabled,
   box-shadow: none;
   transform: none !important;
   filter: grayscale(0.08);
+  background: rgba(255,255,255,0.75);
+  color: rgba(27,27,27,0.55);
+  border-color: rgba(20,20,20,0.10);
 }
 
 button:disabled:hover,
@@ -89,6 +92,7 @@ button:disabled:hover,
   transform: none !important;
   box-shadow: none;
   text-decoration: none;
+  background: rgba(255,255,255,0.75);
 }
 
 .linkBrand{
@@ -1775,3 +1779,4 @@ canvas.confetti-canvas{
     justify-self: start;
   }
 }
+
