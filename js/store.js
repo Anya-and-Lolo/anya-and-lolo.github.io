@@ -919,7 +919,6 @@ async function redeem(itemId, buttonEl) {
   redeeming.add(itemId);
 
   const originalText = buttonEl?.textContent || "Redeem";
-  let redeemedOk = false;
 
   try {
     buttonEl.disabled = true;
@@ -945,13 +944,11 @@ async function redeem(itemId, buttonEl) {
       } else {
         showStoreMessage(buttonEl, out?.error || "Redeem failed. Please try again.", "error");
       }
+
+      buttonEl.disabled = false;
+      buttonEl.textContent = originalText;
       return;
     }
-
-    redeemedOk = true;
-
-    buttonEl.textContent = "Redeemed";
-    buttonEl.disabled = true;
 
     showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Check “Your Unlocks”.`, "success");
     toast(`🎉 ${itemName} unlocked! Check “Your Unlocks”.`, "mint", 4200, { confetti: "unlock" });
@@ -964,13 +961,10 @@ async function redeem(itemId, buttonEl) {
   } catch (e) {
     console.error(e);
     showStoreMessage(buttonEl, "Network error. Please try again.", "error");
+    buttonEl.disabled = false;
+    buttonEl.textContent = originalText;
   } finally {
     redeeming.delete(itemId);
-
-    if (!redeemedOk) {
-      buttonEl.disabled = false;
-      buttonEl.textContent = originalText;
-    }
   }
 }
 
@@ -1251,3 +1245,4 @@ async function redeem(itemId, buttonEl) {
   })();
 
 });
+
