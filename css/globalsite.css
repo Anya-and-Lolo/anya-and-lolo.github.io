@@ -44,6 +44,25 @@ a:hover{ text-decoration: underline; text-underline-offset: 4px; }
   border-radius: 12px;
 }
 
+button{
+  font: inherit;
+}
+
+button:not(.btn):not(.menuBtn){
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: #fff;
+  font-weight: 900;
+  color: var(--text);
+}
+
+button:not(.btn):not(.menuBtn):disabled{
+  opacity: .6;
+  cursor: not-allowed;
+}
+
 button, .navlink, a{
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
@@ -1735,4 +1754,5 @@ canvas.confetti-canvas{
     margin-left: 0;
     justify-self: start;
   }
+
 }
