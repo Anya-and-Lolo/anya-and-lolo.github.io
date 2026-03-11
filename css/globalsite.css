@@ -1801,4 +1801,19 @@ canvas.confetti-canvas{
   }
 }
 
+/* Force disabled store buttons to look inactive */
+.storeButton[disabled]{
+  background: #e8e8e8 !important;
+  color: rgba(27,27,27,0.45) !important;
+  border-color: rgba(20,20,20,0.08) !important;
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.storeButton[disabled]:hover{
+  background: #e8e8e8 !important;
+  transform: none !important;
+}
 
