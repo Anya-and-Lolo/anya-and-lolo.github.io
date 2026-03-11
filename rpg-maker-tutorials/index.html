@@ -200,9 +200,7 @@
             </div>
 
             <div class="miniRow">
-              <a class="btn" target="_blank" rel="noopener">
-                <span class="linkBrand">This article is coming soon!</span>
-              </a>
+                <button class="btn" type="button" disabled>This article is coming soon!</button>
             </div>
 			
           </div>
@@ -219,17 +217,17 @@
           <h2 class="sectionTitle" style="font-size:18px;">Quick jumps</h2>
           <div class="lead">Find the sections on this page</div>
 
-          <a href="#start-here">
+          <a href="javascript:void(0)" data-jump="start-here">
             <span>Start Here</span>
             <small>Basics</small>
           </a>
 
-          <a href="#day-night">
+          <a href="javascript:void(0)" data-jump="day-night">
             <span>Day & Night Cycle</span>
             <small>Beginner</small>
           </a>
 
-          <a href="#common-mistakes">
+          <a href="javascript:void(0)" data-jump="common-mistakes">
             <span>Common Mistakes</span>
             <small>Oops!</small>
           </a>
@@ -255,7 +253,7 @@
       <div class="card" style="margin-top:14px;">
         <div class="hangout" style="margin-top:0;">
           Want to hang out? Join the
-          <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>
+          <a class="linkBrand" href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener" data-track="discord_click" data-track-label="Footer Discord">Discord</a>
           or follow us on your favorite platform below 💛
         </div>
 
@@ -300,7 +298,6 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("year").textContent = new Date().getFullYear();
 
       // Card reveal on scroll
       const io = new IntersectionObserver((entries) => {
@@ -414,5 +411,6 @@
 	
 </body>
 </html>
+
 
 
