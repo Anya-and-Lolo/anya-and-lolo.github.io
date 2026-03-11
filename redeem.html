@@ -6,21 +6,21 @@
 <title>Patreon Rewards & Key Redeem | Anya & Lolo</title>
 <meta name="description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
 <link rel="canonical" href="https://anya-and-lolo.github.io/redeem.html" />
-
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Anya & Lolo" />
 <meta property="og:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
 <meta property="og:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
 <meta property="og:url" content="https://anya-and-lolo.github.io/redeem.html" />
 <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
-
 <meta name="theme-color" content="#f4184c">
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@Anya_and_Lolo" />
 <meta name="twitter:title" content="Patreon Rewards & Key Redeem | Anya & Lolo" />
 <meta name="twitter:description" content="Connect Patreon to view your credits and redeem itch.io keys for Anya & Lolo rewards and RPG Maker systems." />
 <meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
-
+<link rel="stylesheet" href="https://anya-and-lolo.github.io/rpg-maker-tutorials/tutorial.css">
+<script src="https://anya-and-lolo.github.io/rpg-maker-tutorials/tutorial.js" defer></script>
+	
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-127GP5TNHG"></script>
 <script>
@@ -2619,27 +2619,6 @@ window.addEventListener("unhandledrejection", (e) => {
   console.error("Unhandled promise rejection:", e.reason);
 });
 
-// Mobile hamburger menu toggle
-(() => {
-  const btn = document.querySelector(".menuBtn");
-  const panel = document.querySelector("#mobileMenu");
-  if (!btn || !panel) return;
-
-  function closeMenu(){
-    panel.classList.remove("is-open");
-    btn.setAttribute("aria-expanded", "false");
-  }
-
-  function toggleMenu(){
-    const isOpen = panel.classList.toggle("is-open");
-    btn.setAttribute("aria-expanded", String(isOpen));
-  }
-
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toggleMenu();
-  });
-
   // Click outside closes
   document.addEventListener("click", (e) => {
     if (!panel.classList.contains("is-open")) return;
@@ -2783,169 +2762,7 @@ document.addEventListener("visibilitychange", () => {
 })();
 </script>
 
-  <script>
-// page scroll tracking
-(function() {
-  const scrollMarks = [25, 50, 75, 100];
-  const triggered = {};
-
-  function trackScrollDepth() {
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (docHeight <= 0) return;
-
-    const scrollTop = window.scrollY || window.pageYOffset;
-    const percent = Math.round((scrollTop / docHeight) * 100);
-
-    scrollMarks.forEach(function(mark) {
-      if (percent >= mark && !triggered[mark]) {
-        triggered[mark] = true;
-
-        if (typeof gtag === "function") {
-          gtag("event", "scroll_depth", {
-            scroll_percent: mark,
-            page_path: window.location.pathname,
-            page_title: document.title
-          });
-        }
-      }
-    });
-  }
-
-  window.addEventListener("scroll", trackScrollDepth, { passive: true });
-})();
-</script>
-
-<script>
-// bottom scroll tracking
-(function() {
-  let fired = false;
-
-  function checkBottomScroll() {
-    if (fired) return;
-
-    const scrollTop = window.scrollY || window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const percent = (scrollTop / docHeight) * 100;
-
-    if (percent >= 90) {
-      fired = true;
-
-      let pageType = "other";
-      const path = window.location.pathname;
-
-      if (path.includes("tutorial")) pageType = "tutorial";
-      else if (path.includes("redeem")) pageType = "redeem";
-      else if (path.includes("terms")) pageType = "terms";
-      else if (path.includes("privacy")) pageType = "privacy";
-      else if (path === "/" || path.includes("index")) pageType = "homepage";
-
-      if (typeof gtag === "function") {
-        gtag("event", "scroll_bottom", {
-          page_type: pageType,
-          page_path: window.location.pathname
-        });
-      }
-    }
-  }
-
-  window.addEventListener("scroll", checkBottomScroll, { passive: true });
-})();
-</script>
-	
-<script>
-// button tracking script
-document.addEventListener("click", function (e) {
-  const link = e.target.closest("a[data-track]");
-  if (!link) return;
-
-  const eventName = link.getAttribute("data-track");
-  const eventLabel = link.getAttribute("data-track-label") || link.textContent.trim() || eventName;
-  const href = link.getAttribute("href") || "";
-  const platform = link.getAttribute("data-platform") || "";
-
-  if (typeof gtag === "function") {
-    gtag("event", eventName, {
-      link_label: eventLabel,
-      link_url: href,
-      platform: platform,
-      page_title: document.title,
-      page_path: window.location.pathname
-    });
-  }
-});
-</script>
-
-<script>
-// outbound click tracking
-document.addEventListener("click", function(e) {
-  const link = e.target.closest("a[href]");
-  if (!link) return;
-
-  const url = link.href;
-
-  if (!url.startsWith(window.location.origin)) {
-
-    let destination = "external";
-
-    if (url.includes("itch.io")) destination = "itch";
-    else if (url.includes("youtube")) destination = "youtube";
-    else if (url.includes("patreon")) destination = "patreon";
-    else if (url.includes("discord")) destination = "discord";
-    else if (url.includes("booth")) destination = "booth";
-    else if (url.includes("pixiv")) destination = "pixiv";
-
-    if (typeof gtag === "function") {
-      gtag("event", "outbound_click", {
-        destination: destination,
-        link_url: url,
-        page_path: window.location.pathname
-      });
-    }
-  }
-});
-</script>
-  
-  <div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
+<div id="toastWrap" class="toastWrap" aria-live="polite" aria-atomic="true"></div>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
