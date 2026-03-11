@@ -1953,8 +1953,39 @@ document.addEventListener("click", function (e) {
   }
 });
 </script>
-  
+
+<script>
+// outbound click tracking
+document.addEventListener("click", function(e) {
+  const link = e.target.closest("a[href]");
+  if (!link) return;
+
+  const url = link.href;
+
+  if (!url.startsWith(window.location.origin)) {
+
+    let destination = "external";
+
+    if (url.includes("itch.io")) destination = "itch";
+    else if (url.includes("youtube")) destination = "youtube";
+    else if (url.includes("patreon")) destination = "patreon";
+    else if (url.includes("discord")) destination = "discord";
+    else if (url.includes("booth")) destination = "booth";
+    else if (url.includes("pixiv")) destination = "pixiv";
+
+    if (typeof gtag === "function") {
+      gtag("event", "outbound_click", {
+        destination: destination,
+        link_url: url,
+        page_path: window.location.pathname
+      });
+    }
+  }
+});
+</script>
+	
 </body>
 </html>
+
 
 
