@@ -60,39 +60,12 @@ button:not(.btn):not(.menuBtn){
   color: var(--text);
 }
 
-button:not(.btn):not(.menuBtn):disabled{
-  opacity: .6;
-  cursor: not-allowed;
-}
-
 button, .navlink, a{
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
 
 button:active, .navlink:active{
   transform: translateY(1px) scale(0.99);
-}
-
-button:disabled,
-.btn:disabled,
-.storeButton:disabled{
-  opacity: 0.55;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none !important;
-  filter: grayscale(0.08);
-  background: rgba(255,255,255,0.75);
-  color: rgba(27,27,27,0.55);
-  border-color: rgba(20,20,20,0.10);
-}
-
-button:disabled:hover,
-.btn:disabled:hover,
-.storeButton:disabled:hover{
-  transform: none !important;
-  box-shadow: none;
-  text-decoration: none;
-  background: rgba(255,255,255,0.75);
 }
 
 .linkBrand{
@@ -1421,27 +1394,6 @@ body.modalOpen{
   width: 100%;
 }
 
-.storeButton:disabled,
-button.storeButton:disabled{
-  opacity: 0.55;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none !important;
-  filter: grayscale(0.08);
-  background: rgba(235,235,235,0.9);
-  color: rgba(27,27,27,0.52);
-  border-color: rgba(20,20,20,0.08);
-}
-
-.storeButton:disabled:hover,
-button.storeButton:disabled:hover{
-  transform: none !important;
-  box-shadow: none;
-  background: rgba(235,235,235,0.9);
-  color: rgba(27,27,27,0.52);
-  text-decoration: none;
-}
-
 .storeMeta{
   margin-top: 12px;
   text-align: center;
@@ -1816,4 +1768,5 @@ canvas.confetti-canvas{
   background: #e8e8e8 !important;
   transform: none !important;
 }
+
 
