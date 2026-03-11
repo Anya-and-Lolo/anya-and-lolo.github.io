@@ -55,7 +55,7 @@ button:not(.btn):not(.menuBtn){
   cursor: pointer;
   background: #fff;
   font-weight: 900;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.2;
   color: var(--text);
 }
@@ -1758,4 +1758,5 @@ canvas.confetti-canvas{
   }
 
 }
+
 
