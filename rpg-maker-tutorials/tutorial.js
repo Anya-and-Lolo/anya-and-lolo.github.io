@@ -1,3 +1,5 @@
+let lastTutorialSection = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   // TOC click: smooth-scroll
   document.querySelectorAll(".toc a[data-jump]").forEach(a => {
@@ -285,6 +287,170 @@ document.addEventListener("DOMContentLoaded", () => {
       a.addEventListener("click", closeMenu);
     });
   })();
+
+  // Analytics: scroll depth
+  (() => {
+    const scrollMarks = [25, 50, 75, 100];
+    const triggered = {};
+
+    function trackScrollDepth() {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+
+      const scrollTop = window.scrollY || window.pageYOffset;
+      const percent = Math.round((scrollTop / docHeight) * 100);
+
+      scrollMarks.forEach((mark) => {
+        if (percent >= mark && !triggered[mark]) {
+          triggered[mark] = true;
+
+          if (typeof gtag === "function") {
+            gtag("event", "scroll_depth", {
+              scroll_percent: mark,
+              page_path: window.location.pathname,
+              page_title: document.title
+            });
+          }
+        }
+      });
+    }
+
+    window.addEventListener("scroll", trackScrollDepth, { passive: true });
+  })();
+
+  // Analytics: section view tracking
+  (() => {
+    const trackedSections = document.querySelectorAll("[data-section-track]");
+    const seen = new Set();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        const el = entry.target;
+        const sectionId = el.id || "";
+        const sectionName = el.getAttribute("data-section-track") || sectionId;
+
+        if (seen.has(sectionId || sectionName)) return;
+        seen.add(sectionId || sectionName);
+
+        lastTutorialSection = sectionName;
+
+        if (typeof gtag === "function") {
+          gtag("event", "tutorial_section_view", {
+            section_name: sectionName,
+            section_id: sectionId,
+            page_title: document.title,
+            page_path: window.location.pathname
+          });
+        }
+
+        observer.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+
+    trackedSections.forEach((el) => observer.observe(el));
+  })();
+
+  // Analytics: bottom scroll
+  (() => {
+    let fired = false;
+
+    function checkBottomScroll() {
+      if (fired) return;
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+
+      const scrollTop = window.scrollY || window.pageYOffset;
+      const percent = (scrollTop / docHeight) * 100;
+
+      if (percent >= 90) {
+        fired = true;
+
+        let pageType = "other";
+        const path = window.location.pathname;
+
+        if (path.includes("/rpg-maker-tutorials/")) pageType = "tutorial";
+        else if (path.includes("redeem")) pageType = "redeem";
+        else if (path.includes("terms")) pageType = "terms";
+        else if (path.includes("privacy")) pageType = "privacy";
+        else if (
+          path === "/" ||
+          path === "/index.html" ||
+          path.endsWith("/index.html")
+        ) pageType = "homepage";
+
+        if (typeof gtag === "function") {
+          gtag("event", "scroll_bottom", {
+            page_type: pageType,
+            page_path: window.location.pathname,
+            page_title: document.title
+          });
+        }
+      }
+    }
+
+    window.addEventListener("scroll", checkBottomScroll, { passive: true });
+  })();
+
+  // Analytics: tracked buttons
+  document.addEventListener("click", function (e) {
+    const link = e.target.closest("a[data-track]");
+    if (!link) return;
+
+    const eventName = link.getAttribute("data-track");
+    const eventLabel = link.getAttribute("data-track-label") || link.textContent.trim() || eventName;
+    const href = link.getAttribute("href") || "";
+    const platform = link.getAttribute("data-platform") || "";
+
+    if (typeof gtag === "function") {
+      gtag("event", eventName, {
+        link_label: eventLabel,
+        tutorial_section: lastTutorialSection,
+        link_url: href,
+        platform: platform,
+        page_title: document.title,
+        page_path: window.location.pathname
+      });
+    }
+  });
+
+  // Analytics: outbound clicks
+  document.addEventListener("click", function(e) {
+    const link = e.target.closest("a[href]");
+    if (!link) return;
+
+    if (link.hasAttribute("data-track")) return;
+
+    const url = link.href;
+    if (!url) return;
+
+    if (!url.startsWith(window.location.origin)) {
+      let destination = "external";
+
+      if (url.includes("itch.io")) destination = "itch";
+      else if (url.includes("youtube")) destination = "youtube";
+      else if (url.includes("patreon")) destination = "patreon";
+      else if (url.includes("discord")) destination = "discord";
+      else if (url.includes("booth.pm")) destination = "booth";
+      else if (url.includes("pixiv.net")) destination = "pixiv";
+      else if (url.includes("instagram.com")) destination = "instagram";
+      else if (url.includes("tiktok.com")) destination = "tiktok";
+      else if (url.includes("facebook.com")) destination = "facebook";
+      else if (url.includes("bsky.app")) destination = "bluesky";
+      else if (url.includes("x.com")) destination = "x";
+
+      if (typeof gtag === "function") {
+        gtag("event", "outbound_click", {
+          destination: destination,
+          link_url: url,
+          page_title: document.title,
+          page_path: window.location.pathname
+        });
+      }
+    }
+  });
 
   updateProgress();
   window.addEventListener("scroll", updateProgress, { passive: true });
