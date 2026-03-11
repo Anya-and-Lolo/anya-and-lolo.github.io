@@ -907,58 +907,72 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function redeem(itemId, buttonEl) {
-    const s = getSession();
-    if (!s) {
-      showStoreMessage(buttonEl, "Please connect your Patreon account first.", "error");
+async function redeem(itemId, buttonEl) {
+  const s = getSession();
+  if (!s) {
+    showStoreMessage(buttonEl, "Please connect your Patreon account first.", "error");
+    return;
+  }
+
+  const itemName = buttonEl?.dataset?.name || itemId;
+  if (redeeming.has(itemId)) return;
+  redeeming.add(itemId);
+
+  const originalText = buttonEl?.textContent || "Redeem";
+  let redeemedOk = false;
+
+  try {
+    buttonEl.disabled = true;
+    buttonEl.textContent = "Redeeming…";
+    showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "info");
+
+    const r = await apiFetch("/redeem", s, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ itemId })
+    });
+
+    const out = (await safeJson(r)) || {};
+
+    if (!r.ok) {
+      if (out?.error === "Not enough credits") {
+        const have = Number(out?.available_cents ?? 0);
+        showStoreMessage(
+          buttonEl,
+          `Not enough credits for ${itemName}. You have ${have} credits.`,
+          "error"
+        );
+      } else {
+        showStoreMessage(buttonEl, out?.error || "Redeem failed. Please try again.", "error");
+      }
       return;
     }
 
-    const itemName = buttonEl?.dataset?.name || itemId;
-    if (redeeming.has(itemId)) return;
-    redeeming.add(itemId);
+    redeemedOk = true;
 
-    const originalText = buttonEl?.textContent || "Redeem";
+    buttonEl.textContent = "Redeemed";
+    buttonEl.disabled = true;
 
-    try {
-      buttonEl.disabled = true;
-      buttonEl.textContent = "Redeeming…";
-      showStoreMessage(buttonEl, `Redeeming ${itemName}…`, "info");
+    showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Check “Your Unlocks”.`, "success");
+    toast(`🎉 ${itemName} unlocked! Check “Your Unlocks”.`, "mint", 4200, { confetti: "unlock" });
 
-      const r = await apiFetch("/redeem", s, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ itemId })
-      });
+    await loadMe();
+    await loadUnlocks();
+    await loadActivity();
+    await loadStore();
 
-      const out = (await safeJson(r)) || {};
+  } catch (e) {
+    console.error(e);
+    showStoreMessage(buttonEl, "Network error. Please try again.", "error");
+  } finally {
+    redeeming.delete(itemId);
 
-      if (!r.ok) {
-        if (out?.error === "Not enough credits") {
-          const have = Number(out?.available_cents ?? 0);
-          showStoreMessage(buttonEl, `Not enough credits for ${itemName}. You have ${have} credits.`, "error");
-        } else {
-          showStoreMessage(buttonEl, out?.error || "Redeem failed. Please try again.", "error");
-        }
-        return;
-      }
-
-      showStoreMessage(buttonEl, `🎉 Success! ${itemName} unlocked. Check “Your Unlocks”.`, "success");
-      toast(`🎉 ${itemName} unlocked! Check “Your Unlocks”.`, "mint", 4200, { confetti: "unlock" });
-
-      await loadMe();
-      await loadUnlocks();
-      await loadActivity();
-      await loadStore();
-    } catch (e) {
-      console.error(e);
-      showStoreMessage(buttonEl, "Network error. Please try again.", "error");
-    } finally {
-      redeeming.delete(itemId);
+    if (!redeemedOk) {
       buttonEl.disabled = false;
       buttonEl.textContent = originalText;
     }
   }
+}
 
   async function loadStore() {
     const el = document.getElementById("store");
@@ -1235,4 +1249,5 @@ document.addEventListener("DOMContentLoaded", () => {
     LAST_CREDITS_CENTS = CURRENT_CREDITS_CENTS;
     startCreditsPolling();
   })();
+
 });
