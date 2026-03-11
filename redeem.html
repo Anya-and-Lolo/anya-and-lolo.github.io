@@ -1996,13 +1996,10 @@ async function loadStore() {
   try {
     const r = await apiFetch(`/store?t=${Date.now()}`, null, { cache: "no-store" });
     const data = await safeJson(r);
-    if (!data) {
-      if (box) {
-        box.classList.add("muted");
-        box.textContent = "Unlocks failed to load (server returned non-JSON).";
-      }
-      return;
-    }
+	if (!data) {
+	  el.innerHTML = `<div class="muted">Store failed to load (server returned non-JSON).</div>`;
+	  return;
+	}
 
     el.innerHTML = "";
     const itemsRaw = Array.isArray(data?.items) ? data.items : [];
@@ -2558,10 +2555,7 @@ document.getElementById("copySupport")?.addEventListener("click", async () => {
     if (s) {
       const r = await apiFetch("/support", s);
       const data = await safeJson(r);
-      if (!data) {
-        el.innerHTML = `<div class="muted">Store failed to load (server returned non-JSON).</div>`;
-        return;
-      }
+      if (!data) return;
       if (r.ok && data?.loggedIn && data?.support) {
         support.user_id = data.support.user_id ?? null;
         support.patreon_user_id = data.support.patreon_user_id ?? null;
@@ -2618,24 +2612,6 @@ window.addEventListener("error", (e) => {
 window.addEventListener("unhandledrejection", (e) => {
   console.error("Unhandled promise rejection:", e.reason);
 });
-
-  // Click outside closes
-  document.addEventListener("click", (e) => {
-    if (!panel.classList.contains("is-open")) return;
-    if (panel.contains(e.target) || btn.contains(e.target)) return;
-    closeMenu();
-  });
-
-  // Esc closes
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
-  });
-
-  // Clicking a link closes
-  panel.querySelectorAll("a").forEach(a => {
-    a.addEventListener("click", closeMenu);
-  });
-})();
   
 /* POLLING BLOCK */
 function applyCreditsNow(nowCents) {
@@ -2766,3 +2742,4 @@ document.addEventListener("visibilitychange", () => {
 
 </body>
 </html>
+
