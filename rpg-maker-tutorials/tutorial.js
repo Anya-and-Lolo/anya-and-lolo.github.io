@@ -347,7 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         observer.unobserve(el);
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.35 });
 
     trackedSections.forEach((el) => observer.observe(el));
   })();
@@ -456,3 +456,4 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", updateProgress, { passive: true });
   window.addEventListener("resize", updateProgress);
 });
+
