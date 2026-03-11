@@ -1893,6 +1893,43 @@ canvas,
   window.addEventListener("scroll", trackScrollDepth, { passive: true });
 })();
 </script>
+
+<script>
+// bottom scroll tracking
+(function() {
+  let fired = false;
+
+  function checkBottomScroll() {
+    if (fired) return;
+
+    const scrollTop = window.scrollY || window.pageYOffset;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = (scrollTop / docHeight) * 100;
+
+    if (percent >= 90) {
+      fired = true;
+
+      let pageType = "other";
+      const path = window.location.pathname;
+
+      if (path.includes("tutorial")) pageType = "tutorial";
+      else if (path.includes("redeem")) pageType = "redeem";
+      else if (path.includes("terms")) pageType = "terms";
+      else if (path.includes("privacy")) pageType = "privacy";
+      else if (path === "/" || path.includes("index")) pageType = "homepage";
+
+      if (typeof gtag === "function") {
+        gtag("event", "scroll_bottom", {
+          page_type: pageType,
+          page_path: window.location.pathname
+        });
+      }
+    }
+  }
+
+  window.addEventListener("scroll", checkBottomScroll, { passive: true });
+})();
+</script>
 	
 <script>
 // button tracking script
@@ -1919,43 +1956,5 @@ document.addEventListener("click", function (e) {
   
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
