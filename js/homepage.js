@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(()=>{
         placeholder.style.opacity = "0";
         frame.style.opacity = "1";
+        frame.style.pointerEvents = "auto";
 
         setTimeout(()=>{
           placeholder.style.display = "none";
