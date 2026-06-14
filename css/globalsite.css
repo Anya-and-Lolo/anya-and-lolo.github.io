@@ -44,6 +44,15 @@ a:hover{ text-decoration: underline; text-underline-offset: 4px; }
   border-radius: 12px;
 }
 
+/* Skip-to-content link (keyboard / screen-reader users) */
+.skip-link{
+  position: absolute; left: 10px; top: -48px; z-index: 1000;
+  background: var(--brand); color: #fff; padding: 9px 16px;
+  border-radius: 10px; font-weight: 800; text-decoration: none;
+  box-shadow: 0 8px 18px rgba(0,0,0,.18); transition: top .15s ease;
+}
+.skip-link:focus{ top: 10px; }
+
 button{
   font: inherit;
 }
