@@ -42,10 +42,30 @@
   "description": "Step-by-step RPG Maker tutorials by Anya & Lolo for MZ, MV, XP, VX Ace, 2000, and 2003."
 }
 </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Which RPG Maker should a beginner choose?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker MZ is the newest and most beginner-friendly. MV is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks."}},
+    {"@type":"Question","name":"How do I make a day and night cycle in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Track in-game time with a variable in a Parallel Process common event, then change the screen tint as the time value changes. We have a full step-by-step guide that works in MZ, MV, XP, VX Ace, 2000, and 2003."}},
+    {"@type":"Question","name":"How do I send the player to another map?","acceptedAnswer":{"@type":"Answer","text":"Add an event and give it a 'Transfer Player' command, choose the destination map and tile, and set the trigger: Action Button for doors the player interacts with, or Player Touch for automatic transfer."}},
+    {"@type":"Question","name":"My RPG Maker game is lagging, how do I fix it?","acceptedAnswer":{"@type":"Answer","text":"The most common cause is too many Parallel Process events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into Common Events."}},
+    {"@type":"Question","name":"How do I make a shop or have an NPC give an item?","acceptedAnswer":{"@type":"Answer","text":"Use the 'Shop Processing' event command for shops, or 'Change Items' and 'Change Gold' to give items or money directly inside an event."}},
+    {"@type":"Question","name":"How do I install a plugin in RPG Maker MZ or MV?","acceptedAnswer":{"@type":"Answer","text":"Put the plugin's .js file in your project's js/plugins folder, open the Plugin Manager, add the plugin, set it to ON, and configure its parameters. Always read the plugin's terms of use."}},
+    {"@type":"Question","name":"Can I use RPG Maker's built-in (RTP) assets in other engines?","acceptedAnswer":{"@type":"Answer","text":"Generally no. Default RPG Maker assets are licensed for use in games made with RPG Maker. Check the specific product's license (EULA) before using them in other engines, including WOLF RPG Editor."}},
+    {"@type":"Question","name":"What's the difference between RPG Maker and WOLF RPG Editor?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker is a paid, beginner-friendly commercial engine. WOLF RPG Editor (Woditor) is a free, more advanced Japanese engine with deeper customization. We maintain a full English WOLF RPG Editor guide if you'd like to try it."}},
+    {"@type":"Question","name":"How do I add a save point or stop the player from saving?","acceptedAnswer":{"@type":"Answer","text":"Use the 'Change Save Access' event command to enable or disable saving, and create a save point with the 'Open Save Screen' command. You can also control save access in the System settings."}},
+    {"@type":"Question","name":"What are the most common RPG Maker beginner mistakes?","acceptedAnswer":{"@type":"Answer","text":"Overusing Parallel Process events, not keeping backups or a test project, and hard-coding everything instead of using Common Events. Fixing these early saves a lot of debugging."}}
+  ]
+}
+</script>
 	
 </head>
 
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar topbarV2">
     <div class="topbarInner">
 
@@ -139,7 +159,7 @@
     </div>
   </header>
 
-  <main class="wrap">
+  <main class="wrap" id="main">
     <section class="hero">
       <div class="card">
         <h1 class="heroH1">RPG Maker Tutorials</h1>
@@ -159,7 +179,7 @@
 
         <div class="miniRow" style="justify-content:center;">
           <a class="btn btnPrimary" href="#start-here" data-track="jump_click" data-track-label="Hero Start Here">Start Here</a>
-          <a class="btn" href="#common-mistakes" data-track="jump_click" data-track-label="Hero Common Mistakes"><span class="linkBrand">Common Mistakes →</span></a>
+          <a class="btn" href="#faq" data-track="jump_click" data-track-label="Hero FAQ"><span class="linkBrand">FAQ →</span></a>
         </div>
       </div>
 
@@ -183,13 +203,13 @@
             </div>
 			</a>
 
-			<a href="#common-mistakes" style="text-decoration:none;">
+			<a href="#faq" style="text-decoration:none;">
             <div class="step">
               <div class="stepNum">2</div>
               <div>
-                <div class="stepTitle">Common Mistakes</div>
+                <div class="stepTitle">RPG Maker FAQ</div>
                 <p>
-                  These bite almost everyone at least once. Common mistakes cheat sheet for you (so you don’t suffer)
+                  Quick answers to common questions: eventing, plugins, and beginner mistakes.
                 </p>
               </div>
             </div>
@@ -229,43 +249,63 @@
             </div>
 		</div>
 		  
-          <!-- Common Mistakes -->
-		  <div class="card tutorialCard" id="common-mistakes" data-section-track="Common Mistakes" data-tags="mz mv xp vx vxace rm2k rm2k3 beginner" style="margin-top:14px;">
-            <h2 class="sectionTitle">Common Mistakes (So You Don’t Suffer)</h2>
-            <div class="lead">These bite almost everyone at least once.</div>
+          <!-- FAQ -->
+		  <div class="card tutorialCard" id="faq" data-section-track="FAQ" data-tags="mz mv xp vx vxace rm2k rm2k3 beginner" style="margin-top:14px;">
+            <h2 class="sectionTitle">RPG Maker FAQ &amp; Troubleshooting</h2>
+            <div class="lead">Quick answers to the questions new RPG Maker devs ask most: versions, eventing, lag, plugins, and the mistakes that trip everyone up.</div>
 
-            <div class="step">
-              <div class="stepNum">1</div>
-              <div>
-                <div class="stepTitle">Parallel events doing too much</div>
-                <p>
-                  If something is Parallel, it should be tiny and gated (switch, timer, “only when changed” checks).
-                </p>
-              </div>
-            </div>
+            <div class="faqList">
 
-            <div class="step">
-              <div class="stepNum">2</div>
-              <div>
-                <div class="stepTitle">No backups or test projects</div>
-                <p>
-                  Always sandbox first! Testing in your main game is how you get “mystery bugs” that take days to resolve.
-                </p>
-              </div>
-            </div>
+              <details class="faqItem">
+                <summary>Which RPG Maker should a beginner choose?</summary>
+                <div class="faqAnswer">RPG Maker <strong>MZ</strong> is the newest and most beginner-friendly; <strong>MV</strong> is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks.</div>
+              </details>
 
-            <div class="step">
-              <div class="stepNum">3</div>
-              <div>
-                <div class="stepTitle">Hard-coding everything</div>
-                <p>
-                  Put repeatable logic into common events. Your future self will thank you!
-                </p>
-              </div>
-            </div>
+              <details class="faqItem">
+                <summary>How do I make a day &amp; night cycle?</summary>
+                <div class="faqAnswer">Track in-game time with a variable in a Parallel Process common event, then change the screen tint as the time value changes. We have a full step-by-step that works in MZ, MV, XP, VX Ace, 2000, and 2003: <a href="./rpg-maker-day-night-cycle-system.html">RPG Maker Day &amp; Night Cycle tutorial</a>.</div>
+              </details>
 
-            <div class="miniRow">
-                <button class="btn" type="button" disabled>This article is coming soon!</button>
+              <details class="faqItem">
+                <summary>How do I send the player to another map?</summary>
+                <div class="faqAnswer">Add an event and give it a <strong>Transfer Player</strong> command, choose the destination map and tile, then set the trigger: <em>Action Button</em> for doors the player interacts with, or <em>Player Touch</em> for automatic transfer.</div>
+              </details>
+
+              <details class="faqItem">
+                <summary>My game is lagging, how do I fix it?</summary>
+                <div class="faqAnswer">The most common cause is too many <strong>Parallel Process</strong> events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into <strong>Common Events</strong>.</div>
+              </details>
+
+              <details class="faqItem">
+                <summary>How do I make a shop or have an NPC give an item?</summary>
+                <div class="faqAnswer">Use the <strong>Shop Processing</strong> event command for shops, or <strong>Change Items</strong> / <strong>Change Gold</strong> to give items or money directly inside an event.</div>
+              </details>
+
+              <details class="faqItem">
+                <summary>How do I install a plugin in RPG Maker MZ/MV?</summary>
+                <div class="faqAnswer">Put the plugin's <code>.js</code> file in your project's <code>js/plugins</code> folder, open the <strong>Plugin Manager</strong>, add the plugin, set it to ON, and configure its parameters. Always read the plugin's terms of use.</div>
+              </details>
+
+              <details class="faqItem">
+                <summary>Can I use RPG Maker's built-in (RTP) assets in other engines?</summary>
+                <div class="faqAnswer">Generally no. Default RPG Maker assets are licensed for use in games made with RPG Maker. Check the specific product's license (EULA) before using them in other engines, including WOLF RPG Editor.</div>
+              </details>
+
+              <details class="faqItem">
+                <summary>What's the difference between RPG Maker and WOLF RPG Editor?</summary>
+                <div class="faqAnswer">RPG Maker is a paid, beginner-friendly commercial engine. <strong>WOLF RPG Editor (Woditor)</strong> is a free, more advanced Japanese engine with deeper customization. If you'd like to try it, we maintain a full <a href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">English WOLF RPG Editor guide ↗</a>.</div>
+              </details>
+
+              <details class="faqItem">
+                <summary>How do I add a save point or stop the player from saving?</summary>
+                <div class="faqAnswer">Use the <strong>Change Save Access</strong> event command to enable or disable saving, and create a save point with the <strong>Open Save Screen</strong> command. You can also control save access in the System settings.</div>
+              </details>
+
+              <details class="faqItem">
+                <summary>What are the most common beginner mistakes?</summary>
+                <div class="faqAnswer">Overusing Parallel Process events, not keeping backups or a test project, and hard-coding everything instead of using Common Events. Keep parallel events small and gated, sandbox in a test project, and move repeatable logic into Common Events.</div>
+              </details>
+
             </div>
 			
           </div>
@@ -292,9 +332,9 @@
             <small>Beginner</small>
           </a>
 
-          <a href="javascript:void(0)" data-jump="common-mistakes">
-            <span>Common Mistakes</span>
-            <small>Oops!</small>
+          <a href="javascript:void(0)" data-jump="faq">
+            <span>FAQ</span>
+            <small>Answers</small>
           </a>
 
           <div class="subcard" style="margin-top:12px;">
