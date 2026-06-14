@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anya-and-lolo.github.io/sitemap.xml
