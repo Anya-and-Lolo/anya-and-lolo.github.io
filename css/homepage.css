@@ -1,0 +1,91 @@
+/* =========================================================
+   HOMEPAGE-SPECIFIC STYLES (index.html)
+   Menu + footer base live in globalsite.css; this file holds
+   the hero, About card, and homepage button/animation tweaks.
+========================================================= */
+
+/* ====== HERO AREA ====== */
+
+/* no shimmer underline on this page */
+.heroH1::after{ display:none; }
+.heroH1{ font-size:42px; line-height:1.12; margin:0 0 14px; }
+.heroBeginners{ color:var(--brand); }
+
+/* lighter link weight (closer to the news post-title boldness) */
+.linkBrand{ font-weight:700; }
+
+/* narrow the intro + divider so they don't crowd the iframe (buttons keep their natural width) */
+.heroIntro{ margin:0; max-width:88%; }
+.heroRule{ border:0; border-top:1px solid rgba(244,24,76,0.30); margin:20px 0 0; max-width:88%; }
+.newHere{ color:rgba(244,24,76,0.78); font-weight:500; margin:12px 0 0; }
+
+/* mobile-only forced line break in the hero title */
+@media (max-width:600px){ .titleBreak{ display:none; } }
+
+/* Essentials checklist — round, subtle-pink tiles with hot-pink ticks */
+.heroChecks{ list-style:none; margin:14px 0 0; padding:0; display:grid; gap:11px; }
+.heroChecks li{ display:flex; align-items:flex-start; gap:10px; color:rgba(27,27,27,0.82); font-weight:700; line-height:1.4; }
+.heroChecks .chk{
+  flex:none; display:inline-flex; align-items:center; justify-content:center;
+  width:24px; height:24px; border-radius:999px; margin-top:1px;
+  background:rgba(244,24,76,0.14); color:var(--brand);
+}
+.heroChecks .chk svg{ width:14px; height:14px; }
+
+/* gift icon inside Patreon button */
+.btnIcon{ display:inline-flex; align-items:center; margin-right:6px; vertical-align:middle; }
+.btnIcon svg{ width:18px; height:18px; }
+
+/* News panel — subtle pink frame, no shadow (arrow + dots live inside the iframe) */
+.newsFrameV2{ position:relative; }
+.newsFrameV2 .embedWrap{
+  border:2px solid rgba(244,24,76,0.30);
+  border-radius:18px;
+  box-shadow:none;
+  overflow:hidden;
+}
+
+/* About card (Anya bio) */
+.aboutCard .aboutRow{ display:flex; align-items:center; gap:20px; }
+.aboutAvatar{ width:118px; height:118px; border-radius:50%; object-fit:cover; flex:none; border:3px solid var(--brand2); box-shadow:0 8px 20px rgba(86,167,254,0.38); }
+.aboutCard p{ margin:0; color:rgba(27,27,27,0.86); font-size:17px; line-height:1.55; }
+@keyframes aboutFloat{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
+@media (prefers-reduced-motion: no-preference){
+  .aboutAvatar{ animation:aboutFloat 4.5s ease-in-out infinite; }
+  .aboutAvatar:hover{ animation-duration:1.6s; }
+}
+@media (max-width:600px){
+  .aboutCard .aboutRow{ flex-direction:column; text-align:center; gap:14px; }
+  .aboutAvatar{ width:96px; height:96px; }
+}
+
+/* Patreon button: soft hover (no heavy shadow) + dancing gift */
+#patreonBtn{ transition: background .15s ease, color .15s ease; }
+#patreonBtn:hover{ background:var(--brand2); color:var(--brand); box-shadow:none; transform:none; }
+#patreonBtn .btnIcon{ animation:giftIdle 2.6s ease-in-out infinite; }
+#patreonBtn:hover .btnIcon{ animation:giftDance .55s ease infinite; }
+@keyframes giftDance{
+  0%,100%{ transform:rotate(0) translateY(0); }
+  25%{ transform:rotate(-13deg) translateY(-1px); }
+  50%{ transform:rotate(0) translateY(-2px); }
+  75%{ transform:rotate(13deg) translateY(-1px); }
+}
+@keyframes giftIdle{
+  0%{ transform:rotate(0); }
+  4%{ transform:rotate(-13deg); }
+  8%{ transform:rotate(12deg); }
+  12%{ transform:rotate(-9deg); }
+  16%{ transform:rotate(0); }
+  100%{ transform:rotate(0); }
+}
+
+/* Browse pill: subtle pink outline that turns fully pink on hover (like Patreon) */
+.btnPinkOutline{ border:1px solid rgba(244,24,76,0.35) !important; background:#fff !important; transition: background .15s ease, border-color .15s ease; }
+.btnPinkOutline:hover{ background:var(--brand2) !important; border-color:rgba(244,24,76,0.30) !important; transform:none; }
+.btnPinkOutline:hover .linkBrand{ background:transparent; padding:0; margin:0; }
+
+/* ↗ arrows "point" on link hover */
+.arr{ display:inline-block; transition:transform .15s ease; }
+.linkBrand:hover .arr,
+.btn:hover .arr{ animation:arrowPoint .6s ease infinite; }
+@keyframes arrowPoint{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(3px,-3px); } }
