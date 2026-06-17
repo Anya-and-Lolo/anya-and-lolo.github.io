@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RPG Maker Day &amp; Night Cycle Pro Tutorial (Club Edition) | Anya &amp; Lolo</title>
+    <meta name="description" content="The Pro Day & Night Cycle tutorial: world-map time cycles, a picture-based custom HUD, AM/PM display, smart performance optimizations, pause-time, and time-specific encounters in RPG Maker." />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#f4184c" />
+    <link rel="icon" href="../favicon.ico?v=1" sizes="any">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico?v=1">
+    <link rel="apple-touch-icon" href="../icon.jpg" />
+    <link rel="stylesheet" href="../css/tutorial.css">
+    <script src="../js/tutorial.js" defer></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-127GP5TNHG"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-127GP5TNHG');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="topbar topbarV2">
+      <div class="topbarInner">
+
+        <a class="brandV2" href="../" aria-label="Anya & Lolo home">
+          <span class="brandText">
+            <span class="brandTitle">RPG Maker Resources</span>
+            <span class="brandSub">Tutorials • Game Development</span>
+          </span>
+        </a>
+
+        <nav class="nav navV2" aria-label="Primary">
+          <div class="navPrimary">
+
+            <a class="navlink navlinkV2" href="../">
+              <span class="navIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+              </span>
+              Home
+            </a>
+
+            <a class="navlink navlinkV2" href="../redeem.html">
+              <span class="navIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              </span>
+              Rewards
+            </a>
+
+            <span class="navBreak" aria-hidden="true"></span>
+
+            <div class="navDrop">
+              <button class="navlink navlinkV2 navDropBtn is-current" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="navIcon hatIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
+                </span>
+                Tutorials
+                <span class="navChev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="navDropMenu" role="menu" aria-label="Tutorials">
+                <a class="dropItem" role="menuitem" href="./index.html">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">RPG Maker Tutorials</span>
+                    <span class="dropSub">Step-by-step guides &amp; lessons</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3l3.8 3.3A8 8 0 0 1 12 5a8 8 0 0 1 4.2 1.3L20 3l-1 6.2A7 7 0 0 1 12 19a7 7 0 0 1-7-9.8z"/><path d="M9 11h.01M15 11h.01"/><path d="m12 14-1 1h2z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">WOLF RPG Editor Guide</span>
+                    <span class="dropSub">Complete guide &amp; resources</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <div class="navDrop">
+              <button class="navlink navlinkV2 navDropBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="navIcon handIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14"/><path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 13 6 6"/></svg>
+                </span>
+                Resources
+                <span class="navChev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="navDropMenu navDropMenu--right" role="menu" aria-label="Resources">
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">Smart Systems</span>
+                    <span class="dropSub">Plugins &amp; systems on itch.io</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">Game Dev Blog</span>
+                    <span class="dropSub">Updates, tips &amp; devlogs</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main">
+      <section class="hero">
+
+        <div class="card">
+          <h1 class="heroH1">
+            <span class="heroH1Main">RPG Maker Day &amp; Night Cycle: Pro</span>
+            <span class="heroH1Sub">Club Edition Tutorial</span>
+          </h1>
+          <p class="subtitle">The next level of the Day &amp; Night system: world-map time, a picture-based HUD, AM/PM display, smart performance optimizations, pause-time, and time-reactive events. 🌙✨</p>
+          <div class="tagRow">
+            <span class="tag">All RPG Maker Engines</span><span class="tag">Advanced Tutorial</span><span class="tag">~75 min</span>
+          </div>
+
+          <div class="miniRow center">
+            <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Pro Hero Download Demo">Download Pro demo</a>
+            <a class="btn" href="./rpg-maker-day-night-cycle-system.html">← Lite tutorial</a>
+          </div>
+        </div>
+
+        <div class="tutorialGrid">
+          <!-- LEFT: Content -->
+          <div>
+
+            <div class="card" style="margin-bottom:14px">
+              <div class="imageCard">
+                <img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-banner.png" width="1104" height="622" loading="lazy"
+                  alt="Day &amp; Night Game Time System Pro title screen for RPG Maker with MV and MZ compatibility badges.">
+              </div>
+
+              <div class="callout success">
+                <strong>🔒 Club members only, free to join!</strong> These Pro tutorials are exclusive to the Anya &amp; Lolo Club. Joining costs nothing, <a class="linkBrand" href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener">join the Club for free</a> and the access links land straight in your inbox 💌 (Already a member? Thanks for being here!) This guide assumes you've finished the <a class="linkBrand" href="./rpg-maker-day-night-cycle-system.html">Lite Day &amp; Night tutorial</a>.
+              </div>
+            </div>
+
+            <div class="card" id="intro" data-section-track="What You Will Build" style="margin-top:14px">
+              <div class="subcard">
+                <h2 class="sectionTitle">What you'll build</h2>
+                <div class="lead" style="margin-top:8px">We'll take the Lite system to the next level so your world truly reacts to time:</div>
+              </div>
+              <div class="step" style="margin-top:10px"><div class="stepNum">1</div><div><div class="stepTitle">World-map time cycles</div><div class="stepBody">Run the clock across every map by moving the time engine into Common Events.</div></div></div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">2</div><div><div class="stepTitle">A picture-based custom HUD</div><div class="stepBody">A polished image clock with a 24-hour readout, AM/PM mode, and a day counter.</div></div></div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">3</div><div><div class="stepTitle">Smart performance systems</div><div class="stepBody">Update tints and displays only when the value actually changes, so parallel events stop draining resources.</div></div></div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">4</div><div><div class="stepTitle">Pause-time &amp; time-specific encounters</div><div class="stepBody">Freeze the clock during cutscenes, and make events appear at certain times (like fireflies at night).</div></div></div>
+            </div>
+
+            <div class="card" id="worldmap" data-section-track="World Map Time" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 1. World-map time cycles</h2>
+              <div class="lead" style="margin-top:8px">To run the time system on every map, move the <code>Game Time (Main)</code> event into Common Events. <span class="muted">~5-min setup</span></div>
+              <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Move it to Common Events</div><div class="stepBody">Open <code>Tools → Database → Common Events</code> and recreate (or paste) the Game Time logic there. Set the Trigger to <strong>Parallel</strong> and give it a Switch set to ON at Game Start.</div></div></div>
+              <div class="step"><div class="stepNum">2</div><div><div class="stepTitle">Leave Pre-Set Time where it is</div><div class="stepBody">The Pre-Set Time (Autorun) event can stay on the map. Now whenever you teleport the player to a new map, time keeps ticking. Simple as that!</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-world-map-common-events.png" width="1181" height="740" loading="lazy" alt="RPG Maker Common Events tab with the Game Time event set to a parallel trigger and a start switch."></div>
+            </div>
+
+            <div class="card" id="hud" data-section-track="Custom HUD" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 2. Picture-based custom HUD</h2>
+              <div class="lead" style="margin-top:8px">Let's make the time display look amazing with images instead of plain text. <span class="muted">~30-min setup</span></div>
+              <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Create a "Time Display" parallel event</div><div class="stepBody">In the Common Events tab, add a new Parallel event named "Time Display". This will draw the HUD pictures.</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-custom-hud-event.png" width="397" height="122" loading="lazy" alt="RPG Maker parallel common event named Time Display for the HUD."></div>
+              <div class="subcard">
+                <strong>Assign your picture numbers</strong>
+                <div class="lead" style="margin-top:6px">The demo's Pictures folder includes interface, separators, and number sets. Give each a unique number:<br>
+                  1 = interface.png • 2 = separators • 3 = minute numbers • 4 = hour numbers • 5 = "hour" label • 6 = "minutes" label • 7 = day numbers • 8 = "days" label.
+                </div>
+              </div>
+              <div class="callout warn"><strong>Important:</strong> every Show Picture must use a <em>unique</em> number. If two images share a number, they overwrite each other!</div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-show-picture-settings.png" width="586" height="122" loading="lazy" alt="RPG Maker Show Picture settings for a HUD element."></div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">2</div><div><div class="stepTitle">Draw the interface, then the numbers</div><div class="stepBody">Start with pictures 1, 2, 5, 6 and 8 for the base interface (number 1 stays underneath). Then add 3, 4 and 7 for the changing numbers, the default X/Y positions are fine for now.</div></div></div>
+              <div class="tutorialGrid" style="margin-top:10px">
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-hud-interface-ready.png" width="402" height="126" loading="lazy" alt="RPG Maker HUD interface base assembled from pictures."></div>
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-hud-numbers-placed.png" width="407" height="126" loading="lazy" alt="RPG Maker HUD with number images placed over the interface."></div>
+              </div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">3</div><div><div class="stepTitle">Swap the numbers with conditional branches</div><div class="stepBody">To make "00" become "01", "02"… use Conditional Branches: <code>If Hours = 0 → show 00.png</code>, <code>If Hours = 1 → show 01.png</code>, and so on. Create 24 branches for the hours (duplicate a branch and change the image + constant to go faster). For minutes, you only need 10/20/30/40/50 images, Stardew-style.</div></div></div>
+              <div class="tutorialGrid" style="margin-top:10px">
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-hour-conditional-branches.png" width="585" height="265" loading="lazy" alt="RPG Maker conditional branches selecting the correct hour image."></div>
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-time-display-24h.png" width="410" height="122" loading="lazy" alt="RPG Maker HUD showing the time in 24-hour format."></div>
+              </div>
+              <div class="callout info"><strong>Pro tip:</strong> temporarily remove the 60-frame Wait from Game Time (Main) so the numbers update fast while you test, no waiting around.</div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">4</div><div><div class="stepTitle">Add the day counter</div><div class="stepBody">Repeat the same idea for Days with 30 conditional branches. Now you have a full clock and calendar on screen!</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-day-display.png" width="410" height="129" loading="lazy" alt="RPG Maker HUD showing the in-game day counter."></div>
+            </div>
+
+            <div class="card" id="ampm" data-section-track="AM/PM Format" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 3. Convert to AM/PM format</h2>
+              <div class="lead" style="margin-top:8px">Military time feels formal, here's how to switch to a friendly AM/PM clock. <span class="muted">~15-min setup</span></div>
+              <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Show AM or PM</div><div class="stepBody">Drop <code>am.png</code> and <code>pm.png</code> into Pictures. Add two Conditional Branches: <code>If Hours &lt; 12</code> shows AM, <code>If Hours ≥ 12</code> shows PM. Use the same picture number for both (only one shows at a time) at X 50, Y 57.</div></div></div>
+              <div class="tutorialGrid" style="margin-top:10px">
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-ampm-conditional.png" width="474" height="201" loading="lazy" alt="RPG Maker conditional branches checking hours below or above 12 for AM and PM."></div>
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-ampm-am-section.png" width="613" height="478" loading="lazy" alt="RPG Maker AM section with the morning hour branches moved inside."></div>
+              </div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">2</div><div><div class="stepTitle">Convert 13-23 into 1-11 PM (cleaner method)</div><div class="stepBody">Create a helper variable <code>DisplayHour</code>. Set it to the Hours value, then: <code>If DisplayHour ≥ 13 → subtract 12</code>. Now change your PM branch conditions to use <code>DisplayHour</code> (e.g. <code>If DisplayHour = 1</code>) and rename the images to match (13.png → 1.png).</div></div></div>
+              <div class="tutorialGrid" style="margin-top:10px">
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-displayhour-variable.png" width="600" height="423" loading="lazy" alt="RPG Maker Control Variables creating the DisplayHour helper variable."></div>
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-displayhour-subtract.png" width="580" height="391" loading="lazy" alt="RPG Maker conditional branch subtracting 12 from DisplayHour when it is 13 or more."></div>
+              </div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-ampm-display-final.png" width="405" height="120" loading="lazy" alt="RPG Maker HUD showing the finished AM/PM time display."></div>
+            </div>
+
+            <div class="card" id="smart" data-section-track="Smart Systems" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 4. Make the system smarter</h2>
+              <div class="lead" style="margin-top:8px">Parallel events check their conditions many times per second. Let's only update things when the value actually changes. <span class="muted">~15-min setup</span></div>
+              <div class="callout info"><strong>Good to know:</strong> RPG Maker MV is a little more sensitive to parallel lag than MZ, so these optimizations matter most in MV.</div>
+              <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Smart screen tint</div><div class="stepBody">Create <code>Last TintTime</code>. Wrap your tint updates in <code>If Hours ≠ Last TintTime</code>, then at the end set <code>Last TintTime = Hours</code>. The tint now reapplies only when the hour changes, no more flicker or wasted frames.</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-smart-tint.png" width="535" height="113" loading="lazy" alt="RPG Maker setting Last TintTime equal to Hours after updating the tint."></div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">2</div><div><div class="stepTitle">Smart hour tracking</div><div class="stepBody">Create <code>Last HourTime</code>. Check <code>If Hours ≠ Last HourTime</code> before updating the 24 hour branches, then set <code>Last HourTime = Hours</code>. The HUD only redraws when the hour actually changes.</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-smart-hour-tracking.png" width="599" height="213" loading="lazy" alt="RPG Maker smart hour tracking with a Last HourTime helper variable."></div>
+              <div class="step" style="margin-top:12px"><div class="stepNum">3</div><div><div class="stepTitle">Smart day (and optional minute) tracking</div><div class="stepBody">Do the same with <code>Last DayTime</code> for the 30 day branches, splitting them helps too. You can optionally add <code>Last MinuteTime</code> for the 10-minute intervals, though with only 6 branches it's not essential.</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-smart-day-split.png" width="590" height="416" loading="lazy" alt="RPG Maker day display branches split for efficiency with a Last DayTime check."></div>
+            </div>
+
+            <div class="card" id="pause" data-section-track="Pause Time" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 5. Pause time during cutscenes</h2>
+              <div class="lead" style="margin-top:8px">Freeze the clock during dialogue or cutscenes. <span class="muted">~5-min setup</span></div>
+              <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Create a "Time Frozen" switch</div><div class="stepBody">Make a switch called <code>Time Frozen</code>. Turn it ON before a Show Text and OFF after. While it's ON, your time system won't update minutes, hours or tints. Gate the time logic with <code>If Time Frozen is OFF</code>.</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-pause-time-switch.png" width="600" height="141" loading="lazy" alt="RPG Maker Control Switches turning the Time Frozen switch on and off around a message."></div>
+            </div>
+
+            <div class="card" id="encounters" data-section-track="Time Encounters" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 6. Time-specific encounters</h2>
+              <div class="lead" style="margin-top:8px">Use switches to make events appear at certain times. <span class="muted">~5-min setup</span></div>
+              <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Fireflies that only appear at night</div><div class="stepBody">In Game Time (Main), flip a switch ON during the night hours (and OFF otherwise). Put your firefly event on a page conditioned by that switch. Use the same idea for windows that open by day, lanterns that light at night, or shops that run 9AM-6PM.</div></div></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-time-specific-fireflies.png" width="484" height="519" loading="lazy" alt="RPG Maker event page for fireflies conditioned on a night-time switch."></div>
+              <div class="callout success">🌟 The possibilities are endless, your world now feels alive with a smart, reactive day-night system!</div>
+            </div>
+
+            <div class="card" id="more" data-section-track="More Systems" style="margin-top:14px">
+              <h2 class="sectionTitle">💖 You might also enjoy</h2>
+              <div class="lead" style="margin-top:8px">More systems to expand your RPG Maker world:</div>
+              <div class="lead" style="margin-top:8px">The <a class="linkBrand" href="./rpg-maker-relationship-system-mechanic.html">Relationship System</a> for dynamic character bonds, and the <a class="linkBrand" href="./rpg-maker-fishing-minigame-system.html">Fishing Mini-Game</a> for a relaxing catch-and-reward loop. Got a request or a cool idea? <a class="linkBrand" href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener">Let me know</a>!</div>
+              <div class="miniRow"><a class="btn btnPrimary" href="../redeem.html">More Club rewards →</a><a class="btn" href="./index.html">← Back to Tutorials</a></div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT: TOC -->
+          <aside class="card tocCard">
+            <div class="toc">
+              <h2 class="sectionTitle" style="font-size:18px; margin:0">Quick jumps</h2>
+              <div class="lead" style="margin-top:4px">Sections on this page</div>
+              <div class="tocProgress" aria-hidden="true"><div class="tocProgressFill" id="tocProgressFill"></div></div>
+              <a href="javascript:void(0)" data-jump="intro"><span>What You'll Build</span><small>Overview</small></a>
+              <a href="javascript:void(0)" data-jump="worldmap"><span>World-Map Time</span><small>Common Events</small></a>
+              <a href="javascript:void(0)" data-jump="hud"><span>Custom HUD</span><small>Picture clock</small></a>
+              <a href="javascript:void(0)" data-jump="ampm"><span>AM/PM Format</span><small>DisplayHour</small></a>
+              <a href="javascript:void(0)" data-jump="smart"><span>Smart Systems</span><small>Performance</small></a>
+              <a href="javascript:void(0)" data-jump="pause"><span>Pause Time</span><small>Cutscenes</small></a>
+              <a href="javascript:void(0)" data-jump="encounters"><span>Time Encounters</span><small>Fireflies</small></a>
+              <a href="javascript:void(0)" data-jump="more"><span>More Systems</span><small>Explore</small></a>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Lightbox -->
+        <div class="lightbox" id="lightbox" aria-hidden="true">
+          <div class="lightboxOverlay" data-close="1"></div>
+          <div class="lightboxPanel" role="dialog" aria-modal="true" aria-label="Image preview">
+            <div class="lightboxTop">
+              <div id="lightboxLabel">Preview</div>
+              <button class="lightboxClose" type="button" id="lightboxClose" aria-label="Close preview">✕</button>
+            </div>
+            <div class="lightboxStage">
+              <button class="lightboxNav lightboxPrev" type="button" id="lightboxPrev" aria-label="Previous image">‹</button>
+              <img class="lightboxImg" id="lightboxImg" alt="">
+              <button class="lightboxNav lightboxNext" type="button" id="lightboxNext" aria-label="Next image">›</button>
+            </div>
+            <div class="lightboxBottom" id="lightboxDots" aria-label="Image position indicators"></div>
+          </div>
+        </div>
+
+        <!-- Footer card -->
+        <div class="card footerV2">
+          <div class="footerHang">
+            <div class="footerHangIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></svg>
+            </div>
+            <div class="footerHangTitle">Want to hang out?</div>
+            <div class="footerHangSub">Join the <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>, or follow along on your favorite platform below.</div>
+          </div>
+
+          <div class="socialPanel">
+            <div class="socialGrid" aria-label="Social links">
+
+              <a class="socItem" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="youtube">
+                <span class="socBtn"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4.5" fill="#FF0000"/><path d="M10 8.6l6 3.4-6 3.4z" fill="#fff"/></svg></span>
+                <span class="socLabel">YouTube</span>
+              </a>
+
+              <a class="socItem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="social_click" data-platform="itch">
+                <span class="socBtn itchBtn"><svg viewBox="11 12 26 24" fill="none"><path fill="#FF2449" d="M15.129 13.1335C14.0821 13.7551 12.0195 16.1245 12 16.746V17.7745C12 19.0783 13.2188 20.2243 14.3253 20.2243C15.6539 20.2243 16.761 19.1231 16.761 17.8162C16.761 19.1231 17.8301 20.2243 19.1589 20.2243C20.4877 20.2243 21.5225 19.1231 21.5225 17.8162C21.5225 19.1231 22.6592 20.2243 23.9879 20.2243H24.0121C25.3409 20.2243 26.4776 19.1231 26.4776 17.8162C26.4776 19.1231 27.5124 20.2243 28.8411 20.2243C30.1699 20.2243 31.239 19.1231 31.239 17.8162C31.239 19.1231 32.3462 20.2243 33.6747 20.2243C34.7812 20.2243 36 19.0785 36 17.7745V16.746C35.9805 16.1244 33.9179 13.7549 32.8713 13.1335C29.6175 13.0193 27.3618 12.9995 23.9999 13C20.6381 13.0003 16.055 13.0528 15.1287 13.1335H15.129ZM21.5057 19.6102C21.3786 19.8317 21.2212 20.0343 21.0381 20.2122C20.5365 20.7026 19.849 21.0067 19.0911 21.0067C18.362 21.0074 17.6611 20.7218 17.1399 20.2119C16.9582 20.0339 16.8201 19.8435 16.6936 19.6219L16.6931 19.6223C16.5666 19.8443 16.3906 20.0345 16.2085 20.2127C15.6873 20.7223 14.9863 21.0076 14.2573 21.007C14.166 21.007 14.0709 20.9818 13.9941 20.9554C13.8872 22.0677 13.8422 23.1306 13.8263 23.9057L13.8261 23.9101C13.8241 24.3037 13.8221 24.6273 13.8202 25.077C13.8407 27.4107 13.589 32.6411 14.8491 33.9262C16.8019 34.3815 20.395 34.5888 23.9998 34.5901H24.0004C27.6051 34.5888 31.1982 34.3815 33.1509 33.9262C34.4111 32.641 34.1594 27.4106 34.18 25.0769C34.1778 24.6273 34.176 24.3037 34.1741 23.91L34.1737 23.9056C34.158 23.1303 34.1129 22.0674 34.006 20.9551C33.9292 20.9815 33.8342 21.0068 33.7428 21.0068C33.0138 21.0074 32.3128 20.7221 31.7916 20.2125C31.6095 20.0343 31.4334 19.8442 31.307 19.6221L31.3064 19.6217C31.1798 19.8433 31.0418 20.0337 30.8601 20.2117C30.339 20.7215 29.6381 21.0071 28.909 21.0063C28.1512 21.0063 27.4636 20.7022 26.962 20.2119C26.7789 20.034 26.6215 19.8313 26.4945 19.6099C26.3688 19.8311 26.2129 20.0337 26.0312 20.2119C25.51 20.7217 24.809 21.0072 24.0799 21.0064C24.0535 21.0064 24.0271 21.0053 24.0007 21.0045H24C23.9736 21.0053 23.9472 21.0064 23.9205 21.0064C23.1914 21.0072 22.4903 20.7218 21.9691 20.212C21.7876 20.0338 21.6316 19.8311 21.506 19.61L21.5057 19.6102ZM19.5019 22.2013L19.5017 22.2022H19.5032C20.2967 22.2038 21.0016 22.2022 21.875 23.1555C22.5625 23.0834 23.2808 23.0474 23.9997 23.0485H24.0003C24.7192 23.0475 25.4375 23.0834 26.1251 23.1555C26.9985 22.2021 27.7034 22.2037 28.4969 22.2022H28.4983L28.4981 22.2013C28.8731 22.2013 30.3728 22.2013 31.4178 25.1362L32.5402 29.1626C33.372 32.158 32.2739 32.2313 30.9042 32.2338C28.8729 32.1583 27.7481 30.6831 27.7481 29.2081C26.6237 29.3924 25.312 29.4846 24.0002 29.4846H23.9996C22.6878 29.4846 21.376 29.3924 20.2517 29.2081C20.2517 30.6831 19.1269 32.1583 17.0957 32.2338C15.7259 32.2313 14.6279 32.1581 15.4597 29.1626L16.5824 25.1363C17.6274 22.2014 19.1271 22.2014 19.5021 22.2014L19.5019 22.2013ZM23.9997 24.5078V24.5084C23.9978 24.5103 21.8613 26.4725 21.4772 27.1703L22.8763 27.1143V28.3344C22.8763 28.3915 23.4377 28.3682 23.9997 28.3422H24.0003C24.5622 28.3682 25.1236 28.3915 25.1236 28.3344V27.1143L26.5227 27.1703C26.1385 26.4725 24.0002 24.5084 24.0002 24.5084V24.5078L23.9999 24.508L23.9997 24.5078Z"/></svg></span>
+                <span class="socLabel">Itch</span>
+              </a>
+
+              <a class="socItem" href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="patreon">
+                <span class="socBtn patreonBtn"><svg viewBox="0 0 38 42"><circle cx="24.5" cy="14" r="13" fill="#111"/><rect x="2" y="1" width="7.5" height="40" fill="#111"/></svg></span>
+                <span class="socLabel">Patreon</span>
+              </a>
+
+              <a class="socItem" href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="instagram">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="#E1306C" stroke="none"/></svg></span>
+                <span class="socLabel">Insta</span>
+              </a>
+
+              <a class="socItem" href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="tiktok">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#111"><path d="M16.5 3c.4 2 1.7 3.4 3.5 3.6V9c-1.3 0-2.5-.4-3.5-1.1v6.4c0 3.1-2.3 5.3-5.2 5.3S6 17.4 6 14.5s2.3-5.2 5.2-5.2c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-1.5 0-2.6 1.2-2.6 2.7s1.1 2.7 2.6 2.7 2.7-1.2 2.7-2.8V3z"/></svg></span>
+                <span class="socLabel">TikTok</span>
+              </a>
+
+              <a class="socItem" href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener" data-track="social_click" data-platform="facebook">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.8 3.7-3.8 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg></span>
+                <span class="socLabel">Facebook</span>
+              </a>
+
+              <a class="socItem" href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener" data-track="social_click" data-platform="bluesky">
+                <span class="socBtn blueskyBtn"><svg viewBox="0 0 24 24" fill="#1185FE"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.479 0-.689-.139-1.86-.902-2.203-.659-.299-1.664-.621-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></span>
+                <span class="socLabel">Bluesky</span>
+              </a>
+
+              <a class="socItem" href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="x">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#111"><path d="M17.7 3h2.7l-5.9 6.8L21.5 21h-5.4l-4.2-5.6L7 21H4.3l6.3-7.3L3 3h5.5l3.8 5.1L17.7 3zm-1 16.4h1.5L8 4.5H6.4l10.3 14.9z"/></svg></span>
+                <span class="socLabel">X</span>
+              </a>
+
+              <a class="socItem" href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener" data-track="social_click" data-platform="pixiv">
+                <span class="socBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0096FA"/><text x="12" y="16.5" font-size="12" font-weight="900" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif">P</text></svg></span>
+                <span class="socLabel">Pixiv</span>
+              </a>
+
+              <a class="socItem" href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener" data-track="social_click" data-platform="booth">
+                <span class="socBtn"><img src="../images/booth.ico" alt="" width="30" height="30" loading="lazy"></span>
+                <span class="socLabel">Booth</span>
+              </a>
+
+            </div>
+          </div>
+
+          <div class="footTP"><a href="../terms.html">Terms</a><span class="sep">|</span><a href="../privacy.html">Privacy</a><span class="sep">|</span><a href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener">Contact</a></div>
+          <div class="footCopy">© <span id="year"></span> Anya &amp; Lolo</div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

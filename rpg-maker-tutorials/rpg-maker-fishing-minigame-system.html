@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RPG Maker Fishing Mini-Game Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3) | Anya &amp; Lolo</title>
+    <meta name="description" content="Build a relaxing fishing mini-game in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step events for casting, random catches, item rewards, a handy item-name script, and ideas to expand the system." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="RPG Maker Fishing Mini-Game Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3) | Anya &amp; Lolo" />
+    <meta property="og:description" content="Build a relaxing fishing mini-game in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step events for casting, random catches, item rewards, a handy item-name script, and ideas to expand the system." />
+    <meta property="og:url" content="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-fishing-minigame-system.html" />
+    <meta property="og:image" content="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-fishing-minigame-banner.png" />
+    <meta property="og:image:width" content="1104">
+    <meta property="og:image:height" content="622">
+    <meta property="og:site_name" content="Anya &amp; Lolo" />
+    <meta name="twitter:site" content="@Anya_and_Lolo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RPG Maker Fishing Mini-Game Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3) | Anya &amp; Lolo" />
+    <meta name="twitter:description" content="Build a relaxing fishing mini-game in RPG Maker with casting, random catches, item rewards and a handy script." />
+    <meta name="twitter:image" content="https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-fishing-minigame-banner.png" />
+    <link rel="canonical" href="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-fishing-minigame-system.html" />
+    <meta name="theme-color" content="#f4184c" />
+    <link rel="icon" href="../favicon.ico?v=1" sizes="any">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico?v=1">
+    <link rel="apple-touch-icon" href="../icon.jpg" />
+    <link rel="stylesheet" href="../css/tutorial.css">
+    <script src="../js/tutorial.js" defer></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-127GP5TNHG"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-127GP5TNHG');
+    </script>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "RPG Maker Fishing Mini-Game Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3)",
+  "headline": "RPG Maker Fishing Mini-Game Tutorial (MZ, MV, XP, VX Ace, 2k, 2k3)",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://anya-and-lolo.github.io/rpg-maker-tutorials/images/rpg-maker-fishing-minigame-banner.png"
+  },
+  "description": "Build a relaxing fishing mini-game in RPG Maker (MZ, MV, XP, VX Ace, 2k, 2k3). Step-by-step events for casting, random catches, item rewards, a handy item-name script, and ideas to expand the system.",
+  "inLanguage": "en",
+  "datePublished": "2026-06-17",
+  "dateModified": "2026-06-17",
+  "author": { "@type": "Person", "name": "Anya" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Anya & Lolo",
+    "logo": { "@type": "ImageObject", "url": "https://anya-and-lolo.github.io/icon.jpg" }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-fishing-minigame-system.html"
+  },
+  "totalTime": "PT40M"
+}
+</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="topbar topbarV2">
+      <div class="topbarInner">
+
+        <a class="brandV2" href="../" aria-label="Anya & Lolo home">
+          <span class="brandText">
+            <span class="brandTitle">RPG Maker Resources</span>
+            <span class="brandSub">Tutorials • Game Development</span>
+          </span>
+        </a>
+
+        <nav class="nav navV2" aria-label="Primary">
+          <div class="navPrimary">
+
+            <a class="navlink navlinkV2" href="../">
+              <span class="navIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+              </span>
+              Home
+            </a>
+
+            <a class="navlink navlinkV2" href="../redeem.html">
+              <span class="navIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              </span>
+              Rewards
+            </a>
+
+            <span class="navBreak" aria-hidden="true"></span>
+
+            <div class="navDrop">
+              <button class="navlink navlinkV2 navDropBtn is-current" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="navIcon hatIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
+                </span>
+                Tutorials
+                <span class="navChev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="navDropMenu" role="menu" aria-label="Tutorials">
+                <a class="dropItem" role="menuitem" href="./index.html">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">RPG Maker Tutorials</span>
+                    <span class="dropSub">Step-by-step guides &amp; lessons</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3l3.8 3.3A8 8 0 0 1 12 5a8 8 0 0 1 4.2 1.3L20 3l-1 6.2A7 7 0 0 1 12 19a7 7 0 0 1-7-9.8z"/><path d="M9 11h.01M15 11h.01"/><path d="m12 14-1 1h2z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">WOLF RPG Editor Guide</span>
+                    <span class="dropSub">Complete guide &amp; resources</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <div class="navDrop">
+              <button class="navlink navlinkV2 navDropBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="navIcon handIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14"/><path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 13 6 6"/></svg>
+                </span>
+                Resources
+                <span class="navChev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="navDropMenu navDropMenu--right" role="menu" aria-label="Resources">
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">Smart Systems</span>
+                    <span class="dropSub">Plugins &amp; systems on itch.io</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">Game Dev Blog</span>
+                    <span class="dropSub">Updates, tips &amp; devlogs</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main">
+      <section class="hero">
+
+        <div class="card">
+          <h1 class="heroH1">
+            <span class="heroH1Main">RPG Maker Fishing Mini-Game</span>
+            <span class="heroH1Sub">Step-by-Step Tutorial</span>
+          </h1>
+          <p class="subtitle">Learn how to build a relaxing, expandable fishing system in RPG Maker using events, a random catch roll, and item rewards. It's not just about what you catch, it's how it happens! 🎣</p>
+          <div class="tagRow">
+            <span class="tag">All RPG Maker Engines</span><span class="tag">Mid-level Tutorial</span><span class="tag">~40 min</span>
+          </div>
+
+          <div class="miniRow center">
+            <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Hero Download Demo">Download demo</a>
+            <a class="btn" href="./index.html">← Back to Tutorials</a>
+          </div>
+        </div>
+
+        <div class="tutorialGrid">
+          <!-- LEFT: Content -->
+          <div>
+
+            <div class="card" style="margin-bottom:14px">
+              <div class="imageCard">
+                <img data-lb="1" src="images/rpg-maker-fishing-minigame-banner.png" width="1104" height="622" loading="lazy"
+                  alt="Let's Fish! Fishing System title screen for RPG Maker with MV, MZ and XP compatibility badges.">
+              </div>
+
+              <div class="callout info">
+                <strong>Good news:</strong> this system works with any version of RPG Maker. If you use MZ or MV, open the demo file and follow along. Using another engine? Just recreate the event commands shown below.
+                <a class="linkBrand" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" style="margin-left:1px" data-track="download_demo" data-track-label="Preview Callout Download Here">Download here!</a>
+              </div>
+            </div>
+
+            <div class="card" id="intro" data-section-track="What You Will Learn" style="margin-top:14px">
+              <div class="subcard">
+                <h2 class="sectionTitle">What you'll learn today</h2>
+                <div class="lead" style="margin-top:8px">With the splash of a lure, every cast feels special. Sometimes it's a fish, sometimes it's treasure, and other times… something you weren't meant to find! Here's what we'll cover:</div>
+              </div>
+
+              <div class="step" style="margin-top:10px">
+                <div class="stepNum">1</div>
+                <div>
+                  <div class="stepTitle">Fish graphics &amp; assets</div>
+                  <div class="stepBody">How to use and license fish assets properly in your game, so you can swap the placeholders for your own art.</div>
+                </div>
+              </div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">2</div>
+                <div>
+                  <div class="stepTitle">Step-by-step event setup</div>
+                  <div class="stepBody">The casting check, the random catch roll, the catch outcomes, and the inventory reward, all built with events.</div>
+                </div>
+              </div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">3</div>
+                <div>
+                  <div class="stepTitle">A handy scripting trick</div>
+                  <div class="stepBody">A one-line script that shows the caught item's <em>name</em> instead of a number, so you never have to hardcode "Salmon" or "Mackerel" again.</div>
+                </div>
+              </div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">4</div>
+                <div>
+                  <div class="stepTitle">Free ideas to expand the system</div>
+                  <div class="stepBody">Seasonal fish, rod upgrades, line durability, daily limits, weather influence, ice fishing and more.</div>
+                </div>
+              </div>
+
+              <div class="callout warn">
+                <strong>About the default fish graphics:</strong> the fish art in the demo is licensed placeholder content (from Creative Fabrica, Vecteezy and Freepik) and is meant to be replaced with your own. The RPG Maker scripting and event logic is free to use for community learning, but please license or replace the visual assets before publishing your game.
+              </div>
+            </div>
+
+            <div class="card" id="prepare" data-section-track="Before You Start" style="margin-top:14px">
+              <h2 class="sectionTitle">Before you start</h2>
+
+              <div class="step" style="margin-top:10px">
+                <div class="stepNum">1</div>
+                <div>
+                  <div class="stepTitle">If you have MZ/MV</div>
+                  <div class="stepBody">Open the provided demo file for your engine. The key commands are an Autorun event in the top-left corner of the demo map, and a main Fishing Event next to the pier by the lake. For multiple maps, you can move the Fishing Event into Common Events instead of duplicating it, then trigger it with a switch or variable.</div>
+                </div>
+              </div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">2</div>
+                <div>
+                  <div class="stepTitle">If you use a different engine</div>
+                  <div class="stepBody">No problem, this guide covers everything step by step. Create a new event, place it in the top-left corner of the map to stay organized, and recreate the commands below in the Event Editor.</div>
+                </div>
+              </div>
+
+              <div class="tutorialGrid" style="margin-top:12px">
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-fishing-minigame-event-map-placement.png" width="354" height="221" loading="lazy" alt="RPG Maker demo map with an arrow pointing to the Autorun event in the top-left corner."></div>
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-fishing-minigame-demo-map-fishing-spots.png" width="339" height="280" loading="lazy" alt="RPG Maker demo map showing the pier and sparkling fishing spots where the player can cast."></div>
+              </div>
+              <div class="muted" style="margin-top:6px">Tip: 💡 Demos for more engines are being added to the itch.io page, check there, or request one on Discord.</div>
+            </div>
+
+            <div class="card" id="hook" data-section-track="Setting the Hook" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 1. Setting the hook</h2>
+              <div class="lead" style="margin-top:8px">The system begins with a simple question: does the player even have a fishing rod?</div>
+
+              <div class="step">
+                <div class="stepNum">1</div>
+                <div>
+                  <div class="stepTitle">Check for the Fishing Rod</div>
+                  <div class="stepBody">Start the Fishing Event with a Conditional Branch: <code>If the player has Fishing Rod in inventory</code>. This means the player can't fish without a rod, and by default their inventory is empty, which nudges them to go find one!</div>
+                </div>
+              </div>
+
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-has-rod-conditional.png" width="361" height="140" loading="lazy" alt="RPG Maker conditional branch checking whether the player has a Fishing Rod in their inventory."></div>
+
+              <div class="subcard">
+                <strong>What happens on each path</strong>
+                <div class="lead" style="margin-top:6px">
+                  ✔️ <strong>Has the rod:</strong> turn the player to face right, play a water sound (to imitate casting), then start the random catch roll from 0 to 7.<br>
+                  ❌ <strong>No rod:</strong> show a helpful on-screen message instead.
+                </div>
+              </div>
+
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-no-rod-message.png" width="882" height="412" loading="lazy" alt="RPG Maker show text message telling the player they need a fishing rod before they can fish."></div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">2</div>
+                <div>
+                  <div class="stepTitle">Make the water effect</div>
+                  <div class="stepBody">Use animated water tiles from the <code>AnyaButterflySet.png</code> set with <strong>Stepping Animation</strong> turned on, so the casting spot ripples.</div>
+                </div>
+              </div>
+
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-water-effect-stepping-animation.png" width="374" height="323" loading="lazy" alt="RPG Maker event page using an animated water graphic with Stepping Animation enabled."></div>
+
+              <div class="step" style="margin-top:12px">
+                <div class="stepNum">3</div>
+                <div>
+                  <div class="stepTitle">Add pointing arrows</div>
+                  <div class="stepBody">Use the animated arrows from the same set with Stepping Animation on. Then add a <code>Wait</code> for ~300 frames (about 5 seconds) and use a Switch to turn the arrow off.</div>
+                </div>
+              </div>
+
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-pointing-arrow-setup.png" width="1051" height="739" loading="lazy" alt="RPG Maker event commands setting up an animated pointing arrow with a wait and a switch."></div>
+            </div>
+
+            <div class="card" id="outcomes" data-section-track="Catch Outcomes" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 2. Catch outcomes</h2>
+              <div class="lead" style="margin-top:8px">The line <code>Caught Fish = Random(0..7)</code> decides what's reeled in. Just like rolling dice, a series of nested <code>If</code> branches handles each possible result.</div>
+
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-random-catch-branches.png" width="664" height="420" loading="lazy" alt="RPG Maker nested conditional branches handling each random catch result from 0 to 7."></div>
+
+              <div class="subcard">
+                <strong>Each successful catch</strong>
+                <div class="lead" style="margin-top:6px">
+                  • Plays a splash sound and a balloon icon animation<br>
+                  • Shows a picture animation, the fish slides in from offscreen, then disappears<br>
+                  • Confirms with text: <code>+1 \V[XXX] has been added to your inventory!</code><br>
+                  • Turns the <code>PlayerFishingRight</code> switch OFF to reset the walking graphic
+                </div>
+              </div>
+
+              <div class="tutorialGrid" style="margin-top:10px">
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-fishing-minigame-catch-outcome-commands-1.png" width="885" height="459" loading="lazy" alt="RPG Maker event commands for a successful catch outcome, part 1."></div>
+                <div class="imageCard"><img data-lb="1" src="images/rpg-maker-fishing-minigame-catch-outcome-commands-2.png" width="1105" height="625" loading="lazy" alt="RPG Maker event commands for a successful catch outcome, part 2."></div>
+              </div>
+            </div>
+
+            <div class="card" id="script" data-section-track="Handy Script" style="margin-top:14px">
+              <h2 class="sectionTitle">A handy script ☝️</h2>
+              <div class="lead" style="margin-top:8px">We want the message to read "You've just caught… Salmon!". But <code>\V[3]</code> would show the <em>quantity</em> of item ID 3, not its name, and hardcoding names like "Salmon" gets tedious to maintain. Here's a cleaner solution:</div>
+
+              <pre>◆Control Variables：#0003 Fish1 = $dataItems[003].name</pre>
+
+              <div class="lead" style="margin-top:8px">This assigns the <strong>name</strong> of item ID 3 from the database to variable <code>\V[3]</code>. Now "You've just caught…\V[3]!" displays "Salmon" automatically, and if you rename the item later, the message updates itself.</div>
+
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-item-name-script.png" width="656" height="554" loading="lazy" alt="RPG Maker Control Variables command using a script to store an item's database name."></div>
+            </div>
+
+            <div class="card" id="inventory" data-section-track="Inventory and Reset" style="margin-top:14px">
+              <h2 class="sectionTitle">Part 3. Inventory &amp; reset</h2>
+              <div class="lead" style="margin-top:8px">After each completed reel, the fish (or boot, or treasure!) is added to the player's inventory. You can also keep a running tally for a later "fishing score".</div>
+
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-inventory-add.png" width="870" height="263" loading="lazy" alt="RPG Maker Change Items command adding the caught fish to the player's inventory."></div>
+              <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-score-check.png" width="611" height="260" loading="lazy" alt="RPG Maker variables showing fish counts for a fishing score check."></div>
+
+              <div class="callout info">
+                <strong>Note:</strong> in the score readout the variables show <em>quantities</em> rather than fish names, that's because we haven't applied the name script above to these particular lines. Use the same trick whenever you want names instead of numbers.
+              </div>
+            </div>
+
+            <div class="card" id="gofurther" data-section-track="Where To Go From Here" style="margin-top:14px">
+              <h2 class="sectionTitle">🚀 Where to go from here</h2>
+              <div class="lead" style="margin-top:8px">You've built the whole core loop, a rod check, casting with water and arrow effects, a random catch roll, item rewards, and a handy script that shows fish names automatically. That's a complete, working fishing mini-game! 🎣</div>
+              <div class="lead" style="margin-top:8px">From here you can make it truly your own. Just below are free ideas to expand the system, rod upgrades, seasonal fish, weather, ice fishing and more. There's also a brand-new <strong>hand-drawn fish asset pack</strong> you're welcome to use (just credit Anya &amp; Lolo), and the free <a class="linkBrand" href="./rpg-maker-day-night-cycle-system.html">Day &amp; Night Cycle</a> pairs perfectly for time-based catches.</div>
+              <div class="lead" style="margin-top:8px">🎁 Want the demos, assets and updates? Join the Anya &amp; Lolo Club for free and the links land straight in your inbox 💌</div>
+              <div class="miniRow"><a class="btn btnPrimary" href="../redeem.html">Join the Club →</a><a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Go Further Download Demo">Get the demo &amp; assets</a></div>
+            </div>
+
+            <div class="card" id="expand" data-section-track="Expand the System" style="margin-top:14px">
+              <h2 class="sectionTitle">How to expand the system 🧰</h2>
+              <div class="lead" style="margin-top:8px">The core loop is done, here are free ideas to make it your own:</div>
+
+              <div class="subcard"><strong>Quick-time catch challenge</strong><div class="lead" style="margin-top:6px">Use a button-mash plugin to trigger a timed input ("Press [A] when the meter flashes!"). Success → rare catch; fail → lost bait.</div></div>
+              <div class="subcard"><strong>Rod upgrades</strong><div class="lead" style="margin-top:6px">Add a <code>RodTier</code> variable: Basic Rod catches fish 1-4, Silver Rod adds 5-6, Golden Rod unlocks Treasure. Condition the catch outcomes on the tier.</div></div>
+              <div class="subcard"><strong>Daily fishing limits</strong><div class="lead" style="margin-top:6px">Use a <code>FishQuota</code> variable (say, 10), decrease it per cast, and let higher-tier rods raise the quota. Adds pacing and makes upgrades meaningful.</div></div>
+              <div class="subcard"><strong>Skill progression</strong><div class="lead" style="margin-top:6px">Track total catches in a <code>FishingSkillLevel</code> variable, then unlock better catch rates, rare fish, or new areas as it rises.</div></div>
+              <div class="subcard"><strong>Seasonal / time-based fish</strong><div class="lead" style="margin-top:6px">Make some fish only catchable at certain times, Anchovy in the morning, a Moon Snapper between 2-3 AM. Pairs perfectly with the <a class="linkBrand" href="./rpg-maker-day-night-cycle-system.html">Day &amp; Night Cycle</a>.</div></div>
+              <div class="subcard"><strong>Line durability / break risk</strong><div class="lead" style="margin-top:6px">Add a <code>LineStrength</code> variable; heavy or rare fish run a chance-based durability check. Big catches feel riskier and more rewarding.</div></div>
+              <div class="subcard"><strong>Weather influence</strong><div class="lead" style="margin-top:6px">Rain boosts activity, fog weakens results, thunderstorms may block fishing… or unlock rare pools!</div></div>
+              <div class="subcard"><strong>Frozen lakes &amp; ice fishing</strong><div class="lead" style="margin-top:6px">In winter, make the player "cut a hole" in the ice and fish within a time limit before freezing, catch exclusive frostfish or glacial relics!</div></div>
+            </div>
+
+            <div class="card" id="freeextras" data-section-track="Free Extras" style="margin-top:14px">
+              <h2 class="sectionTitle">🎁 Free extras: Day &amp; Night Cycle</h2>
+              <div class="lead" style="margin-top:8px">The free Day &amp; Night Cycle pairs beautifully with fishing, run a natural time cycle with a clean time display, global time across maps, AM/PM formats and a pause-time option for cutscenes.</div>
+              <div class="miniRow"><a class="btn btnPrimary" href="./rpg-maker-day-night-cycle-system.html">Open the Day &amp; Night tutorial →</a><a class="btn" href="./index.html">← Back to Tutorials</a></div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT: TOC -->
+          <aside class="card tocCard">
+            <div class="toc">
+              <h2 class="sectionTitle" style="font-size:18px; margin:0">Quick jumps</h2>
+              <div class="lead" style="margin-top:4px">Sections on this page</div>
+              <div class="tocProgress" aria-hidden="true"><div class="tocProgressFill" id="tocProgressFill"></div></div>
+              <a href="javascript:void(0)" data-jump="intro"><span>What You'll Learn</span><small>Overview</small></a>
+              <a href="javascript:void(0)" data-jump="prepare"><span>Before You Start</span><small>Which engine?</small></a>
+              <a href="javascript:void(0)" data-jump="hook"><span>Setting the Hook</span><small>Cast &amp; rod check</small></a>
+              <a href="javascript:void(0)" data-jump="outcomes"><span>Catch Outcomes</span><small>Random roll</small></a>
+              <a href="javascript:void(0)" data-jump="script"><span>Handy Script</span><small>Item names</small></a>
+              <a href="javascript:void(0)" data-jump="inventory"><span>Inventory &amp; Reset</span><small>Rewards</small></a>
+              <a href="javascript:void(0)" data-jump="gofurther"><span>Where To Go</span><small>Go further</small></a>
+              <a href="javascript:void(0)" data-jump="expand"><span>Expand the System</span><small>Free ideas</small></a>
+              <a href="javascript:void(0)" data-jump="freeextras"><span>Free Extras!</span><small>Day &amp; Night</small></a>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Lightbox -->
+        <div class="lightbox" id="lightbox" aria-hidden="true">
+          <div class="lightboxOverlay" data-close="1"></div>
+          <div class="lightboxPanel" role="dialog" aria-modal="true" aria-label="Image preview">
+            <div class="lightboxTop">
+              <div id="lightboxLabel">Preview</div>
+              <button class="lightboxClose" type="button" id="lightboxClose" aria-label="Close preview">✕</button>
+            </div>
+            <div class="lightboxStage">
+              <button class="lightboxNav lightboxPrev" type="button" id="lightboxPrev" aria-label="Previous image">‹</button>
+              <img class="lightboxImg" id="lightboxImg" alt="">
+              <button class="lightboxNav lightboxNext" type="button" id="lightboxNext" aria-label="Next image">›</button>
+            </div>
+            <div class="lightboxBottom" id="lightboxDots" aria-label="Image position indicators"></div>
+          </div>
+        </div>
+
+        <!-- Footer card (footer.PNG design) -->
+        <div class="card footerV2">
+          <div class="footerHang">
+            <div class="footerHangIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></svg>
+            </div>
+            <div class="footerHangTitle">Want to hang out?</div>
+            <div class="footerHangSub">Join the <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>, or follow along on your favorite platform below.</div>
+          </div>
+
+          <div class="socialPanel">
+            <div class="socialGrid" aria-label="Social links">
+
+              <a class="socItem" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="youtube">
+                <span class="socBtn"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4.5" fill="#FF0000"/><path d="M10 8.6l6 3.4-6 3.4z" fill="#fff"/></svg></span>
+                <span class="socLabel">YouTube</span>
+              </a>
+
+              <a class="socItem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="social_click" data-platform="itch">
+                <span class="socBtn itchBtn"><svg viewBox="11 12 26 24" fill="none"><path fill="#FF2449" d="M15.129 13.1335C14.0821 13.7551 12.0195 16.1245 12 16.746V17.7745C12 19.0783 13.2188 20.2243 14.3253 20.2243C15.6539 20.2243 16.761 19.1231 16.761 17.8162C16.761 19.1231 17.8301 20.2243 19.1589 20.2243C20.4877 20.2243 21.5225 19.1231 21.5225 17.8162C21.5225 19.1231 22.6592 20.2243 23.9879 20.2243H24.0121C25.3409 20.2243 26.4776 19.1231 26.4776 17.8162C26.4776 19.1231 27.5124 20.2243 28.8411 20.2243C30.1699 20.2243 31.239 19.1231 31.239 17.8162C31.239 19.1231 32.3462 20.2243 33.6747 20.2243C34.7812 20.2243 36 19.0785 36 17.7745V16.746C35.9805 16.1244 33.9179 13.7549 32.8713 13.1335C29.6175 13.0193 27.3618 12.9995 23.9999 13C20.6381 13.0003 16.055 13.0528 15.1287 13.1335H15.129ZM21.5057 19.6102C21.3786 19.8317 21.2212 20.0343 21.0381 20.2122C20.5365 20.7026 19.849 21.0067 19.0911 21.0067C18.362 21.0074 17.6611 20.7218 17.1399 20.2119C16.9582 20.0339 16.8201 19.8435 16.6936 19.6219L16.6931 19.6223C16.5666 19.8443 16.3906 20.0345 16.2085 20.2127C15.6873 20.7223 14.9863 21.0076 14.2573 21.007C14.166 21.007 14.0709 20.9818 13.9941 20.9554C13.8872 22.0677 13.8422 23.1306 13.8263 23.9057L13.8261 23.9101C13.8241 24.3037 13.8221 24.6273 13.8202 25.077C13.8407 27.4107 13.589 32.6411 14.8491 33.9262C16.8019 34.3815 20.395 34.5888 23.9998 34.5901H24.0004C27.6051 34.5888 31.1982 34.3815 33.1509 33.9262C34.4111 32.641 34.1594 27.4106 34.18 25.0769C34.1778 24.6273 34.176 24.3037 34.1741 23.91L34.1737 23.9056C34.158 23.1303 34.1129 22.0674 34.006 20.9551C33.9292 20.9815 33.8342 21.0068 33.7428 21.0068C33.0138 21.0074 32.3128 20.7221 31.7916 20.2125C31.6095 20.0343 31.4334 19.8442 31.307 19.6221L31.3064 19.6217C31.1798 19.8433 31.0418 20.0337 30.8601 20.2117C30.339 20.7215 29.6381 21.0071 28.909 21.0063C28.1512 21.0063 27.4636 20.7022 26.962 20.2119C26.7789 20.034 26.6215 19.8313 26.4945 19.6099C26.3688 19.8311 26.2129 20.0337 26.0312 20.2119C25.51 20.7217 24.809 21.0072 24.0799 21.0064C24.0535 21.0064 24.0271 21.0053 24.0007 21.0045H24C23.9736 21.0053 23.9472 21.0064 23.9205 21.0064C23.1914 21.0072 22.4903 20.7218 21.9691 20.212C21.7876 20.0338 21.6316 19.8311 21.506 19.61L21.5057 19.6102ZM19.5019 22.2013L19.5017 22.2022H19.5032C20.2967 22.2038 21.0016 22.2022 21.875 23.1555C22.5625 23.0834 23.2808 23.0474 23.9997 23.0485H24.0003C24.7192 23.0475 25.4375 23.0834 26.1251 23.1555C26.9985 22.2021 27.7034 22.2037 28.4969 22.2022H28.4983L28.4981 22.2013C28.8731 22.2013 30.3728 22.2013 31.4178 25.1362L32.5402 29.1626C33.372 32.158 32.2739 32.2313 30.9042 32.2338C28.8729 32.1583 27.7481 30.6831 27.7481 29.2081C26.6237 29.3924 25.312 29.4846 24.0002 29.4846H23.9996C22.6878 29.4846 21.376 29.3924 20.2517 29.2081C20.2517 30.6831 19.1269 32.1583 17.0957 32.2338C15.7259 32.2313 14.6279 32.1581 15.4597 29.1626L16.5824 25.1363C17.6274 22.2014 19.1271 22.2014 19.5021 22.2014L19.5019 22.2013ZM23.9997 24.5078V24.5084C23.9978 24.5103 21.8613 26.4725 21.4772 27.1703L22.8763 27.1143V28.3344C22.8763 28.3915 23.4377 28.3682 23.9997 28.3422H24.0003C24.5622 28.3682 25.1236 28.3915 25.1236 28.3344V27.1143L26.5227 27.1703C26.1385 26.4725 24.0002 24.5084 24.0002 24.5084V24.5078L23.9999 24.508L23.9997 24.5078Z"/></svg></span>
+                <span class="socLabel">Itch</span>
+              </a>
+
+              <a class="socItem" href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="patreon">
+                <span class="socBtn patreonBtn"><svg viewBox="0 0 38 42"><circle cx="24.5" cy="14" r="13" fill="#111"/><rect x="2" y="1" width="7.5" height="40" fill="#111"/></svg></span>
+                <span class="socLabel">Patreon</span>
+              </a>
+
+              <a class="socItem" href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="instagram">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="#E1306C" stroke="none"/></svg></span>
+                <span class="socLabel">Insta</span>
+              </a>
+
+              <a class="socItem" href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="tiktok">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#111"><path d="M16.5 3c.4 2 1.7 3.4 3.5 3.6V9c-1.3 0-2.5-.4-3.5-1.1v6.4c0 3.1-2.3 5.3-5.2 5.3S6 17.4 6 14.5s2.3-5.2 5.2-5.2c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-1.5 0-2.6 1.2-2.6 2.7s1.1 2.7 2.6 2.7 2.7-1.2 2.7-2.8V3z"/></svg></span>
+                <span class="socLabel">TikTok</span>
+              </a>
+
+              <a class="socItem" href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener" data-track="social_click" data-platform="facebook">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.8 3.7-3.8 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg></span>
+                <span class="socLabel">Facebook</span>
+              </a>
+
+              <a class="socItem" href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener" data-track="social_click" data-platform="bluesky">
+                <span class="socBtn blueskyBtn"><svg viewBox="0 0 24 24" fill="#1185FE"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.479 0-.689-.139-1.86-.902-2.203-.659-.299-1.664-.621-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></span>
+                <span class="socLabel">Bluesky</span>
+              </a>
+
+              <a class="socItem" href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="x">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#111"><path d="M17.7 3h2.7l-5.9 6.8L21.5 21h-5.4l-4.2-5.6L7 21H4.3l6.3-7.3L3 3h5.5l3.8 5.1L17.7 3zm-1 16.4h1.5L8 4.5H6.4l10.3 14.9z"/></svg></span>
+                <span class="socLabel">X</span>
+              </a>
+
+              <a class="socItem" href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener" data-track="social_click" data-platform="pixiv">
+                <span class="socBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0096FA"/><text x="12" y="16.5" font-size="12" font-weight="900" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif">P</text></svg></span>
+                <span class="socLabel">Pixiv</span>
+              </a>
+
+              <a class="socItem" href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener" data-track="social_click" data-platform="booth">
+                <span class="socBtn"><img src="../images/booth.ico" alt="" width="30" height="30" loading="lazy"></span>
+                <span class="socLabel">Booth</span>
+              </a>
+
+            </div>
+          </div>
+
+          <div class="footTP"><a href="../terms.html">Terms</a><span class="sep">|</span><a href="../privacy.html">Privacy</a><span class="sep">|</span><a href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener">Contact</a></div>
+          <div class="footCopy">© <span id="year"></span> Anya &amp; Lolo</div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
