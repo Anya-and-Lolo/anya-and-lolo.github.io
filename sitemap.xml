@@ -16,6 +16,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-fishing-minigame-system.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-relationship-system-mechanic.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://anya-and-lolo.github.io/redeem.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

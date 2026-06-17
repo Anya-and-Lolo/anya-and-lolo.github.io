@@ -288,6 +288,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   })();
 
+  // Dropdown nav menus
+  (() => {
+    const drops = Array.from(document.querySelectorAll(".navDrop"));
+    if (!drops.length) return;
+
+    function closeAll(except){
+      drops.forEach(d => {
+        if (d === except) return;
+        d.classList.remove("is-open");
+        const b = d.querySelector(".navDropBtn");
+        if (b) b.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    drops.forEach(drop => {
+      const btn = drop.querySelector(".navDropBtn");
+      if (!btn) return;
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const willOpen = !drop.classList.contains("is-open");
+        closeAll(drop);
+        drop.classList.toggle("is-open", willOpen);
+        btn.setAttribute("aria-expanded", String(willOpen));
+      });
+      // hover: close others + reflect the expanded state for assistive tech
+      drop.addEventListener("mouseenter", () => { closeAll(drop); btn.setAttribute("aria-expanded", "true"); });
+      drop.addEventListener("mouseleave", () => { if (!drop.classList.contains("is-open")) btn.setAttribute("aria-expanded", "false"); });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!drops.some(d => d.contains(e.target))) closeAll(null);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAll(null);
+    });
+  })();
+
   // Analytics: scroll depth
   (() => {
     const scrollMarks = [25, 50, 75, 100];

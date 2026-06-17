@@ -977,7 +977,7 @@ async function redeem(itemId, buttonEl) {
       const data = await safeJson(r);
 
       if (!data) {
-        el.innerHTML = `<div class="muted">Store failed to load (server returned non-JSON).</div>`;
+        el.innerHTML = `<div class="muted" style="text-align:center;">Store failed to load (server returned non-JSON).</div>`;
         return;
       }
 
@@ -1074,7 +1074,7 @@ async function redeem(itemId, buttonEl) {
         el.appendChild(div);
       });
     } catch (e) {
-      el.innerHTML = `<div class="muted">Store failed to load. Check console for errors.</div>`;
+      el.innerHTML = `<div class="muted" style="text-align:center;">Store failed to load. Check console for errors.</div>`;
       console.error("loadStore failed", e);
     }
   }

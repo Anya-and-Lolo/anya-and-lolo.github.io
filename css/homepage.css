@@ -22,7 +22,7 @@
 /* mobile-only forced line break in the hero title */
 @media (max-width:600px){ .titleBreak{ display:none; } }
 
-/* Essentials checklist — round, subtle-pink tiles with hot-pink ticks */
+/* Essentials checklist - round, subtle-pink tiles with hot-pink ticks */
 .heroChecks{ list-style:none; margin:14px 0 0; padding:0; display:grid; gap:11px; }
 .heroChecks li{ display:flex; align-items:flex-start; gap:10px; color:rgba(27,27,27,0.82); font-weight:700; line-height:1.4; }
 .heroChecks .chk{
@@ -36,7 +36,7 @@
 .btnIcon{ display:inline-flex; align-items:center; margin-right:6px; vertical-align:middle; }
 .btnIcon svg{ width:18px; height:18px; }
 
-/* News panel — subtle pink frame, no shadow (arrow + dots live inside the iframe) */
+/* News panel - subtle pink frame, no shadow (arrow + dots live inside the iframe) */
 .newsFrameV2{ position:relative; }
 .newsFrameV2 .embedWrap{
   border:2px solid rgba(244,24,76,0.30);
