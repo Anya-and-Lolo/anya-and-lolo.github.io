@@ -139,7 +139,16 @@
                   </span>
                   <span class="dropText">
                     <span class="dropTitle">Smart Systems</span>
-                    <span class="dropSub">Plugins &amp; systems on itch.io</span>
+                    <span class="dropSub">RPG Maker systems on itch.io</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.itch.io/rpg-maker-plugins-for-mz-mv" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5 L10.4 5 A2 2 0 1 1 13.6 5 L19 5 L19 10.4 A2 2 0 1 0 19 13.6 L19 19 L13.6 19 A2 2 0 1 1 10.4 19 L5 19 L5 13.6 A2 2 0 1 0 5 10.4 Z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">RPG Maker Plugins</span>
+                    <span class="dropSub">Plugins for RPG Maker MV/MZ</span>
                   </span>
                 </a>
                 <a class="dropItem" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">
@@ -173,7 +182,7 @@
 
           <div class="miniRow center">
             <a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Hero Download Demo">Download demo</a>
-            <a class="btn" href="./index.html">← Back to Tutorials</a>
+            <a class="btn" href="./index.html"><span class="barr lft">➜</span> Back to Tutorials</a>
           </div>
         </div>
 
@@ -311,6 +320,25 @@
               <h2 class="sectionTitle">Part 2. Catch outcomes</h2>
               <div class="lead" style="margin-top:8px">The line <code>Caught Fish = Random(0..7)</code> decides what's reeled in. Just like rolling dice, a series of nested <code>If</code> branches handles each possible result.</div>
 
+              <div style="margin-top:12px; overflow-x:auto">
+                <svg viewBox="0 0 540 170" width="100%" style="max-width:540px; height:auto" role="img" aria-label="A random roll from 0 to 7 decides the catch: fish, treasure, or an old boot.">
+                  <g font-family="sans-serif">
+                    <rect x="8" y="58" width="156" height="54" rx="14" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.3)"/>
+                    <text x="86" y="82" text-anchor="middle" font-size="13" font-weight="800" fill="#1b1b1b">Random (0-7)</text>
+                    <text x="86" y="100" text-anchor="middle" font-size="11" fill="rgba(27,27,27,0.6)">one roll per cast</text>
+                    <line x1="164" y1="85" x2="330" y2="33" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
+                    <line x1="164" y1="85" x2="330" y2="91" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
+                    <line x1="164" y1="85" x2="330" y2="149" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
+                    <rect x="330" y="12" width="202" height="42" rx="10" fill="rgba(46,184,92,0.10)" stroke="rgba(46,184,92,0.35)"/>
+                    <text x="431" y="38" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b">Fish (rolls 0-5)</text>
+                    <rect x="330" y="70" width="202" height="42" rx="10" fill="rgba(255,196,0,0.14)" stroke="rgba(230,170,0,0.45)"/>
+                    <text x="431" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b">Treasure (roll 6)</text>
+                    <rect x="330" y="128" width="202" height="42" rx="10" fill="rgba(27,27,27,0.06)" stroke="rgba(27,27,27,0.22)"/>
+                    <text x="431" y="154" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b">Old Boot (roll 7)</text>
+                  </g>
+                </svg>
+              </div>
+
               <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-fishing-minigame-random-catch-branches.png" width="664" height="420" loading="lazy" alt="RPG Maker nested conditional branches handling each random catch result from 0 to 7."></div>
 
               <div class="subcard">
@@ -357,7 +385,7 @@
               <div class="lead" style="margin-top:8px">You've built the whole core loop, a rod check, casting with water and arrow effects, a random catch roll, item rewards, and a handy script that shows fish names automatically. That's a complete, working fishing mini-game! 🎣</div>
               <div class="lead" style="margin-top:8px">From here you can make it truly your own. Just below are free ideas to expand the system, rod upgrades, seasonal fish, weather, ice fishing and more. There's also a brand-new <strong>hand-drawn fish asset pack</strong> you're welcome to use (just credit Anya &amp; Lolo), and the free <a class="linkBrand" href="./rpg-maker-day-night-cycle-system.html">Day &amp; Night Cycle</a> pairs perfectly for time-based catches.</div>
               <div class="lead" style="margin-top:8px">🎁 Want the demos, assets and updates? Join the Anya &amp; Lolo Club for free and the links land straight in your inbox 💌</div>
-              <div class="miniRow"><a class="btn btnPrimary" href="../redeem.html">Join the Club →</a><a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Go Further Download Demo">Get the demo &amp; assets</a></div>
+              <div class="miniRow"><a class="btn btnPrimary" href="../redeem.html">Join the Club <span class="barr">➜</span></a><a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Go Further Download Demo">Get the demo &amp; assets</a></div>
             </div>
 
             <div class="card" id="expand" data-section-track="Expand the System" style="margin-top:14px">
@@ -377,7 +405,7 @@
             <div class="card" id="freeextras" data-section-track="Free Extras" style="margin-top:14px">
               <h2 class="sectionTitle">🎁 Free extras: Day &amp; Night Cycle</h2>
               <div class="lead" style="margin-top:8px">The free Day &amp; Night Cycle pairs beautifully with fishing, run a natural time cycle with a clean time display, global time across maps, AM/PM formats and a pause-time option for cutscenes.</div>
-              <div class="miniRow"><a class="btn btnPrimary" href="./rpg-maker-day-night-cycle-system.html">Open the Day &amp; Night tutorial →</a><a class="btn" href="./index.html">← Back to Tutorials</a></div>
+              <div class="miniRow"><a class="btn btnPrimary" href="./rpg-maker-day-night-cycle-system.html">Open the Day &amp; Night tutorial <span class="barr">➜</span></a><a class="btn" href="./index.html"><span class="barr lft">➜</span> Back to Tutorials</a></div>
             </div>
 
           </div>

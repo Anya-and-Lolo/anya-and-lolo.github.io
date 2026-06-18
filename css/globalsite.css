@@ -168,6 +168,13 @@ body::before{
   .topbarV2 .navDropMenu{ min-width:220px; max-width:90vw; left:50%; right:auto; transform:translateX(-50%); }
   .navDrop:hover > .navDropMenu{ display:none; }
   .navDrop.is-open > .navDropMenu{ display:block; }
+
+  /* Make Home, Rewards, Tutorials and Resources all the same size on mobile */
+  .navV2 .navPrimary > .navlink,
+  .navV2 .navPrimary > .navDrop{ flex:1 1 0; min-width:0; }
+  .navV2 .navPrimary > .navDrop{ display:flex; }
+  .navV2 .navPrimary > .navDrop > .navDropBtn{ flex:1 1 auto; width:100%; justify-content:center; }
+  .navV2 .navlinkV2{ padding:12px 16px; font-size:16px; justify-content:center; }
 }
 
 .footerV2{ margin-top:14px; }
@@ -1196,6 +1203,10 @@ a.pop{ animation: pop .28s ease; }
   opacity: .95;
 }
 
+/* Bold directional arrow used in buttons/links */
+.barr{ display:inline-block; font-weight:900; font-size:1.05em; }
+.barr.lft{ transform:scaleX(-1); }
+
 @media (max-width: 600px){
   .featuredCta{
     flex-direction: column;
@@ -1361,6 +1372,38 @@ code{
   font-size: 16px;
   line-height: 1.15;
   border-radius: 14px;
+}
+
+/* Connect = red, Connected = green (IDs beat the base button rule) */
+#connect.btnPrimary{
+  background: var(--brand);
+  color: #fff;
+  border-color: rgba(244,24,76,0.35);
+  box-shadow: 0 10px 22px rgba(244,24,76,0.20);
+}
+#connect.btnPrimary:hover{
+  box-shadow: 0 14px 30px rgba(244,24,76,0.28);
+  transform: translateY(-1px);
+}
+#connect.btnGreen{
+  background: #22c55e;
+  color: #fff;
+  border-color: rgba(34,197,94,0.35);
+  box-shadow: 0 10px 22px rgba(34,197,94,0.24);
+}
+#connect.btnGreen:hover{
+  box-shadow: 0 14px 30px rgba(34,197,94,0.30);
+  transform: translateY(-1px);
+}
+
+/* Disconnect button inside the info popup */
+.disconnectBtn{
+  color: var(--brand) !important;
+  border-color: rgba(244,24,76,0.40) !important;
+  font-weight: 900;
+}
+.disconnectBtn:hover{
+  background: rgba(244,24,76,0.06) !important;
 }
 
 .row{

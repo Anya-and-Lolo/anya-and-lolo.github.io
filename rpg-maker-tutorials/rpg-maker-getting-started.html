@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Getting Started with RPG Maker: Beginner Basics (MZ, MV, XP, VX Ace, 2k, 2k3) | Anya &amp; Lolo</title>
+    <meta name="description" content="New to RPG Maker? Learn the basics: maps, events, variables, switches, common events, transfers, shops, save points, graphics and the Database. A beginner-friendly getting-started guide for MZ, MV, XP, VX Ace, 2000 and 2003." />
+    <meta name="robots" content="INDEX,FOLLOW" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Getting Started with RPG Maker: Beginner Basics | Anya &amp; Lolo" />
+    <meta property="og:description" content="Learn the RPG Maker basics: maps, events, variables, switches, common events, transfers, shops, save points and graphics. Beginner-friendly for MZ, MV, XP, VX Ace, 2k, 2k3." />
+    <meta property="og:url" content="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-getting-started.html" />
+    <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+    <meta property="og:site_name" content="Anya &amp; Lolo" />
+    <meta name="twitter:site" content="@Anya_and_Lolo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Getting Started with RPG Maker: Beginner Basics | Anya &amp; Lolo" />
+    <meta name="twitter:description" content="Learn the RPG Maker basics: maps, events, variables, switches, common events, transfers, shops, save points and graphics." />
+    <meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
+    <link rel="canonical" href="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-getting-started.html" />
+    <meta name="theme-color" content="#f4184c" />
+    <link rel="icon" href="../favicon.ico?v=1" sizes="any">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico?v=1">
+    <link rel="apple-touch-icon" href="../icon.jpg" />
+    <link rel="stylesheet" href="../css/tutorial.css">
+    <script src="../js/tutorial.js" defer></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-127GP5TNHG"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-127GP5TNHG');
+    </script>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"What are the main parts of the RPG Maker editor?","acceptedAnswer":{"@type":"Answer","text":"The Map editor (draw your world with tilesets), the Database (actors, items, skills, enemies, system settings), the Event editor (the logic that makes things happen), and the Plugin Manager in MZ/MV for extra features."}},
+    {"@type":"Question","name":"How do I make my first map and playtest it?","acceptedAnswer":{"@type":"Answer","text":"Right-click the map list to create a map, set its size, then paint tiles from the tileset palette. Press the Play button (or F12 in MZ/MV) to playtest and walk around."}},
+    {"@type":"Question","name":"What is an Event in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"An Event is anything interactive placed on a map: an NPC, a door, a treasure chest, or hidden logic. You build events from a list of commands like Show Text, Control Variables and Conditional Branch."}},
+    {"@type":"Question","name":"What is a Variable?","acceptedAnswer":{"@type":"Answer","text":"A Variable stores a number you can change and check, such as gold, a quest step, or in-game time. Use Control Variables to set or change it, and a Conditional Branch to react to its value."}},
+    {"@type":"Question","name":"What is a Switch (and a Self Switch)?","acceptedAnswer":{"@type":"Answer","text":"A Switch is an ON/OFF flag used across the whole game, perfect for 'has the player done X yet?'. A Self Switch (A, B, C, D) is local to a single event, ideal for opened chests or one-time NPC reactions."}},
+    {"@type":"Question","name":"What is a Common Event?","acceptedAnswer":{"@type":"Answer","text":"A Common Event is reusable event logic stored in the Database that any map can call. Triggers can be None (called manually), Autorun, or Parallel. Use them to avoid copying the same logic onto many maps."}},
+    {"@type":"Question","name":"What do the event Triggers mean?","acceptedAnswer":{"@type":"Answer","text":"Action Button runs when the player faces the event and presses confirm. Player Touch runs when the player walks into it. Autorun takes over the screen and runs once (use a Self Switch to stop it). Parallel runs continuously in the background."}},
+    {"@type":"Question","name":"How do I send the player to another map?","acceptedAnswer":{"@type":"Answer","text":"Add an event with a Transfer Player command, choose the destination map and tile, then set the trigger to Action Button for doors or Player Touch for automatic transfer."}},
+    {"@type":"Question","name":"How do I make a shop or give the player an item?","acceptedAnswer":{"@type":"Answer","text":"Use the Shop Processing event command to open a shop, or Change Items / Change Gold / Change Weapons / Change Armor to give things directly inside an event."}},
+    {"@type":"Question","name":"How do I add a save point or stop the player from saving?","acceptedAnswer":{"@type":"Answer","text":"Use Change Save Access to enable or disable saving, and Open Save Screen to create a save point. You can also set save access in the System tab of the Database."}},
+    {"@type":"Question","name":"How do I make an NPC talk and offer choices?","acceptedAnswer":{"@type":"Answer","text":"Use Show Text for dialogue, and Show Choices to give the player options that branch the conversation. Combine with variables and switches to make NPCs remember what happened."}},
+    {"@type":"Question","name":"What is the Database?","acceptedAnswer":{"@type":"Answer","text":"The Database is where you define your game's content: Actors, Classes, Skills, Items, Weapons, Armors, Enemies, Troops, Tilesets, Common Events and System settings like the title screen and starting party."}},
+    {"@type":"Question","name":"How do I change a character's sprite or add my own graphics?","acceptedAnswer":{"@type":"Answer","text":"Drop your image files into the matching folder in the project's img folder (characters, tilesets, pictures, etc.), then pick them in the relevant Database tab or event command. Audio goes in the audio folder."}},
+    {"@type":"Question","name":"How do I change the title screen?","acceptedAnswer":{"@type":"Answer","text":"Open Database -> System and set the Title screen image and game title there. In MZ/MV you can also adjust title commands and music."}},
+    {"@type":"Question","name":"Is RPG Maker free, and how much does it cost?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker is paid software, but it is beginner-friendly, frequently discounted in Steam sales, and usually offers a free trial. Each version (MZ, MV, XP, VX Ace, 2000, 2003) is sold separately. A completely free alternative engine is the WOLF RPG Editor."}},
+    {"@type":"Question","name":"RPG Maker MZ vs MV: which one should I buy?","acceptedAnswer":{"@type":"Answer","text":"Both use JavaScript plugins. RPG Maker MZ is the newest, with a faster editor, layered map tiles and Effekseer battle animations. RPG Maker MV is older but has the largest plugin library and community. Pick MZ for the latest features, or MV for the widest selection of plugins and tutorials."}},
+    {"@type":"Question","name":"Can I sell a game made with RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Yes. With a valid RPG Maker license you can release and sell commercial games. Credit the engine as its license requires, and credit and properly license any third-party assets, music or plugins. The built-in RTP assets are licensed for use in games made with RPG Maker; always check each product's EULA."}},
+    {"@type":"Question","name":"How do I make a battle or add enemies in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Define enemies in Database -> Enemies, group them into Troops, then start a fight with the Battle Processing event command, or set random encounters in the map's properties. Your party (Actors, Classes, Skills) is configured in the Database."}},
+    {"@type":"Question","name":"How do I make a treasure chest that opens only once?","acceptedAnswer":{"@type":"Answer","text":"On the chest event, give the item with Change Items or Change Gold, show a message, then set Control Self Switch A to ON. Add a second event page conditioned on Self Switch A with an opened-chest graphic so it cannot be looted again."}},
+    {"@type":"Question","name":"How do I make a cutscene in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Use an Autorun event that runs Show Text, Set Movement Route, transfers and waits in order, then flip a Self Switch at the end with a blank second page so the cutscene plays once and does not freeze the game."}},
+    {"@type":"Question","name":"How do I make an NPC walk or move on its own?","acceptedAnswer":{"@type":"Answer","text":"Give the event an Autonomous Movement (Random, Approach, or Custom) in its settings, or script exact steps with the Set Movement Route command, which also moves the player or any event during cutscenes."}},
+    {"@type":"Question","name":"How do I export or deploy my finished RPG Maker game?","acceptedAnswer":{"@type":"Answer","text":"Use File -> Deployment and choose your target: Windows, macOS, Web (HTML5), or mobile (Android/iOS) in MZ and MV. The engine packages your project into a shareable build. Always test the deployed version before releasing."}},
+    {"@type":"Question","name":"Why does my Autorun or Parallel event freeze or keep repeating?","acceptedAnswer":{"@type":"Answer","text":"An Autorun event runs repeatedly and locks the game until its conditions change, so end it with a Self Switch and a blank second page. A Parallel event runs every frame, so keep it small, gate it behind a switch, and add a short Wait to avoid lag."}}
+  ]
+}
+</script>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://anya-and-lolo.github.io/"},
+    {"@type":"ListItem","position":2,"name":"RPG Maker Tutorials","item":"https://anya-and-lolo.github.io/rpg-maker-tutorials/"},
+    {"@type":"ListItem","position":3,"name":"Getting Started with RPG Maker","item":"https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-getting-started.html"}
+  ]
+}
+</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="topbar topbarV2">
+      <div class="topbarInner">
+
+        <a class="brandV2" href="../" aria-label="Anya & Lolo home">
+          <span class="brandText">
+            <span class="brandTitle">RPG Maker Resources</span>
+            <span class="brandSub">Tutorials • Game Development</span>
+          </span>
+        </a>
+
+        <nav class="nav navV2" aria-label="Primary">
+          <div class="navPrimary">
+
+            <a class="navlink navlinkV2" href="../">
+              <span class="navIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+              </span>
+              Home
+            </a>
+
+            <a class="navlink navlinkV2" href="../redeem.html">
+              <span class="navIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              </span>
+              Rewards
+            </a>
+
+            <span class="navBreak" aria-hidden="true"></span>
+
+            <div class="navDrop">
+              <button class="navlink navlinkV2 navDropBtn is-current" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="navIcon hatIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
+                </span>
+                Tutorials
+                <span class="navChev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="navDropMenu" role="menu" aria-label="Tutorials">
+                <a class="dropItem" role="menuitem" href="./index.html">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">RPG Maker Tutorials</span>
+                    <span class="dropSub">Step-by-step guides &amp; lessons</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3l3.8 3.3A8 8 0 0 1 12 5a8 8 0 0 1 4.2 1.3L20 3l-1 6.2A7 7 0 0 1 12 19a7 7 0 0 1-7-9.8z"/><path d="M9 11h.01M15 11h.01"/><path d="m12 14-1 1h2z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">WOLF RPG Editor Guide</span>
+                    <span class="dropSub">Complete guide &amp; resources</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <div class="navDrop">
+              <button class="navlink navlinkV2 navDropBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="navIcon handIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14"/><path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 13 6 6"/></svg>
+                </span>
+                Resources
+                <span class="navChev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="navDropMenu navDropMenu--right" role="menu" aria-label="Resources">
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">Smart Systems</span>
+                    <span class="dropSub">RPG Maker systems on itch.io</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.itch.io/rpg-maker-plugins-for-mz-mv" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5 L10.4 5 A2 2 0 1 1 13.6 5 L19 5 L19 10.4 A2 2 0 1 0 19 13.6 L19 19 L13.6 19 A2 2 0 1 1 10.4 19 L5 19 L5 13.6 A2 2 0 1 0 5 10.4 Z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">RPG Maker Plugins</span>
+                    <span class="dropSub">Plugins for RPG Maker MV/MZ</span>
+                  </span>
+                </a>
+                <a class="dropItem" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">
+                  <span class="dropIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+                  </span>
+                  <span class="dropText">
+                    <span class="dropTitle">Game Dev Blog</span>
+                    <span class="dropSub">Updates, tips &amp; devlogs</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main">
+      <section class="hero">
+
+        <div class="card">
+          <h1 class="heroH1">
+            <span class="heroH1Main">Getting Started with RPG Maker</span>
+            <span class="heroH1Sub">Beginner Basics</span>
+          </h1>
+          <p class="subtitle">New to RPG Maker? Here are clear, beginner-friendly answers to the building blocks every game uses, maps, events, variables, switches, and more. 💛</p>
+          <div class="tagRow">
+            <span class="tag">All RPG Maker Engines</span><span class="tag">Basics</span><span class="tag">Beginner</span>
+          </div>
+          <div class="miniRow center">
+            <a class="btn btnPrimary" href="#concepts">Jump to core concepts</a>
+            <a class="btn" href="./index.html"><span class="barr lft">➜</span> Back to Tutorials</a>
+          </div>
+        </div>
+
+        <div class="tutorialGrid">
+          <!-- LEFT: Content -->
+          <div>
+
+            <div class="card" id="intro" data-section-track="Welcome" style="margin-bottom:14px">
+              <div class="lead">RPG Maker lets you build a whole game by painting maps and placing <strong>events</strong>, no coding required to start. This page explains the words and tools you'll see everywhere, so the step-by-step tutorials make sense. Skim the categories below, or open any question.</div>
+              <div class="callout info">
+                <strong>Tip:</strong> these basics apply to every version (MZ, MV, XP, VX Ace, 2000, 2003). Menu names differ slightly between engines, but the ideas are the same. For the official reference, see the <a class="linkBrand" href="https://www.rpgmakerweb.com/" target="_blank" rel="noopener">RPG Maker help &amp; manuals at rpgmakerweb.com ↗</a>.
+              </div>
+            </div>
+
+            <!-- Category 1 -->
+            <div class="card" id="firststeps" data-section-track="First Steps" style="margin-top:14px">
+              <h2 class="sectionTitle">First steps</h2>
+              <div class="lead" style="margin-top:4px">Find your way around the editor.</div>
+              <div class="faqList">
+                <details class="faqItem">
+                  <summary>What are the main parts of the RPG Maker editor?</summary>
+                  <div class="faqAnswer">There are four you'll use constantly:
+                    <br>• <strong>Map editor</strong>: paint your world with tilesets.
+                    <br>• <strong>Database</strong>: define actors, items, skills, enemies and system settings.
+                    <br>• <strong>Event editor</strong>: the logic that makes things happen.
+                    <br>• <strong>Plugin Manager</strong> (MZ/MV): add extra features with <code>.js</code> plugins.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 540 116" width="100%" style="max-width:540px; height:auto" role="img" aria-label="The four main parts of RPG Maker as coloured blocks: Map editor, Database, Event editor, and Plugins.">
+                        <style>
+                          @keyframes mdepA{0%,4%{opacity:0;transform:translateY(8px)}11%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes mdepB{0%,12%{opacity:0;transform:translateY(8px)}19%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes mdepC{0%,20%{opacity:0;transform:translateY(8px)}27%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes mdepD{0%,28%{opacity:0;transform:translateY(8px)}35%,100%{opacity:1;transform:translateY(0)}}
+                          .mdep1,.mdep2,.mdep3,.mdep4{opacity:0}
+                          .mdep1{animation:mdepA 7s ease infinite}
+                          .mdep2{animation:mdepB 7s ease infinite}
+                          .mdep3{animation:mdepC 7s ease infinite}
+                          .mdep4{animation:mdepD 7s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.mdep1,.mdep2,.mdep3,.mdep4{opacity:1;animation:none}}
+                        </style>
+                        <g font-family="sans-serif" text-anchor="middle">
+                          <g class="mdep1">
+                            <path d="M80 10 H109 C109 -1 131 -1 131 10 H160 V35 C171 35 171 57 160 57 V82 H131 C131 71 109 71 109 82 H80 V57 C91 57 91 35 80 35 V10 Z" fill="rgba(46,184,92,0.13)" stroke="#7fd0a0" stroke-width="2" stroke-linejoin="round"/>
+                            <rect x="94" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
+                            <text x="120" y="58" font-size="34" font-weight="900" fill="#2eb85c">M</text>
+                            <text x="120" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Map editor</text>
+                          </g>
+                          <g class="mdep2">
+                            <path d="M180 10 H209 C209 -1 231 -1 231 10 H260 V35 C271 35 271 57 260 57 V82 H231 C231 71 209 71 209 82 H180 V57 C191 57 191 35 180 35 V10 Z" fill="rgba(86,167,254,0.13)" stroke="#9cc4f5" stroke-width="2" stroke-linejoin="round"/>
+                            <rect x="194" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
+                            <text x="220" y="58" font-size="34" font-weight="900" fill="#3b86d6">D</text>
+                            <text x="220" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Database</text>
+                          </g>
+                          <g class="mdep3">
+                            <path d="M280 10 H309 C309 -1 331 -1 331 10 H360 V35 C371 35 371 57 360 57 V82 H331 C331 71 309 71 309 82 H280 V57 C291 57 291 35 280 35 V10 Z" fill="rgba(244,24,76,0.10)" stroke="#f4a6ba" stroke-width="2" stroke-linejoin="round"/>
+                            <rect x="294" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
+                            <text x="320" y="58" font-size="34" font-weight="900" fill="#f4184c">E</text>
+                            <text x="320" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Event editor</text>
+                          </g>
+                          <g class="mdep4">
+                            <path d="M380 10 H409 C409 -1 431 -1 431 10 H460 V35 C471 35 471 57 460 57 V82 H431 C431 71 409 71 409 82 H380 V57 C391 57 391 35 380 35 V10 Z" fill="rgba(255,159,28,0.14)" stroke="#f3c889" stroke-width="2" stroke-linejoin="round"/>
+                            <rect x="394" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
+                            <text x="420" y="58" font-size="34" font-weight="900" fill="#e08a00">P</text>
+                            <text x="420" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Plugins</text>
+                          </g>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I make my first map and playtest it?</summary>
+                  <div class="faqAnswer">Right-click the map list (bottom-left) and choose New Map, set its size, then paint tiles from the palette on the left. Press the green <strong>Play</strong> button (or <code>F12</code> in MZ/MV) to playtest and walk around. Use the test play often, small and frequent is best.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>Do I need to know how to code?</summary>
+                  <div class="faqAnswer">No. You can build a complete game using only events (ready-made commands). Scripting and plugins are optional power-ups you can pick up later, our tutorials point out the few handy one-line scripts when they help.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 420 184" width="100%" style="max-width:420px; height:auto" role="img" aria-label="Event commands snap together like coding blocks: when talked to, say hello, give gold.">
+                        <style>
+                          @keyframes cbA{0%,4%{opacity:0;transform:translateY(8px)}11%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes cbB{0%,13%{opacity:0;transform:translateY(8px)}20%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes cbC{0%,22%{opacity:0;transform:translateY(8px)}29%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes cbD{0%,32%{opacity:0}40%,100%{opacity:1}}
+                          .cb1,.cb2,.cb3,.cbcap{opacity:0}
+                          .cb1{animation:cbA 7s ease infinite}
+                          .cb2{animation:cbB 7s ease infinite}
+                          .cb3{animation:cbC 7s ease infinite}
+                          .cbcap{animation:cbD 7s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.cb1,.cb2,.cb3,.cbcap{opacity:1;animation:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <g class="cb1">
+                            <rect x="50" y="14" width="300" height="44" rx="9" fill="#f7a83e"/>
+                            <rect x="84" y="55" width="36" height="11" rx="4" fill="#f7a83e"/>
+                            <text x="68" y="42" font-size="14" font-weight="800" fill="#fff">When player talks to me</text>
+                          </g>
+                          <g class="cb2">
+                            <rect x="50" y="64" width="300" height="44" rx="9" fill="#4d97e8"/>
+                            <rect x="84" y="105" width="36" height="11" rx="4" fill="#4d97e8"/>
+                            <text x="68" y="92" font-size="14" font-weight="800" fill="#fff">Say: "Hello there!"</text>
+                          </g>
+                          <g class="cb3">
+                            <rect x="50" y="114" width="300" height="44" rx="9" fill="#59c07a"/>
+                            <text x="68" y="142" font-size="14" font-weight="800" fill="#fff">Give the player 10 Gold</text>
+                          </g>
+                          <text class="cbcap" x="200" y="176" text-anchor="middle" font-size="11.5" fill="rgba(27,27,27,0.6)">You snap blocks together, no typing code.</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="card" id="concepts" data-section-track="Core Concepts" style="margin-top:14px">
+              <h2 class="sectionTitle">Core concepts (eventing)</h2>
+              <div class="lead" style="margin-top:4px">The vocabulary behind almost every tutorial.</div>
+
+              <div class="faqList">
+                <details class="faqItem">
+                  <summary>What is an Event?</summary>
+                  <div class="faqAnswer">An <strong>Event</strong> is anything interactive on a map: an NPC, a door, a chest, or invisible logic. You build it from a list of commands, like <code>Show Text</code>, <code>Control Variables</code>, and <code>Conditional Branch</code>, that run top to bottom when the event triggers.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 440 206" width="100%" style="max-width:440px; height:auto" role="img" aria-label="An event is a stack of commands that run from top to bottom.">
+                        <style>
+                          @keyframes evA{0%,5%{opacity:0;transform:translateY(6px)}12%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes evB{0%,14%{opacity:0;transform:translateY(6px)}21%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes evC{0%,23%{opacity:0;transform:translateY(6px)}30%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes evD{0%,32%{opacity:0}40%,100%{opacity:1}}
+                          .ev1{opacity:0;animation:evA 7s ease infinite}
+                          .ev2{opacity:0;animation:evB 7s ease infinite}
+                          .ev3{opacity:0;animation:evC 7s ease infinite}
+                          .evcap{opacity:0;animation:evD 7s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.ev1,.ev2,.ev3,.evcap{opacity:1;animation:none;transform:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <line x1="48" y1="50" x2="48" y2="180" stroke="rgba(244,24,76,0.3)" stroke-width="3"/>
+                          <rect x="40" y="12" width="332" height="40" rx="9" fill="#f4184c"/>
+                          <text x="58" y="38" font-size="14" font-weight="800" fill="#fff">Event: Talk to Guard</text>
+                          <g class="ev1">
+                            <rect x="56" y="58" width="316" height="38" rx="8" fill="rgba(86,167,254,0.16)" stroke="rgba(86,167,254,0.4)"/>
+                            <text x="72" y="82" font-size="13.5" font-weight="700" fill="#1b1b1b">Show Text: "Hi there!"</text>
+                          </g>
+                          <g class="ev2">
+                            <rect x="56" y="100" width="316" height="38" rx="8" fill="rgba(46,184,92,0.14)" stroke="rgba(46,184,92,0.4)"/>
+                            <text x="72" y="124" font-size="13.5" font-weight="700" fill="#1b1b1b">Control Variables: Gold += 10</text>
+                          </g>
+                          <g class="ev3">
+                            <rect x="56" y="142" width="316" height="38" rx="8" fill="rgba(255,159,28,0.16)" stroke="rgba(255,159,28,0.42)"/>
+                            <text x="72" y="166" font-size="13.5" font-weight="700" fill="#1b1b1b">Conditional Branch: if Has Key</text>
+                          </g>
+                          <text class="evcap" x="220" y="198" text-anchor="middle" font-size="11.5" fill="rgba(27,27,27,0.6)">An event runs its commands from top to bottom.</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>What is a Variable?</summary>
+                  <div class="faqAnswer">A <strong>Variable</strong> stores a <em>number</em> you can change and check, like gold, a quest step, or in-game time. Set it with <code>Control Variables</code>, and react to its value with a <code>Conditional Branch</code> (for example, "if QuestStep ≥ 2").
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 360 178" width="100%" style="max-width:360px; height:auto" role="img" aria-label="Example variables: Gold 250, Potions 5, QuestStep 2, and PlayTime 740 minutes.">
+                        <style>
+                          @keyframes vrA{0%,5%{clip-path:inset(0 100% 0 0)}18%,100%{clip-path:inset(0 0 0 0)}}
+                          @keyframes vrB{0%,22%{clip-path:inset(0 100% 0 0)}35%,100%{clip-path:inset(0 0 0 0)}}
+                          @keyframes vrC{0%,39%{clip-path:inset(0 100% 0 0)}52%,100%{clip-path:inset(0 0 0 0)}}
+                          @keyframes vrD{0%,56%{clip-path:inset(0 100% 0 0)}69%,100%{clip-path:inset(0 0 0 0)}}
+                          .vr1{clip-path:inset(0 100% 0 0);animation:vrA 5s ease infinite}
+                          .vr2{clip-path:inset(0 100% 0 0);animation:vrB 5s ease infinite}
+                          .vr3{clip-path:inset(0 100% 0 0);animation:vrC 5s ease infinite}
+                          .vr4{clip-path:inset(0 100% 0 0);animation:vrD 5s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.vr1,.vr2,.vr3,.vr4{clip-path:none;animation:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <rect x="8" y="8" width="344" height="162" rx="14" fill="rgba(244,24,76,0.04)" stroke="rgba(244,24,76,0.2)"/>
+                          <text x="24" y="32" font-size="14" font-weight="800" fill="#1b1b1b">Variables</text>
+                          <text x="106" y="32" font-size="12" fill="rgba(27,27,27,0.6)">(each one stores a number)</text>
+                          <g class="vr1">
+                            <rect x="20" y="44" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="62" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0001</text>
+                            <text x="92" y="62" font-size="13.5" font-weight="800" fill="#1b1b1b">Gold</text>
+                            <text x="328" y="62" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 250</text>
+                          </g>
+                          <g class="vr2">
+                            <rect x="20" y="76" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="94" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0002</text>
+                            <text x="92" y="94" font-size="13.5" font-weight="800" fill="#1b1b1b">Potions</text>
+                            <text x="328" y="94" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 5</text>
+                          </g>
+                          <g class="vr3">
+                            <rect x="20" y="108" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="126" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0003</text>
+                            <text x="92" y="126" font-size="13.5" font-weight="800" fill="#1b1b1b">QuestStep</text>
+                            <text x="328" y="126" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 2</text>
+                          </g>
+                          <g class="vr4">
+                            <rect x="20" y="140" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="158" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0004</text>
+                            <text x="92" y="158" font-size="13.5" font-weight="800" fill="#1b1b1b">PlayTime (mins)</text>
+                            <text x="328" y="158" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 740</text>
+                          </g>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>What is a Switch, and what's a Self Switch?</summary>
+                  <div class="faqAnswer">A <strong>Switch</strong> is a global ON/OFF flag, great for "has the player done X yet?". A <strong>Self Switch</strong> (A, B, C, D) belongs to a <em>single</em> event, perfect for an opened chest or a one-time reaction that shouldn't affect the rest of the game.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg id="switchToy" viewBox="0 0 520 256" width="100%" style="max-width:520px; height:auto" role="img" aria-label="Interactive switches: tap to turn global switches on or off, and self switches A, B, C, D on or off.">
+                        <g font-family="sans-serif">
+                          <rect x="8" y="8" width="300" height="222" rx="14" fill="rgba(86,167,254,0.06)" stroke="rgba(86,167,254,0.28)"/>
+                          <text x="24" y="34" font-size="14" font-weight="800" fill="#3b86d6">Switches</text>
+                          <text x="24" y="53" font-size="11.5" fill="rgba(27,27,27,0.62)">global, you name them</text>
+                          <text x="24" y="109" font-size="13" font-weight="700" fill="#1b1b1b">MetTheKing</text>
+                          <g class="tgl named is-on" role="button" tabindex="0" aria-label="MetTheKing switch" aria-pressed="true">
+                            <rect class="trk" x="230" y="92" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="243" cy="105" r="10" fill="#fff"/><text class="lblOff" x="267" y="109" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="247" y="109" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="24" y="157" font-size="13" font-weight="700" fill="#1b1b1b">BridgeFixed</text>
+                          <g class="tgl named auto" role="button" tabindex="0" aria-label="BridgeFixed switch" aria-pressed="false">
+                            <rect class="trk" x="230" y="140" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="243" cy="153" r="10" fill="#fff"/><text class="lblOff" x="267" y="157" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="247" y="157" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="24" y="205" font-size="13" font-weight="700" fill="#1b1b1b">IntroSeen</text>
+                          <g class="tgl named is-on" role="button" tabindex="0" aria-label="IntroSeen switch" aria-pressed="true">
+                            <rect class="trk" x="230" y="188" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="243" cy="201" r="10" fill="#fff"/><text class="lblOff" x="267" y="205" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="247" y="205" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <rect x="320" y="8" width="192" height="222" rx="14" fill="rgba(244,24,76,0.05)" stroke="rgba(244,24,76,0.25)"/>
+                          <text x="336" y="34" font-size="14" font-weight="800" fill="#f4184c">Self Switch</text>
+                          <text x="336" y="53" font-size="11.5" fill="rgba(27,27,27,0.62)">just A, B, C, D (one event)</text>
+                          <text x="344" y="100" font-size="14" font-weight="900" fill="#1b1b1b">A</text>
+                          <g class="tgl self is-on" role="button" tabindex="0" aria-label="Self Switch A" aria-pressed="true">
+                            <rect class="trk" x="430" y="83" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="443" cy="96" r="10" fill="#fff"/><text class="lblOff" x="464" y="100" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="446" y="100" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="344" y="138" font-size="14" font-weight="900" fill="rgba(27,27,27,0.5)">B</text>
+                          <g class="tgl self auto" role="button" tabindex="0" aria-label="Self Switch B" aria-pressed="false">
+                            <rect class="trk" x="430" y="121" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="443" cy="134" r="10" fill="#fff"/><text class="lblOff" x="464" y="138" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="446" y="138" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="344" y="176" font-size="14" font-weight="900" fill="rgba(27,27,27,0.5)">C</text>
+                          <g class="tgl self" role="button" tabindex="0" aria-label="Self Switch C" aria-pressed="false">
+                            <rect class="trk" x="430" y="159" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="443" cy="172" r="10" fill="#fff"/><text class="lblOff" x="464" y="176" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="446" y="176" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="344" y="214" font-size="14" font-weight="900" fill="rgba(27,27,27,0.5)">D</text>
+                          <g class="tgl self" role="button" tabindex="0" aria-label="Self Switch D" aria-pressed="false">
+                            <rect class="trk" x="430" y="197" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="443" cy="210" r="10" fill="#fff"/><text class="lblOff" x="464" y="214" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="446" y="214" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="260" y="251" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#f4184c">Tap a switch to flip it! 👆</text>
+                        </g>
+                      </svg>
+                      <script>
+                      (function(){
+                        function init(){
+                          document.querySelectorAll('.tgl').forEach(function(t){
+                            var root=t.ownerSVGElement || t.closest('svg');
+                            function flip(){
+                              var on=t.classList.toggle('is-on');
+                              t.setAttribute('aria-pressed', on?'true':'false');
+                              if(root){
+                                root.querySelectorAll('.tgl.auto').forEach(function(a){ a.classList.add('paused'); });
+                                clearTimeout(root._tglIdle);
+                                root._tglIdle=setTimeout(function(){
+                                  root.querySelectorAll('.tgl.auto').forEach(function(a){ a.classList.remove('paused'); });
+                                }, 3500);
+                              }
+                            }
+                            t.addEventListener('click', flip);
+                            t.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '||e.key==='Spacebar'){ e.preventDefault(); flip(); } });
+                          });
+                        }
+                        if(document.readyState!=='loading'){ init(); } else { document.addEventListener('DOMContentLoaded', init); }
+                      })();
+                      </script>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>What's the difference between variables and switches in RPG Maker?</summary>
+                  <div class="faqAnswer">
+                    In short: a <strong>variable</strong> stores a <em>number</em> you can change and compare (gold, a quest step, in-game time), while a <strong>switch</strong> is a simple <em>on/off flag</em> for yes-or-no states ("has the gate been opened?"). Reach for a variable whenever you need to count or track an amount, and a switch when something is either done or not done. Both are checked with a <code>Conditional Branch</code>.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 128" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A Variable stores a number; a Switch is an on/off flag.">
+                        <style>
+                          @keyframes dfType{0%{clip-path:inset(0 100% 0 0)}18%,100%{clip-path:inset(0 0 0 0)}}
+                          .dfGold{clip-path:inset(0 100% 0 0);animation:dfType 7s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.dfGold{clip-path:none;animation:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <rect x="6" y="14" width="244" height="102" rx="14" fill="rgba(244,24,76,0.06)" stroke="rgba(244,24,76,0.25)"/>
+                          <text x="128" y="40" text-anchor="middle" font-size="15" font-weight="800" fill="#1b1b1b">Variable</text>
+                          <rect x="40" y="54" width="176" height="34" rx="8" fill="#fff" stroke="rgba(20,20,20,0.18)"/>
+                          <text class="dfGold" x="128" y="76" text-anchor="middle" font-size="16" font-weight="900" fill="#f4184c">Gold = 250</text>
+                          <text x="128" y="104" text-anchor="middle" font-size="12.5" fill="rgba(27,27,27,0.62)">stores a number</text>
+                          <rect x="270" y="14" width="244" height="102" rx="14" fill="rgba(86,167,254,0.08)" stroke="rgba(86,167,254,0.3)"/>
+                          <text x="392" y="40" text-anchor="middle" font-size="15" font-weight="800" fill="#1b1b1b">Switch</text>
+                          <g class="tgl named auto" role="button" tabindex="0" aria-label="Switch" aria-pressed="false">
+                            <rect class="trk" x="364" y="57" width="54" height="28" rx="14" fill="rgba(27,27,27,0.18)"/>
+                            <circle class="knob" cx="377" cy="71" r="12" fill="#fff"/>
+                            <text class="lblOff" x="402" y="75" text-anchor="middle" font-size="11" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text>
+                            <text class="lblOn" x="380" y="75" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="392" y="104" text-anchor="middle" font-size="12.5" fill="rgba(27,27,27,0.62)">on / off flag</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>What is a Common Event?</summary>
+                  <div class="faqAnswer">A <strong>Common Event</strong> is reusable logic stored in the Database that any map can use. Its trigger can be <em>None</em> (you call it manually), <em>Autorun</em>, or <em>Parallel</em>. Common Events keep your project tidy, build something once instead of copying it onto every map.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 180" width="100%" style="max-width:520px; height:auto" role="img" aria-label="One Common Event can be reused by many maps.">
+                        <style>
+                          @keyframes cmeA{0%,3%{opacity:0;transform:scale(0.92)}11%,100%{opacity:1;transform:scale(1)}}
+                          @keyframes cmeB{0%,8%{clip-path:inset(0 100% 0 0)}22%,100%{clip-path:inset(0 0 0 0)}}
+                          @keyframes cmeC{0%,24%{clip-path:inset(0 100% 0 0)}38%,100%{clip-path:inset(0 0 0 0)}}
+                          @keyframes cmeD{0%,40%{clip-path:inset(0 100% 0 0)}54%,100%{clip-path:inset(0 0 0 0)}}
+                          .cme0{opacity:0;transform-box:fill-box;transform-origin:center;animation:cmeA 8s ease infinite}
+                          .cme1{clip-path:inset(0 100% 0 0);animation:cmeB 8s ease infinite}
+                          .cme2{clip-path:inset(0 100% 0 0);animation:cmeC 8s ease infinite}
+                          .cme3{clip-path:inset(0 100% 0 0);animation:cmeD 8s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.cme0{opacity:1;animation:none;transform:none}.cme1,.cme2,.cme3{clip-path:none;animation:none}}
+                        </style>
+                        <g class="cme0">
+                          <rect x="12" y="58" width="176" height="64" rx="14" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.35)"/>
+                          <text x="100" y="86" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#1b1b1b">Common Event</text>
+                          <text x="100" y="106" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="900" fill="#f4184c">Heal Party</text>
+                        </g>
+                        <g class="cme1">
+                          <path d="M188,90 C252,90 280,32 334,32" fill="none" stroke="rgba(27,27,27,0.28)" stroke-width="2"/>
+                          <rect x="330" y="12" width="180" height="40" rx="8" fill="#f4e6bf" stroke="#dcc78c"/>
+                          <text x="420" y="37" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1b1b1b">Town map</text>
+                        </g>
+                        <g class="cme2">
+                          <path d="M188,90 L334,90" fill="none" stroke="rgba(27,27,27,0.28)" stroke-width="2"/>
+                          <rect x="330" y="70" width="180" height="40" rx="8" fill="#cfc7bd" stroke="#a99f92"/>
+                          <text x="420" y="95" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1b1b1b">Cave map</text>
+                        </g>
+                        <g class="cme3">
+                          <path d="M188,90 C252,90 280,148 334,148" fill="none" stroke="rgba(27,27,27,0.28)" stroke-width="2"/>
+                          <rect x="330" y="128" width="180" height="40" rx="8" fill="#d8efc9" stroke="#a7d597"/>
+                          <text x="420" y="153" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1b1b1b">Field map</text>
+                        </g>
+                      </svg>
+                      <div class="muted" style="text-align:center; margin-top:6px">Build it once, use it on every map.</div>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>What do the event Triggers mean (Action Button, Player Touch, Autorun, Parallel)?</summary>
+                  <div class="faqAnswer">
+                    • <strong>Action Button</strong>: runs when the player faces it and presses confirm (NPCs, signs).
+                    <br>• <strong>Player Touch</strong>: runs when the player walks into it (traps, auto-doors).
+                    <br>• <strong>Autorun</strong>: takes over and runs once; stop it with a Self Switch so it doesn't freeze the game.
+                    <br>• <strong>Parallel</strong>: runs continuously in the background (clocks, weather). Keep these light to avoid lag.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 200" width="100%" style="max-width:520px; height:auto" role="img" aria-label="The four event triggers: Action Button, Player Touch, Autorun, and Parallel.">
+                        <style>
+                          @keyframes tgA{0%,5%{opacity:0;transform:translateY(8px)}14%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes tgB{0%,16%{opacity:0;transform:translateY(8px)}25%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes tgC{0%,27%{opacity:0;transform:translateY(8px)}36%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes tgD{0%,38%{opacity:0;transform:translateY(8px)}47%,100%{opacity:1;transform:translateY(0)}}
+                          .tg1{opacity:0;animation:tgA 5s ease infinite}
+                          .tg2{opacity:0;animation:tgB 5s ease infinite}
+                          .tg3{opacity:0;animation:tgC 5s ease infinite}
+                          .tg4{opacity:0;animation:tgD 5s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.tg1,.tg2,.tg3,.tg4{opacity:1;animation:none;transform:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <g class="tg1">
+                            <rect x="6" y="6" width="250" height="90" rx="12" fill="rgba(244,24,76,0.06)" stroke="rgba(244,24,76,0.22)"/>
+                            <text x="22" y="34" font-size="15" font-weight="800" fill="#f4184c">Action Button</text>
+                            <text x="22" y="56" font-size="12.5" fill="rgba(27,27,27,0.72)">Player faces it &amp; presses confirm</text>
+                            <text x="22" y="74" font-size="12" fill="rgba(27,27,27,0.55)">NPCs, signs, doors</text>
+                          </g>
+                          <g class="tg2">
+                            <rect x="264" y="6" width="250" height="90" rx="12" fill="rgba(86,167,254,0.07)" stroke="rgba(86,167,254,0.28)"/>
+                            <text x="280" y="34" font-size="15" font-weight="800" fill="#3b86d6">Player Touch</text>
+                            <text x="280" y="56" font-size="12.5" fill="rgba(27,27,27,0.72)">Player walks into it</text>
+                            <text x="280" y="74" font-size="12" fill="rgba(27,27,27,0.55)">traps, auto-doors</text>
+                          </g>
+                          <g class="tg3">
+                            <rect x="6" y="104" width="250" height="90" rx="12" fill="rgba(46,184,92,0.08)" stroke="rgba(46,184,92,0.3)"/>
+                            <text x="22" y="132" font-size="15" font-weight="800" fill="#2eb85c">Autorun</text>
+                            <text x="22" y="154" font-size="12.5" fill="rgba(27,27,27,0.72)">Runs once, takes over screen</text>
+                            <text x="22" y="172" font-size="12" fill="rgba(27,27,27,0.55)">cutscenes; stop with a Self Switch</text>
+                          </g>
+                          <g class="tg4">
+                            <rect x="264" y="104" width="250" height="90" rx="12" fill="rgba(255,159,28,0.10)" stroke="rgba(255,159,28,0.38)"/>
+                            <text x="280" y="132" font-size="15" font-weight="800" fill="#e08a00">Parallel</text>
+                            <text x="280" y="154" font-size="12.5" fill="rgba(27,27,27,0.72)">Runs every frame in background</text>
+                            <text x="280" y="172" font-size="12" fill="rgba(27,27,27,0.55)">clocks, weather; keep it light</text>
+                          </g>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>What is a Conditional Branch?</summary>
+                  <div class="faqAnswer">A <strong>Conditional Branch</strong> is an "if this, then that" check. It can test a Switch, a Variable, an item the player has, the gold amount, and more, with an optional <em>Else</em> path for when the condition is false.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 200" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A conditional branch checks a condition; if true it runs the Yes path, otherwise the Else path.">
+                        <defs>
+                          <marker id="ahGreen" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2eb85c"/></marker>
+                          <marker id="ahBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3b86d6"/></marker>
+                        </defs>
+                        <style>
+                          @keyframes cndY{0%,4%{opacity:0}10%,100%{opacity:1}}
+                          @keyframes cndG{0%,11%{opacity:0;transform:translateY(6px)}17%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes cndE{0%,18%{opacity:0}24%,100%{opacity:1}}
+                          @keyframes cndS{0%,26%{opacity:0;transform:translateY(6px)}32%,100%{opacity:1;transform:translateY(0)}}
+                          .cndY{opacity:0;animation:cndY 9s ease infinite}
+                          .cndG{opacity:0;animation:cndG 9s ease infinite}
+                          .cndE{opacity:0;animation:cndE 9s ease infinite}
+                          .cndS{opacity:0;animation:cndS 9s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.cndY,.cndG,.cndE,.cndS{opacity:1;animation:none;transform:none}}
+                        </style>
+                        <polygon points="260,10 366,60 260,110 154,60" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.35)"/>
+                        <text x="260" y="56" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="800" fill="#1b1b1b">If: Has Key?</text>
+                        <text x="260" y="76" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(27,27,27,0.6)">Conditional Branch</text>
+                        <g class="cndY">
+                          <path d="M222,92 L128,131" fill="none" stroke="rgba(46,184,92,0.7)" stroke-width="2.5" marker-end="url(#ahGreen)"/>
+                          <text x="150" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="900" fill="#2eb85c">YES</text>
+                        </g>
+                        <g class="cndG">
+                          <rect x="18" y="138" width="204" height="56" rx="12" fill="rgba(46,184,92,0.12)" stroke="rgba(46,184,92,0.4)"/>
+                          <text x="120" y="162" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#1b1b1b">Open the door</text>
+                          <text x="120" y="183" text-anchor="middle" font-family="sans-serif" font-size="13" fill="rgba(27,27,27,0.62)">…then do this</text>
+                        </g>
+                        <g class="cndE">
+                          <path d="M298,92 L392,131" fill="none" stroke="rgba(86,167,254,0.75)" stroke-width="2.5" marker-end="url(#ahBlue)"/>
+                          <text x="370" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="900" fill="#3b86d6">ELSE</text>
+                        </g>
+                        <g class="cndS">
+                          <rect x="298" y="138" width="204" height="56" rx="12" fill="rgba(86,167,254,0.10)" stroke="rgba(86,167,254,0.35)"/>
+                          <text x="400" y="162" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#1b1b1b">Show: "It's locked"</text>
+                          <text x="400" y="183" text-anchor="middle" font-family="sans-serif" font-size="13" fill="rgba(27,27,27,0.62)">…otherwise this</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="card" id="building" data-section-track="Building Your World" style="margin-top:14px">
+              <h2 class="sectionTitle">Building your world</h2>
+              <div class="lead" style="margin-top:4px">The everyday commands that make a game playable.</div>
+              <div class="faqList">
+                <details class="faqItem">
+                  <summary>How do I transfer the player to another map?</summary>
+                  <div class="faqAnswer">Add an event and give it a <strong>Transfer Player</strong> command, choose the destination map and tile, then set the trigger: <em>Action Button</em> for doors the player interacts with, or <em>Player Touch</em> for automatic transfer when they step on it.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A door event uses Transfer Player to move the player from one map to another.">
+                        <style>
+                          @keyframes trPlayer{0%,6%{opacity:1;transform:translateX(0)}26%{opacity:1;transform:translateX(98px)}31%,100%{opacity:0;transform:translateX(98px)}}
+                          @keyframes trArrowA{0%,32%{opacity:0;transform:translateX(0)}40%{opacity:1;transform:translateX(0)}46%{transform:translateX(6px)}52%{transform:translateX(0)}58%{transform:translateX(6px)}64%,100%{opacity:1;transform:translateX(0)}}
+                          @keyframes trDashA{0%,50%{opacity:0}56%,100%{opacity:1}}
+                          @keyframes trFillA{0%,60%{opacity:0;transform:scale(0)}74%,100%{opacity:1;transform:scale(1)}}
+                          .trPlayer{animation:trPlayer 7s ease infinite}
+                          .trArrow{opacity:0;animation:trArrowA 7s ease infinite}
+                          .trDash{opacity:0;animation:trDashA 7s ease infinite}
+                          .trFill{opacity:0;transform-box:fill-box;transform-origin:center;animation:trFillA 7s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.trPlayer,.trArrow,.trDash,.trFill{opacity:1;animation:none;transform:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <rect x="16" y="34" width="190" height="92" rx="12" fill="rgba(46,184,92,0.12)" stroke="rgba(46,184,92,0.35)"/>
+                          <text x="111" y="26" text-anchor="middle" font-size="12" font-weight="800" fill="#1b1b1b">Town map</text>
+                          <rect x="314" y="34" width="190" height="92" rx="12" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.35)"/>
+                          <text x="409" y="26" text-anchor="middle" font-size="12" font-weight="800" fill="#1b1b1b">Cave map</text>
+                          <rect x="150" y="58" width="22" height="34" rx="3" fill="#a06b3a" stroke="#7c4f25"/>
+                          <text x="161" y="110" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.62)">door</text>
+                          <text x="60" y="110" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.62)">player</text>
+                          <circle class="trPlayer" cx="60" cy="84" r="10" fill="#f4184c"/>
+                          <g class="trArrow">
+                            <line x1="226" y1="80" x2="282" y2="80" stroke="rgba(27,27,27,0.5)" stroke-width="3.5"/>
+                            <polygon points="282,72 296,80 282,88" fill="rgba(27,27,27,0.6)"/>
+                            <text x="260" y="68" text-anchor="middle" font-size="11" font-weight="800" fill="#f4184c">Transfer Player</text>
+                          </g>
+                          <g class="trDash">
+                            <circle cx="409" cy="84" r="12" fill="none" stroke="#f4184c" stroke-width="2" stroke-dasharray="3 3"/>
+                            <text x="409" y="110" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.62)">arrives here</text>
+                          </g>
+                          <circle class="trFill" cx="409" cy="84" r="9" fill="#f4184c"/>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I make a shop or give the player an item?</summary>
+                  <div class="faqAnswer">Use the <strong>Shop Processing</strong> event command to open a shop and list what's for sale. To hand things over directly inside an event, use <strong>Change Items</strong>, <strong>Change Weapons</strong>, <strong>Change Armor</strong>, or <strong>Change Gold</strong>.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 420 168" width="100%" style="max-width:420px; height:auto" role="img" aria-label="A shop window listing items with prices and the player's gold.">
+                        <style>
+                          @keyframes shpA{0%,5%{opacity:0;transform:translateY(6px)}12%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes shpB{0%,14%{opacity:0;transform:translateY(6px)}21%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes shpC{0%,23%{opacity:0;transform:translateY(6px)}30%,100%{opacity:1;transform:translateY(0)}}
+                          .shp1{opacity:0;animation:shpA 7s ease infinite}
+                          .shp2{opacity:0;animation:shpB 7s ease infinite}
+                          .shp3{opacity:0;animation:shpC 7s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.shp1,.shp2,.shp3{opacity:1;animation:none;transform:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <rect x="10" y="10" width="400" height="124" rx="10" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.45)" stroke-width="2"/>
+                          <text x="28" y="39" font-size="15" font-weight="800" fill="#1b1b1b">Shop</text>
+                          <text x="392" y="39" text-anchor="end" font-size="16" font-weight="900" fill="#b3791f">Gold: 500</text>
+                          <line x1="24" y1="50" x2="396" y2="50" stroke="rgba(20,20,20,0.15)"/>
+                          <g class="shp1">
+                            <text x="28" y="74" font-size="13" font-weight="700" fill="#1b1b1b">Potion</text>
+                            <text x="392" y="74" text-anchor="end" font-size="13" font-weight="800" fill="#1b1b1b">50</text>
+                          </g>
+                          <g class="shp2">
+                            <text x="28" y="98" font-size="13" font-weight="700" fill="#1b1b1b">Antidote</text>
+                            <text x="392" y="98" text-anchor="end" font-size="13" font-weight="800" fill="#1b1b1b">80</text>
+                          </g>
+                          <g class="shp3">
+                            <text x="28" y="122" font-size="13" font-weight="700" fill="#1b1b1b">Iron Sword</text>
+                            <text x="392" y="122" text-anchor="end" font-size="13" font-weight="800" fill="#1b1b1b">300</text>
+                          </g>
+                          <text x="210" y="156" text-anchor="middle" font-size="11.5" fill="rgba(27,27,27,0.6)">Shop Processing opens a buy/sell menu like this.</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I add a save point or stop the player from saving?</summary>
+                  <div class="faqAnswer">Use <strong>Change Save Access</strong> to enable or disable saving (handy during boss fights or cutscenes), and <strong>Open Save Screen</strong> to make a save point the player walks up to. You can also set save access in the <em>System</em> tab of the Database.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I make an NPC talk and offer choices?</summary>
+                  <div class="faqAnswer">Use <strong>Show Text</strong> for dialogue (add a face graphic for character portraits), and <strong>Show Choices</strong> to give the player options that branch the conversation. Want the NPC to remember the choice? Store it in a Switch or Variable. There's a full walkthrough in our <a href="./rpg-maker-relationship-system-mechanic.html">Relationship System tutorial</a>.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 206" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A dialogue box showing the NPC line and a choices window with three options.">
+                        <style>
+                          @keyframes npcCur{0%,40%{transform:translateX(0)}50%{transform:translateX(5px)}60%{transform:translateX(0)}70%{transform:translateX(5px)}80%,100%{transform:translateX(0)}}
+                          @keyframes npcType{0%{clip-path:inset(0 100% 0 0)}16%,100%{clip-path:inset(0 0 0 0)}}
+                          .npcCur{animation:npcCur 2.4s ease infinite}
+                          .npcType{clip-path:inset(0 100% 0 0);animation:npcType 6.5s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.npcCur{animation:none}.npcType{clip-path:none;animation:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <rect x="8" y="6" width="504" height="172" rx="14" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.3)"/>
+                          <rect x="318" y="18" width="186" height="92" rx="10" fill="#e9ebef" stroke="#b9c0cc" stroke-width="2"/>
+                          <text class="npcCur" x="330" y="48" font-size="22" font-weight="900" fill="#f4184c">&#9656;</text>
+                          <text x="352" y="46" font-size="13" font-weight="800" fill="#f4184c">You seem nice</text>
+                          <text x="352" y="70" font-size="13" font-weight="700" fill="#1b1b1b">Out of my way!</text>
+                          <text x="352" y="94" font-size="13" font-weight="700" fill="#1b1b1b">Nevermind...</text>
+                          <rect x="24" y="116" width="472" height="54" rx="10" fill="#e9ebef" stroke="#b9c0cc" stroke-width="2"/>
+                          <rect x="34" y="126" width="36" height="36" rx="6" fill="#56a7fe"/>
+                          <circle cx="52" cy="139" r="6" fill="#fff"/><path d="M40 158 a12 12 0 0 1 24 0 z" fill="#fff"/>
+                          <text x="86" y="140" font-size="14" font-weight="800" fill="#3b86d6">Guard Girl</text>
+                          <text class="npcType" x="86" y="161" font-size="15" font-weight="700" fill="#1b1b1b">Can I help you?</text>
+                          <text x="260" y="197" text-anchor="middle" font-size="12.5" fill="rgba(27,27,27,0.62)">Show Text for the line, Show Choices for the options.</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- Category 4 -->
+            <div class="card" id="graphics" data-section-track="Graphics and Database" style="margin-top:14px">
+              <h2 class="sectionTitle">Graphics, audio &amp; the Database</h2>
+              <div class="lead" style="margin-top:4px">Make the game look and sound like yours.</div>
+              <div class="faqList">
+                <details class="faqItem">
+                  <summary>What is the Database?</summary>
+                  <div class="faqAnswer">The <strong>Database</strong> is the heart of your project: Actors, Classes, Skills, Items, Weapons, Armors, Enemies, Troops, Tilesets, Common Events, and System settings (title screen, starting party, vocabulary). Most "where do I set this?" answers live here.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="The Database with tabs for Actors, Items, Skills, Enemies, Tilesets and System.">
+                        <style>
+                          @keyframes dbBlink{0%{opacity:0}2%{opacity:1}15%{opacity:1}17%{opacity:0}100%{opacity:0}}
+                          .db1,.db2,.db3,.db4,.db5,.db6{opacity:0;animation:dbBlink 6s linear infinite}
+                          .db2{animation-delay:1s}.db3{animation-delay:2s}.db4{animation-delay:3s}.db5{animation-delay:4s}.db6{animation-delay:5s}
+                          @media (prefers-reduced-motion: reduce){.db1{opacity:1}.db1,.db2,.db3,.db4,.db5,.db6{animation:none}}
+                        </style>
+                        <g font-family="sans-serif">
+                          <rect x="10" y="12" width="82" height="30" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text x="51" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="rgba(27,27,27,0.7)">Actors</text>
+                          <rect x="94" y="12" width="82" height="30" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text x="135" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="rgba(27,27,27,0.7)">Items</text>
+                          <rect x="178" y="12" width="82" height="30" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text x="219" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="rgba(27,27,27,0.7)">Skills</text>
+                          <rect x="262" y="12" width="82" height="30" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text x="303" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="rgba(27,27,27,0.7)">Enemies</text>
+                          <rect x="346" y="12" width="82" height="30" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text x="387" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="rgba(27,27,27,0.7)">Tilesets</text>
+                          <rect x="430" y="12" width="80" height="30" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text x="470" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="rgba(27,27,27,0.7)">System</text>
+                          <g class="db1"><rect x="10" y="10" width="82" height="32" rx="8" fill="#f4184c"/><text x="51" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">Actors</text></g>
+                          <g class="db2"><rect x="94" y="10" width="82" height="32" rx="8" fill="#f4184c"/><text x="135" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">Items</text></g>
+                          <g class="db3"><rect x="178" y="10" width="82" height="32" rx="8" fill="#f4184c"/><text x="219" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">Skills</text></g>
+                          <g class="db4"><rect x="262" y="10" width="82" height="32" rx="8" fill="#f4184c"/><text x="303" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">Enemies</text></g>
+                          <g class="db5"><rect x="346" y="10" width="82" height="32" rx="8" fill="#f4184c"/><text x="387" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">Tilesets</text></g>
+                          <g class="db6"><rect x="430" y="10" width="80" height="32" rx="8" fill="#f4184c"/><text x="470" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">System</text></g>
+                          <rect x="10" y="42" width="500" height="98" rx="10" fill="#fff" stroke="rgba(20,20,20,0.15)"/>
+                          <text x="28" y="68" font-size="13" font-weight="700" fill="#1b1b1b">001  Harold</text>
+                          <text x="28" y="92" font-size="13" font-weight="700" fill="#1b1b1b">002  Therese</text>
+                          <text x="28" y="116" font-size="13" font-weight="700" fill="#1b1b1b">003  Marsha</text>
+                          <text x="500" y="132" text-anchor="end" font-size="12.5" fill="rgba(27,27,27,0.6)">One place for all your game's content.</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I change a character's sprite or add my own graphics?</summary>
+                  <div class="faqAnswer">Place your image files into the matching folder inside your project's <code>img</code> folder (for example <code>img/characters</code>, <code>img/tilesets</code>, <code>img/pictures</code>), then select them in the relevant Database tab or event command (like Set Movement / event graphic). Keep to the engine's sprite-sheet sizes so they line up.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I add my own music and sound effects?</summary>
+                  <div class="faqAnswer">Drop audio files into the <code>audio</code> folder (<code>audio/bgm</code>, <code>audio/se</code>, etc.) in the supported format for your engine, then choose them with <strong>Play BGM</strong> or <strong>Play SE</strong>. Always check you have the right to use any music or art you didn't make.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I change the title screen and game title?</summary>
+                  <div class="faqAnswer">Open <strong>Database → System</strong> and set the Title screen image(s) and the game title. In MZ/MV you can also tweak the title command window and title music there.</div>
+                </details>
+              </div>
+            </div>
+
+            <!-- Category 5 -->
+            <div class="card" id="popular" data-section-track="Popular Questions" style="margin-top:14px">
+              <h2 class="sectionTitle">Popular beginner questions</h2>
+              <div class="lead" style="margin-top:4px">The things new RPG Maker devs search for most, answered.</div>
+              <div class="faqList">
+                <details class="faqItem">
+                  <summary>Is RPG Maker free, and how much does it cost?</summary>
+                  <div class="faqAnswer">RPG Maker is paid software, but it's beginner-friendly and frequently discounted in Steam sales, and there's usually a free trial so you can try before you buy. Each version (MZ, MV, XP, VX Ace, 2000, 2003) is sold separately. If you want a completely free engine, see our <a href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">WOLF RPG Editor guide</a>.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>RPG Maker MZ vs MV: which one should I buy?</summary>
+                  <div class="faqAnswer">Both are excellent and use JavaScript plugins. <strong>RPG Maker MZ</strong> is the newest, with a faster editor, layered map tiles and Effekseer battle animations. <strong>RPG Maker MV</strong> is a little older but has the largest plugin library and community. Want the latest? Pick MZ. Want the widest selection of existing plugins and tutorials? MV is still a great choice.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>Can I sell a game made with RPG Maker? Do I need to credit anyone?</summary>
+                  <div class="faqAnswer">Yes, with a valid RPG Maker license you can release and sell commercial games. Credit the engine as its license requires, and credit (and properly license) any third-party assets, music or plugins you use. The built-in RTP assets are licensed for use in games made with RPG Maker, always check each product's EULA.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I make a battle or add enemies in RPG Maker?</summary>
+                  <div class="faqAnswer">Define enemies in <strong>Database → Enemies</strong>, group them into <strong>Troops</strong>, then start a fight with the <strong>Battle Processing</strong> event command, or set random encounters in the map's properties. Your party's side (Actors, Classes, Skills) is configured in the Database too.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I make a treasure chest that opens only once?</summary>
+                  <div class="faqAnswer">On the chest event: play a sound, use <strong>Change Items</strong> or <strong>Change Gold</strong>, show a "You found…" message, then <strong>Control Self Switch A → ON</strong>. Add a second event page with the condition <em>Self Switch A is ON</em> and an opened-chest graphic, so it stays open and can't be looted again.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I make a cutscene in RPG Maker?</summary>
+                  <div class="faqAnswer">Use an <strong>Autorun</strong> event that runs your <strong>Show Text</strong>, <strong>Set Movement Route</strong>, transfers and waits in order, then flip a <strong>Self Switch</strong> at the end (with a blank second page) so the cutscene plays once and doesn't freeze the game.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I make an NPC walk or move on its own?</summary>
+                  <div class="faqAnswer">Give the event an <em>Autonomous Movement</em> (Random, Approach, or Custom) in its settings, or script exact steps with the <strong>Set Movement Route</strong> command. The same command moves the player or any event during cutscenes.</div>
+                </details>
+                <details class="faqItem">
+                  <summary>How do I export or deploy my finished RPG Maker game?</summary>
+                  <div class="faqAnswer">Use <strong>File → Deployment</strong> and pick your target: Windows, macOS, Web (HTML5), or mobile (Android/iOS) in MZ/MV. The engine packages your project into a shareable build, always test the deployed version before you release it.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="One project deploys to Windows, macOS, Web and Mobile.">
+                        <g font-family="sans-serif">
+                          <rect x="10" y="50" width="150" height="50" rx="12" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.3)"/>
+                          <text x="85" y="72" text-anchor="middle" font-size="13" font-weight="800" fill="#1b1b1b">Your project</text>
+                          <text x="85" y="90" text-anchor="middle" font-size="11" fill="rgba(27,27,27,0.6)">File → Deployment</text>
+                          <line x1="160" y1="75" x2="324" y2="25" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
+                          <line x1="160" y1="75" x2="324" y2="61" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
+                          <line x1="160" y1="75" x2="324" y2="97" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
+                          <line x1="160" y1="75" x2="324" y2="133" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
+                          <rect x="320" y="8" width="190" height="34" rx="9" fill="#eef5fd" stroke="#c3dbf8"/><text x="415" y="30" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Windows</text>
+                          <rect x="320" y="44" width="190" height="34" rx="9" fill="#f4f5f8" stroke="#d4d8e1"/><text x="415" y="66" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">macOS</text>
+                          <rect x="320" y="80" width="190" height="34" rx="9" fill="#f0f9ea" stroke="#c6e6b4"/><text x="415" y="102" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Web (HTML5)</text>
+                          <rect x="320" y="116" width="190" height="34" rx="9" fill="#f5effc" stroke="#ddccf0"/><text x="415" y="138" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Mobile (Android/iOS)</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+                <details class="faqItem">
+                  <summary>Why does my Autorun or Parallel event freeze or keep repeating?</summary>
+                  <div class="faqAnswer">An <strong>Autorun</strong> event runs over and over and locks the game until its conditions change, so end it by turning on a <strong>Self Switch</strong> and adding a blank second page. A <strong>Parallel</strong> event runs every frame in the background, so keep it small, gate it behind a switch, and add a short <code>Wait</code> to avoid lag. There's a worked example in our <a href="./rpg-maker-day-night-cycle-system.html">Day &amp; Night Cycle tutorial</a>.
+                    <div style="margin-top:12px; overflow-x:auto">
+                      <svg viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="An Autorun event runs Page 1 once, flips Self Switch A, then a blank Page 2 stops it.">
+                        <g font-family="sans-serif">
+                          <rect x="8" y="34" width="206" height="82" rx="14" fill="rgba(244,24,76,0.06)" stroke="rgba(244,24,76,0.25)"/>
+                          <text x="111" y="60" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Page 1 (Autorun)</text>
+                          <text x="111" y="82" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Runs once: set things up,</text>
+                          <text x="111" y="99" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">then Self Switch A = ON</text>
+                          <line x1="224" y1="75" x2="290" y2="75" stroke="rgba(27,27,27,0.5)" stroke-width="3.5"/>
+                          <polygon points="290,67 304,75 290,83" fill="rgba(27,27,27,0.6)"/>
+                          <text x="264" y="64" text-anchor="middle" font-size="11" font-weight="800" fill="#f4184c">Self Switch A</text>
+                          <rect x="314" y="34" width="200" height="82" rx="14" fill="rgba(86,167,254,0.07)" stroke="rgba(86,167,254,0.3)"/>
+                          <text x="414" y="60" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Page 2 (blank)</text>
+                          <text x="414" y="82" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Condition: Self Switch A ON</text>
+                          <text x="414" y="99" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Nothing runs, event stops</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <div class="card" id="next" data-section-track="Where Next" style="margin-top:14px">
+              <h2 class="sectionTitle">Ready for more?</h2>
+              <div class="lead" style="margin-top:6px">Now that the basics click, try a full step-by-step build:</div>
+              <div class="miniRow">
+                <a class="btn btnPrimary" href="./rpg-maker-day-night-cycle-system.html">Day &amp; Night Cycle (Beginner) <span class="barr">➜</span></a>
+                <a class="btn" href="./index.html"><span class="barr lft">➜</span> Back to Tutorials</a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT: TOC -->
+          <aside class="card tocCard">
+            <div class="toc">
+              <h2 class="sectionTitle" style="font-size:18px; margin:0">Quick jumps</h2>
+              <div class="lead" style="margin-top:4px">Sections on this page</div>
+              <div class="tocProgress" aria-hidden="true"><div class="tocProgressFill" id="tocProgressFill"></div></div>
+              <a href="javascript:void(0)" data-jump="intro"><span>Welcome</span><small>Overview</small></a>
+              <a href="javascript:void(0)" data-jump="firststeps"><span>First Steps</span><small>The editor</small></a>
+              <a href="javascript:void(0)" data-jump="concepts"><span>Core Concepts</span><small>Eventing</small></a>
+              <a href="javascript:void(0)" data-jump="building"><span>Building Your World</span><small>Commands</small></a>
+              <a href="javascript:void(0)" data-jump="graphics"><span>Graphics &amp; Database</span><small>Assets</small></a>
+              <a href="javascript:void(0)" data-jump="popular"><span>Popular Questions</span><small>Top searches</small></a>
+              <a href="javascript:void(0)" data-jump="next"><span>Ready for More?</span><small>Next steps</small></a>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Footer card -->
+        <div class="card footerV2">
+          <div class="footerHang">
+            <div class="footerHangIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></svg>
+            </div>
+            <div class="footerHangTitle">Want to hang out?</div>
+            <div class="footerHangSub">Join the <a href="https://discord.com/invite/4Pyb5SQTdn" target="_blank" rel="noopener">Discord</a>, or follow along on your favorite platform below.</div>
+          </div>
+
+          <div class="socialPanel">
+            <div class="socialGrid" aria-label="Social links">
+
+              <a class="socItem" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="youtube">
+                <span class="socBtn"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4.5" fill="#FF0000"/><path d="M10 8.6l6 3.4-6 3.4z" fill="#fff"/></svg></span>
+                <span class="socLabel">YouTube</span>
+              </a>
+
+              <a class="socItem" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="social_click" data-platform="itch">
+                <span class="socBtn itchBtn"><svg viewBox="11 12 26 24" fill="none"><path fill="#FF2449" d="M15.129 13.1335C14.0821 13.7551 12.0195 16.1245 12 16.746V17.7745C12 19.0783 13.2188 20.2243 14.3253 20.2243C15.6539 20.2243 16.761 19.1231 16.761 17.8162C16.761 19.1231 17.8301 20.2243 19.1589 20.2243C20.4877 20.2243 21.5225 19.1231 21.5225 17.8162C21.5225 19.1231 22.6592 20.2243 23.9879 20.2243H24.0121C25.3409 20.2243 26.4776 19.1231 26.4776 17.8162C26.4776 19.1231 27.5124 20.2243 28.8411 20.2243C30.1699 20.2243 31.239 19.1231 31.239 17.8162C31.239 19.1231 32.3462 20.2243 33.6747 20.2243C34.7812 20.2243 36 19.0785 36 17.7745V16.746C35.9805 16.1244 33.9179 13.7549 32.8713 13.1335C29.6175 13.0193 27.3618 12.9995 23.9999 13C20.6381 13.0003 16.055 13.0528 15.1287 13.1335H15.129ZM21.5057 19.6102C21.3786 19.8317 21.2212 20.0343 21.0381 20.2122C20.5365 20.7026 19.849 21.0067 19.0911 21.0067C18.362 21.0074 17.6611 20.7218 17.1399 20.2119C16.9582 20.0339 16.8201 19.8435 16.6936 19.6219L16.6931 19.6223C16.5666 19.8443 16.3906 20.0345 16.2085 20.2127C15.6873 20.7223 14.9863 21.0076 14.2573 21.007C14.166 21.007 14.0709 20.9818 13.9941 20.9554C13.8872 22.0677 13.8422 23.1306 13.8263 23.9057L13.8261 23.9101C13.8241 24.3037 13.8221 24.6273 13.8202 25.077C13.8407 27.4107 13.589 32.6411 14.8491 33.9262C16.8019 34.3815 20.395 34.5888 23.9998 34.5901H24.0004C27.6051 34.5888 31.1982 34.3815 33.1509 33.9262C34.4111 32.641 34.1594 27.4106 34.18 25.0769C34.1778 24.6273 34.176 24.3037 34.1741 23.91L34.1737 23.9056C34.158 23.1303 34.1129 22.0674 34.006 20.9551C33.9292 20.9815 33.8342 21.0068 33.7428 21.0068C33.0138 21.0074 32.3128 20.7221 31.7916 20.2125C31.6095 20.0343 31.4334 19.8442 31.307 19.6221L31.3064 19.6217C31.1798 19.8433 31.0418 20.0337 30.8601 20.2117C30.339 20.7215 29.6381 21.0071 28.909 21.0063C28.1512 21.0063 27.4636 20.7022 26.962 20.2119C26.7789 20.034 26.6215 19.8313 26.4945 19.6099C26.3688 19.8311 26.2129 20.0337 26.0312 20.2119C25.51 20.7217 24.809 21.0072 24.0799 21.0064C24.0535 21.0064 24.0271 21.0053 24.0007 21.0045H24C23.9736 21.0053 23.9472 21.0064 23.9205 21.0064C23.1914 21.0072 22.4903 20.7218 21.9691 20.212C21.7876 20.0338 21.6316 19.8311 21.506 19.61L21.5057 19.6102ZM19.5019 22.2013L19.5017 22.2022H19.5032C20.2967 22.2038 21.0016 22.2022 21.875 23.1555C22.5625 23.0834 23.2808 23.0474 23.9997 23.0485H24.0003C24.7192 23.0475 25.4375 23.0834 26.1251 23.1555C26.9985 22.2021 27.7034 22.2037 28.4969 22.2022H28.4983L28.4981 22.2013C28.8731 22.2013 30.3728 22.2013 31.4178 25.1362L32.5402 29.1626C33.372 32.158 32.2739 32.2313 30.9042 32.2338C28.8729 32.1583 27.7481 30.6831 27.7481 29.2081C26.6237 29.3924 25.312 29.4846 24.0002 29.4846H23.9996C22.6878 29.4846 21.376 29.3924 20.2517 29.2081C20.2517 30.6831 19.1269 32.1583 17.0957 32.2338C15.7259 32.2313 14.6279 32.1581 15.4597 29.1626L16.5824 25.1363C17.6274 22.2014 19.1271 22.2014 19.5021 22.2014L19.5019 22.2013ZM23.9997 24.5078V24.5084C23.9978 24.5103 21.8613 26.4725 21.4772 27.1703L22.8763 27.1143V28.3344C22.8763 28.3915 23.4377 28.3682 23.9997 28.3422H24.0003C24.5622 28.3682 25.1236 28.3915 25.1236 28.3344V27.1143L26.5227 27.1703C26.1385 26.4725 24.0002 24.5084 24.0002 24.5084V24.5078L23.9999 24.508L23.9997 24.5078Z"/></svg></span>
+                <span class="socLabel">Itch</span>
+              </a>
+
+              <a class="socItem" href="https://www.patreon.com/anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="patreon">
+                <span class="socBtn patreonBtn"><svg viewBox="0 0 38 42"><circle cx="24.5" cy="14" r="13" fill="#111"/><rect x="2" y="1" width="7.5" height="40" fill="#111"/></svg></span>
+                <span class="socLabel">Patreon</span>
+              </a>
+
+              <a class="socItem" href="https://www.instagram.com/anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="instagram">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="#E1306C" stroke="none"/></svg></span>
+                <span class="socLabel">Insta</span>
+              </a>
+
+              <a class="socItem" href="https://tiktok.com/@anya_and_lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="tiktok">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#111"><path d="M16.5 3c.4 2 1.7 3.4 3.5 3.6V9c-1.3 0-2.5-.4-3.5-1.1v6.4c0 3.1-2.3 5.3-5.2 5.3S6 17.4 6 14.5s2.3-5.2 5.2-5.2c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-1.5 0-2.6 1.2-2.6 2.7s1.1 2.7 2.6 2.7 2.7-1.2 2.7-2.8V3z"/></svg></span>
+                <span class="socLabel">TikTok</span>
+              </a>
+
+              <a class="socItem" href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener" data-track="social_click" data-platform="facebook">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.8 3.7-3.8 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg></span>
+                <span class="socLabel">Facebook</span>
+              </a>
+
+              <a class="socItem" href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener" data-track="social_click" data-platform="bluesky">
+                <span class="socBtn blueskyBtn"><svg viewBox="0 0 24 24" fill="#1185FE"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.479 0-.689-.139-1.86-.902-2.203-.659-.299-1.664-.621-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></span>
+                <span class="socLabel">Bluesky</span>
+              </a>
+
+              <a class="socItem" href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="x">
+                <span class="socBtn"><svg viewBox="0 0 24 24" fill="#111"><path d="M17.7 3h2.7l-5.9 6.8L21.5 21h-5.4l-4.2-5.6L7 21H4.3l6.3-7.3L3 3h5.5l3.8 5.1L17.7 3zm-1 16.4h1.5L8 4.5H6.4l10.3 14.9z"/></svg></span>
+                <span class="socLabel">X</span>
+              </a>
+
+              <a class="socItem" href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener" data-track="social_click" data-platform="pixiv">
+                <span class="socBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0096FA"/><text x="12" y="16.5" font-size="12" font-weight="900" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif">P</text></svg></span>
+                <span class="socLabel">Pixiv</span>
+              </a>
+
+              <a class="socItem" href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener" data-track="social_click" data-platform="booth">
+                <span class="socBtn"><img src="../images/booth.ico" alt="" width="30" height="30" loading="lazy"></span>
+                <span class="socLabel">Booth</span>
+              </a>
+
+            </div>
+          </div>
+
+          <div class="footTP"><a href="../terms.html">Terms</a><span class="sep">|</span><a href="../privacy.html">Privacy</a><span class="sep">|</span><a href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener">Contact</a></div>
+          <div class="footCopy">© <span id="year"></span> Anya &amp; Lolo</div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

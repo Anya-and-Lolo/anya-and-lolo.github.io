@@ -50,13 +50,10 @@
   "mainEntity": [
     {"@type":"Question","name":"Which RPG Maker should a beginner choose?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker MZ is the newest and most beginner-friendly. MV is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks."}},
     {"@type":"Question","name":"How do I make a day and night cycle in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Track in-game time with a variable in a Parallel Process common event, then change the screen tint as the time value changes. We have a full step-by-step guide that works in MZ, MV, XP, VX Ace, 2000, and 2003."}},
-    {"@type":"Question","name":"How do I send the player to another map?","acceptedAnswer":{"@type":"Answer","text":"Add an event and give it a 'Transfer Player' command, choose the destination map and tile, and set the trigger: Action Button for doors the player interacts with, or Player Touch for automatic transfer."}},
     {"@type":"Question","name":"My RPG Maker game is lagging, how do I fix it?","acceptedAnswer":{"@type":"Answer","text":"The most common cause is too many Parallel Process events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into Common Events."}},
-    {"@type":"Question","name":"How do I make a shop or have an NPC give an item?","acceptedAnswer":{"@type":"Answer","text":"Use the 'Shop Processing' event command for shops, or 'Change Items' and 'Change Gold' to give items or money directly inside an event."}},
     {"@type":"Question","name":"How do I install a plugin in RPG Maker MZ or MV?","acceptedAnswer":{"@type":"Answer","text":"Put the plugin's .js file in your project's js/plugins folder, open the Plugin Manager, add the plugin, set it to ON, and configure its parameters. Always read the plugin's terms of use."}},
     {"@type":"Question","name":"Can I use RPG Maker's built-in (RTP) assets in other engines?","acceptedAnswer":{"@type":"Answer","text":"Generally no. Default RPG Maker assets are licensed for use in games made with RPG Maker. Check the specific product's license (EULA) before using them in other engines, including WOLF RPG Editor."}},
     {"@type":"Question","name":"What's the difference between RPG Maker and WOLF RPG Editor?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker is a paid, beginner-friendly commercial engine. WOLF RPG Editor (Woditor) is a free, more advanced Japanese engine with deeper customization. We maintain a full English WOLF RPG Editor guide if you'd like to try it."}},
-    {"@type":"Question","name":"How do I add a save point or stop the player from saving?","acceptedAnswer":{"@type":"Answer","text":"Use the 'Change Save Access' event command to enable or disable saving, and create a save point with the 'Open Save Screen' command. You can also control save access in the System settings."}},
     {"@type":"Question","name":"What are the most common RPG Maker beginner mistakes?","acceptedAnswer":{"@type":"Answer","text":"Overusing Parallel Process events, not keeping backups or a test project, and hard-coding everything instead of using Common Events. Fixing these early saves a lot of debugging."}}
   ]
 }
@@ -140,7 +137,16 @@
                 </span>
                 <span class="dropText">
                   <span class="dropTitle">Smart Systems</span>
-                  <span class="dropSub">Plugins &amp; systems on itch.io</span>
+                  <span class="dropSub">RPG Maker systems on itch.io</span>
+                </span>
+              </a>
+              <a class="dropItem" role="menuitem" href="https://anya-and-lolo.itch.io/rpg-maker-plugins-for-mz-mv" target="_blank" rel="noopener">
+                <span class="dropIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5 L10.4 5 A2 2 0 1 1 13.6 5 L19 5 L19 10.4 A2 2 0 1 0 19 13.6 L19 19 L13.6 19 A2 2 0 1 1 10.4 19 L5 19 L5 13.6 A2 2 0 1 0 5 10.4 Z"/></svg>
+                </span>
+                <span class="dropText">
+                  <span class="dropTitle">RPG Maker Plugins</span>
+                  <span class="dropSub">Plugins for RPG Maker MV/MZ</span>
                 </span>
               </a>
               <a class="dropItem" role="menuitem" href="https://anyalolo.substack.com/" target="_blank" rel="noopener">
@@ -174,13 +180,13 @@
 		  <button class="btn tagBtn" type="button" data-tag="rm2k">2000</button>
 		  <button class="btn tagBtn" type="button" data-tag="basics">Basics</button>
 		  <button class="btn tagBtn" type="button" data-tag="beginner">Beginner</button>
-		  <button class="btn tagBtn" type="button" data-tag="intermediate">Mid-level</button>
+		  <button class="btn tagBtn" type="button" data-tag="mid-level">Mid-level</button>
 		  <button class="btn tagBtn" type="button" data-tag="advanced">Advanced</button>
 		</div>
 
         <div class="miniRow" style="justify-content:center;">
           <a class="btn btnPrimary" href="#start-here" data-track="jump_click" data-track-label="Hero Start Here">Start Here</a>
-          <a class="btn" href="#faq" data-track="jump_click" data-track-label="Hero FAQ"><span class="linkBrand">RPG Maker FAQ →</span></a>
+          <a class="btn" href="#faq" data-track="jump_click" data-track-label="Hero FAQ"><span class="linkBrand">RPG Maker FAQ <span class="barr">➜</span></span></a>
         </div>
       </div>
 
@@ -198,7 +204,7 @@
               <div>
                 <div class="stepTitle">RPG Maker Day & Night Cycle Tutorial (Beginner)</div>
                 <p>
-                  This easy tutorial is not hard to follow and it has an easy-to-follow video too!  
+                  This tutorial is really easy, and it even comes with a beginner‑friendly video!
                 </p>
               </div>
             </div>
@@ -222,7 +228,7 @@
               <div>
                 <div class="stepTitle">Watch Videos</div>
                 <p>
-                  Some tutorials were made as videos, check out my YouTube channel for more!
+                  Some tutorials were made as videos, check out <u>my YouTube channel</u> for more!
                 </p>
               </div>
             </div>
@@ -232,6 +238,20 @@
               <strong>Got a tutorial request?</strong> <a href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener" class="linkBrand">Just tell me what you’re after</a>, and I’ll format it into a clean page like this (plus do a video when I have a chance!)
             </div>
           </div>
+
+          <!-- Getting Started (Basics) -->
+		<div class="card tutorialCard" id="rpg-maker-basics" data-section-track="Getting Started" data-tags="mz mv xp vx vxace rm2k rm2k3 basics" style="margin-top:14px;">
+		  <h2 class="sectionTitle">RPG Maker Basics</h2>
+		  <div class="lead">Brand new to RPG Maker? Learn the building blocks every game uses, maps, events, variables, switches, common events, transfers, shops, save points and graphics. 💛</div>
+
+            <div class="callout">
+              <strong>Perfect first stop.</strong> Clear, beginner-friendly answers grouped by topic, so the step-by-step tutorials make sense.
+            </div>
+
+            <div class="miniRow">
+              <a class="btn btnPrimary" href="./rpg-maker-getting-started.html" data-track="read_tutorial" data-track-label="Getting Started Read">Learn The Basics <span class="barr">➜</span></a>
+            </div>
+		</div>
 
           <!--  Tutorial: Day & Night -->
 		<div class="card tutorialCard" id="day-night" data-section-track="Day Night Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 beginner" style="margin-top:14px;">
@@ -243,15 +263,15 @@
 		  </div>
 
             <div class="miniRow">
-              <a class="btn btnPrimary" href="./rpg-maker-day-night-cycle-system.html" data-track="read_tutorial" data-track-label="Day Night Read Full Tutorial">Read Full Tutorial</a>
+              <a class="btn btnPrimary" href="./rpg-maker-day-night-cycle-system.html" data-track="read_tutorial" data-track-label="Day Night Read Full Tutorial">Read Full Tutorial <span class="barr">➜</span></a>
               <a class="btn" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Day Night Download System">
-                <span class="linkBrand">Download Day/Night System →</span>
+                <span class="linkBrand">Download Day/Night System <span class="arr">↗</span></span>
               </a>
             </div>
 		</div>
 		  
           <!-- Tutorial: Fishing Mini-Game -->
-		<div class="card tutorialCard" id="fishing" data-section-track="Fishing Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 intermediate" style="margin-top:14px;">
+		<div class="card tutorialCard" id="fishing" data-section-track="Fishing Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 mid-level" style="margin-top:14px;">
 		  <h2 class="sectionTitle">RPG Maker Fishing Mini-Game Tutorial (Mid-level)</h2>
 		  <div class="lead">Build a relaxing, expandable fishing system with random catches and item rewards. 🎣</div>
 
@@ -260,15 +280,15 @@
 		  </div>
 
             <div class="miniRow">
-              <a class="btn btnPrimary" href="./rpg-maker-fishing-minigame-system.html" data-track="read_tutorial" data-track-label="Fishing Read Full Tutorial">Read Full Tutorial</a>
+              <a class="btn btnPrimary" href="./rpg-maker-fishing-minigame-system.html" data-track="read_tutorial" data-track-label="Fishing Read Full Tutorial">Read Full Tutorial <span class="barr">➜</span></a>
               <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Fishing Download System">
-                <span class="linkBrand">Download Fishing System →</span>
+                <span class="linkBrand">Download Fishing System <span class="arr">↗</span></span>
               </a>
             </div>
 		</div>
 
           <!-- Tutorial: Relationship System -->
-		<div class="card tutorialCard" id="relationship" data-section-track="Relationship Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 intermediate" style="margin-top:14px;">
+		<div class="card tutorialCard" id="relationship" data-section-track="Relationship Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 mid-level" style="margin-top:14px;">
 		  <h2 class="sectionTitle">RPG Maker Relationship System Tutorial (Mid-level)</h2>
 		  <div class="lead">Track Trust, Friendship and Romance shaped by the player's dialogue choices. 💖</div>
 
@@ -277,9 +297,9 @@
 		  </div>
 
             <div class="miniRow">
-              <a class="btn btnPrimary" href="./rpg-maker-relationship-system-mechanic.html" data-track="read_tutorial" data-track-label="Relationship Read Full Tutorial">Read Full Tutorial</a>
+              <a class="btn btnPrimary" href="./rpg-maker-relationship-system-mechanic.html" data-track="read_tutorial" data-track-label="Relationship Read Full Tutorial">Read Full Tutorial <span class="barr">➜</span></a>
               <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Relationship Download System">
-                <span class="linkBrand">Download Relationship System →</span>
+                <span class="linkBrand">Download Relationship System <span class="arr">↗</span></span>
               </a>
             </div>
 		</div>
@@ -287,7 +307,7 @@
           <!-- Tutorial: Advanced / Pro (Club-locked teaser) -->
 		<div class="card tutorialCard" id="advanced-pro" data-section-track="Advanced Pro" data-tags="mz mv xp vx vxace rm2k rm2k3 advanced" style="margin-top:14px;">
 		  <h2 class="sectionTitle">🔒 RPG Maker Day &amp; Night Cycle Pro (Advanced)</h2>
-		  <div class="lead">Take the system further: world-map time, a picture-based HUD, AM/PM display, smart performance systems and time-reactive events. 🌙</div>
+		  <div class="lead">Take the system further: world-map time, a picture-based HUD, AM/PM display, smart performance and time-reactive events. 🌙</div>
 
 		  <div class="imageCard">
 			<img src="./images/rpg-maker-day-night-cycle-pro-banner.png" width="1104" height="622" loading="lazy" alt="RPG Maker Day & Night Game Time System Pro title screen preview">
@@ -298,19 +318,19 @@
             </div>
 
             <div class="miniRow">
-              <a class="btn btnPrimary" href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener" data-track="join_club" data-track-label="Advanced Card Join Club">Join the Club for free →</a>
+              <a class="btn btnPrimary" href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener" data-track="join_club" data-track-label="Advanced Card Join Club">Join the Club for free <span class="barr">➜</span></a>
             </div>
 		</div>
 
           <!-- FAQ -->
-		  <div class="card tutorialCard" id="faq" data-section-track="FAQ" data-tags="mz mv xp vx vxace rm2k rm2k3 basics beginner" style="margin-top:14px;">
+		  <div class="card tutorialCard" id="faq" data-section-track="FAQ" data-tags="mz mv xp vx vxace rm2k rm2k3 basics beginner mid-level" style="margin-top:14px;">
             <h2 class="sectionTitle">RPG Maker FAQ &amp; Troubleshooting</h2>
             <div class="lead">Quick answers to the questions new RPG Maker devs ask most: versions, eventing, lag, plugins, and the mistakes that trip everyone up.</div>
 
             <div class="faqList">
 
               <details class="faqItem">
-                <summary>Which RPG Maker should a beginner choose?</summary>
+                <summary>Which RPG Maker version should I choose?</summary>
                 <div class="faqAnswer">RPG Maker <strong>MZ</strong> is the newest and most beginner-friendly; <strong>MV</strong> is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks.</div>
               </details>
 
@@ -320,18 +340,8 @@
               </details>
 
               <details class="faqItem">
-                <summary>How do I send the player to another map?</summary>
-                <div class="faqAnswer">Add an event and give it a <strong>Transfer Player</strong> command, choose the destination map and tile, then set the trigger: <em>Action Button</em> for doors the player interacts with, or <em>Player Touch</em> for automatic transfer.</div>
-              </details>
-
-              <details class="faqItem">
                 <summary>My game is lagging, how do I fix it?</summary>
-                <div class="faqAnswer">The most common cause is too many <strong>Parallel Process</strong> events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into <strong>Common Events</strong>.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>How do I make a shop or have an NPC give an item?</summary>
-                <div class="faqAnswer">Use the <strong>Shop Processing</strong> event command for shops, or <strong>Change Items</strong> / <strong>Change Gold</strong> to give items or money directly inside an event.</div>
+                <div class="faqAnswer">The most common cause is too many <strong>Parallel Process</strong> events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into <strong>Common Events</strong>. For frame-perfect optimization (only updating things when a value actually changes), I explain a full smart system in the <a href="#advanced-pro">Pro version of the Day &amp; Night tutorial</a>.</div>
               </details>
 
               <details class="faqItem">
@@ -350,13 +360,8 @@
               </details>
 
               <details class="faqItem">
-                <summary>How do I add a save point or stop the player from saving?</summary>
-                <div class="faqAnswer">Use the <strong>Change Save Access</strong> event command to enable or disable saving, and create a save point with the <strong>Open Save Screen</strong> command. You can also control save access in the System settings.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>What are the most common beginner mistakes?</summary>
-                <div class="faqAnswer">Overusing Parallel Process events, not keeping backups or a test project, and hard-coding everything instead of using Common Events. Keep parallel events small and gated, sandbox in a test project, and move repeatable logic into Common Events.</div>
+                <summary>What do beginners usually struggle with?</summary>
+                <div class="faqAnswer">Most new devs run into the same hurdles, the big three are: skipping backups or a test project, using too many Parallel Process events, hard-coding logic or duplicating events instead of reusing Common Events. You can avoid these easily by keeping a small sandbox project, gating your Parallel events, and moving repeatable logic into Common Events so your project stays clean and easy to manage. Brand new? Our <a href="./rpg-maker-getting-started.html">Getting Started with RPG Maker</a> page explains all the basics, variables, switches, common events and more, in plain language.</div>
               </details>
 
             </div>
@@ -374,6 +379,11 @@
         <aside class="card toc tocCard" aria-label="Tutorial table of contents">
           <h2 class="sectionTitle" style="font-size:18px;">Quick jumps</h2>
           <div class="lead">Find the sections on this page</div>
+
+          <a href="javascript:void(0)" data-jump="rpg-maker-basics">
+            <span>RPG Maker Basics</span>
+            <small>Basics</small>
+          </a>
 
           <a href="javascript:void(0)" data-jump="start-here">
             <span>Start Here</span>
@@ -406,12 +416,12 @@
           </a>
 
           <div class="subcard" style="margin-top:12px;">
-            <strong>Quick Tags</strong>
+            <strong>Quick Tags (Filters)</strong>
 			<div id="filterStatus" class="muted" style="text-align:left;margin-top:10px;"></div>
 			<div class="miniRow" id="tagFilters" style="margin-top:10px;">
 			<button class="btn tagBtn tagDiff" type="button" data-tag="basics">Basics</button>
 			<button class="btn tagBtn tagDiff" type="button" data-tag="beginner">Beginner</button>
-			<button class="btn tagBtn tagDiff" type="button" data-tag="intermediate">Mid-level</button>
+			<button class="btn tagBtn tagDiff" type="button" data-tag="mid-level">Mid-level</button>
 			<button class="btn tagBtn tagDiff" type="button" data-tag="advanced">Advanced</button>
 			<div class="tagDivider" aria-hidden="true"></div>
 			<button class="btn tagBtn is-active" type="button" data-tag="all">All Engines</button>

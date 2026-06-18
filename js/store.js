@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const infoBtn = document.getElementById("infoBtn");
   const infoPop = document.getElementById("infoPop");
   const infoClose = document.getElementById("infoClose");
+  const disconnectBtn = document.getElementById("disconnectBtn");
   const toastWrap = document.getElementById("toastWrap");
 
   const sessionFromUrl = params.get("session");
@@ -137,6 +138,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   infoClose?.addEventListener("click", closeInfo);
 
+  disconnectBtn?.addEventListener("click", () => {
+    try {
+      localStorage.removeItem("session");
+      localStorage.removeItem(FAST_UNTIL_KEY);
+    } catch {}
+    try {
+      const u = new URL(location.href);
+      u.searchParams.delete("session");
+      history.replaceState(null, "", u.toString());
+    } catch {}
+
+    LAST_ME = null;
+    CURRENT_CREDITS_CENTS = 0;
+
+    const creditsValue = document.getElementById("creditsValue");
+    if (creditsValue) creditsValue.textContent = "N/A";
+
+    showConnectUI();
+    setPill("not connected");
+
+    const infoPopBody = document.getElementById("infoPopBody");
+    if (infoPopBody) {
+      infoPopBody.innerHTML =
+        `Patreon status: <strong>not connected</strong><br>` +
+        `Connect your Patreon to see your credits.`;
+    }
+
+    closeInfo();
+  });
+
   infoPop?.addEventListener("click", (e) => {
     if (e.target === infoPop) closeInfo();
   });
@@ -208,6 +239,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.dataset.mode = "connect";
     }
 
+    const dbtn = document.getElementById("disconnectBtn");
+    if (dbtn) dbtn.style.display = "none";
+
     const creditsSub = document.querySelector(".creditsSub");
     if (creditsSub) creditsSub.textContent = "Connect Patreon";
 
@@ -223,6 +257,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.disabled = false;
       btn.dataset.mode = "reconnect";
     }
+
+    const dbtn = document.getElementById("disconnectBtn");
+    if (dbtn) dbtn.style.display = "";
 
     const creditsSub = document.querySelector(".creditsSub");
     if (creditsSub) creditsSub.textContent = "1¢ = 1 credit";
