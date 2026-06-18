@@ -134,6 +134,16 @@ a:hover{ text-decoration: underline; text-underline-offset:4px; }
 .tgl.auto:not(.paused) .lblOff{ animation:tglOff 4.5s ease infinite; }
 .tgl.auto:not(.paused) .lblOn{ animation:tglOn 4.5s ease infinite; }
 @media (prefers-reduced-motion: reduce){ .tgl .trk, .tgl .knob, .tgl .lblOn, .tgl .lblOff{ transition:none; } .tgl.auto .trk, .tgl.auto .knob, .tgl.auto .lblOff, .tgl.auto .lblOn{ animation:none; } }
+
+/* Diagrams: hold their animations until scrolled into view (JS adds .dgramGate + .inview) */
+body.dgramGate .dgram:not(.inview) *{ animation-play-state: paused !important; }
+
+/* Desktop / mobile diagram variants: swap at phone widths */
+.dgramMob{ display:none; }
+@media (max-width:600px){
+  .dgramDesk{ display:none !important; }
+  .dgramMob{ display:block; }
+}
 #tagFilters .tagBtn:hover{ background:rgba(0,0,0,0.05); transform:none; }
 #tagFilters .tagBtn.is-active{ background:var(--brand2); color:var(--brand); }
 #tagFilters .tagBtn.is-active::before{ background:var(--brand); }

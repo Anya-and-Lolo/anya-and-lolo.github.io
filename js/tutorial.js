@@ -490,6 +490,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Diagrams: hold animations until scrolled into view (replays each time)
+  (() => {
+    const diagrams = Array.from(document.querySelectorAll(".dgram"));
+    if (!diagrams.length) return;
+
+    if (!("IntersectionObserver" in window)) {
+      diagrams.forEach(d => d.classList.add("inview"));
+      return;
+    }
+
+    document.body.classList.add("dgramGate");
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle("inview", entry.isIntersecting);
+      });
+    }, { threshold: 0.12 });
+
+    diagrams.forEach(d => io.observe(d));
+  })();
+
   // Year in Footer
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
