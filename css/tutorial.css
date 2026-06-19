@@ -139,10 +139,10 @@ a:hover{ text-decoration: underline; text-underline-offset:4px; }
 body.dgramGate .dgram:not(.inview) *{ animation-play-state: paused !important; }
 
 /* Desktop / mobile diagram variants: swap at phone widths */
-.dgramMob{ display:none; }
+.dgramMob{ display:none !important; }
 @media (max-width:600px){
   .dgramDesk{ display:none !important; }
-  .dgramMob{ display:block; }
+  .dgramMob{ display:block !important; }
 }
 #tagFilters .tagBtn:hover{ background:rgba(0,0,0,0.05); transform:none; }
 #tagFilters .tagBtn.is-active{ background:var(--brand2); color:var(--brand); }
@@ -224,7 +224,21 @@ body::before{
   .topbarV2 .topbarInner{ flex-direction:column; align-items:stretch; gap:12px; }
   .brandV2{ justify-content:center; }
   .navV2{ justify-content:center; flex-wrap:wrap; }
-  .navV2 .navPrimary{ flex-wrap:wrap; justify-content:center; }
+  /* 2x2 equal grid so Home/Rewards match Tutorials/Resources */
+  .navV2 .navPrimary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    width:100%;
+    max-width:460px;
+    margin:0 auto;
+  }
+  .navV2 .navPrimary > .navBreak{ display:none; }
+  .navV2 .navPrimary > .navlink,
+  .navV2 .navPrimary > .navDrop{ width:100%; }
+  .navV2 .navPrimary > .navDrop{ display:flex; }
+  .navV2 .navPrimary > .navDrop > .navDropBtn{ width:100%; justify-content:center; }
+  .navV2 .navlinkV2{ justify-content:center; }
 }
 @media (max-width:600px){
   .topbarV2 .brandSub{ display:none; }
