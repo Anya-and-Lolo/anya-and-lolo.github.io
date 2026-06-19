@@ -48,7 +48,7 @@
     {"@type":"Question","name":"What do the event Triggers mean?","acceptedAnswer":{"@type":"Answer","text":"Action Button runs when the player faces the event and presses confirm. Player Touch runs when the player walks into it. Autorun takes over the screen and runs once (use a Self Switch to stop it). Parallel runs continuously in the background."}},
     {"@type":"Question","name":"How do I send the player to another map?","acceptedAnswer":{"@type":"Answer","text":"Add an event with a Transfer Player command, choose the destination map and tile, then set the trigger to Action Button for doors or Player Touch for automatic transfer."}},
     {"@type":"Question","name":"How do I make a shop or give the player an item?","acceptedAnswer":{"@type":"Answer","text":"Use the Shop Processing event command to open a shop, or Change Items / Change Gold / Change Weapons / Change Armor to give things directly inside an event."}},
-    {"@type":"Question","name":"How do I add a save point or stop the player from saving?","acceptedAnswer":{"@type":"Answer","text":"Use Change Save Access to enable or disable saving, and Open Save Screen to create a save point. You can also set save access in the System tab of the Database."}},
+    {"@type":"Question","name":"How do I add a save point or stop the player from saving?","acceptedAnswer":{"@type":"Answer","text":"Use Change Save Access event command to enable or disable saving, and Open Save Screen to create a save point. You can also set save access in the System tab of the Database."}},
     {"@type":"Question","name":"How do I make an NPC talk and offer choices?","acceptedAnswer":{"@type":"Answer","text":"Use Show Text for dialogue, and Show Choices to give the player options that branch the conversation. Combine with variables and switches to make NPCs remember what happened."}},
     {"@type":"Question","name":"What is the Database?","acceptedAnswer":{"@type":"Answer","text":"The Database is where you define your game's content: Actors, Classes, Skills, Items, Weapons, Armors, Enemies, Troops, Tilesets, Common Events and System settings like the title screen and starting party."}},
     {"@type":"Question","name":"How do I change a character's sprite or add my own graphics?","acceptedAnswer":{"@type":"Answer","text":"Drop your image files into the matching folder in the project's img folder (characters, tilesets, pictures, etc.), then pick them in the relevant Database tab or event command. Audio goes in the audio folder."}},
@@ -205,6 +205,9 @@
           <div>
 
             <div class="card" id="intro" data-section-track="Welcome" style="margin-bottom:14px">
+              <div class="imageCard" style="margin-bottom:16px">
+                <img src="../images/getting-started-with-rpg-maker.jpg" width="816" height="382" loading="lazy" alt="Getting Started with RPG Maker beginner basics guide">
+              </div>
               <div class="lead">RPG Maker lets you build a whole game by painting maps and placing <strong>events</strong>, no coding required to start. This page explains the words and tools you'll see everywhere, so the step-by-step tutorials make sense. Skim the categories below, or open any question.</div>
               <div class="callout info">
                 <strong>Tip:</strong> these basics apply to every version (MZ, MV, XP, VX Ace, 2000, 2003). Menu names differ slightly between engines, but the ideas are the same. For the official reference, see the <a class="linkBrand" href="https://www.rpgmakerweb.com/" target="_blank" rel="noopener">RPG Maker help &amp; manuals at rpgmakerweb.com ↗</a>.
@@ -220,11 +223,11 @@
                   <summary>What are the main parts of the RPG Maker editor?</summary>
                   <div class="faqAnswer">There are four you'll use constantly:
                     <br>• <strong>Map editor</strong>: paint your world with tilesets.
-                    <br>• <strong>Database</strong>: define actors, items, skills, enemies and system settings.
                     <br>• <strong>Event editor</strong>: the logic that makes things happen.
+                    <br>• <strong>Database</strong>: define actors, items, skills, enemies and system settings.
                     <br>• <strong>Plugin Manager</strong> (MZ/MV): add extra features with <code>.js</code> plugins.
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
-                      <svg class="dgramDesk" viewBox="0 0 540 116" width="100%" style="max-width:540px; height:auto" role="img" aria-label="The four main parts of RPG Maker as coloured blocks: Map editor, Database, Event editor, and Plugins.">
+                      <svg class="dgramDesk" viewBox="0 0 540 116" width="100%" style="max-width:540px; height:auto" role="img" aria-label="The four main parts of RPG Maker as coloured blocks: Map editor, Event editor, Database, and Plugins.">
                         <style>
                           @keyframes mdepA{0%,4%{opacity:0;transform:translateY(8px)}11%,100%{opacity:1;transform:translateY(0)}}
                           @keyframes mdepB{0%,12%{opacity:0;transform:translateY(8px)}19%,100%{opacity:1;transform:translateY(0)}}
@@ -247,14 +250,14 @@
                           <g class="mdep2">
                             <path d="M180 10 H209 C209 -1 231 -1 231 10 H260 V35 C271 35 271 57 260 57 V82 H231 C231 71 209 71 209 82 H180 V57 C191 57 191 35 180 35 V10 Z" fill="rgba(86,167,254,0.13)" stroke="#9cc4f5" stroke-width="2" stroke-linejoin="round"/>
                             <rect x="194" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
-                            <text x="220" y="58" font-size="34" font-weight="900" fill="#3b86d6">D</text>
-                            <text x="220" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Database</text>
+                            <text x="220" y="58" font-size="34" font-weight="900" fill="#3b86d6">E</text>
+                            <text x="220" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Event editor</text>
                           </g>
                           <g class="mdep3">
                             <path d="M280 10 H309 C309 -1 331 -1 331 10 H360 V35 C371 35 371 57 360 57 V82 H331 C331 71 309 71 309 82 H280 V57 C291 57 291 35 280 35 V10 Z" fill="rgba(244,24,76,0.10)" stroke="#f4a6ba" stroke-width="2" stroke-linejoin="round"/>
                             <rect x="294" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
-                            <text x="320" y="58" font-size="34" font-weight="900" fill="#f4184c">E</text>
-                            <text x="320" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Event editor</text>
+                            <text x="320" y="58" font-size="34" font-weight="900" fill="#f4184c">D</text>
+                            <text x="320" y="100" font-size="12" font-weight="700" fill="rgba(27,27,27,0.78)">Database</text>
                           </g>
                           <g class="mdep4">
                             <path d="M380 10 H409 C409 -1 431 -1 431 10 H460 V35 C471 35 471 57 460 57 V82 H431 C431 71 409 71 409 82 H380 V57 C391 57 391 35 380 35 V10 Z" fill="rgba(255,159,28,0.14)" stroke="#f3c889" stroke-width="2" stroke-linejoin="round"/>
@@ -264,27 +267,27 @@
                           </g>
                         </g>
                       </svg>
-                      <svg class="dgramMob" viewBox="0 0 280 226" width="100%" style="max-width:300px; height:auto; margin:0 auto; display:block;" role="img" aria-label="The four main parts of RPG Maker: Map editor, Database, Event editor, and Plugins.">
+                      <svg class="dgramMob" viewBox="0 0 268 220" width="100%" style="max-width:300px; height:auto; margin:0 auto; display:block;" role="img" aria-label="The four main parts of RPG Maker: Map editor, Event editor, Database, and Plugins.">
                         <g font-family="sans-serif" text-anchor="middle">
-                          <g transform="translate(-54,4)"><g class="mdep1">
+                          <g transform="translate(-40,4)"><g class="mdep1">
                             <path d="M80 10 H109 C109 -1 131 -1 131 10 H160 V35 C171 35 171 57 160 57 V82 H131 C131 71 109 71 109 82 H80 V57 C91 57 91 35 80 35 V10 Z" fill="rgba(46,184,92,0.13)" stroke="#7fd0a0" stroke-width="2" stroke-linejoin="round"/>
                             <rect x="94" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
                             <text x="120" y="58" font-size="34" font-weight="900" fill="#2eb85c">M</text>
                             <text x="120" y="100" font-size="13" font-weight="700" fill="rgba(27,27,27,0.78)">Map editor</text>
                           </g></g>
-                          <g transform="translate(-6,4)"><g class="mdep2">
+                          <g transform="translate(-40,4)"><g class="mdep2">
                             <path d="M180 10 H209 C209 -1 231 -1 231 10 H260 V35 C271 35 271 57 260 57 V82 H231 C231 71 209 71 209 82 H180 V57 C191 57 191 35 180 35 V10 Z" fill="rgba(86,167,254,0.13)" stroke="#9cc4f5" stroke-width="2" stroke-linejoin="round"/>
                             <rect x="194" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
-                            <text x="220" y="58" font-size="34" font-weight="900" fill="#3b86d6">D</text>
-                            <text x="220" y="100" font-size="13" font-weight="700" fill="rgba(27,27,27,0.78)">Database</text>
+                            <text x="220" y="58" font-size="34" font-weight="900" fill="#3b86d6">E</text>
+                            <text x="220" y="100" font-size="13" font-weight="700" fill="rgba(27,27,27,0.78)">Event editor</text>
                           </g></g>
-                          <g transform="translate(-254,112)"><g class="mdep3">
+                          <g transform="translate(-240,110)"><g class="mdep3">
                             <path d="M280 10 H309 C309 -1 331 -1 331 10 H360 V35 C371 35 371 57 360 57 V82 H331 C331 71 309 71 309 82 H280 V57 C291 57 291 35 280 35 V10 Z" fill="rgba(244,24,76,0.10)" stroke="#f4a6ba" stroke-width="2" stroke-linejoin="round"/>
                             <rect x="294" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
-                            <text x="320" y="58" font-size="34" font-weight="900" fill="#f4184c">E</text>
-                            <text x="320" y="100" font-size="13" font-weight="700" fill="rgba(27,27,27,0.78)">Event editor</text>
+                            <text x="320" y="58" font-size="34" font-weight="900" fill="#f4184c">D</text>
+                            <text x="320" y="100" font-size="13" font-weight="700" fill="rgba(27,27,27,0.78)">Database</text>
                           </g></g>
-                          <g transform="translate(-206,112)"><g class="mdep4">
+                          <g transform="translate(-240,110)"><g class="mdep4">
                             <path d="M380 10 H409 C409 -1 431 -1 431 10 H460 V35 C471 35 471 57 460 57 V82 H431 C431 71 409 71 409 82 H380 V57 C391 57 391 35 380 35 V10 Z" fill="rgba(255,159,28,0.14)" stroke="#f3c889" stroke-width="2" stroke-linejoin="round"/>
                             <rect x="394" y="20" width="18" height="7" rx="3" fill="rgba(255,255,255,0.6)"/>
                             <text x="420" y="58" font-size="34" font-weight="900" fill="#e08a00">P</text>
@@ -350,7 +353,7 @@
                             <rect x="8" y="138" width="284" height="50" rx="10" fill="#59c07a"/>
                             <text x="26" y="169" font-size="15.5" font-weight="800" fill="#fff">Give the player 10 Gold</text>
                           </g>
-                          <text class="cbcap" x="150" y="210" text-anchor="middle" font-size="12.5" fill="rgba(27,27,27,0.6)">You snap blocks together, no typing code.</text>
+                          <text class="cbcap" x="150" y="210" text-anchor="middle" font-size="14" fill="rgba(27,27,27,0.6)">You snap blocks together, no typing code.</text>
                         </g>
                       </svg>
                     </div>
@@ -417,7 +420,7 @@
                             <rect x="30" y="156" width="280" height="42" rx="8" fill="rgba(255,159,28,0.16)" stroke="rgba(255,159,28,0.42)"/>
                             <text x="44" y="182" font-size="14" font-weight="700" fill="#1b1b1b">Conditional Branch: if Has Key</text>
                           </g>
-                          <text class="evcap" x="160" y="216" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.6)">An event runs its commands from top to bottom.</text>
+                          <text class="evcap" x="160" y="216" text-anchor="middle" font-size="14" fill="rgba(27,27,27,0.6)">An event runs its commands from top to bottom.</text>
                         </g>
                       </svg>
                     </div>
@@ -427,7 +430,7 @@
                   <summary>What is a Variable?</summary>
                   <div class="faqAnswer">A <strong>Variable</strong> stores a <em>number</em> you can change and check, like gold, a quest step, or in-game time. Set it with <code>Control Variables</code>, and react to its value with a <code>Conditional Branch</code> (for example, "if QuestStep ≥ 2").
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
-                      <svg viewBox="0 0 360 178" width="100%" style="max-width:360px; height:auto" role="img" aria-label="Example variables: Gold 250, Potions 5, QuestStep 2, and PlayTime 740 minutes.">
+                      <svg viewBox="0 0 360 230" width="100%" style="max-width:360px; height:auto" role="img" aria-label="Example variables: Gold 250, Potions 5, QuestStep 2, and PlayTime 740 minutes.">
                         <style>
                           @keyframes vrA{0%,5%{clip-path:inset(0 100% 0 0)}18%,100%{clip-path:inset(0 0 0 0)}}
                           @keyframes vrB{0%,22%{clip-path:inset(0 100% 0 0)}35%,100%{clip-path:inset(0 0 0 0)}}
@@ -440,32 +443,32 @@
                           @media (prefers-reduced-motion: reduce){.vr1,.vr2,.vr3,.vr4{clip-path:none;animation:none}}
                         </style>
                         <g font-family="sans-serif">
-                          <rect x="8" y="8" width="344" height="162" rx="14" fill="rgba(244,24,76,0.04)" stroke="rgba(244,24,76,0.2)"/>
+                          <rect x="8" y="8" width="344" height="216" rx="14" fill="rgba(244,24,76,0.04)" stroke="rgba(244,24,76,0.2)"/>
                           <text x="24" y="32" font-size="14" font-weight="800" fill="#1b1b1b">Variables</text>
                           <text x="106" y="32" font-size="12" fill="rgba(27,27,27,0.6)">(each one stores a number)</text>
                           <g class="vr1">
-                            <rect x="20" y="44" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
-                            <text x="34" y="62" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0001</text>
-                            <text x="92" y="62" font-size="13.5" font-weight="800" fill="#1b1b1b">Gold</text>
-                            <text x="328" y="62" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 250</text>
+                            <rect x="20" y="44" width="320" height="38" rx="9" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="68" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0001</text>
+                            <text x="92" y="68" font-size="13.5" font-weight="800" fill="#1b1b1b">Gold</text>
+                            <text x="328" y="68" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 250</text>
                           </g>
                           <g class="vr2">
-                            <rect x="20" y="76" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
-                            <text x="34" y="94" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0002</text>
-                            <text x="92" y="94" font-size="13.5" font-weight="800" fill="#1b1b1b">Potions</text>
-                            <text x="328" y="94" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 5</text>
+                            <rect x="20" y="88" width="320" height="38" rx="9" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="112" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0002</text>
+                            <text x="92" y="112" font-size="13.5" font-weight="800" fill="#1b1b1b">Potions</text>
+                            <text x="328" y="112" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 5</text>
                           </g>
                           <g class="vr3">
-                            <rect x="20" y="108" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
-                            <text x="34" y="126" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0003</text>
-                            <text x="92" y="126" font-size="13.5" font-weight="800" fill="#1b1b1b">QuestStep</text>
-                            <text x="328" y="126" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 2</text>
+                            <rect x="20" y="132" width="320" height="38" rx="9" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="156" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0003</text>
+                            <text x="92" y="156" font-size="13.5" font-weight="800" fill="#1b1b1b">QuestStep</text>
+                            <text x="328" y="156" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 2</text>
                           </g>
                           <g class="vr4">
-                            <rect x="20" y="140" width="320" height="26" rx="7" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
-                            <text x="34" y="158" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0004</text>
-                            <text x="92" y="158" font-size="13.5" font-weight="800" fill="#1b1b1b">PlayTime (mins)</text>
-                            <text x="328" y="158" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 740</text>
+                            <rect x="20" y="176" width="320" height="38" rx="9" fill="#fff" stroke="rgba(20,20,20,0.12)"/>
+                            <text x="34" y="200" font-size="12" font-weight="800" fill="rgba(27,27,27,0.45)">#0004</text>
+                            <text x="92" y="200" font-size="13.5" font-weight="800" fill="#1b1b1b">PlayTime (mins)</text>
+                            <text x="328" y="200" text-anchor="end" font-size="14" font-weight="900" fill="#f4184c">= 740</text>
                           </g>
                         </g>
                       </svg>
@@ -481,12 +484,12 @@
                           <rect x="8" y="8" width="300" height="222" rx="14" fill="rgba(86,167,254,0.06)" stroke="rgba(86,167,254,0.28)"/>
                           <text x="24" y="34" font-size="14" font-weight="800" fill="#3b86d6">Switches</text>
                           <text x="24" y="53" font-size="11.5" fill="rgba(27,27,27,0.62)">global, you name them</text>
-                          <text x="24" y="109" font-size="13" font-weight="700" fill="#1b1b1b">MetTheKing</text>
-                          <g class="tgl named is-on" role="button" tabindex="0" aria-label="MetTheKing switch" aria-pressed="true">
+                          <text x="24" y="109" font-size="13" font-weight="700" fill="#1b1b1b">BridgeFixed</text>
+                          <g class="tgl named auto" role="button" tabindex="0" aria-label="BridgeFixed switch" aria-pressed="false">
                             <rect class="trk" x="230" y="92" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="243" cy="105" r="10" fill="#fff"/><text class="lblOff" x="267" y="109" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="247" y="109" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
                           </g>
-                          <text x="24" y="157" font-size="13" font-weight="700" fill="#1b1b1b">BridgeFixed</text>
-                          <g class="tgl named auto" role="button" tabindex="0" aria-label="BridgeFixed switch" aria-pressed="false">
+                          <text x="24" y="157" font-size="13" font-weight="700" fill="#1b1b1b">MetTheKing</text>
+                          <g class="tgl named is-on" role="button" tabindex="0" aria-label="MetTheKing switch" aria-pressed="true">
                             <rect class="trk" x="230" y="140" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="243" cy="153" r="10" fill="#fff"/><text class="lblOff" x="267" y="157" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="247" y="157" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
                           </g>
                           <text x="24" y="205" font-size="13" font-weight="700" fill="#1b1b1b">IntroSeen</text>
@@ -515,43 +518,43 @@
                           <text x="260" y="251" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#f4184c">Tap a switch to flip it! 👆</text>
                         </g>
                       </svg>
-                      <svg id="switchToyM" class="dgramMob" viewBox="0 0 300 442" width="100%" style="max-width:330px; height:auto; margin:0 auto; display:block;" role="img" aria-label="Interactive switches stacked: global switches on top, self switches A, B, C, D below.">
+                      <svg id="switchToyM" class="dgramMob" viewBox="0 0 300 438" width="100%" style="max-width:330px; height:auto; margin:0 auto; display:block;" role="img" aria-label="Interactive switches stacked: global switches on top, self switches A, B, C, D below.">
                         <g font-family="sans-serif">
                           <rect x="8" y="6" width="284" height="178" rx="14" fill="rgba(86,167,254,0.06)" stroke="rgba(86,167,254,0.28)"/>
-                          <text x="26" y="32" font-size="15" font-weight="800" fill="#3b86d6">Switches</text>
-                          <text x="26" y="51" font-size="12" fill="rgba(27,27,27,0.62)">global, you name them</text>
-                          <text x="26" y="92" font-size="14" font-weight="700" fill="#1b1b1b">MetTheKing</text>
-                          <g class="tgl named is-on" role="button" tabindex="0" aria-label="MetTheKing switch" aria-pressed="true">
-                            <rect class="trk" x="206" y="76" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="219" cy="89" r="10" fill="#fff"/><text class="lblOff" x="243" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="223" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
-                          </g>
-                          <text x="26" y="130" font-size="14" font-weight="700" fill="#1b1b1b">BridgeFixed</text>
+                          <text x="26" y="31" font-size="15" font-weight="800" fill="#3b86d6">Switches</text>
+                          <text x="26" y="50" font-size="12" fill="rgba(27,27,27,0.62)">global, you name them</text>
+                          <text x="26" y="90" font-size="14" font-weight="700" fill="#1b1b1b">BridgeFixed</text>
                           <g class="tgl named auto" role="button" tabindex="0" aria-label="BridgeFixed switch" aria-pressed="false">
-                            <rect class="trk" x="206" y="114" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="219" cy="127" r="10" fill="#fff"/><text class="lblOff" x="243" y="131" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="223" y="131" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
+                            <rect class="trk" x="206" y="74" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="219" cy="87" r="10" fill="#fff"/><text class="lblOff" x="243" y="91" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="223" y="91" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
                           </g>
-                          <text x="26" y="168" font-size="14" font-weight="700" fill="#1b1b1b">IntroSeen</text>
+                          <text x="26" y="124" font-size="14" font-weight="700" fill="#1b1b1b">MetTheKing</text>
+                          <g class="tgl named is-on" role="button" tabindex="0" aria-label="MetTheKing switch" aria-pressed="true">
+                            <rect class="trk" x="206" y="108" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="219" cy="121" r="10" fill="#fff"/><text class="lblOff" x="243" y="125" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="223" y="125" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
+                          </g>
+                          <text x="26" y="158" font-size="14" font-weight="700" fill="#1b1b1b">IntroSeen</text>
                           <g class="tgl named is-on" role="button" tabindex="0" aria-label="IntroSeen switch" aria-pressed="true">
-                            <rect class="trk" x="206" y="152" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="219" cy="165" r="10" fill="#fff"/><text class="lblOff" x="243" y="169" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="223" y="169" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
+                            <rect class="trk" x="206" y="142" width="54" height="26" rx="13" fill="rgba(27,27,27,0.18)"/><circle class="knob" cx="219" cy="155" r="10" fill="#fff"/><text class="lblOff" x="243" y="159" text-anchor="middle" font-size="10" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="223" y="159" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">ON</text>
                           </g>
-                          <rect x="8" y="196" width="284" height="208" rx="14" fill="rgba(244,24,76,0.05)" stroke="rgba(244,24,76,0.25)"/>
-                          <text x="26" y="222" font-size="15" font-weight="800" fill="#f4184c">Self Switch</text>
-                          <text x="26" y="241" font-size="12" fill="rgba(27,27,27,0.62)">just A, B, C, D (one event)</text>
-                          <text x="30" y="282" font-size="15" font-weight="900" fill="#1b1b1b">A</text>
+                          <rect x="8" y="196" width="284" height="204" rx="14" fill="rgba(244,24,76,0.05)" stroke="rgba(244,24,76,0.25)"/>
+                          <text x="26" y="221" font-size="15" font-weight="800" fill="#f4184c">Self Switch</text>
+                          <text x="26" y="240" font-size="12" fill="rgba(27,27,27,0.62)">just A, B, C, D (one event)</text>
+                          <text x="30" y="274" font-size="15" font-weight="900" fill="#1b1b1b">A</text>
                           <g class="tgl self is-on" role="button" tabindex="0" aria-label="Self Switch A" aria-pressed="true">
-                            <rect class="trk" x="208" y="266" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="279" r="10" fill="#fff"/><text class="lblOff" x="242" y="283" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="283" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                            <rect class="trk" x="208" y="258" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="271" r="10" fill="#fff"/><text class="lblOff" x="242" y="275" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="275" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
                           </g>
-                          <text x="30" y="320" font-size="15" font-weight="900" fill="rgba(27,27,27,0.5)">B</text>
+                          <text x="30" y="308" font-size="15" font-weight="900" fill="rgba(27,27,27,0.5)">B</text>
                           <g class="tgl self auto" role="button" tabindex="0" aria-label="Self Switch B" aria-pressed="false">
-                            <rect class="trk" x="208" y="304" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="317" r="10" fill="#fff"/><text class="lblOff" x="242" y="321" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="321" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                            <rect class="trk" x="208" y="292" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="305" r="10" fill="#fff"/><text class="lblOff" x="242" y="309" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="309" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
                           </g>
-                          <text x="30" y="358" font-size="15" font-weight="900" fill="rgba(27,27,27,0.5)">C</text>
+                          <text x="30" y="342" font-size="15" font-weight="900" fill="rgba(27,27,27,0.5)">C</text>
                           <g class="tgl self" role="button" tabindex="0" aria-label="Self Switch C" aria-pressed="false">
-                            <rect class="trk" x="208" y="342" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="355" r="10" fill="#fff"/><text class="lblOff" x="242" y="359" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="359" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                            <rect class="trk" x="208" y="326" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="339" r="10" fill="#fff"/><text class="lblOff" x="242" y="343" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="343" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
                           </g>
-                          <text x="30" y="396" font-size="15" font-weight="900" fill="rgba(27,27,27,0.5)">D</text>
+                          <text x="30" y="376" font-size="15" font-weight="900" fill="rgba(27,27,27,0.5)">D</text>
                           <g class="tgl self" role="button" tabindex="0" aria-label="Self Switch D" aria-pressed="false">
-                            <rect class="trk" x="208" y="380" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="393" r="10" fill="#fff"/><text class="lblOff" x="242" y="397" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="397" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
+                            <rect class="trk" x="208" y="360" width="50" height="26" rx="13" fill="rgba(27,27,27,0.16)"/><circle class="knob" cx="221" cy="373" r="10" fill="#fff"/><text class="lblOff" x="242" y="377" text-anchor="middle" font-size="9.5" font-weight="800" fill="rgba(27,27,27,0.6)">OFF</text><text class="lblOn" x="224" y="377" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">ON</text>
                           </g>
-                          <text x="150" y="430" text-anchor="middle" font-size="14" font-weight="800" fill="#f4184c">Tap a switch to flip it! 👆</text>
+                          <text x="150" y="424" text-anchor="middle" font-size="14" font-weight="800" fill="#f4184c">Tap a switch to flip it! 👆</text>
                         </g>
                       </svg>
                       <script>
@@ -684,7 +687,7 @@
                           <g class="cme3"><rect x="35" y="206" width="170" height="40" rx="8" fill="#d8efc9" stroke="#a7d597"/><text x="120" y="231" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b">Field map</text></g>
                         </g>
                       </svg>
-                      <div class="muted" style="text-align:center; margin-top:6px">Build it once, use it on every map.</div>
+                      <div style="text-align:center; margin-top:6px; font-family:sans-serif; font-size:13px; font-weight:400; color:rgba(27,27,27,0.6)">Build it once, use it on every map.</div>
                     </div>
                   </div>
                 </details>
@@ -696,7 +699,7 @@
                     <br>• <strong>Autorun</strong>: takes over and runs once; stop it with a Self Switch so it doesn't freeze the game.
                     <br>• <strong>Parallel</strong>: runs continuously in the background (clocks, weather). Keep these light to avoid lag.
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
-                      <svg viewBox="0 0 520 200" width="100%" style="max-width:520px; height:auto" role="img" aria-label="The four event triggers: Action Button, Player Touch, Autorun, and Parallel.">
+                      <svg class="dgramDesk" viewBox="0 0 520 200" width="100%" style="max-width:520px; height:auto" role="img" aria-label="The four event triggers: Action Button, Player Touch, Autorun, and Parallel.">
                         <style>
                           @keyframes tgA{0%,5%{opacity:0;transform:translateY(8px)}14%,100%{opacity:1;transform:translateY(0)}}
                           @keyframes tgB{0%,16%{opacity:0;transform:translateY(8px)}25%,100%{opacity:1;transform:translateY(0)}}
@@ -735,6 +738,34 @@
                           </g>
                         </g>
                       </svg>
+                      <svg class="dgramMob" viewBox="0 0 300 374" width="100%" style="max-width:320px; height:auto; margin:0 auto; display:block;" role="img" aria-label="The four event triggers: Action Button, Player Touch, Autorun, and Parallel.">
+                        <g font-family="sans-serif">
+                          <g class="tg1">
+                            <rect x="8" y="6" width="284" height="84" rx="12" fill="rgba(244,24,76,0.06)" stroke="rgba(244,24,76,0.22)"/>
+                            <text x="24" y="34" font-size="16" font-weight="800" fill="#f4184c">Action Button</text>
+                            <text x="24" y="58" font-size="13" fill="rgba(27,27,27,0.72)">Player faces it &amp; presses confirm</text>
+                            <text x="24" y="78" font-size="12.5" fill="rgba(27,27,27,0.55)">NPCs, signs, doors</text>
+                          </g>
+                          <g class="tg2">
+                            <rect x="8" y="98" width="284" height="84" rx="12" fill="rgba(86,167,254,0.07)" stroke="rgba(86,167,254,0.28)"/>
+                            <text x="24" y="126" font-size="16" font-weight="800" fill="#3b86d6">Player Touch</text>
+                            <text x="24" y="150" font-size="13" fill="rgba(27,27,27,0.72)">Player walks into it</text>
+                            <text x="24" y="170" font-size="12.5" fill="rgba(27,27,27,0.55)">traps, auto-doors</text>
+                          </g>
+                          <g class="tg3">
+                            <rect x="8" y="190" width="284" height="84" rx="12" fill="rgba(46,184,92,0.08)" stroke="rgba(46,184,92,0.3)"/>
+                            <text x="24" y="218" font-size="16" font-weight="800" fill="#2eb85c">Autorun</text>
+                            <text x="24" y="242" font-size="13" fill="rgba(27,27,27,0.72)">Runs once, takes over screen</text>
+                            <text x="24" y="262" font-size="12.5" fill="rgba(27,27,27,0.55)">cutscenes; stop with a Self Switch</text>
+                          </g>
+                          <g class="tg4">
+                            <rect x="8" y="282" width="284" height="84" rx="12" fill="rgba(255,159,28,0.10)" stroke="rgba(255,159,28,0.38)"/>
+                            <text x="24" y="310" font-size="16" font-weight="800" fill="#e08a00">Parallel</text>
+                            <text x="24" y="334" font-size="13" fill="rgba(27,27,27,0.72)">Runs every frame in background</text>
+                            <text x="24" y="354" font-size="12.5" fill="rgba(27,27,27,0.55)">clocks, weather; keep it light</text>
+                          </g>
+                        </g>
+                      </svg>
                     </div>
                   </div>
                 </details>
@@ -742,7 +773,7 @@
                   <summary>What is a Conditional Branch?</summary>
                   <div class="faqAnswer">A <strong>Conditional Branch</strong> is an "if this, then that" check. It can test a Switch, a Variable, an item the player has, the gold amount, and more, with an optional <em>Else</em> path for when the condition is false.
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
-                      <svg viewBox="0 0 520 200" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A conditional branch checks a condition; if true it runs the Yes path, otherwise the Else path.">
+                      <svg class="dgramDesk" viewBox="0 0 520 200" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A conditional branch checks a condition; if true it runs the Yes path, otherwise the Else path.">
                         <defs>
                           <marker id="ahGreen" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2eb85c"/></marker>
                           <marker id="ahBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3b86d6"/></marker>
@@ -780,6 +811,33 @@
                           <text x="400" y="183" text-anchor="middle" font-family="sans-serif" font-size="13" fill="rgba(27,27,27,0.62)">…otherwise this</text>
                         </g>
                       </svg>
+                      <svg class="dgramMob" viewBox="0 0 300 338" width="100%" style="max-width:300px; height:auto; margin:0 auto; display:block;" role="img" aria-label="A conditional branch: if true do the Yes path, otherwise the Else path.">
+                        <g font-family="sans-serif">
+                          <polygon points="150,6 248,58 150,110 52,58" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.35)"/>
+                          <text x="150" y="54" text-anchor="middle" font-size="15" font-weight="800" fill="#1b1b1b">If: Has Key?</text>
+                          <text x="150" y="72" text-anchor="middle" font-size="11" fill="rgba(27,27,27,0.6)">Conditional Branch</text>
+                          <g class="cndY">
+                            <line x1="150" y1="110" x2="150" y2="150" stroke="rgba(46,184,92,0.7)" stroke-width="2.5"/>
+                            <polygon points="144,150 156,150 150,160" fill="#2eb85c"/>
+                            <text x="178" y="138" text-anchor="middle" font-size="12" font-weight="900" fill="#2eb85c">YES</text>
+                          </g>
+                          <g class="cndG">
+                            <rect x="40" y="160" width="220" height="58" rx="12" fill="rgba(46,184,92,0.12)" stroke="rgba(46,184,92,0.4)"/>
+                            <text x="150" y="186" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Open the door</text>
+                            <text x="150" y="206" text-anchor="middle" font-size="13" fill="rgba(27,27,27,0.62)">…then do this</text>
+                          </g>
+                          <g class="cndE">
+                            <line x1="150" y1="218" x2="150" y2="258" stroke="rgba(86,167,254,0.75)" stroke-width="2.5"/>
+                            <polygon points="144,258 156,258 150,268" fill="#3b86d6"/>
+                            <text x="178" y="246" text-anchor="middle" font-size="12" font-weight="900" fill="#3b86d6">ELSE</text>
+                          </g>
+                          <g class="cndS">
+                            <rect x="40" y="268" width="220" height="58" rx="12" fill="rgba(86,167,254,0.10)" stroke="rgba(86,167,254,0.35)"/>
+                            <text x="150" y="294" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Show: "It's locked"</text>
+                            <text x="150" y="314" text-anchor="middle" font-size="13" fill="rgba(27,27,27,0.62)">…otherwise this</text>
+                          </g>
+                        </g>
+                      </svg>
                     </div>
                   </div>
                 </details>
@@ -799,13 +857,15 @@
                         <style>
                           @keyframes trPlayer{0%,6%{opacity:1;transform:translateX(0)}26%{opacity:1;transform:translateX(98px)}31%,100%{opacity:0;transform:translateX(98px)}}
                           @keyframes trArrowA{0%,32%{opacity:0;transform:translateX(0)}40%{opacity:1;transform:translateX(0)}46%{transform:translateX(6px)}52%{transform:translateX(0)}58%{transform:translateX(6px)}64%,100%{opacity:1;transform:translateX(0)}}
+                          @keyframes trArrowMA{0%,32%{opacity:0;transform:translateY(0)}40%{opacity:1;transform:translateY(0)}46%{transform:translateY(5px)}52%{transform:translateY(0)}58%{transform:translateY(5px)}64%,100%{opacity:1;transform:translateY(0)}}
                           @keyframes trDashA{0%,50%{opacity:0}56%,100%{opacity:1}}
                           @keyframes trFillA{0%,60%{opacity:0;transform:scale(0)}74%,100%{opacity:1;transform:scale(1)}}
                           .trPlayer{animation:trPlayer 7s ease infinite}
                           .trArrow{opacity:0;animation:trArrowA 7s ease infinite}
+                          .trArrowM{opacity:0;animation:trArrowMA 7s ease infinite}
                           .trDash{opacity:0;animation:trDashA 7s ease infinite}
                           .trFill{opacity:0;transform-box:fill-box;transform-origin:center;animation:trFillA 7s ease infinite}
-                          @media (prefers-reduced-motion: reduce){.trPlayer,.trArrow,.trDash,.trFill{opacity:1;animation:none;transform:none}}
+                          @media (prefers-reduced-motion: reduce){.trPlayer,.trArrow,.trArrowM,.trDash,.trFill{opacity:1;animation:none;transform:none}}
                         </style>
                         <g font-family="sans-serif">
                           <rect x="16" y="34" width="190" height="92" rx="12" fill="rgba(46,184,92,0.12)" stroke="rgba(46,184,92,0.35)"/>
@@ -828,7 +888,7 @@
                           <circle class="trFill" cx="409" cy="84" r="9" fill="#f4184c"/>
                         </g>
                       </svg>
-                      <svg class="dgramMob" viewBox="0 0 240 336" width="100%" style="max-width:260px; height:auto; margin:0 auto;" role="img" aria-label="A door event uses Transfer Player to move the player from the town map down to the cave map.">
+                      <svg class="dgramMob" viewBox="0 0 240 346" width="100%" style="max-width:260px; height:auto; margin:0 auto; display:block;" role="img" aria-label="A door event uses Transfer Player to move the player from the town map down to the cave map.">
                         <g font-family="sans-serif">
                           <rect x="16" y="26" width="208" height="104" rx="12" fill="rgba(46,184,92,0.12)" stroke="rgba(46,184,92,0.35)"/>
                           <text x="120" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="#1b1b1b">Town map</text>
@@ -836,18 +896,18 @@
                           <text x="161" y="116" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.62)">door</text>
                           <text x="63" y="108" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.62)">player</text>
                           <circle class="trPlayer" cx="63" cy="82" r="10" fill="#f4184c"/>
-                          <g class="trArrow">
-                            <text x="120" y="150" text-anchor="middle" font-size="11" font-weight="800" fill="#f4184c">Transfer Player</text>
-                            <line x1="120" y1="158" x2="120" y2="188" stroke="rgba(27,27,27,0.5)" stroke-width="3.5"/>
-                            <polygon points="112,188 128,188 120,202" fill="rgba(27,27,27,0.6)"/>
+                          <g class="trArrowM">
+                            <text x="120" y="151" text-anchor="middle" font-size="11" font-weight="800" fill="#f4184c">Transfer Player</text>
+                            <line x1="120" y1="159" x2="120" y2="184" stroke="rgba(27,27,27,0.5)" stroke-width="3.5"/>
+                            <polygon points="112,184 128,184 120,198" fill="rgba(27,27,27,0.6)"/>
                           </g>
-                          <rect x="16" y="214" width="208" height="104" rx="12" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.35)"/>
-                          <text x="120" y="208" text-anchor="middle" font-size="12" font-weight="800" fill="#1b1b1b">Cave map</text>
+                          <rect x="16" y="224" width="208" height="104" rx="12" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.35)"/>
+                          <text x="120" y="218" text-anchor="middle" font-size="12" font-weight="800" fill="#1b1b1b">Cave map</text>
                           <g class="trDash">
-                            <circle cx="120" cy="262" r="12" fill="none" stroke="#f4184c" stroke-width="2" stroke-dasharray="3 3"/>
-                            <text x="120" y="292" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.62)">arrives here</text>
+                            <circle cx="120" cy="272" r="12" fill="none" stroke="#f4184c" stroke-width="2" stroke-dasharray="3 3"/>
+                            <text x="120" y="302" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.62)">arrives here</text>
                           </g>
-                          <circle class="trFill" cx="120" cy="262" r="9" fill="#f4184c"/>
+                          <circle class="trFill" cx="120" cy="272" r="9" fill="#f4184c"/>
                         </g>
                       </svg>
                     </div>
@@ -869,43 +929,43 @@
                         </style>
                         <g font-family="sans-serif">
                           <rect x="10" y="10" width="400" height="124" rx="10" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.45)" stroke-width="2"/>
-                          <text x="28" y="39" font-size="15" font-weight="800" fill="#1b1b1b">Shop</text>
-                          <text x="392" y="39" text-anchor="end" font-size="16" font-weight="900" fill="#b3791f">Gold: 500</text>
+                          <text x="28" y="39" font-size="15" font-weight="800" fill="#3b86d6">Shop</text>
+                          <text x="392" y="39" text-anchor="end" font-size="16" font-weight="700" fill="#b3791f">Gold: 500</text>
                           <line x1="24" y1="50" x2="396" y2="50" stroke="rgba(20,20,20,0.15)"/>
                           <g class="shp1">
-                            <text x="28" y="74" font-size="13" font-weight="700" fill="#1b1b1b">Potion</text>
-                            <text x="392" y="74" text-anchor="end" font-size="13" font-weight="800" fill="#1b1b1b">50</text>
+                            <text x="28" y="74" font-size="14" font-weight="600" fill="#1b1b1b">Potion</text>
+                            <text x="392" y="74" text-anchor="end" font-size="14" font-weight="600" fill="#3b86d6">50</text>
                           </g>
                           <g class="shp2">
-                            <text x="28" y="98" font-size="13" font-weight="700" fill="#1b1b1b">Antidote</text>
-                            <text x="392" y="98" text-anchor="end" font-size="13" font-weight="800" fill="#1b1b1b">80</text>
+                            <text x="28" y="98" font-size="14" font-weight="600" fill="#1b1b1b">Antidote</text>
+                            <text x="392" y="98" text-anchor="end" font-size="14" font-weight="600" fill="#3b86d6">80</text>
                           </g>
                           <g class="shp3">
-                            <text x="28" y="122" font-size="13" font-weight="700" fill="#1b1b1b">Iron Sword</text>
-                            <text x="392" y="122" text-anchor="end" font-size="13" font-weight="800" fill="#1b1b1b">300</text>
+                            <text x="28" y="122" font-size="14" font-weight="600" fill="#1b1b1b">Iron Sword</text>
+                            <text x="392" y="122" text-anchor="end" font-size="14" font-weight="600" fill="#3b86d6">300</text>
                           </g>
                           <text x="210" y="156" text-anchor="middle" font-size="11.5" fill="rgba(27,27,27,0.6)">Shop Processing opens a buy/sell menu like this.</text>
                         </g>
                       </svg>
-                      <svg class="dgramMob" viewBox="0 0 300 180" width="100%" style="max-width:320px; height:auto; margin:0 auto; display:block;" role="img" aria-label="A shop window listing items with prices and the player's gold.">
+                      <svg class="dgramMob" viewBox="0 0 300 196" width="100%" style="max-width:320px; height:auto; margin:0 auto; display:block;" role="img" aria-label="A shop window listing items with prices and the player's gold.">
                         <g font-family="sans-serif">
-                          <rect x="8" y="10" width="284" height="128" rx="10" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.45)" stroke-width="2"/>
-                          <text x="26" y="41" font-size="17" font-weight="800" fill="#1b1b1b">Shop</text>
-                          <text x="276" y="41" text-anchor="end" font-size="17" font-weight="900" fill="#b3791f">Gold: 500</text>
+                          <rect x="8" y="10" width="284" height="144" rx="10" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.45)" stroke-width="2"/>
+                          <text x="26" y="41" font-size="17" font-weight="800" fill="#3b86d6">Shop</text>
+                          <text x="276" y="41" text-anchor="end" font-size="17" font-weight="700" fill="#b3791f">Gold: 500</text>
                           <line x1="22" y1="54" x2="278" y2="54" stroke="rgba(20,20,20,0.15)"/>
                           <g class="shp1">
-                            <text x="26" y="80" font-size="15" font-weight="700" fill="#1b1b1b">Potion</text>
-                            <text x="276" y="80" text-anchor="end" font-size="15" font-weight="800" fill="#1b1b1b">50</text>
+                            <text x="26" y="82" font-size="15" font-weight="600" fill="#1b1b1b">Potion</text>
+                            <text x="276" y="82" text-anchor="end" font-size="15" font-weight="600" fill="#3b86d6">50</text>
                           </g>
                           <g class="shp2">
-                            <text x="26" y="106" font-size="15" font-weight="700" fill="#1b1b1b">Antidote</text>
-                            <text x="276" y="106" text-anchor="end" font-size="15" font-weight="800" fill="#1b1b1b">80</text>
+                            <text x="26" y="108" font-size="15" font-weight="600" fill="#1b1b1b">Antidote</text>
+                            <text x="276" y="108" text-anchor="end" font-size="15" font-weight="600" fill="#3b86d6">80</text>
                           </g>
                           <g class="shp3">
-                            <text x="26" y="132" font-size="15" font-weight="700" fill="#1b1b1b">Iron Sword</text>
-                            <text x="276" y="132" text-anchor="end" font-size="15" font-weight="800" fill="#1b1b1b">300</text>
+                            <text x="26" y="134" font-size="15" font-weight="600" fill="#1b1b1b">Iron Sword</text>
+                            <text x="276" y="134" text-anchor="end" font-size="15" font-weight="600" fill="#3b86d6">300</text>
                           </g>
-                          <text x="150" y="164" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.6)">Shop Processing opens a buy/sell menu.</text>
+                          <text x="150" y="180" text-anchor="middle" font-size="14" fill="rgba(27,27,27,0.6)">Shop Processing opens a buy/sell menu.</text>
                         </g>
                       </svg>
                     </div>
@@ -913,49 +973,68 @@
                 </details>
                 <details class="faqItem">
                   <summary>How do I add a save point or stop the player from saving?</summary>
-                  <div class="faqAnswer">Use <strong>Change Save Access</strong> to enable or disable saving (handy during boss fights or cutscenes), and <strong>Open Save Screen</strong> to make a save point the player walks up to. You can also set save access in the <em>System</em> tab of the Database.</div>
+                  <div class="faqAnswer">Use <strong>Change Save Access</strong> event command to enable or disable saving (handy during boss fights or cutscenes), and <strong>Open Save Screen</strong> to make a save point the player walks up to. You can also set save access in the <em>System</em> tab of the Database.</div>
                 </details>
                 <details class="faqItem">
                   <summary>How do I make an NPC talk and offer choices?</summary>
                   <div class="faqAnswer">Use <strong>Show Text</strong> for dialogue (add a face graphic for character portraits), and <strong>Show Choices</strong> to give the player options that branch the conversation. Want the NPC to remember the choice? Store it in a Switch or Variable. There's a full walkthrough in our <a href="./rpg-maker-relationship-system-mechanic.html">Relationship System tutorial</a>.
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
-                      <svg class="dgramDesk" viewBox="0 0 520 206" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A dialogue box showing the NPC line and a choices window with three options.">
+                      <svg class="dgramDesk" viewBox="0 0 520 206" width="100%" style="max-width:520px; height:auto" role="img" aria-label="A choices window where the highlighted option cycles between three answers, plus the NPC line.">
                         <style>
-                          @keyframes npcCur{0%,40%{transform:translateX(0)}50%{transform:translateX(5px)}60%{transform:translateX(0)}70%{transform:translateX(5px)}80%,100%{transform:translateX(0)}}
-                          @keyframes npcType{0%{clip-path:inset(0 100% 0 0)}16%,100%{clip-path:inset(0 0 0 0)}}
-                          .npcCur{animation:npcCur 2.4s ease infinite}
-                          .npcType{clip-path:inset(0 100% 0 0);animation:npcType 6.5s ease infinite}
-                          @media (prefers-reduced-motion: reduce){.npcCur{animation:none}.npcType{clip-path:none;animation:none}}
+                          @keyframes npcF1{0%,10%{fill:#f4184c}14%,38%{fill:rgba(27,27,27,0.5)}42%,100%{fill:#f4184c}}
+                          @keyframes npcF2{0%,10%{fill:rgba(27,27,27,0.5)}14%,24%{fill:#f4184c}28%,100%{fill:rgba(27,27,27,0.5)}}
+                          @keyframes npcF3{0%,24%{fill:rgba(27,27,27,0.5)}28%,38%{fill:#f4184c}42%,100%{fill:rgba(27,27,27,0.5)}}
+                          @keyframes npcArrD{0%,10%{transform:translateY(0)}14%,24%{transform:translateY(24px)}28%,38%{transform:translateY(48px)}42%,100%{transform:translateY(0)}}
+                          .npcF1{fill:#f4184c;animation:npcF1 9s ease infinite}
+                          .npcF2{fill:rgba(27,27,27,0.5);animation:npcF2 9s ease infinite}
+                          .npcF3{fill:rgba(27,27,27,0.5);animation:npcF3 9s ease infinite}
+                          .npcArrD{animation:npcArrD 9s ease infinite}
+                          @keyframes npcTy{0%{clip-path:inset(0 100% 0 0)}16%,100%{clip-path:inset(0 0 0 0)}}
+                          .npcTy{clip-path:inset(0 100% 0 0);animation:npcTy 9s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.npcF1,.npcF2,.npcF3,.npcArrD,.npcTy{animation:none}.npcF1{fill:#f4184c}.npcF2,.npcF3{fill:rgba(27,27,27,0.5)}.npcTy{clip-path:none}}
                         </style>
                         <g font-family="sans-serif">
                           <rect x="8" y="6" width="504" height="172" rx="14" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.3)"/>
-                          <rect x="318" y="18" width="186" height="92" rx="10" fill="#e9ebef" stroke="#b9c0cc" stroke-width="2"/>
-                          <text class="npcCur" x="330" y="48" font-size="22" font-weight="900" fill="#f4184c">&#9656;</text>
-                          <text x="352" y="46" font-size="13" font-weight="800" fill="#f4184c">You seem nice</text>
-                          <text x="352" y="70" font-size="13" font-weight="700" fill="#1b1b1b">Out of my way!</text>
-                          <text x="352" y="94" font-size="13" font-weight="700" fill="#1b1b1b">Nevermind...</text>
+                          <rect x="310" y="18" width="186" height="92" rx="10" fill="#e9ebef" stroke="#b9c0cc" stroke-width="2"/>
+                          <text class="npcArrD" x="318" y="50" font-size="28" font-weight="900" fill="#f4184c">&#9656;</text>
+                          <text class="npcF1" x="344" y="45" font-size="15" font-weight="700">You seem nice</text>
+                          <text class="npcF2" x="344" y="69" font-size="15" font-weight="700">Out of my way!</text>
+                          <text class="npcF3" x="344" y="93" font-size="15" font-weight="700">Nevermind...</text>
                           <rect x="24" y="116" width="472" height="54" rx="10" fill="#e9ebef" stroke="#b9c0cc" stroke-width="2"/>
-                          <rect x="34" y="126" width="36" height="36" rx="6" fill="#56a7fe"/>
-                          <circle cx="52" cy="139" r="6" fill="#fff"/><path d="M40 158 a12 12 0 0 1 24 0 z" fill="#fff"/>
-                          <text x="86" y="140" font-size="14" font-weight="800" fill="#3b86d6">Guard Girl</text>
-                          <text class="npcType" x="86" y="161" font-size="15" font-weight="700" fill="#1b1b1b">Can I help you?</text>
+                          <rect x="34" y="125" width="36" height="36" rx="6" fill="#56a7fe"/>
+                          <circle cx="52" cy="138" r="6" fill="#fff"/><path d="M40 157 a12 12 0 0 1 24 0 z" fill="#fff"/>
+                          <text x="86" y="138" font-size="14" font-weight="800" fill="#3b86d6">Guard Girl</text>
+                          <text class="npcTy" x="86" y="159" font-size="15" font-weight="700" fill="#1b1b1b">Can I help you?</text>
                           <text x="260" y="197" text-anchor="middle" font-size="12.5" fill="rgba(27,27,27,0.62)">Show Text for the line, Show Choices for the options.</text>
                         </g>
                       </svg>
-                      <svg class="dgramMob" viewBox="0 0 320 258" width="100%" style="max-width:330px; height:auto; margin:0 auto; display:block;" role="img" aria-label="A dialogue box showing the NPC line and a choices window with three options.">
+                      <svg class="dgramMob" viewBox="0 0 320 258" width="100%" style="max-width:330px; height:auto; margin:0 auto; display:block;" role="img" aria-label="A choices window where the highlighted option cycles between three answers, plus the NPC line.">
+                        <style>
+                          @keyframes npcF1m{0%,10%{fill:#f4184c}14%,38%{fill:rgba(27,27,27,0.5)}42%,100%{fill:#f4184c}}
+                          @keyframes npcF2m{0%,10%{fill:rgba(27,27,27,0.5)}14%,24%{fill:#f4184c}28%,100%{fill:rgba(27,27,27,0.5)}}
+                          @keyframes npcF3m{0%,24%{fill:rgba(27,27,27,0.5)}28%,38%{fill:#f4184c}42%,100%{fill:rgba(27,27,27,0.5)}}
+                          @keyframes npcArrM{0%,10%{transform:translateY(0)}14%,24%{transform:translateY(29px)}28%,38%{transform:translateY(58px)}42%,100%{transform:translateY(0)}}
+                          .npcF1m{fill:#f4184c;animation:npcF1m 9s ease infinite}
+                          .npcF2m{fill:rgba(27,27,27,0.5);animation:npcF2m 9s ease infinite}
+                          .npcF3m{fill:rgba(27,27,27,0.5);animation:npcF3m 9s ease infinite}
+                          .npcArrM{animation:npcArrM 9s ease infinite}
+                          @keyframes npcTym{0%{clip-path:inset(0 100% 0 0)}16%,100%{clip-path:inset(0 0 0 0)}}
+                          .npcTym{clip-path:inset(0 100% 0 0);animation:npcTym 9s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.npcF1m,.npcF2m,.npcF3m,.npcArrM,.npcTym{animation:none}.npcF1m{fill:#f4184c}.npcF2m,.npcF3m{fill:rgba(27,27,27,0.5)}.npcTym{clip-path:none}}
+                        </style>
                         <g font-family="sans-serif">
                           <rect x="8" y="6" width="304" height="220" rx="14" fill="rgba(86,167,254,0.12)" stroke="rgba(86,167,254,0.3)"/>
                           <rect x="36" y="20" width="248" height="104" rx="10" fill="#e9ebef" stroke="#b9c0cc" stroke-width="2"/>
-                          <text class="npcCur" x="52" y="54" font-size="24" font-weight="900" fill="#f4184c">&#9656;</text>
-                          <text x="78" y="51" font-size="15" font-weight="800" fill="#f4184c">You seem nice</text>
-                          <text x="78" y="80" font-size="15" font-weight="700" fill="#1b1b1b">Out of my way!</text>
-                          <text x="78" y="109" font-size="15" font-weight="700" fill="#1b1b1b">Nevermind...</text>
+                          <text class="npcArrM" x="50" y="51" font-size="28" font-weight="900" fill="#f4184c">&#9656;</text>
+                          <text class="npcF1m" x="80" y="46" font-size="15" font-weight="700">You seem nice</text>
+                          <text class="npcF2m" x="80" y="75" font-size="15" font-weight="700">Out of my way!</text>
+                          <text class="npcF3m" x="80" y="104" font-size="15" font-weight="700">Nevermind...</text>
                           <rect x="24" y="140" width="272" height="74" rx="10" fill="#e9ebef" stroke="#b9c0cc" stroke-width="2"/>
-                          <rect x="38" y="154" width="44" height="44" rx="6" fill="#56a7fe"/>
-                          <circle cx="60" cy="170" r="8" fill="#fff"/><path d="M46 192 a14 14 0 0 1 28 0 z" fill="#fff"/>
-                          <text x="96" y="174" font-size="16" font-weight="800" fill="#3b86d6">Guard Girl</text>
-                          <text class="npcType" x="96" y="200" font-size="17" font-weight="700" fill="#1b1b1b">Can I help you?</text>
-                          <text x="160" y="246" text-anchor="middle" font-size="12.5" fill="rgba(27,27,27,0.62)">Show Text for the line, Show Choices for options.</text>
+                          <rect x="38" y="153" width="44" height="44" rx="6" fill="#56a7fe"/>
+                          <circle cx="60" cy="169" r="8" fill="#fff"/><path d="M46 191 a14 14 0 0 1 28 0 z" fill="#fff"/>
+                          <text x="96" y="168" font-size="16" font-weight="800" fill="#3b86d6">Guard Girl</text>
+                          <text class="npcTym" x="96" y="192" font-size="17" font-weight="700" fill="#1b1b1b">Can I help you?</text>
+                          <text x="160" y="246" text-anchor="middle" font-size="14" fill="rgba(27,27,27,0.62)">Show Text for the line, Show Choices for options.</text>
                         </g>
                       </svg>
                     </div>
@@ -973,7 +1052,7 @@
                   <summary>What is the Database?</summary>
                   <div class="faqAnswer">The <strong>Database</strong> is the heart of your project: Actors, Classes, Skills, Items, Weapons, Armors, Enemies, Troops, Tilesets, Common Events, and System settings (title screen, starting party, vocabulary). Most "where do I set this?" answers live here.
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
-                      <svg class="dgramDesk" viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="The Database with tabs for Actors, Items, Skills, Enemies, Audio and System. Tap a tab to see its content.">
+                      <svg class="dgramDesk" viewBox="0 0 520 190" width="100%" style="max-width:520px; height:auto" role="img" aria-label="The Database with tabs for Actors, Items, Skills, Enemies, Audio and System. Tap a tab to see its content.">
                         <style>
                           .dbtab{cursor:pointer}
                           .dbtab .dbtabBg{transition:fill .15s ease, stroke .15s ease}
@@ -1000,10 +1079,11 @@
                           <g class="dbpanel" data-db="enemies"><text x="28" y="74" font-size="13" font-weight="700" fill="#1b1b1b">001  Goblin</text><text x="28" y="98" font-size="13" font-weight="700" fill="#1b1b1b">002  Slime</text><text x="28" y="122" font-size="13" font-weight="700" fill="#1b1b1b">003  Bat</text></g>
                           <g class="dbpanel" data-db="audio"><text x="28" y="74" font-size="13" font-weight="700" fill="#1b1b1b">BGM   Theme6</text><text x="28" y="98" font-size="13" font-weight="700" fill="#1b1b1b">BGS   Quake</text><text x="28" y="122" font-size="13" font-weight="700" fill="#1b1b1b">SE    Cursor</text></g>
                           <g class="dbpanel" data-db="system"><text x="28" y="74" font-size="13" font-weight="700" fill="#1b1b1b">Title: My Game</text><text x="28" y="98" font-size="13" font-weight="700" fill="#1b1b1b">Starting Party: Harold</text><text x="28" y="122" font-size="13" font-weight="700" fill="#1b1b1b">Currency: G</text></g>
-                          <text x="500" y="136" text-anchor="end" font-size="11" font-weight="800" fill="#f4184c">Tap a tab to switch 👆</text>
+                          <text x="260" y="162" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.6)">One place for all your game's content.</text>
+                          <text x="260" y="183" text-anchor="middle" font-size="14" font-weight="800" fill="#f4184c">Tap a tab to switch 👆</text>
                         </g>
                       </svg>
-                      <svg class="dgramMob" viewBox="0 0 300 250" width="100%" style="max-width:320px; height:auto; margin:0 auto;" role="img" aria-label="The Database with tabs for Actors, Items, Skills, Enemies, Audio and System. Tap a tab to see its content.">
+                      <svg class="dgramMob" viewBox="0 0 300 262" width="100%" style="max-width:320px; height:auto; margin:0 auto; display:block;" role="img" aria-label="The Database with tabs for Actors, Items, Skills, Enemies, Audio and System. Tap a tab to see its content.">
                         <g font-family="sans-serif">
                           <g class="dbtab is-active" data-db="actors" role="button" tabindex="0" aria-label="Actors tab" aria-pressed="true"><rect class="dbtabBg" x="8" y="10" width="90" height="32" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text class="dbtabLbl" x="53" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="rgba(27,27,27,0.7)">Actors</text></g>
                           <g class="dbtab" data-db="items" role="button" tabindex="0" aria-label="Items tab" aria-pressed="false"><rect class="dbtabBg" x="105" y="10" width="90" height="32" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text class="dbtabLbl" x="150" y="31" text-anchor="middle" font-size="12" font-weight="800" fill="rgba(27,27,27,0.7)">Items</text></g>
@@ -1011,28 +1091,46 @@
                           <g class="dbtab" data-db="enemies" role="button" tabindex="0" aria-label="Enemies tab" aria-pressed="false"><rect class="dbtabBg" x="8" y="46" width="90" height="32" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text class="dbtabLbl" x="53" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="rgba(27,27,27,0.7)">Enemies</text></g>
                           <g class="dbtab" data-db="audio" role="button" tabindex="0" aria-label="Audio tab" aria-pressed="false"><rect class="dbtabBg" x="105" y="46" width="90" height="32" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text class="dbtabLbl" x="150" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="rgba(27,27,27,0.7)">Audio</text></g>
                           <g class="dbtab" data-db="system" role="button" tabindex="0" aria-label="System tab" aria-pressed="false"><rect class="dbtabBg" x="202" y="46" width="90" height="32" rx="8" fill="rgba(27,27,27,0.05)" stroke="rgba(20,20,20,0.15)"/><text class="dbtabLbl" x="247" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="rgba(27,27,27,0.7)">System</text></g>
-                          <rect x="8" y="86" width="284" height="140" rx="10" fill="#fff" stroke="rgba(20,20,20,0.15)"/>
+                          <rect x="8" y="86" width="284" height="118" rx="10" fill="#fff" stroke="rgba(20,20,20,0.15)"/>
                           <g class="dbpanel is-active" data-db="actors"><text x="28" y="120" font-size="14" font-weight="700" fill="#1b1b1b">001  Harold</text><text x="28" y="150" font-size="14" font-weight="700" fill="#1b1b1b">002  Therese</text><text x="28" y="180" font-size="14" font-weight="700" fill="#1b1b1b">003  Marsha</text></g>
                           <g class="dbpanel" data-db="items"><text x="28" y="120" font-size="14" font-weight="700" fill="#1b1b1b">001  Potion</text><text x="28" y="150" font-size="14" font-weight="700" fill="#1b1b1b">002  Magic Water</text><text x="28" y="180" font-size="14" font-weight="700" fill="#1b1b1b">003  Dragon Fruit</text></g>
                           <g class="dbpanel" data-db="skills"><text x="28" y="120" font-size="14" font-weight="700" fill="#1b1b1b">001  Attack</text><text x="28" y="150" font-size="14" font-weight="700" fill="#1b1b1b">002  Guard</text><text x="28" y="180" font-size="14" font-weight="700" fill="#1b1b1b">003  Fire</text></g>
                           <g class="dbpanel" data-db="enemies"><text x="28" y="120" font-size="14" font-weight="700" fill="#1b1b1b">001  Goblin</text><text x="28" y="150" font-size="14" font-weight="700" fill="#1b1b1b">002  Slime</text><text x="28" y="180" font-size="14" font-weight="700" fill="#1b1b1b">003  Bat</text></g>
                           <g class="dbpanel" data-db="audio"><text x="28" y="120" font-size="14" font-weight="700" fill="#1b1b1b">BGM   Theme6</text><text x="28" y="150" font-size="14" font-weight="700" fill="#1b1b1b">BGS   Quake</text><text x="28" y="180" font-size="14" font-weight="700" fill="#1b1b1b">SE    Cursor</text></g>
                           <g class="dbpanel" data-db="system"><text x="28" y="120" font-size="14" font-weight="700" fill="#1b1b1b">Title: My Game</text><text x="28" y="150" font-size="14" font-weight="700" fill="#1b1b1b">Party: Harold</text><text x="28" y="180" font-size="14" font-weight="700" fill="#1b1b1b">Currency: G</text></g>
-                          <text x="150" y="216" text-anchor="middle" font-size="12" font-weight="800" fill="#f4184c">Tap a tab to switch 👆</text>
+                          <text x="150" y="228" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.6)">One place for all your game's content.</text>
+                          <text x="150" y="251" text-anchor="middle" font-size="14" font-weight="800" fill="#f4184c">Tap a tab to switch 👆</text>
                         </g>
                       </svg>
                       <script>
                       (function(){
                         function initDb(){
-                          document.querySelectorAll('.dbtab').forEach(function(tab){
-                            function act(){
-                              var root=tab.ownerSVGElement||tab.closest('svg'); if(!root) return;
-                              var key=tab.getAttribute('data-db');
-                              root.querySelectorAll('.dbtab').forEach(function(t){ var on=t===tab; t.classList.toggle('is-active',on); t.setAttribute('aria-pressed',on?'true':'false'); });
-                              root.querySelectorAll('.dbpanel').forEach(function(p){ p.classList.toggle('is-active', p.getAttribute('data-db')===key); });
+                          var roots=[];
+                          document.querySelectorAll('.dbtab').forEach(function(t){
+                            var r=t.ownerSVGElement||t.closest('svg');
+                            if(r && roots.indexOf(r)===-1) roots.push(r);
+                          });
+                          roots.forEach(function(root){
+                            var tabs=Array.prototype.slice.call(root.querySelectorAll('.dbtab'));
+                            var panels=Array.prototype.slice.call(root.querySelectorAll('.dbpanel'));
+                            if(!tabs.length) return;
+                            var idx=0;
+                            tabs.forEach(function(t,i){ if(t.classList.contains('is-active')) idx=i; });
+                            var timer=null, idle=null;
+                            function show(i){
+                              idx=(i+tabs.length)%tabs.length;
+                              var key=tabs[idx].getAttribute('data-db');
+                              tabs.forEach(function(t,j){ var on=j===idx; t.classList.toggle('is-active',on); t.setAttribute('aria-pressed',on?'true':'false'); });
+                              panels.forEach(function(p){ p.classList.toggle('is-active', p.getAttribute('data-db')===key); });
                             }
-                            tab.addEventListener('click', act);
-                            tab.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '||e.key==='Spacebar'){ e.preventDefault(); act(); } });
+                            function startAuto(){ stopAuto(); timer=setInterval(function(){ show(idx+1); }, 2200); }
+                            function stopAuto(){ if(timer){ clearInterval(timer); timer=null; } }
+                            tabs.forEach(function(tab,i){
+                              function pick(){ show(i); stopAuto(); clearTimeout(idle); idle=setTimeout(startAuto, 6000); }
+                              tab.addEventListener('click', pick);
+                              tab.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '||e.key==='Spacebar'){ e.preventDefault(); pick(); } });
+                            });
+                            startAuto();
                           });
                         }
                         if(document.readyState!=='loading'){ initDb(); } else { document.addEventListener('DOMContentLoaded', initDb); }
@@ -1094,31 +1192,44 @@
                   <div class="faqAnswer">Use <strong>File → Deployment</strong> and pick your target: Windows, macOS, Web (HTML5), or mobile (Android/iOS) in MZ/MV. The engine packages your project into a shareable build, always test the deployed version before you release it.
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
                       <svg class="dgramDesk" viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="One project deploys to Windows, macOS, Web and Mobile.">
+                        <style>
+                          @keyframes depA{0%,3%{opacity:0;transform:translateY(6px)}11%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes depB{0%,14%{opacity:0;transform:translateY(6px)}22%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes depC{0%,25%{opacity:0;transform:translateY(6px)}33%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes depD{0%,36%{opacity:0;transform:translateY(6px)}44%,100%{opacity:1;transform:translateY(0)}}
+                          @keyframes depE{0%,47%{opacity:0;transform:translateY(6px)}55%,100%{opacity:1;transform:translateY(0)}}
+                          .dep0{opacity:0;animation:depA 8s ease infinite}
+                          .dep1{opacity:0;animation:depB 8s ease infinite}
+                          .dep2{opacity:0;animation:depC 8s ease infinite}
+                          .dep3{opacity:0;animation:depD 8s ease infinite}
+                          .dep4{opacity:0;animation:depE 8s ease infinite}
+                          @media (prefers-reduced-motion: reduce){.dep0,.dep1,.dep2,.dep3,.dep4{opacity:1;animation:none;transform:none}}
+                        </style>
                         <g font-family="sans-serif">
-                          <rect x="10" y="50" width="150" height="50" rx="12" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.3)"/>
-                          <text x="85" y="72" text-anchor="middle" font-size="13" font-weight="800" fill="#1b1b1b">Your project</text>
-                          <text x="85" y="90" text-anchor="middle" font-size="11" fill="rgba(27,27,27,0.6)">File → Deployment</text>
-                          <line x1="160" y1="75" x2="324" y2="25" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
-                          <line x1="160" y1="75" x2="324" y2="61" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
-                          <line x1="160" y1="75" x2="324" y2="97" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
-                          <line x1="160" y1="75" x2="324" y2="133" stroke="rgba(27,27,27,0.25)" stroke-width="2"/>
-                          <rect x="320" y="8" width="190" height="34" rx="9" fill="#eef5fd" stroke="#c3dbf8"/><text x="415" y="30" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Windows</text>
-                          <rect x="320" y="44" width="190" height="34" rx="9" fill="#f4f5f8" stroke="#d4d8e1"/><text x="415" y="66" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">macOS</text>
-                          <rect x="320" y="80" width="190" height="34" rx="9" fill="#f0f9ea" stroke="#c6e6b4"/><text x="415" y="102" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Web (HTML5)</text>
-                          <rect x="320" y="116" width="190" height="34" rx="9" fill="#f5effc" stroke="#ddccf0"/><text x="415" y="138" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Mobile (Android/iOS)</text>
+                          <g class="dep0">
+                            <rect x="10" y="50" width="150" height="50" rx="12" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.3)"/>
+                            <text x="85" y="72" text-anchor="middle" font-size="13" font-weight="800" fill="#1b1b1b">Your project</text>
+                            <text x="85" y="90" text-anchor="middle" font-size="11" fill="rgba(27,27,27,0.6)">File → Deployment</text>
+                          </g>
+                          <g class="dep1"><line x1="160" y1="75" x2="324" y2="25" stroke="rgba(27,27,27,0.25)" stroke-width="2"/><rect x="320" y="8" width="190" height="34" rx="9" fill="#eef5fd" stroke="#c3dbf8"/><text x="415" y="30" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Windows</text></g>
+                          <g class="dep2"><line x1="160" y1="75" x2="324" y2="61" stroke="rgba(27,27,27,0.25)" stroke-width="2"/><rect x="320" y="44" width="190" height="34" rx="9" fill="#f4f5f8" stroke="#d4d8e1"/><text x="415" y="66" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">macOS</text></g>
+                          <g class="dep3"><line x1="160" y1="75" x2="324" y2="97" stroke="rgba(27,27,27,0.25)" stroke-width="2"/><rect x="320" y="80" width="190" height="34" rx="9" fill="#f0f9ea" stroke="#c6e6b4"/><text x="415" y="102" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Web (HTML5)</text></g>
+                          <g class="dep4"><line x1="160" y1="75" x2="324" y2="133" stroke="rgba(27,27,27,0.25)" stroke-width="2"/><rect x="320" y="116" width="190" height="34" rx="9" fill="#f5effc" stroke="#ddccf0"/><text x="415" y="138" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Mobile (Android/iOS)</text></g>
                         </g>
                       </svg>
                       <svg class="dgramMob" viewBox="0 0 240 264" width="100%" style="max-width:280px; height:auto; margin:0 auto;" role="img" aria-label="One project deploys down to Windows, macOS, Web and Mobile.">
                         <g font-family="sans-serif">
-                          <rect x="45" y="10" width="150" height="46" rx="12" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.3)"/>
-                          <text x="120" y="34" text-anchor="middle" font-size="13" font-weight="800" fill="#1b1b1b">Your project</text>
-                          <text x="120" y="50" text-anchor="middle" font-size="11" fill="rgba(27,27,27,0.6)">File → Deployment</text>
-                          <line x1="120" y1="62" x2="120" y2="86" stroke="rgba(27,27,27,0.3)" stroke-width="2.5"/>
-                          <polygon points="112,86 128,86 120,98" fill="rgba(27,27,27,0.45)"/>
-                          <rect x="25" y="104" width="190" height="34" rx="9" fill="#eef5fd" stroke="#c3dbf8"/><text x="120" y="126" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Windows</text>
-                          <rect x="25" y="142" width="190" height="34" rx="9" fill="#f4f5f8" stroke="#d4d8e1"/><text x="120" y="164" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">macOS</text>
-                          <rect x="25" y="180" width="190" height="34" rx="9" fill="#f0f9ea" stroke="#c6e6b4"/><text x="120" y="202" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Web (HTML5)</text>
-                          <rect x="25" y="218" width="190" height="34" rx="9" fill="#f5effc" stroke="#ddccf0"/><text x="120" y="240" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Mobile (Android/iOS)</text>
+                          <g class="dep0">
+                            <rect x="45" y="10" width="150" height="46" rx="12" fill="rgba(244,24,76,0.08)" stroke="rgba(244,24,76,0.3)"/>
+                            <text x="120" y="31" text-anchor="middle" font-size="13" font-weight="800" fill="#1b1b1b">Your project</text>
+                            <text x="120" y="47" text-anchor="middle" font-size="11" fill="rgba(27,27,27,0.6)">File → Deployment</text>
+                            <line x1="120" y1="62" x2="120" y2="86" stroke="rgba(27,27,27,0.3)" stroke-width="2.5"/>
+                            <polygon points="112,86 128,86 120,98" fill="rgba(27,27,27,0.45)"/>
+                          </g>
+                          <g class="dep1"><rect x="25" y="104" width="190" height="34" rx="9" fill="#eef5fd" stroke="#c3dbf8"/><text x="120" y="126" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Windows</text></g>
+                          <g class="dep2"><rect x="25" y="142" width="190" height="34" rx="9" fill="#f4f5f8" stroke="#d4d8e1"/><text x="120" y="164" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">macOS</text></g>
+                          <g class="dep3"><rect x="25" y="180" width="190" height="34" rx="9" fill="#f0f9ea" stroke="#c6e6b4"/><text x="120" y="202" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Web (HTML5)</text></g>
+                          <g class="dep4"><rect x="25" y="218" width="190" height="34" rx="9" fill="#f5effc" stroke="#ddccf0"/><text x="120" y="240" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1b1b1b">Mobile (Android/iOS)</text></g>
                         </g>
                       </svg>
                     </div>
@@ -1128,7 +1239,7 @@
                   <summary>Why does my Autorun or Parallel event freeze or keep repeating?</summary>
                   <div class="faqAnswer">An <strong>Autorun</strong> event runs over and over and locks the game until its conditions change, so end it by turning on a <strong>Self Switch</strong> and adding a blank second page. A <strong>Parallel</strong> event runs every frame in the background, so keep it small, gate it behind a switch, and add a short <code>Wait</code> to avoid lag. There's a worked example in our <a href="./rpg-maker-day-night-cycle-system.html">Day &amp; Night Cycle tutorial</a>.
                     <div class="dgram" style="margin-top:12px; overflow-x:auto">
-                      <svg viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="An Autorun event runs Page 1 once, flips Self Switch A, then a blank Page 2 stops it.">
+                      <svg class="dgramDesk" viewBox="0 0 520 150" width="100%" style="max-width:520px; height:auto" role="img" aria-label="An Autorun event runs Page 1 once, flips Self Switch A, then a blank Page 2 stops it.">
                         <g font-family="sans-serif">
                           <rect x="8" y="34" width="206" height="82" rx="14" fill="rgba(244,24,76,0.06)" stroke="rgba(244,24,76,0.25)"/>
                           <text x="111" y="60" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Page 1 (Autorun)</text>
@@ -1141,6 +1252,21 @@
                           <text x="414" y="60" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Page 2 (blank)</text>
                           <text x="414" y="82" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Condition: Self Switch A ON</text>
                           <text x="414" y="99" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Nothing runs, event stops</text>
+                        </g>
+                      </svg>
+                      <svg class="dgramMob" viewBox="0 0 260 266" width="100%" style="max-width:280px; height:auto; margin:0 auto; display:block;" role="img" aria-label="An Autorun event runs Page 1 once, flips Self Switch A, then a blank Page 2 stops it.">
+                        <g font-family="sans-serif">
+                          <rect x="16" y="10" width="228" height="82" rx="14" fill="rgba(244,24,76,0.06)" stroke="rgba(244,24,76,0.25)"/>
+                          <text x="130" y="36" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Page 1 (Autorun)</text>
+                          <text x="130" y="58" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Runs once: set things up,</text>
+                          <text x="130" y="75" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">then Self Switch A = ON</text>
+                          <text x="130" y="118" text-anchor="middle" font-size="11" font-weight="800" fill="#f4184c">Self Switch A</text>
+                          <line x1="130" y1="124" x2="130" y2="148" stroke="rgba(27,27,27,0.5)" stroke-width="3.5"/>
+                          <polygon points="122,148 138,148 130,162" fill="rgba(27,27,27,0.6)"/>
+                          <rect x="16" y="172" width="228" height="82" rx="14" fill="rgba(86,167,254,0.07)" stroke="rgba(86,167,254,0.3)"/>
+                          <text x="130" y="198" text-anchor="middle" font-size="14" font-weight="800" fill="#1b1b1b">Page 2 (blank)</text>
+                          <text x="130" y="220" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Condition: Self Switch A ON</text>
+                          <text x="130" y="237" text-anchor="middle" font-size="12" fill="rgba(27,27,27,0.72)">Nothing runs, event stops</text>
                         </g>
                       </svg>
                     </div>
