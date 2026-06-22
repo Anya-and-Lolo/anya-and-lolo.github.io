@@ -212,21 +212,83 @@
               </div>
 
               <div class="callout info">
-                <strong>Good news:</strong>
-                This system works with any version of RPG Maker. If you use MZ or MV, open the demo file and follow along.
-                <a class="linkBrand"
-                href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle"
-                target="_blank" rel="noopener" style="margin-left:1px" data-track="download_demo" data-track-label="Preview Callout Download Here">
-                Download here!
-              </a>
+                <strong>Good news:</strong> this system works in every version of RPG Maker. If your engine doesn’t have a demo <a class="linkBrand" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener" style="margin-left:1px" data-track="download_demo" data-track-label="Preview Callout Download Here">on this page</a>, just recreate the event commands shown below.
             </div>
+          </div>
+
+          <div class="card" id="concepts" data-section-track="Concepts You'll Use" style="margin-top:14px">
+            <div class="subcard">
+              <h2 class="sectionTitle">RPG Maker concepts you'll use</h2>
+              <div class="lead" style="margin-top:6px">The core pieces you'll put together in this tutorial:</div>
+
+              <svg class="dgramDesk" viewBox="0 0 400 288" width="100%" style="max-width:480px; height:auto; display:block; margin:10px 0 2px;" role="img" aria-label="RPG Maker concepts you'll use: Event Logic, Parallel Events, Autorun Events, Variables, and Conditional Branches.">
+                <line x1="24" y1="26" x2="24" y2="258" stroke="#e3e3e8" stroke-width="2" stroke-linecap="round"/>
+                <g font-family="'Roboto', system-ui, sans-serif">
+                  <circle cx="24" cy="26" r="13" fill="#3793ff"/>
+                  <text x="24" y="26" dy="0.35em" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">E</text>
+                  <text x="48" y="22" font-size="15.5" font-weight="700" fill="#303030">Event Logic</text>
+                  <text x="48" y="41" font-size="13" fill="#6b7178">How the time system behaves</text>
+
+                  <circle cx="24" cy="84" r="13" fill="#1a9e54"/>
+                  <text x="24" y="84" dy="0.35em" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">P</text>
+                  <text x="48" y="80" font-size="15.5" font-weight="700" fill="#303030">Parallel Events</text>
+                  <text x="48" y="99" font-size="13" fill="#6b7178">Update time continuously</text>
+
+                  <circle cx="24" cy="142" r="13" fill="#f000e9"/>
+                  <text x="24" y="142" dy="0.35em" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">A</text>
+                  <text x="48" y="138" font-size="15.5" font-weight="700" fill="#303030">Autorun Events</text>
+                  <text x="48" y="157" font-size="13" fill="#6b7178">Run automatic sequences</text>
+
+                  <circle cx="24" cy="200" r="13" fill="#72889c"/>
+                  <text x="24" y="200" dy="0.35em" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">V</text>
+                  <text x="48" y="196" font-size="15.5" font-weight="700" fill="#303030">Variables <tspan font-size="11" font-weight="600" fill="#6b7178">(Getting Started)</tspan></text>
+                  <text x="48" y="215" font-size="13" fill="#6b7178">Store and track time data</text>
+
+                  <circle cx="24" cy="258" r="13" fill="#8a5cf6"/>
+                  <text x="24" y="258" dy="0.35em" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">B</text>
+                  <text x="48" y="254" font-size="15.5" font-weight="700" fill="#303030">Conditional Branches <tspan font-size="11" font-weight="600" fill="#6b7178">(Getting Started)</tspan></text>
+                  <text x="48" y="273" font-size="13" fill="#6b7178">Different outcomes based on time</text>
+                </g>
+              </svg>
+
+              <svg class="dgramMob" viewBox="0 0 398 318" width="100%" style="max-width:412px; height:auto; display:block; margin:10px auto 2px;" role="img" aria-label="RPG Maker concepts you'll use: Event Logic, Parallel Events, Autorun Events, Variables, and Conditional Branches.">
+                <line x1="26" y1="30" x2="26" y2="278" stroke="#e3e3e8" stroke-width="2" stroke-linecap="round"/>
+                <g font-family="'Roboto', system-ui, sans-serif">
+                  <circle cx="26" cy="30" r="14" fill="#3793ff"/>
+                  <text x="26" y="30" dy="0.35em" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">E</text>
+                  <text x="50" y="25" font-size="17" font-weight="700" fill="#303030">Event Logic</text>
+                  <text x="50" y="46" font-size="15" fill="#6b7178">How the time system behaves</text>
+
+                  <circle cx="26" cy="92" r="14" fill="#1a9e54"/>
+                  <text x="26" y="92" dy="0.35em" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">P</text>
+                  <text x="50" y="87" font-size="17" font-weight="700" fill="#303030">Parallel Events</text>
+                  <text x="50" y="108" font-size="15" fill="#6b7178">Update time continuously</text>
+
+                  <circle cx="26" cy="154" r="14" fill="#f000e9"/>
+                  <text x="26" y="154" dy="0.35em" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">A</text>
+                  <text x="50" y="149" font-size="17" font-weight="700" fill="#303030">Autorun Events</text>
+                  <text x="50" y="170" font-size="15" fill="#6b7178">Run automatic sequences</text>
+
+                  <circle cx="26" cy="216" r="14" fill="#72889c"/>
+                  <text x="26" y="216" dy="0.35em" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">V</text>
+                  <text x="50" y="211" font-size="17" font-weight="700" fill="#303030">Variables <tspan font-size="12" font-weight="600" fill="#6b7178">(Getting Started)</tspan></text>
+                  <text x="50" y="232" font-size="15" fill="#6b7178">Store and track time data</text>
+
+                  <circle cx="26" cy="278" r="14" fill="#8a5cf6"/>
+                  <text x="26" y="278" dy="0.35em" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">B</text>
+                  <text x="50" y="273" font-size="17" font-weight="700" fill="#303030">Conditional Branches <tspan font-size="12" font-weight="600" fill="#6b7178">(Getting Started)</tspan></text>
+                  <text x="50" y="294" font-size="15" fill="#6b7178">Different outcomes based on time</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="callout info" style="margin-top:8px"><strong>Confused by a term?</strong> <a href="./rpg-maker-getting-started.html">Getting Started with RPG Maker</a> breaks down the core concepts in clear, beginner‑friendly language.</div>
           </div>
 
           <div class="card" id="intro" data-section-track="What You Will Learn" style="margin-top:14px">
             <div class="subcard">
-              <h2 class="sectionTitle">Let’s build this step by step!</h2>
-              <div class="lead" style="margin-top:8px">We’re going to set up a fully functional time system that adds life and motion to your project ✨ You&#039;ll also learn how to create a real in-game clock and a clean time display to transition your world from dawn to dusk and beyond.</div>
-              <div class="muted" style="margin-top:10px">Seconds → Minutes → Hours → Days • Game Time Logic • Screen‑tint Transitions • Custom HUD</div>
+              <h2 class="sectionTitle">What you'll learn today</h2>
+              <div class="lead" style="margin-top:8px">Learn how to create a real in-game clock and a clean time display to transition your world from dawn to dusk and beyond.</div>
             </div>
             <div class="subcard">
               <h2 class="sectionTitle">What events you’ll create</h2>
@@ -313,6 +375,8 @@
                     <div class="stepBody">Create the events manually in your own project. A clean way is placing the setup events in the top-left corner of a map first, then moving them into Common Events once you’re happy.</div>
                   </div>
                 </div>
+
+                <div class="imageCard" style="margin-top:12px; max-width:520px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-demo-map-events.png" width="487" height="292" loading="lazy" alt="RPG Maker demo map with the day-night cycle setup events placed in the top-left corner: one Autorun and two Parallel events."></div>
               </div>
 
               <div class="card" id="setup" data-section-track="Game Time Setup" style="margin-top:14px">
@@ -770,7 +834,8 @@
                                       <div class="lead" style="margin-top:8px">You've built a full in-game clock, seconds to days, a live time display, smooth day/night screen tints, a custom start time, and performance optimizations. Nicely done! ☀️🌙</div>
                                       <div class="lead" style="margin-top:8px">The free <strong>Pro</strong> version takes it further: world-map time cycles that shape your entire game, a dynamic picture-based HUD, events that react to the clock (lanterns lighting at night, shops open 9AM-6PM), an adjustable time-speed fast-forward mini-game, and Smart System optimizations that keep everything running smoothly, plus extra tutorial content.</div>
                                       <div class="lead" style="margin-top:8px">🎁 It's <strong>free for subscribers</strong>, just join the Anya &amp; Lolo Club and your exclusive download link lands straight in your inbox 💌</div>
-                                      <div class="miniRow"><a class="btn btnPrimary" href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener" data-track="join_club" data-track-label="Go Pro Join Club">Join the Club &amp; go Pro for free <span class="barr">➜</span></a><a class="btn" href="./index.html"><span class="barr lft">➜</span> Back to Tutorials</a></div>
+                                      <div class="lead" style="margin-top:8px"><strong style="color:#f4184c">Want to try it?</strong> <a href="https://anya-and-lolo.itch.io/rpg-maker-relationship-system-pro" target="_blank"><u>Play the full Pro demo right in your browser</u></a>, no download needed, or <a href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank"><u>join the Anya &amp; Lolo Club</u></a> to grab the free MZ/MV files.</div>
+                                      <div class="miniRow"><a class="btn btnPrimary" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Pro Play Demo">▶ Play the Pro demo</a><a class="btn" href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener" data-track="join_club" data-track-label="Go Pro Join Club">Join the Club <span class="barr">➜</span></a><a class="btn" href="./index.html"><span class="barr lft">➜</span> Back to Tutorials</a></div>
                                       </div>
                                     </div>
                                     <aside class="card tocCard">
@@ -780,6 +845,8 @@
                                         <div class="tocProgress" aria-hidden="true">
                                           <div class="tocProgressFill" id="tocProgressFill"></div>
                                         </div>
+                                        <a href="javascript:void(0)"
+                                        data-jump="concepts"><span>Core Concepts</span><small>Building blocks</small></a>
                                         <a href="javascript:void(0)"
                                         data-jump="intro"><span>What You’ll Learn</span><small>Overview</small></a>
                                       <a href="javascript:void(0)"
