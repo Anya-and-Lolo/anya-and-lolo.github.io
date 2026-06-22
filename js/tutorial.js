@@ -198,26 +198,27 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    document.querySelectorAll('img[data-lb="1"]').forEach(img => {
-      img.addEventListener("click", () => {
-        const gid = img.getAttribute("data-gallery");
-        const idx = Number(img.getAttribute("data-index") || 0);
+    document.addEventListener("click", (e) => {
+      const img = e.target.closest && e.target.closest('img[data-lb="1"]');
+      if (!img) return;
+      if (img.closest("a")) return; // image is wrapped in a link: let the link work, no lightbox
+      const gid = img.getAttribute("data-gallery");
+      const idx = Number(img.getAttribute("data-index") || 0);
 
-        if (gid) {
-          const galleryItems = getGalleryItems(gid);
-          if (galleryItems && galleryItems.length) {
-            items = galleryItems;
-            openLightbox(Math.max(0, Math.min(idx, items.length - 1)));
-            return;
-          }
+      if (gid) {
+        const galleryItems = getGalleryItems(gid);
+        if (galleryItems && galleryItems.length) {
+          items = galleryItems;
+          openLightbox(Math.max(0, Math.min(idx, items.length - 1)));
+          return;
         }
+      }
 
-        items = [{
-          src: img.getAttribute("src"),
-          alt: img.getAttribute("alt") || "Preview"
-        }];
-        openLightbox(0);
-      });
+      items = [{
+        src: img.getAttribute("src"),
+        alt: img.getAttribute("alt") || "Preview"
+      }];
+      openLightbox(0);
     });
 
     document.querySelectorAll('[data-lbthumb="1"]').forEach(btn => {
@@ -235,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     lightbox.addEventListener("click", (e) => {
-      if (e.target && e.target.getAttribute && e.target.getAttribute("data-close") === "1") {
+      if (e.target === lightbox || (e.target.closest && e.target.closest('[data-close="1"]'))) {
         closeLightbox();
       }
     });
@@ -249,6 +250,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowRight") next();
       if (e.key === "ArrowLeft") prev();
+      if (e.key === "Tab") {
+        const focusables = Array.prototype.slice.call(
+          lightbox.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])')
+        ).filter(el => el.offsetParent !== null);
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
   }
 
