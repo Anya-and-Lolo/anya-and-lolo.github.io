@@ -1,10 +1,13 @@
 let lastTutorialSection = null;
+let tocClickAt = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
   // TOC click: smooth-scroll
   document.querySelectorAll(".toc a[data-jump]").forEach(a => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
+      tocClickAt = Date.now();
+      document.querySelectorAll(".toc a[data-jump]").forEach(x => x.classList.toggle("is-active", x === a));
       const id = a.getAttribute("data-jump");
       const el = id ? document.getElementById(id) : null;
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -32,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (tocLinks.length && sectionEls.length) {
     const sectionObserver = new IntersectionObserver((entries) => {
+      if (Date.now() - tocClickAt < 900) return;   // let a click win briefly
       const visible = entries
         .filter(e => e.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -48,6 +52,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     sectionEls.forEach(sec => sectionObserver.observe(sec));
+
+    // Bottom-of-page fallback: the last section can be too short to reach the
+    // active band, so highlight its TOC link when scrolled to the very bottom.
+    const lastLink = tocLinks[tocLinks.length - 1];
+    function bottomCheck(){
+      if (Date.now() - tocClickAt < 900) return;   // don't override a fresh click
+      const doc = document.documentElement;
+      const atBottom = (window.innerHeight + window.scrollY) >= (doc.scrollHeight - 4);
+      if (atBottom) tocLinks.forEach(a => a.classList.toggle("is-active", a === lastLink));
+    }
+    window.addEventListener("scroll", bottomCheck, { passive: true });
+    window.addEventListener("resize", bottomCheck);
+    bottomCheck();
   }
 
   // Crossfade blocks
