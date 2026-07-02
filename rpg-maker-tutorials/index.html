@@ -48,16 +48,65 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"Which RPG Maker should a beginner choose?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker MZ is the newest and most beginner-friendly. MV is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks."}},
-    {"@type":"Question","name":"How do I make a day and night cycle in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Track in-game time with a variable in a Parallel Process common event, then change the screen tint as the time value changes. We have a full step-by-step guide that works in MZ, MV, XP, VX Ace, 2000, and 2003."}},
-    {"@type":"Question","name":"My RPG Maker game is lagging, how do I fix it?","acceptedAnswer":{"@type":"Answer","text":"The most common cause is too many Parallel Process events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into Common Events."}},
-    {"@type":"Question","name":"How do I install a plugin in RPG Maker MZ or MV?","acceptedAnswer":{"@type":"Answer","text":"Put the plugin's .js file in your project's js/plugins folder, open the Plugin Manager, add the plugin, set it to ON, and configure its parameters. Always read the plugin's terms of use."}},
-    {"@type":"Question","name":"Can I use RPG Maker's built-in (RTP) assets in other engines?","acceptedAnswer":{"@type":"Answer","text":"Generally no. Default RPG Maker assets are licensed for use in games made with RPG Maker. Check the specific product's license (EULA) before using them in other engines, including WOLF RPG Editor."}},
-    {"@type":"Question","name":"What's the difference between RPG Maker and WOLF RPG Editor?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker is a paid, beginner-friendly commercial engine. WOLF RPG Editor (Woditor) is a free, more advanced Japanese engine with deeper customization. We maintain a full English WOLF RPG Editor guide if you'd like to try it."}},
-    {"@type":"Question","name":"What are the most common RPG Maker beginner mistakes?","acceptedAnswer":{"@type":"Answer","text":"Overusing Parallel Process events, not keeping backups or a test project, and hard-coding everything instead of using Common Events. Fixing these early saves a lot of debugging."}}
+    {
+      "@type": "Question",
+      "name": "Which RPG Maker version should I choose?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "RPG Maker MZ is the newest and most beginner-friendly; MV is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make a day & night cycle?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Track in-game time with a variable in a Parallel Process common event, then change the screen tint as the time value changes. We have a full step-by-step that works in MZ, MV, XP, VX Ace, 2000, and 2003: RPG Maker Day & Night Cycle tutorial."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "My game is lagging, how do I fix it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common cause is too many Parallel Process events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into Common Events. For frame-perfect optimization (only updating things when a value actually changes), I explain a full smart system in the Pro version of the Day & Night tutorial."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I install a plugin in RPG Maker MZ/MV?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Put the plugin's .js file in your project's js/plugins folder, open the Plugin Manager, add the plugin, set it to ON, and configure its parameters. Always read the plugin's terms of use."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use RPG Maker's built-in (RTP) assets in other engines?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generally no. Default RPG Maker assets are licensed for use in games made with RPG Maker. Check the specific product's license (EULA) before using them in other engines, including WOLF RPG Editor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between RPG Maker and WOLF RPG Editor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "RPG Maker is a paid, beginner-friendly commercial engine. WOLF RPG Editor (Woditor) is a free, more advanced Japanese engine with deeper customization. If you'd like to try it, we maintain a full English WOLF RPG Editor guide ↗."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do beginners usually struggle with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most new devs run into the same hurdles, the big three are: skipping backups or a test project, using too many Parallel Process events, hard-coding logic or duplicating events instead of reusing Common Events. You can avoid these easily by keeping a small sandbox project, gating your Parallel events, and moving repeatable logic into Common Events so your project stays clean and easy to manage. Brand new? Our Getting Started with RPG Maker page explains all the basics, variables, switches, common events and more, in plain language."
+      }
+    }
   ]
 }
-</script>
+  </script>
 	
 </head>
 
@@ -110,13 +159,13 @@
                   <span class="dropSub">Step-by-step guides &amp; lessons</span>
                 </span>
               </a>
-              <a class="dropItem" role="menuitem" href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">
+              <a class="dropItem" role="menuitem" href="../wolf-rpg-editor-tutorials/">
                 <span class="dropIcon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3l3.8 3.3A8 8 0 0 1 12 5a8 8 0 0 1 4.2 1.3L20 3l-1 6.2A7 7 0 0 1 12 19a7 7 0 0 1-7-9.8z"/><path d="M9 11h.01M15 11h.01"/><path d="m12 14-1 1h2z"/></svg>
                 </span>
                 <span class="dropText">
-                  <span class="dropTitle">WOLF RPG Editor Guide</span>
-                  <span class="dropSub">Complete guide &amp; resources</span>
+                  <span class="dropTitle">WOLF RPG Editor</span>
+                  <span class="dropSub">Download &amp; English guide</span>
                 </span>
               </a>
             </div>
@@ -348,29 +397,29 @@
           </div>
 		  
           <!-- Start Here -->
-          <div class="card tutorialCard" id="start-here" data-section-track="Start Here" data-tags="mz mv xp vx vxace rm2k rm2k3 basics beginner" style="margin-top:14px;">
-            <h2 class="sectionTitle">Where To Start?</h2>
-            <div class="lead">If you’re new to RPG Maker, we recommend these beginner-friendly tutorials and guides:</div>
+          <div class="card tutorialCard" id="start-here" data-section-track="Start Here" data-tags="mz mv xp vx vxace rm2k rm2k3 basics beginner" style="margin-top:14px; background:#2c353b; border-color:#2c353b;">
+            <h2 class="sectionTitle" style="color:#fff;">Where To Start?</h2>
+            <div class="lead" style="color:#dfe6ea;">If you’re new to RPG Maker, we recommend these beginner-friendly tutorials and guides:</div>
 
-			<a href="#day-night" style="text-decoration:none;">
+			<a href="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-day-night-cycle-system.html" style="text-decoration:none;">
             <div class="step">
               <div class="stepNum">1</div>
               <div>
                 <div class="stepTitle">RPG Maker Day & Night Cycle Tutorial (Beginner)</div>
                 <p>
-                  This tutorial is really easy, and it even comes with a beginner‑friendly video!
+                  <u>This tutorial</u> is really easy, and it even comes with a beginner‑friendly video!
                 </p>
               </div>
             </div>
 			</a>
 
-			<a href="#faq" style="text-decoration:none;">
+			<a href="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-getting-started.html" style="text-decoration:none;">
             <div class="step">
               <div class="stepNum">2</div>
               <div>
-                <div class="stepTitle">RPG Maker FAQ</div>
+                <div class="stepTitle">Getting Started with RPG Maker (Basics)</div>
                 <p>
-                  Quick answers to common questions: eventing, plugins, and beginner mistakes.
+                  <u>Quick answers</u> to common questions: eventing, plugins, and beginner mistakes.
                 </p>
               </div>
             </div>
@@ -380,7 +429,7 @@
             <div class="step">
               <div class="stepNum">3</div>
               <div>
-                <div class="stepTitle">Watch Videos</div>
+                <div class="stepTitle">Watch Videos (All Levels)</div>
                 <p>
                   Some tutorials were made as videos, check out <u>my YouTube channel</u> for more!
                 </p>
@@ -560,122 +609,81 @@
         io.observe(c);
       });
 	  	
-// MULTI-SELECT TAG FILTERS (sidebar + top tags)
+// SINGLE-SELECT TAG FILTERS (two independent groups: difficulty + engine)
 (() => {
   const buttons = Array.from(document.querySelectorAll(".tagBtn[data-tag]"));
   const cards   = Array.from(document.querySelectorAll(".tutorialCard"));
 
-  const MATCH_ALL = false;
-  const selected = new Set();
+  const DIFF   = ["basics","beginner","mid-level","advanced"];
+  const ENGINE = ["mz","mv","xp","vxace","vx","rm2k","rm2k3"];
 
-  function normalizeTag(t){
-    return String(t || "").trim().toLowerCase();
-  }
+  const norm = t => String(t||"").trim().toLowerCase();
+  const cardTags = c => String(c.getAttribute("data-tags")||"").toLowerCase().split(/\s+/).filter(Boolean);
+  const groupOf = t => DIFF.includes(t) ? "diff" : (ENGINE.includes(t) ? "engine" : (t==="all" ? "all" : null));
 
-  function getCardTags(card){
-    return String(card.getAttribute("data-tags") || "")
-      .toLowerCase()
-      .split(/\s+/)
-      .filter(Boolean);
-  }
-
-  function setAllActiveUI(on){
-    buttons.forEach(b => {
-      if (normalizeTag(b.dataset.tag) === "all") {
-        b.classList.toggle("is-active", !!on);
-      }
-    });
-  }
+  let selDiff = null, selEngine = null;   // at most one of each
 
   function syncActiveUI(){
-    buttons.forEach(btn => {
-      const tag = normalizeTag(btn.dataset.tag);
-      if (tag === "all") return;
-      btn.classList.toggle("is-active", selected.has(tag));
+    buttons.forEach(b => {
+      const t = norm(b.dataset.tag);
+      if (t === "all") b.classList.toggle("is-active", selEngine === null);
+      else b.classList.toggle("is-active", t === selDiff || t === selEngine);
     });
-
-    setAllActiveUI(selected.size === 0);
   }
 
   function applyFilter(){
+    cards.forEach(card => {
+      const tags = cardTags(card);
+      const okDiff   = !selDiff   || tags.includes(selDiff);
+      const okEngine = !selEngine || tags.includes(selEngine);
+      card.style.display = (okDiff && okEngine) ? "" : "none";
+    });
+
     const status = document.getElementById("filterStatus");
     if (status){
-      status.textContent = selected.size
-        ? `${selected.size} filter${selected.size>1?"s":""} selected`
-        : `Showing all tutorials`;
+      const parts = [];
+      if (selDiff)   parts.push(selDiff.charAt(0).toUpperCase() + selDiff.slice(1));
+      if (selEngine) parts.push(selEngine.toUpperCase());
+      status.textContent = parts.length ? ("Showing: " + parts.join(" + ")) : "Showing all tutorials";
     }
 
-    if (selected.size === 0){
-      cards.forEach(c => (c.style.display = ""));
-    } else {
-      cards.forEach(card => {
-        const tags = getCardTags(card);
-
-        const show = MATCH_ALL
-          ? Array.from(selected).every(t => tags.includes(t))
-          : Array.from(selected).some(t => tags.includes(t));
-
-        card.style.display = show ? "" : "none";
-      });
-    }
-
-    // empty state (must be INSIDE applyFilter)
     const visible = cards.filter(c => c.style.display !== "none").length;
     const emptyState = document.getElementById("emptyState");
     if (emptyState) emptyState.style.display = visible ? "none" : "";
   }
 
   function reset(){
-    selected.clear();
-    syncActiveUI();
-    applyFilter();
+    selDiff = null; selEngine = null;
+    syncActiveUI(); applyFilter();
   }
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-      const tag = normalizeTag(btn.dataset.tag);
-
-      if (tag === "all"){
-        reset();
-        return;
-      }
-
-      if (selected.has(tag)) selected.delete(tag);
-      else selected.add(tag);
+      const t = norm(btn.dataset.tag), g = groupOf(t);
+      if (g === "all")         selEngine = null;
+      else if (g === "engine") selEngine = (selEngine === t) ? null : t;
+      else if (g === "diff")   selDiff   = (selDiff   === t) ? null : t;
+      else return;
 
       syncActiveUI();
       applyFilter();
-
-      // scroll AFTER applying filter
-      document.querySelector(".tutorialGrid")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.querySelector(".tutorialGrid")?.scrollIntoView({ behavior:"smooth", block:"start" });
     });
   });
 
-  // Quick-jumps should clear any active filter first, then scroll to the section
   document.querySelectorAll(".toc a[data-jump]").forEach(a => {
     a.addEventListener("click", () => {
-      if (selected.size) reset();
+      if (selDiff || selEngine) reset();
       const el = document.getElementById(a.getAttribute("data-jump"));
-      if (el) requestAnimationFrame(() => el.scrollIntoView({ behavior: "smooth", block: "start" }));
+      if (el) requestAnimationFrame(() => el.scrollIntoView({ behavior:"smooth", block:"start" }));
     });
   });
 
   reset();
 })();
-	  	  
-});
-</script>
-	
+
+    });
+  </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

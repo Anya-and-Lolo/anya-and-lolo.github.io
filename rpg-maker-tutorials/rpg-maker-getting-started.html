@@ -39,32 +39,225 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"What are the main parts of the RPG Maker editor?","acceptedAnswer":{"@type":"Answer","text":"The Map editor (draw your world with tilesets), the Database (actors, items, skills, enemies, system settings), the Event editor (the logic that makes things happen), and the Plugin Manager in MZ/MV for extra features."}},
-    {"@type":"Question","name":"How do I make my first map and playtest it?","acceptedAnswer":{"@type":"Answer","text":"Right-click the map list to create a map, set its size, then paint tiles from the tileset palette. Press the Play button (or F12 in MZ/MV) to playtest and walk around."}},
-    {"@type":"Question","name":"What is an Event in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"An Event is anything interactive placed on a map: an NPC, a door, a treasure chest, or hidden logic. You build events from a list of commands like Show Text, Control Variables and Conditional Branch."}},
-    {"@type":"Question","name":"What is a Variable?","acceptedAnswer":{"@type":"Answer","text":"A Variable stores a number you can change and check, such as gold, a quest step, or in-game time. Use Control Variables to set or change it, and a Conditional Branch to react to its value."}},
-    {"@type":"Question","name":"What is a Switch (and a Self Switch)?","acceptedAnswer":{"@type":"Answer","text":"A Switch is an ON/OFF flag used across the whole game, perfect for 'has the player done X yet?'. A Self Switch is local to a single event, ideal for opened chests or one-time NPC reactions."}},
-    {"@type":"Question","name":"What is a Common Event?","acceptedAnswer":{"@type":"Answer","text":"A Common Event is reusable event logic stored in the Database that any map can call. Triggers can be None (called manually), Autorun, or Parallel. Use them to avoid copying the same logic onto many maps."}},
-    {"@type":"Question","name":"What do the event Triggers mean?","acceptedAnswer":{"@type":"Answer","text":"Action Button runs when the player faces the event and presses confirm. Player Touch runs when the player walks into it. Autorun takes over the screen and runs once (use a Self Switch to stop it). Parallel runs continuously in the background."}},
-    {"@type":"Question","name":"How do I send the player to another map?","acceptedAnswer":{"@type":"Answer","text":"Add an event with a Transfer Player command, choose the destination map and tile, then set the trigger to Action Button for doors or Player Touch for automatic transfer."}},
-    {"@type":"Question","name":"How do I make a shop or give the player an item?","acceptedAnswer":{"@type":"Answer","text":"Use the Shop Processing event command to open a shop, or Change Items / Change Gold / Change Weapons / Change Armor to give things directly inside an event."}},
-    {"@type":"Question","name":"How do I add a save point or stop the player from saving?","acceptedAnswer":{"@type":"Answer","text":"Use Change Save Access event command to enable or disable saving, and Open Save Screen to create a save point. You can also set save access in the System tab of the Database."}},
-    {"@type":"Question","name":"How do I make an NPC talk and offer choices?","acceptedAnswer":{"@type":"Answer","text":"Use Show Text for dialogue, and Show Choices to give the player options that branch the conversation. Combine with variables and switches to make NPCs remember what happened."}},
-    {"@type":"Question","name":"What is the Database?","acceptedAnswer":{"@type":"Answer","text":"The Database is where you define your game's content: Actors, Classes, Skills, Items, Weapons, Armors, Enemies, Troops, Tilesets, Common Events and System settings like the title screen and starting party."}},
-    {"@type":"Question","name":"How do I change a character's sprite or add my own graphics?","acceptedAnswer":{"@type":"Answer","text":"Drop your image files into the matching folder in the project's img folder (characters, tilesets, pictures, etc.), then pick them in the relevant Database tab or event command. Audio goes in the audio folder."}},
-    {"@type":"Question","name":"How do I change the title screen?","acceptedAnswer":{"@type":"Answer","text":"Open Database -> System and set the Title screen image and game title there. In MZ/MV you can also adjust title commands and music."}},
-    {"@type":"Question","name":"Is RPG Maker free, and how much does it cost?","acceptedAnswer":{"@type":"Answer","text":"RPG Maker is paid software, but it is beginner-friendly, frequently discounted in Steam sales, and usually offers a free trial. Each version (MZ, MV, XP, VX Ace, 2000, 2003) is sold separately. A completely free alternative engine is the WOLF RPG Editor."}},
-    {"@type":"Question","name":"RPG Maker MZ vs MV: which one should I buy?","acceptedAnswer":{"@type":"Answer","text":"Both use JavaScript plugins. RPG Maker MZ is the newest, with a faster editor, layered map tiles and Effekseer battle animations. RPG Maker MV is older but has the largest plugin library and community. Pick MZ for the latest features, or MV for the widest selection of plugins and tutorials."}},
-    {"@type":"Question","name":"Can I sell a game made with RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Yes. With a valid RPG Maker license you can release and sell commercial games. Credit the engine as its license requires, and credit and properly license any third-party assets, music or plugins. The built-in RTP assets are licensed for use in games made with RPG Maker; always check each product's EULA."}},
-    {"@type":"Question","name":"How do I make a battle or add enemies in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Define enemies in Database -> Enemies, group them into Troops, then start a fight with the Battle Processing event command, or set random encounters in the map's properties. Your party (Actors, Classes, Skills) is configured in the Database."}},
-    {"@type":"Question","name":"How do I make a treasure chest that opens only once?","acceptedAnswer":{"@type":"Answer","text":"On the chest event, give the item with Change Items or Change Gold, show a message, then set Control Self Switch A to ON. Add a second event page conditioned on Self Switch A with an opened-chest graphic so it cannot be looted again."}},
-    {"@type":"Question","name":"How do I make a cutscene in RPG Maker?","acceptedAnswer":{"@type":"Answer","text":"Use an Autorun event that runs Show Text, Set Movement Route, transfers and waits in order, then flip a Self Switch at the end with a blank second page so the cutscene plays once and does not freeze the game."}},
-    {"@type":"Question","name":"How do I make an NPC walk or move on its own?","acceptedAnswer":{"@type":"Answer","text":"Give the event an Autonomous Movement (Random, Approach, or Custom) in its settings, or script exact steps with the Set Movement Route command, which also moves the player or any event during cutscenes."}},
-    {"@type":"Question","name":"How do I export or deploy my finished RPG Maker game?","acceptedAnswer":{"@type":"Answer","text":"Use File -> Deployment and choose your target: Windows, macOS, Web (HTML5), or mobile (Android/iOS) in MZ and MV. The engine packages your project into a shareable build. Always test the deployed version before releasing."}},
-    {"@type":"Question","name":"Why does my Autorun or Parallel event freeze or keep repeating?","acceptedAnswer":{"@type":"Answer","text":"An Autorun event runs repeatedly and locks the game until its conditions change, so end it with a Self Switch and a blank second page. A Parallel event runs every frame, so keep it small, gate it behind a switch, and add a short Wait to avoid lag."}}
+    {
+      "@type": "Question",
+      "name": "What are the main parts of the RPG Maker editor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There are four you'll use constantly: • Map editor: paint your world with tilesets. • Event editor: the logic that makes things happen. • Database: define actors, items, skills, enemies and system settings. • Plugin Manager (MZ/MV): add extra features with .js plugins. @keyframes mdepA{0%,4%{opacity:0;transform:translateY(8px)}11%,100%{opacity:1;transform:translateY(0)}} @keyframes mdepB{0%,12%{opacity:0;transform:translateY(8px)}19%,100%{opacity:1;transform:translateY(0)}} @keyframes mdepC{0%,20%{opacity:0;transform:translateY(8px)}27%,100%{opacity:1;transform:translateY(0)}} @keyframes mdepD{0%,28%{opacity:0;transform:translateY(8px)}35%,100%{opacity:1;transform:translateY(0)}} .mdep1,.mdep2,.mdep3,.mdep4{opacity:0} .mdep1{animation:mdepA 7s ease infinite} .mdep2{animation:mdepB 7s ease infinite} .mdep3{animation:mdepC 7s ease infinite} .mdep4{animation:mdepD 7s ease infinite} @media (prefers-reduced-motion: reduce){.mdep1,.mdep2,.mdep3,.mdep4{opacity:1;animation:none}} M Map editor E Event editor D Database P Plugins M Map editor E Event editor D Database P Plugins"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make my first map and playtest it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Right-click the map list (bottom-left) and choose New Map, set its size, then paint tiles from the palette on the left. Press the green Play button (or F12 in MZ/MV) to playtest and walk around. Use the test play often, small and frequent is best."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to know how to code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. You can build a complete game using only events (ready-made commands). Scripting and plugins are optional power-ups you can pick up later, our tutorials point out the few handy one-line scripts when they help. @keyframes cbA{0%,4%{opacity:0;transform:translateY(8px)}11%,100%{opacity:1;transform:translateY(0)}} @keyframes cbB{0%,13%{opacity:0;transform:translateY(8px)}20%,100%{opacity:1;transform:translateY(0)}} @keyframes cbC{0%,22%{opacity:0;transform:translateY(8px)}29%,100%{opacity:1;transform:translateY(0)}} @keyframes cbD{0%,32%{opacity:0}40%,100%{opacity:1}} .cb1,.cb2,.cb3,.cbcap{opacity:0} .cb1{animation:cbA 7s ease infinite} .cb2{animation:cbB 7s ease infinite} .cb3{animation:cbC 7s ease infinite} .cbcap{animation:cbD 7s ease infinite} @media (prefers-reduced-motion: reduce){.cb1,.cb2,.cb3,.cbcap{opacity:1;animation:none}} When player talks to me Say: \"Hello there!\" Give the player 10 Gold You snap blocks together, no typing code. When player talks to me Say: \"Hello there!\" Give the player 10 Gold You snap blocks together, no typing code."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is an Event?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An Event is anything interactive on a map: an NPC, a door, a chest, or invisible logic. You build it from a list of commands, like Show Text, Control Variables, and Conditional Branch, that run top to bottom when the event triggers. @keyframes evA{0%,5%{opacity:0;transform:translateY(6px)}12%,100%{opacity:1;transform:translateY(0)}} @keyframes evB{0%,14%{opacity:0;transform:translateY(6px)}21%,100%{opacity:1;transform:translateY(0)}} @keyframes evC{0%,23%{opacity:0;transform:translateY(6px)}30%,100%{opacity:1;transform:translateY(0)}} @keyframes evD{0%,32%{opacity:0}40%,100%{opacity:1}} .ev1{opacity:0;animation:evA 7s ease infinite} .ev2{opacity:0;animation:evB 7s ease infinite} .ev3{opacity:0;animation:evC 7s ease infinite} .evcap{opacity:0;animation:evD 7s ease infinite} @media (prefers-reduced-motion: reduce){.ev1,.ev2,.ev3,.evcap{opacity:1;animation:none;transform:none}} Event: Talk to Guard Show Text: \"Hi there!\" Control Variables: Gold += 10 Conditional Branch: if Has Key An event runs its commands from top to bottom. Event: Talk to Guard Show Text: \"Hi there!\" Control Variables: Gold += 10 Conditional Branch: if Has Key An event runs its commands from top to bottom."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Variable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Variable stores a number you can change and check, like gold, a quest step, or in-game time. Set it with Control Variables, and react to its value with a Conditional Branch (for example, \"if QuestStep ≥ 2\"). @keyframes vrA{0%,5%{clip-path:inset(0 100% 0 0)}18%,100%{clip-path:inset(0 0 0 0)}} @keyframes vrB{0%,22%{clip-path:inset(0 100% 0 0)}35%,100%{clip-path:inset(0 0 0 0)}} @keyframes vrC{0%,39%{clip-path:inset(0 100% 0 0)}52%,100%{clip-path:inset(0 0 0 0)}} @keyframes vrD{0%,56%{clip-path:inset(0 100% 0 0)}69%,100%{clip-path:inset(0 0 0 0)}} .vr1{clip-path:inset(0 100% 0 0);animation:vrA 5s ease infinite} .vr2{clip-path:inset(0 100% 0 0);animation:vrB 5s ease infinite} .vr3{clip-path:inset(0 100% 0 0);animation:vrC 5s ease infinite} .vr4{clip-path:inset(0 100% 0 0);animation:vrD 5s ease infinite} @media (prefers-reduced-motion: reduce){.vr1,.vr2,.vr3,.vr4{clip-path:none;animation:none}} Variables (each one stores a number) #0001 Gold = 250 #0002 Potions = 5 #0003 QuestStep = 2 #0004 PlayTime (mins) = 740"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Switch, and what's a Self Switch?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Switch is a global ON/OFF flag, great for \"has the player done X yet?\". A Self Switch belongs to a single event. It’s like a one‑time reaction that shouldn’t affect the rest of the game, perfect for things like a treasure chest that should only be opened once. Since a Switch is global, you can give it descriptive names like \"BridgeFixed\" or \"MetTheKing\". Self Switches are event-specific and use the built-in labels A, B, C, and D. Switches global, you name them BridgeFixed OFFON MetTheKing OFFON IntroSeen OFFON Self Switch just A, B, C, D (one event) A OFFON B OFFON C OFFON D OFFON Tap a switch to flip it! 👆 Switches global, you name them BridgeFixed OFFON MetTheKing OFFON IntroSeen OFFON Self Switch just A, B, C, D (one event) A OFFON B OFFON C OFFON D OFFON Tap a switch to flip it! 👆 (function(){ function init(){ document.querySelectorAll('.tgl').forEach(function(t){ var root=t.ownerSVGElement || t.closest('svg'); function flip(){ var on=t.classList.toggle('is-on'); t.setAttribute('aria-pressed', on?'true':'false'); if(root){ root.querySelectorAll('.tgl.auto').forEach(function(a){ a.classList.add('paused'); }); clearTimeout(root._tglIdle); root._tglIdle=setTimeout(function(){ root.querySelectorAll('.tgl.auto').forEach(function(a){ a.classList.remove('paused'); }); }, 3500); } } t.addEventListener('click', flip); t.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '||e.key==='Spacebar'){ e.preventDefault(); flip(); } }); }); } if(document.readyState!=='loading'){ init(); } else { document.addEventListener('DOMContentLoaded', init); } })();"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between variables and switches in RPG Maker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In short: a variable stores a number you can change and compare (gold, a quest step, in-game time), while a switch is a simple on/off flag for yes-or-no states (\"has the gate been opened?\"). Reach for a variable whenever you need to count or track an amount, and a switch when something is either done or not done. Both are checked with a Conditional Branch. @keyframes dfType{0%{clip-path:inset(0 100% 0 0)}18%,100%{clip-path:inset(0 0 0 0)}} .dfGold{clip-path:inset(0 100% 0 0);animation:dfType 7s ease infinite} @media (prefers-reduced-motion: reduce){.dfGold{clip-path:none;animation:none}} Variable Gold = 250 stores a number Switch OFF ON on / off flag Variable Gold = 250 stores a number Switch OFF ON on / off flag"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Common Event?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Common Event is reusable logic stored in the Database that any map can use. Its trigger can be None (you call it manually), Autorun, or Parallel. Common Events keep your project tidy, build something once instead of copying it onto every map. @keyframes cmeA{0%,3%{opacity:0;transform:scale(0.92)}11%,100%{opacity:1;transform:scale(1)}} @keyframes cmeB{0%,8%{clip-path:inset(0 100% 0 0)}22%,100%{clip-path:inset(0 0 0 0)}} @keyframes cmeC{0%,24%{clip-path:inset(0 100% 0 0)}38%,100%{clip-path:inset(0 0 0 0)}} @keyframes cmeD{0%,40%{clip-path:inset(0 100% 0 0)}54%,100%{clip-path:inset(0 0 0 0)}} .cme0{opacity:0;transform-box:fill-box;transform-origin:center;animation:cmeA 8s ease infinite} .cme1{clip-path:inset(0 100% 0 0);animation:cmeB 8s ease infinite} .cme2{clip-path:inset(0 100% 0 0);animation:cmeC 8s ease infinite} .cme3{clip-path:inset(0 100% 0 0);animation:cmeD 8s ease infinite} @media (prefers-reduced-motion: reduce){.cme0{opacity:1;animation:none;transform:none}.cme1,.cme2,.cme3{clip-path:none;animation:none}} Common Event Heal Party Town map Cave map Field map Common Event Heal Party Town map Cave map Field map Build it once, use it on every map."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do the event Triggers mean (Action Button, Player Touch, Autorun, Parallel)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "• Action Button: runs when the player faces it and presses confirm (NPCs, signs). • Player Touch: runs when the player walks into it (traps, auto-doors). • Autorun: takes over and runs once; stop it with a Self Switch so it doesn't freeze the game. • Parallel: runs continuously in the background (clocks, weather). Keep these light to avoid lag. @keyframes tgA{0%,5%{opacity:0;transform:translateY(8px)}14%,100%{opacity:1;transform:translateY(0)}} @keyframes tgB{0%,16%{opacity:0;transform:translateY(8px)}25%,100%{opacity:1;transform:translateY(0)}} @keyframes tgC{0%,27%{opacity:0;transform:translateY(8px)}36%,100%{opacity:1;transform:translateY(0)}} @keyframes tgD{0%,38%{opacity:0;transform:translateY(8px)}47%,100%{opacity:1;transform:translateY(0)}} .tg1{opacity:0;animation:tgA 5s ease infinite} .tg2{opacity:0;animation:tgB 5s ease infinite} .tg3{opacity:0;animation:tgC 5s ease infinite} .tg4{opacity:0;animation:tgD 5s ease infinite} @media (prefers-reduced-motion: reduce){.tg1,.tg2,.tg3,.tg4{opacity:1;animation:none;transform:none}} Action Button Player faces it & presses confirm NPCs, signs, doors Player Touch Player walks into it traps, auto-doors Autorun Runs once, takes over screen cutscenes; stop with a Self Switch Parallel Runs every frame in background clocks, weather; keep it light Action Button Player faces it & presses confirm NPCs, signs, doors Player Touch Player walks into it traps, auto-doors Autorun Runs once, takes over screen cutscenes; stop with a Self Switch Parallel Runs every frame in background clocks, weather; keep it light"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Conditional Branch?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Conditional Branch is an \"if this, then that\" check. It can test a Switch, a Variable, an item the player has, the gold amount, and more, with an optional Else path for when the condition is false. @keyframes cndY{0%,4%{opacity:0}10%,100%{opacity:1}} @keyframes cndG{0%,11%{opacity:0;transform:translateY(6px)}17%,100%{opacity:1;transform:translateY(0)}} @keyframes cndE{0%,18%{opacity:0}24%,100%{opacity:1}} @keyframes cndS{0%,26%{opacity:0;transform:translateY(6px)}32%,100%{opacity:1;transform:translateY(0)}} .cndY{opacity:0;animation:cndY 9s ease infinite} .cndG{opacity:0;animation:cndG 9s ease infinite} .cndE{opacity:0;animation:cndE 9s ease infinite} .cndS{opacity:0;animation:cndS 9s ease infinite} @media (prefers-reduced-motion: reduce){.cndY,.cndG,.cndE,.cndS{opacity:1;animation:none;transform:none}} If: Has Key? Conditional Branch YES Open the door …then do this ELSE Show: \"It's locked\" …otherwise this If: Has Key? Conditional Branch YES Open the door …then do this ELSE Show: \"It's locked\" …otherwise this"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I transfer the player to another map?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Add an event and give it a Transfer Player command, choose the destination map and tile, then set the trigger: Action Button for doors the player interacts with, or Player Touch for automatic transfer when they step on it. @keyframes trPlayer{0%,6%{opacity:1;transform:translateX(0)}26%{opacity:1;transform:translateX(98px)}31%,100%{opacity:0;transform:translateX(98px)}} @keyframes trArrowA{0%,32%{opacity:0;transform:translateX(0)}40%{opacity:1;transform:translateX(0)}46%{transform:translateX(6px)}52%{transform:translateX(0)}58%{transform:translateX(6px)}64%,100%{opacity:1;transform:translateX(0)}} @keyframes trArrowMA{0%,32%{opacity:0;transform:translateY(0)}40%{opacity:1;transform:translateY(0)}46%{transform:translateY(5px)}52%{transform:translateY(0)}58%{transform:translateY(5px)}64%,100%{opacity:1;transform:translateY(0)}} @keyframes trDashA{0%,50%{opacity:0}56%,100%{opacity:1}} @keyframes trFillA{0%,60%{opacity:0;transform:scale(0)}74%,100%{opacity:1;transform:scale(1)}} .trPlayer{animation:trPlayer 7s ease infinite} .trArrow{opacity:0;animation:trArrowA 7s ease infinite} .trArrowM{opacity:0;animation:trArrowMA 7s ease infinite} .trDash{opacity:0;animation:trDashA 7s ease infinite} .trFill{opacity:0;transform-box:fill-box;transform-origin:center;animation:trFillA 7s ease infinite} @media (prefers-reduced-motion: reduce){.trPlayer,.trArrow,.trArrowM,.trDash,.trFill{opacity:1;animation:none;transform:none}} Town map Cave map door player Transfer Player arrives here Town map door player Transfer Player Cave map arrives here"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make a shop or give the player an item?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the Shop Processing event command to open a shop and list what's for sale. To hand things over directly inside an event, use Change Items, Change Weapons, Change Armor, or Change Gold. @keyframes shpA{0%,5%{opacity:0;transform:translateY(6px)}12%,100%{opacity:1;transform:translateY(0)}} @keyframes shpB{0%,14%{opacity:0;transform:translateY(6px)}21%,100%{opacity:1;transform:translateY(0)}} @keyframes shpC{0%,23%{opacity:0;transform:translateY(6px)}30%,100%{opacity:1;transform:translateY(0)}} .shp1{opacity:0;animation:shpA 7s ease infinite} .shp2{opacity:0;animation:shpB 7s ease infinite} .shp3{opacity:0;animation:shpC 7s ease infinite} @media (prefers-reduced-motion: reduce){.shp1,.shp2,.shp3{opacity:1;animation:none;transform:none}} Shop Gold: 500 Potion 50 Antidote 80 Iron Sword 300 Shop Processing opens a buy/sell menu like this. Shop Gold: 500 Potion 50 Antidote 80 Iron Sword 300 Shop Processing opens a buy/sell menu."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I add a save point or stop the player from saving?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use Change Save Access event command to enable or disable saving (handy during boss fights or cutscenes), and Open Save Screen to make a save point the player walks up to. You can also set save access in the System tab of the Database."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make an NPC talk and offer choices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use Show Text for dialogue (add a face graphic for character portraits), and Show Choices to give the player options that branch the conversation. Want the NPC to remember the choice? Store it in a Switch or Variable. There's a full walkthrough in our Relationship System tutorial. @keyframes npcF1{0%,10%{fill:#f4184c}14%,38%{fill:rgba(27,27,27,0.5)}42%,100%{fill:#f4184c}} @keyframes npcF2{0%,10%{fill:rgba(27,27,27,0.5)}14%,24%{fill:#f4184c}28%,100%{fill:rgba(27,27,27,0.5)}} @keyframes npcF3{0%,24%{fill:rgba(27,27,27,0.5)}28%,38%{fill:#f4184c}42%,100%{fill:rgba(27,27,27,0.5)}} @keyframes npcArrD{0%,10%{transform:translateY(0)}14%,24%{transform:translateY(24px)}28%,38%{transform:translateY(48px)}42%,100%{transform:translateY(0)}} .npcF1{fill:#f4184c;animation:npcF1 9s ease infinite} .npcF2{fill:rgba(27,27,27,0.5);animation:npcF2 9s ease infinite} .npcF3{fill:rgba(27,27,27,0.5);animation:npcF3 9s ease infinite} .npcArrD{animation:npcArrD 9s ease infinite} @keyframes npcTy{0%{clip-path:inset(0 100% 0 0)}16%,100%{clip-path:inset(0 0 0 0)}} .npcTy{clip-path:inset(0 100% 0 0);animation:npcTy 9s ease infinite} @media (prefers-reduced-motion: reduce){.npcF1,.npcF2,.npcF3,.npcArrD,.npcTy{animation:none}.npcF1{fill:#f4184c}.npcF2,.npcF3{fill:rgba(27,27,27,0.5)}.npcTy{clip-path:none}} ▸ You seem nice Out of my way! Nevermind... Guard Girl Can I help you? Show Text for the line, Show Choices for the options. @keyframes npcF1m{0%,10%{fill:#f4184c}14%,38%{fill:rgba(27,27,27,0.5)}42%,100%{fill:#f4184c}} @keyframes npcF2m{0%,10%{fill:rgba(27,27,27,0.5)}14%,24%{fill:#f4184c}28%,100%{fill:rgba(27,27,27,0.5)}} @keyframes npcF3m{0%,24%{fill:rgba(27,27,27,0.5)}28%,38%{fill:#f4184c}42%,100%{fill:rgba(27,27,27,0.5)}} @keyframes npcArrM{0%,10%{transform:translateY(0)}14%,24%{transform:translateY(29px)}28%,38%{transform:translateY(58px)}42%,100%{transform:translateY(0)}} .npcF1m{fill:#f4184c;animation:npcF1m 9s ease infinite} .npcF2m{fill:rgba(27,27,27,0.5);animation:npcF2m 9s ease infinite} .npcF3m{fill:rgba(27,27,27,0.5);animation:npcF3m 9s ease infinite} .npcArrM{animation:npcArrM 9s ease infinite} @keyframes npcTym{0%{clip-path:inset(0 100% 0 0)}16%,100%{clip-path:inset(0 0 0 0)}} .npcTym{clip-path:inset(0 100% 0 0);animation:npcTym 9s ease infinite} @media (prefers-reduced-motion: reduce){.npcF1m,.npcF2m,.npcF3m,.npcArrM,.npcTym{animation:none}.npcF1m{fill:#f4184c}.npcF2m,.npcF3m{fill:rgba(27,27,27,0.5)}.npcTym{clip-path:none}} ▸ You seem nice Out of my way! Nevermind... Guard Girl Can I help you? Show Text for the line, Show Choices for options."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Database?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Database is the heart of your project: Actors, Classes, Skills, Items, Weapons, Armors, Enemies, Troops, Tilesets, Common Events, and System settings (title screen, starting party, vocabulary). Most \"where do I set this?\" answers live here. .dbtab{cursor:pointer} .dbtab .dbtabBg{transition:fill .15s ease, stroke .15s ease} .dbtab.is-active .dbtabBg{fill:#f4184c;stroke:#f4184c} .dbtab.is-active .dbtabLbl{fill:#fff} .dbtab:focus{outline:none} .dbtab:focus-visible .dbtabBg{stroke:#3b86d6;stroke-width:2.5} .dbpanel{display:none} @keyframes dbFade{0%{opacity:0;transform:translateY(3px)}100%{opacity:1;transform:translateY(0)}} .dbpanel.is-active{display:initial;animation:dbFade .3s ease} @media (prefers-reduced-motion: reduce){ .dbtab .dbtabBg{transition:none} .dbpanel.is-active{animation:none} } Actors Items Skills Enemies Audio System 001 Harold002 Therese003 Marsha 001 Potion002 Magic Water003 Dragon Fruit 001 Attack002 Guard003 Fire 001 Goblin002 Slime003 Bat BGM Theme6BGS QuakeSE Cursor Title: My GameStarting Party: HaroldCurrency: G One place for all your game's content. Tap a tab to switch 👆 Actors Items Skills Enemies Audio System 001 Harold002 Therese003 Marsha 001 Potion002 Magic Water003 Dragon Fruit 001 Attack002 Guard003 Fire 001 Goblin002 Slime003 Bat BGM Theme6BGS QuakeSE Cursor Title: My GameParty: HaroldCurrency: G One place for all your game's content. Tap a tab to switch 👆 (function(){ function initDb(){ var roots=[]; document.querySelectorAll('.dbtab').forEach(function(t){ var r=t.ownerSVGElement||t.closest('svg'); if(r && roots.indexOf(r)===-1) roots.push(r); }); roots.forEach(function(root){ var tabs=Array.prototype.slice.call(root.querySelectorAll('.dbtab')); var panels=Array.prototype.slice.call(root.querySelectorAll('.dbpanel')); if(!tabs.length) return; var idx=0; tabs.forEach(function(t,i){ if(t.classList.contains('is-active')) idx=i; }); var timer=null, idle=null; function show(i){ idx=(i+tabs.length)%tabs.length; var key=tabs[idx].getAttribute('data-db'); tabs.forEach(function(t,j){ var on=j===idx; t.classList.toggle('is-active',on); t.setAttribute('aria-pressed',on?'true':'false'); }); panels.forEach(function(p){ p.classList.toggle('is-active', p.getAttribute('data-db')===key); }); } function startAuto(){ stopAuto(); timer=setInterval(function(){ show(idx+1); }, 2200); } function stopAuto(){ if(timer){ clearInterval(timer); timer=null; } } tabs.forEach(function(tab,i){ function pick(){ show(i); stopAuto(); clearTimeout(idle); idle=setTimeout(startAuto, 6000); } tab.addEventListener('click', pick); tab.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '||e.key==='Spacebar'){ e.preventDefault(); pick(); } }); }); startAuto(); }); } if(document.readyState!=='loading'){ initDb(); } else { document.addEventListener('DOMContentLoaded', initDb); } })();"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I change a character's sprite or add my own graphics?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Place your image files into the matching folder inside your project's img folder (for example img/characters, img/tilesets, img/pictures), then select them in the relevant Database tab or event command (like Set Movement / event graphic). Keep to the engine's sprite-sheet sizes so they line up."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I add my own music and sound effects?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Drop audio files into the audio folder (audio/bgm, audio/se, etc.) in the supported format for your engine, then choose them with Play BGM or Play SE. Always check you have the right to use any music or art you didn't make."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I change the title screen and game title?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open Database → System and set the Title screen image(s) and the game title. In MZ/MV you can also tweak the title command window and title music there."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is RPG Maker free, and how much does it cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "RPG Maker is paid software, but it's beginner-friendly and frequently discounted in Steam sales, and there's usually a free trial so you can try before you buy. Each version (MZ, MV, XP, VX Ace, 2000, 2003) is sold separately. If you want a completely free engine, see our WOLF RPG Editor guide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "RPG Maker MZ vs MV: which one should I buy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both are excellent and use JavaScript plugins. RPG Maker MZ is the newest, with a faster editor, layered map tiles and Effekseer battle animations. RPG Maker MV is a little older but has the largest plugin library and community. Want the latest? Pick MZ. Want the widest selection of existing plugins and tutorials? MV is still a great choice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I sell a game made with RPG Maker? Do I need to credit anyone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with a valid RPG Maker license you can release and sell commercial games. Credit the engine as its license requires, and credit (and properly license) any third-party assets, music or plugins you use. The built-in RTP assets are licensed for use in games made with RPG Maker, always check each product's EULA."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make a battle or add enemies in RPG Maker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Define enemies in Database → Enemies, group them into Troops, then start a fight with the Battle Processing event command, or set random encounters in the map's properties. Your party's side (Actors, Classes, Skills) is configured in the Database too."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make a treasure chest that opens only once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On the chest event: play a sound, use Change Items or Change Gold, show a \"You found…\" message, then Control Self Switch A → ON. Add a second event page with the condition Self Switch A is ON and an opened-chest graphic, so it stays open and can't be looted again."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make a cutscene in RPG Maker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use an Autorun event that runs your Show Text, Set Movement Route, transfers and waits in order, then flip a Self Switch at the end (with a blank second page) so the cutscene plays once and doesn't freeze the game."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make an NPC walk or move on its own?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Give the event an Autonomous Movement (Random, Approach, or Custom) in its settings, or script exact steps with the Set Movement Route command. The same command moves the player or any event during cutscenes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I export or deploy my finished RPG Maker game?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use File → Deployment and pick your target: Windows, macOS, Web (HTML5), or mobile (Android/iOS) in MZ/MV. The engine packages your project into a shareable build, always test the deployed version before you release it. @keyframes depA{0%,3%{opacity:0;transform:translateY(6px)}11%,100%{opacity:1;transform:translateY(0)}} @keyframes depB{0%,14%{opacity:0;transform:translateY(6px)}22%,100%{opacity:1;transform:translateY(0)}} @keyframes depC{0%,25%{opacity:0;transform:translateY(6px)}33%,100%{opacity:1;transform:translateY(0)}} @keyframes depD{0%,36%{opacity:0;transform:translateY(6px)}44%,100%{opacity:1;transform:translateY(0)}} @keyframes depE{0%,47%{opacity:0;transform:translateY(6px)}55%,100%{opacity:1;transform:translateY(0)}} .dep0{opacity:0;animation:depA 8s ease infinite} .dep1{opacity:0;animation:depB 8s ease infinite} .dep2{opacity:0;animation:depC 8s ease infinite} .dep3{opacity:0;animation:depD 8s ease infinite} .dep4{opacity:0;animation:depE 8s ease infinite} @media (prefers-reduced-motion: reduce){.dep0,.dep1,.dep2,.dep3,.dep4{opacity:1;animation:none;transform:none}} Your project File → Deployment Windows macOS Web (HTML5) Mobile (Android/iOS) Your project File → Deployment Windows macOS Web (HTML5) Mobile (Android/iOS)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my Autorun or Parallel event freeze or keep repeating?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An Autorun event runs over and over and locks the game until its conditions change, so end it by turning on a Self Switch and adding a blank second page. A Parallel event runs every frame in the background, so keep it small, gate it behind a switch, and add a short Wait to avoid lag. There's a worked example in our Day & Night Cycle tutorial. Page 1 (Autorun) Runs once: set things up, then Self Switch A = ON Self Switch A Page 2 (blank) Condition: Self Switch A ON Nothing runs, event stops Page 1 (Autorun) Runs once: set things up, then Self Switch A = ON Self Switch A Page 2 (blank) Condition: Self Switch A ON Nothing runs, event stops"
+      }
+    }
   ]
 }
-</script>
+  </script>
 
     <script type="application/ld+json">
 {
@@ -127,13 +320,13 @@
                     <span class="dropSub">Step-by-step guides &amp; lessons</span>
                   </span>
                 </a>
-                <a class="dropItem" role="menuitem" href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">
+                <a class="dropItem" role="menuitem" href="../wolf-rpg-editor-tutorials/">
                   <span class="dropIcon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3l3.8 3.3A8 8 0 0 1 12 5a8 8 0 0 1 4.2 1.3L20 3l-1 6.2A7 7 0 0 1 12 19a7 7 0 0 1-7-9.8z"/><path d="M9 11h.01M15 11h.01"/><path d="m12 14-1 1h2z"/></svg>
                   </span>
                   <span class="dropText">
-                    <span class="dropTitle">WOLF RPG Editor Guide</span>
-                    <span class="dropSub">Complete guide &amp; resources</span>
+                    <span class="dropTitle">WOLF RPG Editor</span>
+                    <span class="dropSub">Download &amp; English guide</span>
                   </span>
                 </a>
               </div>
