@@ -3,26 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Step-by-Step RPG Maker Tutorials for MZ, MV, XP, VX Ace, 2000 & 2003 | Anya & Lolo</title>
-  <meta name="description" content="Step-by-step RPG Maker tutorials for MZ, MV, XP, VX Ace, RPG Maker 2000, and 2003. Beginner-friendly guides, systems, mechanics, and cozy game dev tips by Anya & Lolo." />
+  <title>RPG Maker MZ & MV Tutorials for Beginners | Anya & Lolo</title>
+  <meta name="description" content="Free RPG Maker MZ & MV tutorials, systems, and guides by Anya & Lolo. Learn eventing, create day and night cycles, fishing mini-games, ARPG combat, shooting systems, and more for RPG Maker XP, VX Ace, 2000, and 2003." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Step-by-Step RPG Maker Tutorials for MZ, MV, XP, VX Ace, 2000 & 2003 | Anya & Lolo" />
-  <meta property="og:description" content="Step-by-step RPG Maker tutorials by Anya & Lolo (MZ, MV, XP, VX Ace, 2k, 2k3)." />
-  <meta property="og:url" content="https://anya-and-lolo.github.io/rpg-maker-tutorials" />
+  <meta property="og:title" content="RPG Maker MZ & MV Tutorials for Beginners | Anya & Lolo" />
+  <meta property="og:description" content="Free RPG Maker MZ & MV tutorials, systems, and guides by Anya & Lolo. Learn eventing, create day and night cycles, fishing mini-games, ARPG combat, shooting systems, and more for RPG Maker XP, VX Ace, 2000, and 2003." />
+  <meta property="og:url" content="https://anya-and-lolo.github.io/" />
   <meta property="og:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
   <meta property="og:site_name" content="Anya & Lolo" />
   <meta name="twitter:site" content="@Anya_and_Lolo" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Step-by-Step RPG Maker Tutorials for MZ, MV, XP, VX Ace, 2000 & 2003 | Anya & Lolo" />
-  <meta name="twitter:description" content="Step-by-Step RPG Maker Tutorials for MZ, MV, XP, VX Ace, 2000 & 2003 | Anya & Lolo" />
+  <meta name="twitter:title" content="RPG Maker MZ & MV Tutorials for Beginners | Anya & Lolo" />
+  <meta name="twitter:description" content="Free RPG Maker MZ & MV tutorials, systems, and guides by Anya & Lolo. Learn eventing, create day and night cycles, fishing mini-games, ARPG combat, shooting systems, and more for RPG Maker XP, VX Ace, 2000, and 2003." />
   <meta name="twitter:image" content="https://anya-and-lolo.github.io/images/banner.jpg" />
-  <link rel="canonical" href="https://anya-and-lolo.github.io/rpg-maker-tutorials" />
+  <link rel="canonical" href="https://anya-and-lolo.github.io/" />
   <meta name="theme-color" content="#f4184c" />
-  <link rel="icon" href="../favicon.ico?v=1" sizes="any">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico?v=1">
-  <link rel="apple-touch-icon" href="../icon.jpg" />
-  <link rel="stylesheet" href="../css/tutorial.css">
-  <script src="../js/tutorial.js" defer></script>
+  <link rel="icon" href="./favicon.ico?v=1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico?v=1">
+  <link rel="apple-touch-icon" href="./icon.jpg" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+  <link rel="preload" as="image" href="https://anya-and-lolo.github.io/images/banner.jpg" fetchpriority="high" />
+  <link rel="stylesheet" href="./css/globalsite.css">
+  <link rel="stylesheet" href="./css/homepage.css">
+  <script src="./js/globalsite.js" defer></script>
+  <script src="./js/homepage.js" defer></script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-127GP5TNHG"></script>
@@ -32,82 +36,24 @@
   gtag('js', new Date());
   gtag('config', 'G-127GP5TNHG');
   </script>
-	
- <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "RPG Maker Tutorials",
-  "url": "https://anya-and-lolo.github.io/rpg-maker-tutorials",
-  "description": "Step-by-step RPG Maker tutorials by Anya & Lolo for MZ, MV, XP, VX Ace, 2000, and 2003."
-}
-</script>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Which RPG Maker version should I choose?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "RPG Maker MZ is the newest and most beginner-friendly; MV is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I make a day & night cycle?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Track in-game time with a variable in a Parallel Process common event, then change the screen tint as the time value changes. We have a full step-by-step that works in MZ, MV, XP, VX Ace, 2000, and 2003: RPG Maker Day & Night Cycle tutorial."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "My game is lagging, how do I fix it?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The most common cause is too many Parallel Process events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into Common Events. For frame-perfect optimization (only updating things when a value actually changes), I explain a full smart system in the Pro version of the Day & Night tutorial."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I install a plugin in RPG Maker MZ/MV?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Put the plugin's .js file in your project's js/plugins folder, open the Plugin Manager, add the plugin, set it to ON, and configure its parameters. Always read the plugin's terms of use."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I use RPG Maker's built-in (RTP) assets in other engines?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Generally no. Default RPG Maker assets are licensed for use in games made with RPG Maker. Check the specific product's license (EULA) before using them in other engines, including WOLF RPG Editor."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What's the difference between RPG Maker and WOLF RPG Editor?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "RPG Maker is a paid, beginner-friendly commercial engine. WOLF RPG Editor (Woditor) is a free, more advanced Japanese engine with deeper customization. If you'd like to try it, we maintain a full English WOLF RPG Editor guide ↗."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What do beginners usually struggle with?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Most new devs run into the same hurdles, the big three are: skipping backups or a test project, using too many Parallel Process events, hard-coding logic or duplicating events instead of reusing Common Events. You can avoid these easily by keeping a small sandbox project, gating your Parallel events, and moving repeatable logic into Common Events so your project stays clean and easy to manage. Brand new? Our Getting Started with RPG Maker page explains all the basics, variables, switches, common events and more, in plain language."
-      }
-    }
-  ]
-}
+  <!-- Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Anya & Lolo",
+    "url": "https://anya-and-lolo.github.io/",
+    "logo": "https://anya-and-lolo.github.io/icon.jpg",
+    "sameAs": [
+      "https://www.youtube.com/@Anya_and_Lolo",
+      "https://anya-and-lolo.itch.io/",
+      "https://www.patreon.com/anya_and_lolo",
+      "https://bsky.app/profile/anya-and-lolo.itch.io",
+      "https://x.com/Anya_and_Lolo"
+    ]
+  }
   </script>
-	
 </head>
 
 <body>
@@ -115,24 +61,26 @@
   <header class="topbar topbarV2">
     <div class="topbarInner">
 
-      <a class="brandV2" href="../" aria-label="Anya & Lolo home">
+      <!-- Brand -->
+      <a class="brandV2" href="./" aria-label="Anya & Lolo home">
         <span class="brandText">
           <span class="brandTitle">RPG Maker Resources</span>
           <span class="brandSub">Tutorials • Game Development</span>
         </span>
       </a>
 
+      <!-- Nav -->
       <nav class="nav navV2" aria-label="Primary">
         <div class="navPrimary">
 
-          <a class="navlink navlinkV2" href="../">
+          <a class="navlink navlinkV2 is-current" href="./" aria-current="page">
             <span class="navIcon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
             </span>
             Home
           </a>
 
-          <a class="navlink navlinkV2" href="../redeem.html">
+          <a class="navlink navlinkV2" href="./redeem.html">
             <span class="navIcon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
             </span>
@@ -141,8 +89,9 @@
 
           <span class="navBreak" aria-hidden="true"></span>
 
+          <!-- Tutorials dropdown -->
           <div class="navDrop">
-            <button class="navlink navlinkV2 navDropBtn is-current" type="button" aria-haspopup="true" aria-expanded="false">
+            <button class="navlink navlinkV2 navDropBtn" type="button" aria-haspopup="true" aria-expanded="false">
               <span class="navIcon hatIcon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
               </span>
@@ -150,7 +99,7 @@
               <span class="navChev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
             </button>
             <div class="navDropMenu" role="menu" aria-label="Tutorials">
-              <a class="dropItem" role="menuitem" href="./" aria-current="page">
+              <a class="dropItem" role="menuitem" href="./rpg-maker-tutorials/">
                 <span class="dropIcon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
                 </span>
@@ -159,7 +108,7 @@
                   <span class="dropSub">Step-by-step guides &amp; lessons</span>
                 </span>
               </a>
-              <a class="dropItem" role="menuitem" href="../wolf-rpg-editor-tutorials/">
+              <a class="dropItem" role="menuitem" href="./wolf-rpg-editor-tutorials/">
                 <span class="dropIcon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3l3.8 3.3A8 8 0 0 1 12 5a8 8 0 0 1 4.2 1.3L20 3l-1 6.2A7 7 0 0 1 12 19a7 7 0 0 1-7-9.8z"/><path d="M9 11h.01M15 11h.01"/><path d="m12 14-1 1h2z"/></svg>
                 </span>
@@ -171,6 +120,7 @@
             </div>
           </div>
 
+          <!-- Resources dropdown -->
           <div class="navDrop">
             <button class="navlink navlinkV2 navDropBtn" type="button" aria-haspopup="true" aria-expanded="false">
               <span class="navIcon handIcon" aria-hidden="true">
@@ -219,309 +169,192 @@
             </div>
           </div>
         </div>
+
       </nav>
     </div>
   </header>
 
   <main class="wrap" id="main">
     <section class="hero">
-      <div class="card">
-        <h1 class="heroH1">RPG Maker Tutorials</h1>
-        <p class="subtitle" style="text-align:center; margin-bottom:0;">
-          Cozy, beginner-friendly RPG Maker guides you can follow step by step!
-        </p>
 
-		<div class="tagRow" id="topTags" style="justify-content:center;">
-		  <button class="btn tagBtn" type="button" data-tag="mz">MZ</button>
-		  <button class="btn tagBtn" type="button" data-tag="mv">MV</button>
-		  <button class="btn tagBtn" type="button" data-tag="xp">XP</button>
-		  <button class="btn tagBtn" type="button" data-tag="rm2k">2000</button>
-		  <button class="btn tagBtn" type="button" data-tag="basics">Basics</button>
-		  <button class="btn tagBtn" type="button" data-tag="beginner">Beginner</button>
-		  <button class="btn tagBtn" type="button" data-tag="mid-level">Mid-level</button>
-		  <button class="btn tagBtn" type="button" data-tag="advanced">Advanced</button>
-		</div>
+      <!-- CARD 1: Banner -->
+      <div class="card cardFlush bannerCard">
+        <a href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener"><img class="banner" src="https://anya-and-lolo.github.io/images/banner.jpg" alt="Anya & Lolo banner" width="1500" height="350"></a>
+      </div>
 
-        <div class="miniRow" style="justify-content:center;">
-          <a class="btn btnPrimary" href="#start-here" data-track="jump_click" data-track-label="Hero Start Here">Where To Start?</a>
-          <a class="btn" href="#faq" data-track="jump_click" data-track-label="Hero FAQ"><span class="linkBrand">RPG Maker FAQ <span class="barr">➜</span></span></a>
+      <!-- CARD 2: Welcome + News -->
+      <div class="card" style="margin-top:14px;">
+        <div class="heroGrid">
+          <!-- LEFT -->
+          <div>
+            <h1 class="heroH1">RPG Maker MZ &amp; MV <br class="titleBreak">Tutorials for <span class="heroBeginners">Beginners</span></h1>
+
+            <div class="srOnly" aria-hidden="true">
+              RPG Maker beginner tutorials • RPG Maker MZ tutorials • RPG Maker MV tutorials • RPG Maker XP tutorials • VX Ace tutorials • RPG Maker 2000 and 2003 tutorials • how to make a game in RPG Maker
+            </div>
+
+            <div class="heroText">
+              <p class="heroIntro">
+                Free RPG Maker MZ &amp; MV tutorials, systems, and guides by Anya &amp; Lolo. Learn eventing, create day and night cycles, fishing mini-games, ARPG combat, shooting systems, and more for RPG Maker XP, VX Ace, 2000, and 2003.
+              </p>
+
+              <hr class="heroRule">
+              <p class="newHere">New here? Start with these essentials:</p>
+
+              <ul class="heroChecks">
+                <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span>Read beginner <a class="linkBrand" href="./rpg-maker-tutorials/">RPG Maker tutorials</a></span></li>
+                <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span>Download Smart Systems on <a class="linkBrand" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">itch.io <span class="arr">↗</span></a></span></li>
+                <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span>Redeem Patreon rewards on <a class="linkBrand" href="./redeem.html">this page</a></span></li>
+                <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span>Watch the tutorials on <a class="linkBrand" href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener">YouTube <span class="arr">↗</span></a></span></li>
+                <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span>Join the mailing list <a class="linkBrand" href="https://open.substack.com/pub/anyalolo/p/game-development-digest-rpg-maker?r=6ty83v&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">for updates! <span class="arr">↗</span></a></span></li>
+              </ul>
+            </div>
+
+            <div class="ctaRow">
+              <a class="btn btnPrimary confettiBurst" id="patreonBtn" href="./redeem.html">
+                <span class="btnIcon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>
+                Patreon Rewards
+                <span class="confettiLayer" aria-hidden="true"></span>
+              </a>
+
+              <a class="btn floatHint btnPinkOutline" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+                <span class="linkBrand">Browse Smart Systems on itch.io <span class="arr">↗</span></span>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- RIGHT -->
+          <div class="newsBottom newsFrameV2">
+            <div class="embedWrap" aria-label="NewsBlog embed">
+              <div id="newsPlaceholder" class="newsPlaceholder" aria-live="polite">
+                <img class="newsAvatar" src="https://anya-and-lolo.github.io/images/Lolo.gif" alt="Anya & Lolo" />
+                <div class="newsLoading">News are loading<span class="dots" aria-hidden="true"></span></div>
+                <div class="newsHint">If it takes a moment, your browser might be blocking embeds.</div>
+              </div>
+
+              <iframe
+                id="newsFrame"
+                class="embed"
+                title="Anya & Lolo News Blog"
+                loading="lazy"
+                referrerpolicy="no-referrer"
+              ></iframe>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="tutorialGrid">
-        <!-- LEFT: Content -->
-        <div>
+	<!-- CARD 3: Featured Tutorials -->
+	<div class="card featuredCard" style="margin-top:14px;">
+	  <div class="featuredMarquee" aria-label="Featured Tutorials">
+		<div class="featuredTrack" id="featuredTrack">
 
-          <!-- Getting Started (Basics) -->
-		<div class="card tutorialCard" id="rpg-maker-basics" data-section-track="Getting Started" data-tags="mz mv xp vx vxace rm2k rm2k3 basics" style="margin-top:14px;">
-		  <h2 class="sectionTitle">Getting Started with RPG Maker (Basics)</h2>
-		  <div class="lead">Brand new to RPG Maker? Learn the building blocks every game uses, maps, events, variables, switches, common events, transfers, shops, save points and graphics.</div>
-
-            <div class="imageCard">
-              <a href="./rpg-maker-getting-started.html"><img src="../images/getting-started-with-rpg-maker.jpg" width="816" height="382" loading="lazy" alt="Getting Started with RPG Maker beginner basics guide preview"></a>
-            </div>
-
-            <div class="callout">
-              <strong>Perfect first stop.</strong> Clear, beginner-friendly answers grouped by topic, so the step‑by‑step tutorials are easy to follow.
-            </div>
-
-            <div class="miniRow">
-              <a class="btn btnPrimary" href="./rpg-maker-getting-started.html" data-track="read_tutorial" data-track-label="Getting Started Read">Learn The Basics <span class="barr">➜</span></a>
-            </div>
-		</div>
-
-          <!--  Tutorial: Day & Night -->
-		<div class="card tutorialCard" id="day-night" data-section-track="Day Night Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 beginner" style="margin-top:14px;">
-		  <h2 class="sectionTitle">RPG Maker Day & Night Cycle Tutorial (Beginner)</h2>
-		  <div class="lead">Create a day & night system and game time in RPG Maker.</div>
-
-		  <div class="imageCard">
-			<a href="./rpg-maker-day-night-cycle-system.html"><img src="./images/rpg-maker-day-night-cycle-lite-banner.png" width="1104" height="622" loading="lazy" alt="RPG Maker Day & Night Game Time System Lite title screen preview"></a>
-		  </div>
-
-            <div class="callout">
-              <strong>Easy to start with.</strong> Set up a gorgeous day-night cycle system in RPG Maker using variables, events, and screen tint transitions.
-            </div> 
-            <div class="miniRow">
-              <a class="btn btnPrimary" href="./rpg-maker-day-night-cycle-system.html" data-track="read_tutorial" data-track-label="Day Night Read Full Tutorial">Read Full Tutorial <span class="barr">➜</span></a>
-              <a class="btn" href="https://anya-and-lolo.itch.io/rpg-maker-day-night-cycle" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Day Night Download System">
-                <span class="linkBrand">Download Day/Night System <span class="arr">↗</span></span>
-              </a>
-            </div>
-		</div>
-		  
-          <!-- Tutorial: Fishing Mini-Game -->
-		<div class="card tutorialCard" id="fishing" data-section-track="Fishing Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 mid-level" style="margin-top:14px;">
-		  <h2 class="sectionTitle">RPG Maker Fishing Mini-Game Tutorial (Mid-level)</h2>
-		  <div class="lead">Build a relaxing, expandable fishing system with random catches and item rewards. 🎣</div>
-
-		  <div class="imageCard">
-			<a href="./rpg-maker-fishing-minigame-system.html"><img src="./images/rpg-maker-fishing-minigame-banner.png" width="1104" height="622" loading="lazy" alt="RPG Maker fishing mini-game tutorial preview, Let's Fish title screen"></a>
-		  </div>
-
-            <div class="callout">
-              <strong>Love fishing minigames?</strong> Build a relaxing, expandable fishing system in RPG Maker using events, a random catch roll, and item rewards.
-            </div>
-			
-            <div class="miniRow">
-              <a class="btn btnPrimary" href="./rpg-maker-fishing-minigame-system.html" data-track="read_tutorial" data-track-label="Fishing Read Full Tutorial">Read Full Tutorial <span class="barr">➜</span></a>
-              <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Fishing Download System">
-                <span class="linkBrand">Download Fishing System <span class="arr">↗</span></span>
-              </a>
-            </div>
-		</div>
-
-          <!-- Tutorial: Relationship System -->
-		<div class="card tutorialCard" id="relationship" data-section-track="Relationship Tutorial" data-tags="mz mv xp vx vxace rm2k rm2k3 mid-level" style="margin-top:14px;">
-		  <h2 class="sectionTitle">RPG Maker Relationship System Tutorial (Mid-level)</h2>
-		  <div class="lead">Track Trust, Friendship and Romance shaped by the player's dialogue choices.</div>
-
-		  <div class="imageCard">
-			<a href="./rpg-maker-relationship-system-mechanic.html"><img src="./images/rpg-maker-relationship-system-banner.png" width="1103" height="622" loading="lazy" alt="RPG Maker relationship system tutorial preview, Relationship Mechanics Lite title screen"></a>
-		  </div>
-
-            <div class="callout">
-              <strong>Love is in the air!</strong> Add depth and emotion to your game by building Trust, Friendship and Romance with characters.
-            </div>
-			
-            <div class="miniRow">
-              <a class="btn btnPrimary" href="./rpg-maker-relationship-system-mechanic.html" data-track="read_tutorial" data-track-label="Relationship Read Full Tutorial">Read Full Tutorial <span class="barr">➜</span></a>
-              <a class="btn" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener" data-track="download_demo" data-track-label="Relationship Download System">
-                <span class="linkBrand">Download Relationship System <span class="arr">↗</span></span>
-              </a>
-            </div>
-		</div>
-
-          <!-- Tutorial: Advanced / Pro (Club-locked teaser) -->
-		<div class="card tutorialCard" id="advanced-pro" data-section-track="Advanced Pro" data-tags="mz mv xp vx vxace rm2k rm2k3 advanced" style="margin-top:14px;">
-		  <h2 class="sectionTitle">🔒 RPG Maker Day &amp; Night Cycle Pro (Advanced)</h2>
-		  <div class="lead">Take the system further: world-map time, a picture-based HUD, AM/PM display, smart performance and time-reactive events. 🌙</div>
-
-		  <div class="imageCard">
-			<img src="./images/rpg-maker-day-night-cycle-pro-banner.png" width="1104" height="622" loading="lazy" alt="RPG Maker Day & Night Game Time System Pro title screen preview">
-		  </div>
-
-            <div class="callout">
-              <strong>Club members only, free to join!</strong> Our advanced tutorials are exclusive to the Anya &amp; Lolo Club. Joining costs nothing, and the access links land straight in your inbox 💌
-            </div>
-
-            <div class="miniRow">
-              <a class="btn btnPrimary" href="https://forms.gle/KHRiMYemjNW35J1r5" target="_blank" rel="noopener" data-track="join_club" data-track-label="Advanced Card Join Club">Join the Club for free <span class="barr">➜</span></a>
-            </div>
-		</div>
-
-          <!-- FAQ -->
-		  <div class="card tutorialCard" id="faq" data-section-track="FAQ" data-tags="mz mv xp vx vxace rm2k rm2k3 basics beginner mid-level" style="margin-top:14px;">
-            <h2 class="sectionTitle">RPG Maker FAQ &amp; Troubleshooting</h2>
-            <div class="lead">Quick answers to the questions new RPG Maker devs ask most: versions, eventing, lag, plugins, and the mistakes that trip everyone up.</div>
-
-            <div class="faqList">
-
-              <details class="faqItem">
-                <summary>Which RPG Maker version should I choose?</summary>
-                <div class="faqAnswer">RPG Maker <strong>MZ</strong> is the newest and most beginner-friendly; <strong>MV</strong> is slightly older but has a huge plugin library and community. Both use JavaScript plugins and export to Windows, Mac, mobile, and web. XP, VX Ace, and RPG Maker 2000/2003 are older and cheaper with smaller modern communities. If you're starting fresh, MZ or MV are the easiest picks.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>How do I make a day &amp; night cycle?</summary>
-                <div class="faqAnswer">Track in-game time with a variable in a Parallel Process common event, then change the screen tint as the time value changes. We have a full step-by-step that works in MZ, MV, XP, VX Ace, 2000, and 2003: <a href="./rpg-maker-day-night-cycle-system.html">RPG Maker Day &amp; Night Cycle tutorial</a>.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>My game is lagging, how do I fix it?</summary>
-                <div class="faqAnswer">The most common cause is too many <strong>Parallel Process</strong> events running every frame. Keep parallel events small and gate them behind a switch or condition so they only run when needed, and move repeated logic into <strong>Common Events</strong>. For frame-perfect optimization (only updating things when a value actually changes), I explain a full smart system in the <a href="#advanced-pro">Pro version of the Day &amp; Night tutorial</a>.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>How do I install a plugin in RPG Maker MZ/MV?</summary>
-                <div class="faqAnswer">Put the plugin's <code>.js</code> file in your project's <code>js/plugins</code> folder, open the <strong>Plugin Manager</strong>, add the plugin, set it to ON, and configure its parameters. Always read the plugin's terms of use.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>Can I use RPG Maker's built-in (RTP) assets in other engines?</summary>
-                <div class="faqAnswer">Generally no. Default RPG Maker assets are licensed for use in games made with RPG Maker. Check the specific product's license (EULA) before using them in other engines, including WOLF RPG Editor.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>What's the difference between RPG Maker and WOLF RPG Editor?</summary>
-                <div class="faqAnswer">RPG Maker is a paid, beginner-friendly commercial engine. <strong>WOLF RPG Editor (Woditor)</strong> is a free, more advanced Japanese engine with deeper customization. If you'd like to try it, we maintain a full <a href="https://anya-and-lolo.github.io/wolf_rpg_editor_ENG/guide/" target="_blank" rel="noopener">English WOLF RPG Editor guide ↗</a>.</div>
-              </details>
-
-              <details class="faqItem">
-                <summary>What do beginners usually struggle with?</summary>
-                <div class="faqAnswer">Most new devs run into the same hurdles, the big three are: skipping backups or a test project, using too many Parallel Process events, hard-coding logic or duplicating events instead of reusing Common Events. You can avoid these easily by keeping a small sandbox project, gating your Parallel events, and moving repeatable logic into Common Events so your project stays clean and easy to manage. Brand new? Our <a href="./rpg-maker-getting-started.html">Getting Started with RPG Maker</a> page explains all the basics, variables, switches, common events and more, in plain language.</div>
-              </details>
-
-            </div>
-			
-          </div>
-		  
-          <!-- Start Here -->
-          <div class="card tutorialCard" id="start-here" data-section-track="Start Here" data-tags="mz mv xp vx vxace rm2k rm2k3 basics beginner" style="margin-top:14px; background:#2c353b url('../images/background.jpg') repeat; border-color:#2c353b;">
-            <h2 class="sectionTitle" style="color:#fff;">Where To Start?</h2>
-            <div class="lead" style="color:#dfe6ea;">If you’re new to RPG Maker, we recommend these beginner-friendly tutorials and guides:</div>
-
-			<a href="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-day-night-cycle-system.html" style="text-decoration:none;">
-            <div class="step">
-              <div class="stepNum">1</div>
-              <div>
-                <div class="stepTitle">RPG Maker Day & Night Cycle Tutorial (Beginner)</div>
-                <p>
-                  <u>This tutorial</u> is really easy, and it even comes with a beginner‑friendly video!
-                </p>
-              </div>
-            </div>
-			</a>
-
-			<a href="https://anya-and-lolo.github.io/rpg-maker-tutorials/rpg-maker-getting-started.html" style="text-decoration:none;">
-            <div class="step">
-              <div class="stepNum">2</div>
-              <div>
-                <div class="stepTitle">Getting Started with RPG Maker (Basics)</div>
-                <p>
-                  <u>Quick answers</u> to common questions: eventing, plugins, and beginner mistakes.
-                </p>
-              </div>
-            </div>
-			</a>
-
-			<a href="https://www.youtube.com/@Anya_and_Lolo" style="text-decoration:none;" target="_blank" data-track="youtube_click" data-track-label="Start Here Watch on YouTube">
-            <div class="step">
-              <div class="stepNum">3</div>
-              <div>
-                <div class="stepTitle">Watch Videos (All Levels)</div>
-                <p>
-                  Some tutorials were made as videos, check out <u>my YouTube channel</u> for more!
-                </p>
-              </div>
-            </div>
-			</a>
-
-            <div class="callout">
-              <strong>Got a tutorial request?</strong> <a href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener" class="linkBrand">Just tell me what you’re after</a>, and I’ll format it into a clean page like this (plus do a video when I have a chance!)
-            </div>
-          </div>
-
-          <!-- Community / Forum -->
-          <div class="card tutorialCard" id="forum" data-section-track="Community" data-tags="mz mv xp vx vxace rm2k rm2k3 basics beginner mid-level" style="margin-top:14px;">
-            <h2 class="sectionTitle">Join the community</h2>
-            <div class="lead">Still stuck, or want to share what you built? Ask on the RPG Maker Hub forum where no question is too small.</div>
-            <iframe title="Latest forum discussions" frameborder="0" loading="lazy" style="width:100%; border:0; margin-top:12px; border-radius:12px; background:#fff;" height="260" src="https://rpgmakerhub.forumotion.com/embed?h=164&nbt=12&d=3300&name=Latest+discussions+-+RPG+Maker+Hub&more=1&logo=1"></iframe>
-            <div class="miniRow" style="margin-top:12px">
-              <a class="btn btnPrimary" href="https://rpgmakerhub.forumotion.com/" target="_blank" rel="noopener">Visit the forum <span class="barr">➜</span></a>
-            </div>
-          </div>
-		  
-			<div class="card" id="emptyState" style="display:none;">
-			  <h2 class="sectionTitle">No tutorials match those filters (yet!)</h2>
-			  <div class="lead">Try removing one tag, or click “All Engines”.</div>
+		  <a class="featuredTile" href="./rpg-maker-tutorials/rpg-maker-day-night-cycle-system.html">
+			<img src="rpg-maker-tutorials/images/rpg-maker-day-night-cycle-lite-banner.png" alt="RPG Maker day and night cycle tutorial">
+			<div class="featuredMeta">
+			  <div class="featuredName">RPG Maker Day & Night Cycle Tutorial</div>
+			  <div class="featuredDesc">Free step-by-step guide for game time, screen tint, and HUD setup.</div>
 			</div>
-		  
+		  </a>
+
+		  <a class="featuredTile" href="./rpg-maker-tutorials/">
+			<img src="https://anya-and-lolo.github.io/images/fishing_system_image.jpg" alt="RPG Maker fishing minigame tutorial coming soon">
+			<div class="featuredMeta">
+			  <div class="featuredName">RPG Maker Fishing Minigame Tutorial</div>
+			  <div class="featuredDesc">Free tutorial coming soon with regions, creatures, and fishing mechanics.</div>
+			</div>
+		  </a>
+
+		  <a class="featuredTile" href="https://anya-and-lolo.itch.io/" target="_blank" rel="noopener">
+			<img src="https://anya-and-lolo.github.io/images/visual_novel_system_image.jpg" alt="RPG Maker visual novel system premium guide">
+			<div class="featuredMeta">
+			  <div class="featuredName">Advanced RPG Maker Systems & Guides</div>
+			  <div class="featuredDesc">Advanced systems, bonus setup help, and deeper mechanics on itch.io.</div>
+			</div>
+		  </a>
+
+		</div>
+	  </div>
+
+	  <a class="featuredCta" href="./rpg-maker-tutorials/">
+		<span class="featuredCtaTitle">Step-by-Step RPG Maker Tutorials</span>
+		<span class="featuredCtaLink">Browse tutorials <span class="barr">➜</span></span>
+	  </a>
+	</div>
+
+      <!-- CARD: About Anya & Lolo -->
+      <div class="card aboutCard" style="margin-top:14px;">
+        <div class="aboutRow">
+          <img class="aboutAvatar" src="https://anya-and-lolo.github.io/icon.jpg" alt="Anya & Lolo avatar">
+          <p>Hi, I'm Anya, a gamer and artist living in sunny Sydney, and Lolo is my feathered bestie. We tinker with RPG Maker, build practical little systems and tools, and share cozy tutorials that make game dev feel warm, simple, and genuinely fun.</p>
+        </div>
+      </div>
+	  
+      <!-- CARD 3.7: Latest News (lightweight, crawlable) -->
+      <section class="card latest-news" style="margin-top:14px;">
+        <div class="sectionHead">
+          <h2 class="sectionTitle" style="color:#f4184c;">Latest News</h2>
+          <div class="muted" style="color:#303030;">Fresh updates from Anya &amp; Lolo</div>
+        </div>
+        <ul style="list-style:none; margin:12px 0 0; padding:0; text-align:left;">
+          <li style="padding:12px 2px; border-bottom:1px solid var(--border);">
+            <a href="https://www.patreon.com/anya_and_lolo/posts/may-june-check-162036621/" target="_blank" rel="noopener" style="color:var(--brand); font-weight:600; text-decoration:none;">Discover the exciting news we&#039;ve been waiting to share 🐺</a>
+            <span style="display:block; font-weight:700; font-size:12.5px; color:#8a8f96; margin-top:2px;">27 June 2026</span>
+            <div style="margin:4px 0 0; font-size:13.5px; line-height:1.45; color:rgba(27,27,27,0.66);">These past months have been busy, but they have also opened up a much bigger chapter for Anya &amp; Lolo. ❤</div>
+          </li>
+          <li style="padding:12px 2px; border-bottom:1px solid var(--border);">
+            <a href="https://anya-and-lolo.itch.io/rpg-maker-visual-novel-system" target="_blank" rel="noopener" style="color:var(--brand); font-weight:600; text-decoration:none;">RPG Maker MV/MZ Visual Novel System - huge update! 👀</a>
+            <span style="display:block; font-weight:700; font-size:12.5px; color:#8a8f96; margin-top:2px;">5 May 2026</span>
+            <div style="margin:4px 0 0; font-size:13.5px; line-height:1.45; color:rgba(27,27,27,0.66);">I felt this system needed some love, so I rebuilt the whole thing - it just feels better the moment you try it.</div>
+          </li>
+          <li style="padding:12px 2px;">
+            <a href="https://anya-and-lolo.itch.io/rpg-maker-plugins-for-mz-mv" target="_blank" rel="noopener" style="color:var(--brand); font-weight:600; text-decoration:none;">RPG Maker Plugin Garden, Where Plugins Grow Like Crops 🐌🌿</a>
+            <span style="display:block; font-weight:700; font-size:12.5px; color:#8a8f96; margin-top:2px;">26 January 2026</span>
+            <div style="margin:4px 0 0; font-size:13.5px; line-height:1.45; color:rgba(27,27,27,0.66);">A new cozy corner is open! Sprouting today: a Plugin Garden where little plugins help developers learn and build together.</div>
+          </li>
+        </ul>
+        <div class="muted" style="margin-top:10px; text-align:center;">
+          Want more?
+          <a href="https://anya-and-lolo.github.io/NewsBlog/blog-archive.html" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">See all news ↗</a>
+        </div>
+      </section>
+
+      <!-- CARD 3.5: Latest YouTube Videos -->
+      <div class="card" style="margin-top:14px;">
+        <div class="sectionHead">
+          <h2 class="sectionTitle" style="color:#f4184c;">Latest YouTube Videos</h2>
+          <div class="muted" style="color:#303030;">Fresh uploads from Anya &amp; Lolo</div>
         </div>
 
-        <!-- RIGHT: TOC -->
-        <aside class="card toc tocCard" aria-label="Tutorial table of contents">
-          <h2 class="sectionTitle" style="font-size:18px;">Quick jumps</h2>
-          <div class="lead">Find the sections on this page</div>
+        <div id="ytGrid" class="ytGrid" style="margin-top:12px;"></div>
 
-          <a href="javascript:void(0)" data-jump="rpg-maker-basics">
-            <span>Getting Started</span>
-            <small>Basics</small>
+        <div class="muted" style="margin-top:10px; text-align:center;">
+          Prefer opening YouTube?
+          <a href="https://www.youtube.com/@Anya_and_Lolo" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">
+            Open the channel ↗
           </a>
-
-          <a href="javascript:void(0)" data-jump="day-night">
-            <span>Day & Night Cycle</span>
-            <small>Beginner</small>
-          </a>
-
-          <a href="javascript:void(0)" data-jump="fishing">
-            <span>Fishing <span style="white-space:nowrap">Mini-Game</span></span>
-            <small>Mid-level</small>
-          </a>
-
-          <a href="javascript:void(0)" data-jump="relationship">
-            <span>Relationship System</span>
-            <small>Mid-level</small>
-          </a>
-
-          <a href="javascript:void(0)" data-jump="advanced-pro">
-            <span>Day &amp; Night Pro</span>
-            <small>Advanced 🔒</small>
-          </a>
-
-          <a href="javascript:void(0)" data-jump="faq">
-            <span>FAQ</span>
-            <small>Answers</small>
-          </a>
-		  
-          <a href="javascript:void(0)" data-jump="start-here">
-            <span>Where To Start</span>
-            <small>Answers</small>
-          </a>
-
-          <div class="subcard" style="margin-top:12px;">
-            <strong>Quick Tags (Filters)</strong>
-			<div id="filterStatus" class="muted" style="text-align:left;margin-top:10px;"></div>
-			<div class="miniRow" id="tagFilters" style="margin-top:10px;">
-			<button class="btn tagBtn tagDiff" type="button" data-tag="basics">Basics</button>
-			<button class="btn tagBtn tagDiff" type="button" data-tag="beginner">Beginner</button>
-			<button class="btn tagBtn tagDiff" type="button" data-tag="mid-level">Mid-level</button>
-			<button class="btn tagBtn tagDiff" type="button" data-tag="advanced">Advanced</button>
-			<div class="tagDivider" aria-hidden="true"></div>
-			<button class="btn tagBtn is-active" type="button" data-tag="all">All Engines</button>
-			<button class="btn tagBtn" type="button" data-tag="mz">RPG Maker MZ</button>
-			<button class="btn tagBtn" type="button" data-tag="mv">RPG Maker MV</button>
-			<button class="btn tagBtn" type="button" data-tag="xp">RPG Maker XP</button>
-			<button class="btn tagBtn" type="button" data-tag="vxace">RPG Maker VX Ace</button>
-			<button class="btn tagBtn" type="button" data-tag="vx">RPG Maker VX</button>
-			<button class="btn tagBtn" type="button" data-tag="rm2k">RPG Maker 2000</button>
-			<button class="btn tagBtn" type="button" data-tag="rm2k3">RPG Maker 2003</button> 
-			</div>
-          </div>
-        </aside>
+        </div>
       </div>
 
-      <!-- Footer card (footer.PNG design) -->
+      <!-- CARD 3.6: Latest from the Forum -->
+      <div class="card" style="margin-top:14px; background:#2c353b url('images/background.jpg') repeat; border-color:#2c353b;">
+        <div class="sectionHead">
+          <h2 class="sectionTitle" style="color:#f4184c;">Latest from the Forum</h2>
+          <div class="muted" style="color:#dfe6ea;">Join the discussion on RPG Maker Hub</div>
+        </div>
+
+        <iframe title="Latest forum discussions" frameborder="0" loading="lazy" style="width:100%; border:0; margin-top:12px; border-radius:12px; background:#fff;" height="260" src="https://rpgmakerhub.forumotion.com/embed?h=164&nbt=12&d=3300&name=Latest+discussions+-+RPG+Maker+Hub&more=1&logo=1"></iframe>
+
+        <div class="muted" style="margin-top:10px; text-align:center; color:#dfe6ea;">
+          Got a question or a project to share?
+          <a href="https://rpgmakerhub.forumotion.com/" target="_blank" rel="noopener" style="color:var(--brand); font-weight:900;">
+            Visit the forum ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- CARD 4: Footer (footer.PNG design) -->
       <div class="card footerV2">
         <div class="footerHang">
           <div class="footerHangIcon" aria-hidden="true">
@@ -560,130 +393,4 @@
             </a>
 
             <a class="socItem" href="https://www.facebook.com/316257814895497" target="_blank" rel="noopener" data-track="social_click" data-platform="facebook">
-              <span class="socBtn"><svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.8 3.7-3.8 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg></span>
-              <span class="socLabel">Facebook</span>
-            </a>
-
-            <a class="socItem" href="https://bsky.app/profile/anya-and-lolo.itch.io" target="_blank" rel="noopener" data-track="social_click" data-platform="bluesky">
-              <span class="socBtn blueskyBtn"><svg viewBox="0 0 24 24" fill="#1185FE"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.479 0-.689-.139-1.86-.902-2.203-.659-.299-1.664-.621-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></span>
-              <span class="socLabel">Bluesky</span>
-            </a>
-
-            <a class="socItem" href="https://x.com/Anya_and_Lolo" target="_blank" rel="noopener" data-track="social_click" data-platform="x">
-              <span class="socBtn"><svg viewBox="0 0 24 24" fill="#111"><path d="M17.7 3h2.7l-5.9 6.8L21.5 21h-5.4l-4.2-5.6L7 21H4.3l6.3-7.3L3 3h5.5l3.8 5.1L17.7 3zm-1 16.4h1.5L8 4.5H6.4l10.3 14.9z"/></svg></span>
-              <span class="socLabel">X</span>
-            </a>
-
-            <a class="socItem" href="https://www.pixiv.net/en/users/105118068" target="_blank" rel="noopener" data-track="social_click" data-platform="pixiv">
-              <span class="socBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0096FA"/><text x="12" y="16.5" font-size="12" font-weight="900" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif">P</text></svg></span>
-              <span class="socLabel">Pixiv</span>
-            </a>
-
-            <a class="socItem" href="https://anya-and-lolo.booth.pm/" target="_blank" rel="noopener" data-track="social_click" data-platform="booth">
-              <span class="socBtn"><img src="../images/booth.ico" alt="" width="30" height="30" loading="lazy"></span>
-              <span class="socLabel">Booth</span>
-            </a>
-
-          </div>
-        </div>
-
-        <div class="footTP"><a href="../terms.html">Terms</a><span class="sep">|</span><a href="../privacy.html">Privacy</a><span class="sep">|</span><a href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener">Contact</a></div>
-        <div class="footCopy">© <span id="year"></span> Anya &amp; Lolo</div>
-      </div>
-
-    </section>
-  </main>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-      // Card reveal on scroll
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) e.target.classList.add("reveal");
-        });
-      }, { threshold: 0.12 });
-
-      document.querySelectorAll(".card:not(.tocCard)").forEach(c => {
-        c.classList.add("preReveal");
-        io.observe(c);
-      });
-	  	
-// SINGLE-SELECT TAG FILTERS (two independent groups: difficulty + engine)
-(() => {
-  const buttons = Array.from(document.querySelectorAll(".tagBtn[data-tag]"));
-  const cards   = Array.from(document.querySelectorAll(".tutorialCard"));
-
-  const DIFF   = ["basics","beginner","mid-level","advanced"];
-  const ENGINE = ["mz","mv","xp","vxace","vx","rm2k","rm2k3"];
-
-  const norm = t => String(t||"").trim().toLowerCase();
-  const cardTags = c => String(c.getAttribute("data-tags")||"").toLowerCase().split(/\s+/).filter(Boolean);
-  const groupOf = t => DIFF.includes(t) ? "diff" : (ENGINE.includes(t) ? "engine" : (t==="all" ? "all" : null));
-
-  let selDiff = null, selEngine = null;   // at most one of each
-
-  function syncActiveUI(){
-    buttons.forEach(b => {
-      const t = norm(b.dataset.tag);
-      if (t === "all") b.classList.toggle("is-active", selEngine === null);
-      else b.classList.toggle("is-active", t === selDiff || t === selEngine);
-    });
-  }
-
-  function applyFilter(){
-    cards.forEach(card => {
-      const tags = cardTags(card);
-      const okDiff   = !selDiff   || tags.includes(selDiff);
-      const okEngine = !selEngine || tags.includes(selEngine);
-      card.style.display = (okDiff && okEngine) ? "" : "none";
-    });
-
-    const status = document.getElementById("filterStatus");
-    if (status){
-      const parts = [];
-      if (selDiff)   parts.push(selDiff.charAt(0).toUpperCase() + selDiff.slice(1));
-      if (selEngine) parts.push(selEngine.toUpperCase());
-      status.textContent = parts.length ? ("Showing: " + parts.join(" + ")) : "Showing all tutorials";
-    }
-
-    const visible = cards.filter(c => c.style.display !== "none").length;
-    const emptyState = document.getElementById("emptyState");
-    if (emptyState) emptyState.style.display = visible ? "none" : "";
-  }
-
-  function reset(){
-    selDiff = null; selEngine = null;
-    syncActiveUI(); applyFilter();
-  }
-
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const t = norm(btn.dataset.tag), g = groupOf(t);
-      if (g === "all")         selEngine = null;
-      else if (g === "engine") selEngine = (selEngine === t) ? null : t;
-      else if (g === "diff")   selDiff   = (selDiff   === t) ? null : t;
-      else return;
-
-      syncActiveUI();
-      applyFilter();
-      document.querySelector(".tutorialGrid")?.scrollIntoView({ behavior:"smooth", block:"start" });
-    });
-  });
-
-  document.querySelectorAll(".toc a[data-jump]").forEach(a => {
-    a.addEventListener("click", () => {
-      if (selDiff || selEngine) reset();
-      const el = document.getElementById(a.getAttribute("data-jump"));
-      if (el) requestAnimationFrame(() => el.scrollIntoView({ behavior:"smooth", block:"start" }));
-    });
-  });
-
-  reset();
-})();
-
-    });
-  </script>
-
-</body>
-</html>
+              
