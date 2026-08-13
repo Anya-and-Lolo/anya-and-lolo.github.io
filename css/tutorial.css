@@ -25,6 +25,7 @@ body{
   background: var(--bg);
   font-size:17px;
   line-height:1.6;
+  overflow-x:hidden;   /* prevent horizontal scroll now that .wrap no longer clips */
 }
 a{ color:inherit; text-decoration:none; }
 a:hover{ text-decoration: underline; text-underline-offset:4px; }
@@ -158,19 +159,19 @@ body.dgramGate .dgram:not(.inview) *{ animation-play-state: paused !important; }
   max-width: 1100px;
   margin: 0 auto;
   padding: 16px;
-  overflow-x: clip;
+  overflow-x: visible;   /* let card glow bleed into the sky instead of being clipped in a hard line */
 }
 
 /* BACKGROUND EFFECTS */
+
+/* --- OLD THEME: pink/blue flying dots (kept for easy revert — uncomment this block and delete the Starlit Night block below to restore) ---
 body::before{
   content:"";
   position: fixed;
   inset: 0;
   z-index:-2;
-
   opacity: 1;
   background-repeat: repeat, repeat;
-
   background:
     radial-gradient(circle, rgba(244,24,76,0.15) 2px, transparent 3.5px),
     radial-gradient(circle, rgba(86,167,254,0.12) 2px, transparent 3.5px);
@@ -181,6 +182,101 @@ body::before{
 @keyframes dotsFloat{
   from{ background-position: 0 0, 21px 21px; }
   to{ background-position: -168px -84px, -147px -63px; }
+}
+--- end old dots theme --- */
+
+/* === THEME: Starlit Night (full-screen twinkling stars + diagonal shooting star) === */
+/* Base slowly shifts between very close tints of #121834 (subtle aurora-style drift),
+   while the top "glow" layer stays fixed for depth. */
+body{
+  background:
+    radial-gradient(circle, rgba(50,62,120,0.10) 0%, rgba(50,62,120,0) 80%),   /* faint light-navy cloud (subtle break-up) */
+    radial-gradient(circle, rgba(7,11,34,0.55) 0%, rgba(7,11,34,0) 78%),       /* deep-navy cloud (keeps things dark)      */
+    radial-gradient(120% 95% at 50% -12%, rgba(40,48,94,0.24), transparent 55%), /* subtle top glow (like the old look)     */
+    linear-gradient(135deg, #0a0f24, #0d1330, #0a0f24, #0f1636, #0a1026);       /* dark base tint that pans (stays deep)    */
+  background-size: 165% 165%, 155% 160%, 100% 100%, 300% 300%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  animation: slNightShift 34s linear infinite;
+}
+/* Two LARGE soft navy clouds drift across the sky (edges fall well off-screen so they
+   never read as a hard band) so no big area stays flat; base tint pans underneath. */
+@keyframes slNightShift{
+  0%   { background-position: 8% 22%, 92% 78%, 50% 0%, 0% 50% }
+  25%  { background-position: 78% 10%, 30% 90%, 50% 0%, 50% 50% }
+  50%  { background-position: 95% 65%, 8% 32%, 50% 0%, 100% 50% }
+  75%  { background-position: 28% 90%, 74% 18%, 50% 0%, 50% 50% }
+  100% { background-position: 8% 22%, 92% 78%, 50% 0%, 0% 50% }
+}
+
+/* two dense tiled star layers (mixed sizes) -> seamless, fills ANY screen */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background-image:
+    radial-gradient(2.4px 2.4px at 20px 30px,#fff,transparent),
+    radial-gradient(1.1px 1.1px at 90px 80px,#cfe0ff,transparent),
+    radial-gradient(1.8px 1.8px at 150px 40px,#fff,transparent),
+    radial-gradient(1px 1px at 205px 120px,#fff,transparent),
+    radial-gradient(2.6px 2.6px at 60px 150px,#eaf2ff,transparent),
+    radial-gradient(1.3px 1.3px at 235px 20px,#cfe0ff,transparent),
+    radial-gradient(1.5px 1.5px at 120px 175px,#fff,transparent),
+    radial-gradient(1px 1px at 30px 100px,#fff,transparent);
+  background-size:250px 190px; background-repeat:repeat;
+  animation:slTwinkleA 3.2s ease-in-out infinite, starDriftA 90s linear infinite;
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background-image:
+    radial-gradient(1.3px 1.3px at 40px 50px,#fff,transparent),
+    radial-gradient(2.8px 2.8px at 140px 20px,#dfe9ff,transparent),
+    radial-gradient(1px 1px at 195px 105px,#fff,transparent),
+    radial-gradient(1.7px 1.7px at 80px 135px,#fff,transparent),
+    radial-gradient(1.2px 1.2px at 265px 70px,#cfe0ff,transparent),
+    radial-gradient(2.2px 2.2px at 300px 210px,#eaf2ff,transparent),
+    radial-gradient(1.4px 1.4px at 210px 260px,#fff,transparent),
+    radial-gradient(1px 1px at 60px 300px,#fff,transparent);
+  background-size:340px 330px; background-repeat:repeat; background-position:30px 15px;
+  animation:slTwinkleB 4.1s ease-in-out infinite, starDriftB 120s linear infinite;
+}
+/* slow parallax star drift (seamless: each layer moves exactly one tile per loop) */
+@keyframes starDriftA{ from{ background-position:0 0 } to{ background-position:-250px -190px } }
+@keyframes starDriftB{ from{ background-position:30px 15px } to{ background-position:-310px -315px } }
+/* two staged, semi-transparent shooting stars. Each moves a FIXED px distance along
+   its own 30° axis -> identical size & speed on every screen. Both sit behind the
+   cards (z-index:-1). Star 1 sweeps left->middle, then star 2 sweeps middle->right. */
+html::before{ /* star 1: left -> middle */
+  content:""; position:fixed; z-index:-1; pointer-events:none;
+  top:8%; left:-220px; width:160px; height:2px; border-radius:2px;
+  background:linear-gradient(90deg,transparent,#fff 55%,#dcebff);
+  filter:drop-shadow(0 0 5px rgba(255,255,255,.7));
+  opacity:0;
+  animation:slShoot1 15s ease-out infinite;
+}
+html::after{ /* star 2: middle -> right, appears after star 1 */
+  content:""; position:fixed; z-index:-1; pointer-events:none;
+  top:5%; left:44%; width:150px; height:2px; border-radius:2px;
+  background:linear-gradient(90deg,transparent,#fff 55%,#dcebff);
+  filter:drop-shadow(0 0 5px rgba(255,255,255,.7));
+  opacity:0;
+  animation:slShoot2 15s ease-out infinite;
+}
+@keyframes slTwinkleA{ 0%,100%{opacity:.6} 50%{opacity:1} }
+@keyframes slTwinkleB{ 0%,100%{opacity:1} 50%{opacity:.6} }
+@keyframes slShoot1{
+  0%{   transform:rotate(30deg) translateX(0);      opacity:0 }
+  3%{   opacity:.6 }
+  26%{  transform:rotate(30deg) translateX(1500px); opacity:0 }
+  100%{ transform:rotate(30deg) translateX(1500px); opacity:0 }
+}
+@keyframes slShoot2{
+  0%,34%{ transform:rotate(30deg) translateX(0);    opacity:0 }
+  37%{  opacity:.55 }
+  60%{  transform:rotate(30deg) translateX(1500px); opacity:0 }
+  100%{ transform:rotate(30deg) translateX(1500px); opacity:0 }
+}
+@media(prefers-reduced-motion:reduce){
+  body, body::before, body::after{ animation:none }
+  html::before, html::after{ display:none }
 }
 
 /* =========================
@@ -195,13 +291,13 @@ body::before{
 .navV2{ display:flex; align-items:center; gap:10px; }
 .navV2 .navPrimary{ display:flex; align-items:center; gap:8px; }
 .navlinkV2{ display:inline-flex; align-items:center; gap:8px; padding:9px 14px; border-radius:999px; font-weight:800; font-size:15px; line-height:1; color:var(--text); background:#fff; border:1px solid var(--border); cursor:pointer; transition:background .14s ease, color .14s ease, border-color .14s ease, transform .12s ease; }
-.navlinkV2:hover{ background:var(--brand2); border-color:rgba(244,24,76,0.22); transform:translateY(-1px); text-decoration:none; }
+.navlinkV2:hover{ background:#ffe1ea; border-color:rgba(244,24,76,0.30); transform:translateY(-1px); text-decoration:none; }
 .navlinkV2 .navIcon{ display:inline-flex; }
 .navlinkV2 .navIcon svg{ width:18px; height:18px; display:block; }
 .navlinkV2 .hatIcon svg{ width:22px; height:22px; }
 .navlinkV2 .handIcon svg{ width:22px; height:22px; }
 .topbarV2 .navlinkV2.is-current,
-.topbarV2 .navDrop.is-open > .navlinkV2{ background:var(--brand2); color:var(--brand); border-color:rgba(244,24,76,0.28); }
+.topbarV2 .navDrop.is-open > .navlinkV2{ background:#ffd3e0; color:var(--brand); border-color:rgba(244,24,76,0.38); }
 .navChev{ display:inline-flex; margin-left:2px; transition:transform .18s ease; }
 .navChev svg{ width:14px; height:14px; display:block; }
 .topbarV2 .navDrop.is-open > .navlinkV2 .navChev{ transform:rotate(180deg); }
@@ -265,7 +361,7 @@ body::before{
 .footerHangTitle{ font-size:18px; font-weight:900; margin:4px 0; }
 .footerHangSub{ font-size:15px; color:var(--muted); font-weight:600; max-width:460px; margin:0 auto; }
 .footerHangSub a{ color:var(--brand); font-weight:800; }
-.socialPanel{ max-width:760px; margin:20px auto 0; background:rgba(244,24,76,0.06); border-radius:24px; padding:22px 18px 18px; }
+.socialPanel{ max-width:760px; margin:20px auto 0; background:#fefefe; border:1px solid rgba(20,20,20,0.08); border-radius:24px; padding:22px 18px 18px; }
 .socialGrid{ display:grid; grid-template-columns:repeat(10, 1fr); gap:14px 6px; }
 .socItem{ display:flex; flex-direction:column; align-items:center; gap:7px; text-decoration:none; }
 .socItem:hover{ text-decoration:none; }
@@ -291,7 +387,7 @@ body::before{
   top: 0;
   z-index: 10;
   backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.86);
   border-bottom: 1px solid var(--border);
 }
 .topbarInner{
@@ -574,13 +670,57 @@ body::before{
   border:1px solid var(--border);
   border-radius: var(--radius);
   padding: 18px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  box-shadow: 0 5px 50px 15px #2E4774;   /* blue glow (moved here from the news frame) */
   transition: box-shadow .15s ease, transform .15s ease;
 }
 
 .card:hover{
-  box-shadow: 0 14px 28px rgba(0,0,0,.07);
+  box-shadow: 0 5px 50px 15px #2E4774;
   transform: translateY(-2px);
+}
+
+/* Only these two "featured" content cards are solid white; every other card keeps the grey tint */
+#rpg-maker-basics, #download{ background:#fefefe; }
+
+/* "Editor Grid" backdrop for the Where To Start card — panning blueprint grid + vignette */
+.startGridBg{
+  position:relative; overflow:hidden;
+  background:radial-gradient(135% 115% at 50% 0%, #2c81e2 0%, #1a63c8 52%, #124a9c 100%);
+  border-color:rgba(255,255,255,0.30) !important;
+  box-shadow:0 12px 32px rgba(8,20,60,0.45);
+}
+/* Blueprint grid: fine minor lines + brighter major lines every 5 cells, visible edge-to-edge */
+.startGridBg::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.20) 1.2px, transparent 1.2px),
+    linear-gradient(90deg, rgba(255,255,255,0.20) 1.2px, transparent 1.2px);
+  background-size: 22px 22px, 22px 22px, 110px 110px, 110px 110px;
+  animation:startPanGrid 16s linear infinite;
+}
+/* Very light edge shade for depth — grid stays visible right into the corners */
+.startGridBg::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(140% 140% at 50% 50%, transparent 72%, rgba(9,28,72,0.28));
+}
+.startGridBg > *{ position:relative; z-index:1; }
+@keyframes startPanGrid{ to{ background-position:22px 22px, 22px 22px, 110px 110px, 110px 110px } }
+@media(prefers-reduced-motion:reduce){ .startGridBg::before{ animation:none } }
+
+/* Related tutorials card — remove bullets, red highlighted links */
+.card[aria-labelledby="relatedHeading"] ul{ list-style:none; padding-left:0 !important; margin:0 !important; }
+.card[aria-labelledby="relatedHeading"] li{ margin:9px 0; }
+.card[aria-labelledby="relatedHeading"] a{ color:var(--brand); font-weight:700; text-decoration:underline; text-decoration-color:rgba(244,24,76,0.35); text-underline-offset:3px; }
+.card[aria-labelledby="relatedHeading"] a:hover{ text-decoration-color:var(--brand); }
+
+/* "Where to go from here" (#gopro) — turn the dense paragraphs into tidy sub-cards */
+#gopro .lead:not(:first-of-type){
+  background:#f7f8fc;
+  border:1px solid rgba(20,20,40,0.09);
+  border-radius:12px;
+  padding:12px 14px;
 }
 
 /* HERO */
@@ -887,6 +1027,9 @@ code:where(:not(:empty)){
   margin-top:8px;
 }
 .toc a:hover{ background: rgba(255,255,255,0.92); text-decoration:none; }
+/* Whole Quick jumps card zooms + white glow on hover (like the itch/YouTube cards) */
+.tocCard{ transition: transform .18s ease, box-shadow .18s ease; box-shadow: none; }
+.tocCard:hover{ transform: scale(1.02); box-shadow: 0 0 40px 8px #85a8e8; }
 .toc a.is-active{ background: var(--brand2); border-color: rgba(244,24,76,0.25); }
 .toc a.is-active span{ color: var(--brand); }
 .toc small{ font-weight:900; color: rgba(27,27,27,0.55); }

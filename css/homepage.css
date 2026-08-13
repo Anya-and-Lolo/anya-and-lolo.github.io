@@ -8,14 +8,14 @@
 
 /* no shimmer underline on this page */
 .heroH1::after{ display:none; }
-.heroH1{ font-size:42px; line-height:1.12; margin:0 0 14px; }
+.heroH1{ font-size:42px; line-height:1.05; margin:0 0 7px; }
 .heroBeginners{ color:var(--brand); }
 
 /* lighter link weight (closer to the news post-title boldness) */
 .linkBrand{ font-weight:700; }
 
 /* narrow the intro + divider so they don't crowd the iframe (buttons keep their natural width) */
-.heroIntro{ margin:0; max-width:88%; }
+.heroIntro{ margin:0; max-width:88%; line-height:1.42; }
 .heroRule{ border:0; border-top:1px solid rgba(244,24,76,0.30); margin:20px 0 0; max-width:88%; }
 .newHere{ color:rgba(244,24,76,0.78); font-weight:500; margin:12px 0 0; }
 
@@ -41,7 +41,7 @@
 .newsFrameV2 .embedWrap{
   border:2px solid rgba(244,24,76,0.30);
   border-radius:18px;
-  box-shadow:none;
+  box-shadow:none;   /* glow moved to the main cards */
   overflow:hidden;
 }
 
@@ -89,3 +89,69 @@
 .linkBrand:hover .arr,
 .btn:hover .arr{ animation:arrowPoint .6s ease infinite; }
 @keyframes arrowPoint{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(3px,-3px); } }
+
+
+/* Hero "essentials" sub-card + alignment */
+.heroEssentials{
+  margin-top:12px;
+  background:rgba(244,24,76,0.05);
+  border:1px solid rgba(244,24,76,0.18);
+  border-radius:14px;
+  padding:10px 14px 12px;
+}
+.heroEssentials .newHere{ margin-top:0; }
+.heroEssentials .heroChecks{ margin-top:6px; }
+/* tighten the checklist so all five fit neatly inside the sub-card */
+.heroChecks{ gap:6px; }
+.heroChecks li{ line-height:1.2; }
+/* news frame keeps its natural fixed height so the carousel fills it with no empty white below */
+
+
+/* Hero: grey card + a white "text" sub-card wrapping the title, intro & essentials (essentials stay soft-red) */
+.heroTextCard{
+  background:#fefefe;
+  border:1px solid rgba(20,20,20,0.10);
+  border-radius:16px;
+  padding:16px 20px;
+}
+
+/* Latest News: grey container + a white sub-card per news item */
+.latest-news{ background:#e2e3e6; }
+.latest-news > ul > li{
+  background:#fff;
+  border:1px solid rgba(20,20,20,0.08) !important;
+  border-radius:12px;
+  padding:14px 16px !important;
+  margin-bottom:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.04);
+}
+.latest-news > ul > li:last-child{ margin-bottom:0; }
+/* buttons live inside the hero text sub-card */
+.heroTextCard .ctaRow{ margin:12px 0 0; }
+
+/* Showcase cards wear the stronger blue glow permanently (same as the .card:hover effect) */
+.bannerCard,
+.featuredCard,
+.card:has(#ytGrid){
+  box-shadow: 0 5px 50px 15px #2E4774;
+}
+
+/* banner card: reveal its glow (overflow was clipping it); round the image itself instead */
+.bannerCard{ overflow: visible; }
+.banner{ border-radius: var(--radius); }
+
+/* Latest YouTube: float the video cards directly on the starfield (no grey container) */
+.ytFloat{ background:transparent; border:0; box-shadow:none; padding:0; }
+.ytFloat .muted{ color:rgba(230,236,255,0.72); }
+
+/* About bio: playful typography + colour (words unchanged) */
+.aboutCard .bioText{ font-size:18px; line-height:1.62; letter-spacing:.1px; }
+.aboutCard .bioText .bioEm{ color:var(--brand); font-style:italic; font-weight:700; }
+.aboutCard .bioText strong{ color:#141414; font-weight:800; }
+
+/* Bio (About) card: white */
+.aboutCard{ background:#fefefe; }
+
+/* Hero card: even padding matching the featured gallery (drop the extra 14px grid gap on top) */
+.hero > .card:not(.cardFlush){ padding:14px; }
+.heroGrid{ margin-top:0; }
