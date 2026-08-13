@@ -169,7 +169,7 @@
               </div>
             </div>
 
-            <div class="card" id="intro" data-section-track="What You Will Build" style="margin-top:14px">
+            <div class="card" id="intro" data-section-track="What You Will Build" style="margin:18px 0">
               <div class="subcard">
                 <h2 class="sectionTitle">What you'll build</h2>
                 <div class="lead" style="margin-top:8px">We'll take the Lite system to the next level so your world truly reacts to time:</div>
@@ -180,7 +180,7 @@
               <div class="step" style="margin-top:12px"><div class="stepNum">4</div><div><div class="stepTitle">Pause-time &amp; time-specific encounters</div><div class="stepBody">Freeze the clock during cutscenes, and make events appear at certain times (like fireflies at night).</div></div></div>
             </div>
 
-            <div class="card" id="worldmap" data-section-track="World Map Time" style="margin-top:14px">
+            <div class="card" id="worldmap" data-section-track="World Map Time" style="margin:18px 0">
               <h2 class="sectionTitle">Part 1. World-map time cycles</h2>
               <div class="lead" style="margin-top:8px">To run the time system on every map, move the <code>Game Time (Main)</code> event into Common Events. <span class="muted">~5-min setup</span></div>
               <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Move it to Common Events</div><div class="stepBody">Open <code>Tools → Database → Common Events</code> and recreate (or paste) the Game Time logic there. Set the Trigger to <strong>Parallel</strong> and give it a Switch set to ON at Game Start.</div></div></div>
@@ -188,7 +188,7 @@
               <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-world-map-common-events.png" width="1181" height="740" loading="lazy" alt="RPG Maker Common Events tab with the Game Time event set to a parallel trigger and a start switch."></div>
             </div>
 
-            <div class="card" id="hud" data-section-track="Custom HUD" style="margin-top:14px">
+            <div class="card" id="hud" data-section-track="Custom HUD" style="margin:18px 0">
               <h2 class="sectionTitle">Part 2. Picture-based custom HUD</h2>
               <div class="lead" style="margin-top:8px">Let's make the time display look amazing with images instead of plain text. <span class="muted">~30-min setup</span></div>
               <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Create a "Time Display" parallel event</div><div class="stepBody">In the Common Events tab, add a new Parallel event named "Time Display". This will draw the HUD pictures.</div></div></div>
@@ -216,7 +216,7 @@
               <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-day-display.png" width="410" height="129" loading="lazy" alt="RPG Maker HUD showing the in-game day counter."></div>
             </div>
 
-            <div class="card" id="ampm" data-section-track="AM/PM Format" style="margin-top:14px">
+            <div class="card" id="ampm" data-section-track="AM/PM Format" style="margin:18px 0">
               <h2 class="sectionTitle">Part 3. Convert to AM/PM format</h2>
               <div class="lead" style="margin-top:8px">Military time feels formal, here's how to switch to a friendly AM/PM clock. <span class="muted">~15-min setup</span></div>
               <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Show AM or PM</div><div class="stepBody">Drop <code>am.png</code> and <code>pm.png</code> into Pictures. Add two Conditional Branches: <code>If Hours &lt; 12</code> shows AM, <code>If Hours ≥ 12</code> shows PM. Use the same picture number for both (only one shows at a time) at X 50, Y 57.</div></div></div>
@@ -232,7 +232,7 @@
               <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-ampm-display-final.png" width="405" height="120" loading="lazy" alt="RPG Maker HUD showing the finished AM/PM time display."></div>
             </div>
 
-            <div class="card" id="smart" data-section-track="Smart Systems" style="margin-top:14px">
+            <div class="card" id="smart" data-section-track="Smart Systems" style="margin:18px 0">
               <h2 class="sectionTitle">Part 4. Make the system smarter</h2>
               <div class="lead" style="margin-top:8px">Parallel events check their conditions many times per second. Let's only update things when the value actually changes. <span class="muted">~15-min setup</span></div>
               <div class="callout info"><strong>Good to know:</strong> RPG Maker MV is a little more sensitive to parallel lag than MZ, so these optimizations matter most in MV.</div>
@@ -244,14 +244,14 @@
               <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-smart-day-split.png" width="590" height="416" loading="lazy" alt="RPG Maker day display branches split for efficiency with a Last DayTime check."></div>
             </div>
 
-            <div class="card" id="pause" data-section-track="Pause Time" style="margin-top:14px">
+            <div class="card" id="pause" data-section-track="Pause Time" style="margin:18px 0">
               <h2 class="sectionTitle">Part 5. Pause time during cutscenes</h2>
               <div class="lead" style="margin-top:8px">Freeze the clock during dialogue or cutscenes. <span class="muted">~5-min setup</span></div>
               <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Create a "Time Frozen" switch</div><div class="stepBody">Make a switch called <code>Time Frozen</code>. Turn it ON before a Show Text and OFF after. While it's ON, your time system won't update minutes, hours or tints. Gate the time logic with <code>If Time Frozen is OFF</code>.</div></div></div>
               <div class="imageCard" style="margin-top:10px"><img data-lb="1" src="images/rpg-maker-day-night-cycle-pro-pause-time-switch.png" width="600" height="141" loading="lazy" alt="RPG Maker Control Switches turning the Time Frozen switch on and off around a message."></div>
             </div>
 
-            <div class="card" id="encounters" data-section-track="Time Encounters" style="margin-top:14px">
+            <div class="card" id="encounters" data-section-track="Time Encounters" style="margin:18px 0">
               <h2 class="sectionTitle">Part 6. Time-specific encounters</h2>
               <div class="lead" style="margin-top:8px">Use switches to make events appear at certain times. <span class="muted">~5-min setup</span></div>
               <div class="step"><div class="stepNum">1</div><div><div class="stepTitle">Fireflies that only appear at night</div><div class="stepBody">In Game Time (Main), flip a switch ON during the night hours (and OFF otherwise). Put your firefly event on a page conditioned by that switch. Use the same idea for windows that open by day, lanterns that light at night, or shops that run 9AM-6PM.</div></div></div>
@@ -259,7 +259,7 @@
               <div class="callout success">🌟 The possibilities are endless, your world now feels alive with a smart, reactive day-night system!</div>
             </div>
 
-            <div class="card" id="more" data-section-track="More Systems" style="margin-top:14px">
+            <div class="card" id="more" data-section-track="More Systems" style="margin:18px 0">
               <h2 class="sectionTitle">💖 You might also enjoy</h2>
               <div class="lead" style="margin-top:8px">More systems to expand your RPG Maker world:</div>
               <div class="lead" style="margin-top:8px">The <a class="linkBrand" href="./rpg-maker-relationship-system-mechanic.html">Relationship System</a> for dynamic character bonds, and the <a class="linkBrand" href="./rpg-maker-fishing-minigame-system.html">Fishing Mini-Game</a> for a relaxing catch-and-reward loop. Got a request or a cool idea? <a class="linkBrand" href="https://anya-and-lolo.itch.io/genie" target="_blank" rel="noopener">Let me know</a>!</div>
